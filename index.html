@@ -4,8 +4,415 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YouTube Watch Later Tidy</title>
+  <meta name="description" content="Manage your YouTube Watch Later playlist with bulk delete, channel breakdown, filtering, and more.">
+  <meta property="og:title" content="YouTube Watch Later Tidy">
+  <meta property="og:description" content="Manage your YouTube Watch Later playlist with bulk delete, channel breakdown, filtering, and more.">
+  <meta property="og:image" content="assets/icon128.png">
+  <link rel="icon" type="image/png" href="assets/icon128.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #000;
+      color: #fff;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 96px 24px 80px;
+    }
+
+    .hero-icon {
+      width: 96px;
+      height: 96px;
+      border-radius: 20px;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      max-width: 720px;
+      margin-bottom: 16px;
+    }
+
+    .hero .tagline {
+      font-size: clamp(1.05rem, 2.5vw, 1.25rem);
+      color: #aaa;
+      max-width: 520px;
+      margin-bottom: 40px;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      background: #e63935;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 14px 32px;
+      border-radius: 8px;
+      transition: background 0.2s;
+      margin-bottom: 56px;
+    }
+
+    .btn-cta:hover {
+      background: #cc2e2a;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #222;
+    }
+
+    .video-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+    }
+
+    /* ── SECTION SHARED ── */
+    section {
+      padding: 88px 24px;
+    }
+
+    .section-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #e63935;
+      margin-bottom: 12px;
+    }
+
+    .section-heading {
+      font-size: clamp(1.6rem, 3.5vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 48px;
+    }
+
+    /* ── FEATURES ── */
+    .features {
+      background: #070707;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: #111;
+      border: 1px solid #1f1f1f;
+      border-radius: 12px;
+      padding: 28px 24px;
+    }
+
+    .feature-icon {
+      color: #e63935;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 0.9rem;
+      color: #999;
+      line-height: 1.55;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .step {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .step-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #111;
+      border: 1px solid #1f1f1f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #e63935;
+    }
+
+    .step-num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 4px;
+    }
+
+    .step h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    /* ── PRIVACY ── */
+    .privacy {
+      background: #070707;
+      text-align: center;
+    }
+
+    .privacy .section-inner {
+      max-width: 640px;
+    }
+
+    .privacy .section-heading {
+      margin-bottom: 16px;
+    }
+
+    .privacy p {
+      font-size: 1rem;
+      color: #999;
+      line-height: 1.7;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid #1a1a1a;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 24px;
+      margin-bottom: 20px;
+    }
+
+    .footer-links a {
+      font-size: 0.875rem;
+      color: #aaa;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: #fff;
+    }
+
+    .footer-links .btn-footer {
+      background: #e63935;
+      color: #fff;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .footer-links .btn-footer:hover {
+      background: #cc2e2a;
+      color: #fff;
+    }
+
+    .copyright {
+      font-size: 0.8rem;
+      color: #444;
+    }
+  </style>
 </head>
 <body>
-  <h1>TidyWL</h1>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <img src="assets/icon128.png" alt="TidyWL icon" class="hero-icon">
+    <h1>YouTube Watch Later Tidy</h1>
+    <p class="tagline">The Watch Later manager YouTube forgot to build.</p>
+    <a class="btn-cta" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">
+      Add to Chrome — It's Free
+    </a>
+    <div class="video-wrapper">
+      <iframe
+        src="https://www.youtube.com/embed/JLG_2wGa2eo"
+        title="YouTube Watch Later Tidy demo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- ── FEATURES ── -->
+  <section class="features">
+    <div class="section-inner">
+      <p class="section-label">Features</p>
+      <h2 class="section-heading">Everything you wish YouTube had</h2>
+      <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/>
+              <rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>
+            </svg>
+          </div>
+          <h3>Channel Breakdown</h3>
+          <p>See your Watch Later organized by channel at a glance.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/>
+              <line x1="14" x2="14" y1="11" y2="17"/>
+            </svg>
+          </div>
+          <h3>Bulk Delete</h3>
+          <p>Select and remove hundreds of videos in seconds.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+          </div>
+          <h3>Filter &amp; Sort</h3>
+          <p>Search, filter by channel, sort by date or duration.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+          <h3>Multi-Account</h3>
+          <p>Seamlessly switch between YouTube accounts.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ── -->
+  <section>
+    <div class="section-inner">
+      <p class="section-label">How it works</p>
+      <h2 class="section-heading">Up and running in 30 seconds</h2>
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
+            </svg>
+          </div>
+          <div>
+            <p class="step-num">Step 1</p>
+            <h3>Install the extension</h3>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="10 8 16 12 10 16 10 8"/>
+            </svg>
+          </div>
+          <div>
+            <p class="step-num">Step 2</p>
+            <h3>Open your Watch Later playlist</h3>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="step-num">Step 3</p>
+            <h3>Click the TidyWL button</h3>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRIVACY ── -->
+  <section class="privacy">
+    <div class="section-inner">
+      <p class="section-label">Privacy</p>
+      <h2 class="section-heading">Your data stays yours</h2>
+      <p>No servers. No tracking. No accounts. TidyWL works entirely in your browser — your YouTube data never leaves your machine.</p>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-links">
+      <a class="btn-footer" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
+      <a href="https://ko-fi.com/dominiclam" target="_blank" rel="noopener">Support this project</a>
+      <a href="https://github.com/dominic-lam/tidywl-site/issues" target="_blank" rel="noopener">Report a bug</a>
+    </div>
+    <p class="copyright">© 2026 TidyWL</p>
+  </footer>
+
 </body>
 </html>
