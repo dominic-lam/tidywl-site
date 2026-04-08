@@ -1,0 +1,21 @@
+{
+  "version": "1",
+  "initialItemsPath": [
+    "contents",
+    "twoColumnBrowseResultsRenderer",
+    "tabs", 0,
+    "tabRenderer",
+    "content",
+    "sectionListRenderer",
+    "contents", 0,
+    "itemSectionRenderer",
+    "contents", 0,
+    "playlistVideoListRenderer",
+    "contents"
+  ],
+  "continuationItemsPath": [
+    "onResponseReceivedActions", 0,
+    "appendContinuationItemsAction",
+    "continuationItems"
+  ]
+}
