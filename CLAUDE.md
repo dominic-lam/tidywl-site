@@ -18,8 +18,7 @@
   do NOT confuse the two
 
 ## File Structure
-- `index.html` — production landing page (markup + inline CSS + tiny FAQ accordion JS)
-- `index-warm-dark.html`, `index-warm-light.html` — alternate design variants kept as reference; not linked from anywhere
+- `index.html` — production landing page (themed via CSS vars + `prefers-color-scheme` + manual toggle; inline CSS + small FAQ/theme JS)
 - `DESIGN.md` — notes from the UI rebuild (some `../../` path refs are stale from the original design kit)
 - `sitemap.xml`, `robots.txt` — SEO files at root
 - `CNAME` — GitHub Pages custom domain config (`tidywl.com`)

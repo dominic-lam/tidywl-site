@@ -4,7 +4,7 @@ The rebuilt landing page for [tidywl.com](https://tidywl.com), implementing the 
 
 ## Files
 
-- `index.html` — single-file landing page, inline CSS + a tiny bit of JS for the FAQ accordion. Plain HTML, no build step (matches the original repo's constraints — GitHub Pages friendly).
+- `index.html` — single-file landing page, inline CSS + a tiny bit of JS for the FAQ accordion and theme toggle. Plain HTML, no build step (matches the original repo's constraints — GitHub Pages friendly). Supports light/dark via `prefers-color-scheme` with a manual override.
 - `robots.txt`, `sitemap.xml` — SEO files, allow-all crawlers, homepage only.
 - `assets/icon128.png` — brand mark.
 - `components/*.jsx` — extracted React components for future reuse (see below).

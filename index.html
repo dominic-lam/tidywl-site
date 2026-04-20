@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TidyWL — Clean Up Your YouTube Watch Later &amp; Bypass the 5,000-Video Limit</title>
-  <meta name="description" content="TidyWL is a free Chrome extension to clean up your YouTube Watch Later playlist. Bulk-delete videos, filter by channel, and bypass the 5,000-video limit — runs locally, no account needed.">
+  <title>TidyWL — Clean Up Your YouTube Watch Later &amp; Beat the 5,000-Video Limit</title>
+  <meta name="description" content="TidyWL is a free Chrome extension to clean up your YouTube Watch Later playlist. Bulk-delete videos, filter by channel, and stay under YouTube's hidden 5,000-video cap — runs locally, no account needed.">
 
   <link rel="canonical" href="https://tidywl.com/">
   <link rel="icon" type="image/png" href="assets/icon128.png">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="TidyWL — Clean Up Your YouTube Watch Later &amp; Bypass the 5,000-Video Limit">
-  <meta property="og:description" content="Free Chrome extension to clean up your YouTube Watch Later playlist. Bulk-delete, filter by channel, bypass the 5,000-video limit — entirely in your browser.">
+  <meta property="og:title" content="TidyWL — Clean Up Your YouTube Watch Later &amp; Beat the 5,000-Video Limit">
+  <meta property="og:description" content="Free Chrome extension to clean up your YouTube Watch Later playlist. Bulk-delete, filter by channel, and stay under YouTube's hidden 5,000-video cap — entirely in your browser.">
   <meta property="og:image" content="/assets/og-image.png">
   <meta property="og:url" content="https://tidywl.com/">
 
@@ -26,6 +26,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- Theme init — runs before paint to avoid FOUC -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        if (stored === 'light' || stored === 'dark') {
+          document.documentElement.setAttribute('data-theme', stored);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <!-- JSON-LD: SoftwareApplication -->
   <script type="application/ld+json">
   {
@@ -35,7 +47,7 @@
     "applicationCategory": "BrowserApplication",
     "operatingSystem": "Chrome",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "description": "Free Chrome extension to clean up YouTube Watch Later. Bulk-delete videos, filter by channel, bypass the 5,000-video limit. Local-only, no account.",
+    "description": "Free Chrome extension to clean up YouTube Watch Later. Bulk-delete videos, filter by channel, and stay under YouTube's hidden 5,000-video cap. Local-only, no account.",
     "url": "https://tidywl.com",
     "downloadUrl": "https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo",
     "aggregateRating": {
@@ -90,17 +102,112 @@
   </script>
 
   <style>
+    /* ── THEME TOKENS ── */
+    :root {
+      --bg: #faf4eb;
+      --bg-alt: #f3ebdd;
+      --bg-card: #ffffff;
+      --text: #2a231d;
+      --text-secondary: #4f443a;
+      --text-muted: #6d5d4f;
+      --text-subtle: #a8968a;
+      --border: #d9cdbd;
+      --border-subtle: #ece1cf;
+      --border-strong: #b8a58e;
+      --accent: #e63935;
+      --accent-hover: #cc2e2a;
+      --star: #d99a1a;
+      --stars-empty: #c4b5a3;
+      --highlight-bg: linear-gradient(180deg, #fff3f2 0%, #ffffff 100%);
+      --highlight-border: #e9a8a6;
+      --ghost-hover-bg: #f3ebdd;
+      --ghost-hover-border: #8a7863;
+      --feature-icon-bg: rgba(230, 57, 53, 0.08);
+      --shadow-accent: 0 24px 80px -32px rgba(230, 57, 53, 0.18);
+    }
+
+    /* Follow OS dark mode unless user forced light */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #1c1a18;
+        --bg-alt: #161412;
+        --bg-card: #24211e;
+        --text: #f5efe7;
+        --text-secondary: #c9bfb4;
+        --text-muted: #a89f97;
+        --text-subtle: #8a807a;
+        --border: #3a342f;
+        --border-subtle: #2a2724;
+        --border-strong: #4a433c;
+        --star: #ffb400;
+        --stars-empty: #6d655f;
+        --highlight-bg: linear-gradient(180deg, #2a1c1a 0%, #24211e 100%);
+        --highlight-border: #4a2a27;
+        --ghost-hover-bg: #24211e;
+        --ghost-hover-border: #6d655f;
+      }
+    }
+
+    /* Manual override wins over OS preference */
+    :root[data-theme="dark"] {
+      --bg: #1c1a18;
+      --bg-alt: #161412;
+      --bg-card: #24211e;
+      --text: #f5efe7;
+      --text-secondary: #c9bfb4;
+      --text-muted: #a89f97;
+      --text-subtle: #8a807a;
+      --border: #3a342f;
+      --border-subtle: #2a2724;
+      --border-strong: #4a433c;
+      --star: #ffb400;
+      --stars-empty: #6d655f;
+      --highlight-bg: linear-gradient(180deg, #2a1c1a 0%, #24211e 100%);
+      --highlight-border: #4a2a27;
+      --ghost-hover-bg: #24211e;
+      --ghost-hover-border: #6d655f;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', sans-serif;
-      background: #000;
-      color: #fff;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      transition: background 0.2s, color 0.2s;
     }
     a { color: inherit; text-decoration: none; }
     button { font-family: inherit; cursor: pointer; }
+
+    /* ── THEME TOGGLE ── */
+    .theme-toggle {
+      position: fixed;
+      top: 16px; right: 16px;
+      z-index: 100;
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .theme-toggle:hover { border-color: var(--border-strong); }
+    .theme-toggle svg { width: 18px; height: 18px; display: none; }
+    /* Default (no data-theme): derive from OS preference */
+    .theme-toggle .icon-sun { display: block; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: none; }
+      :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: block; }
+    }
+    :root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+    :root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+    :root[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+    :root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 
     /* ── HERO ── */
     .hero {
@@ -122,10 +229,10 @@
       margin-bottom: 20px;
       text-wrap: balance;
     }
-    .hero h1 .em { color: #e63935; }
+    .hero h1 .em { color: var(--accent); }
     .hero .tagline {
       font-size: clamp(1.05rem, 2.2vw, 1.2rem);
-      color: #aaa;
+      color: var(--text-secondary);
       max-width: 600px;
       margin-bottom: 36px;
       line-height: 1.55;
@@ -137,33 +244,33 @@
     }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 10px;
-      background: #e63935; color: #fff;
+      background: var(--accent); color: #fff;
       font-size: 1rem; font-weight: 600;
       padding: 14px 28px; border-radius: 8px; border: 0;
       transition: background 0.2s;
     }
-    .btn-primary:hover { background: #cc2e2a; }
+    .btn-primary:hover { background: var(--accent-hover); }
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 8px;
-      background: transparent; color: #fff;
+      background: transparent; color: var(--text);
       font-size: 1rem; font-weight: 600;
       padding: 13px 24px; border-radius: 8px;
-      border: 1px solid #1f1f1f;
+      border: 1px solid var(--border);
       transition: border-color 0.2s, background 0.2s;
     }
-    .btn-ghost:hover { border-color: #555; background: #0d0d0d; }
+    .btn-ghost:hover { border-color: var(--ghost-hover-border); background: var(--ghost-hover-bg); }
     .social-proof {
       display: inline-flex; align-items: center; gap: 8px;
-      font-size: 0.875rem; color: #888;
+      font-size: 0.875rem; color: var(--text-muted);
     }
-    .social-proof .stars { color: #ffb400; letter-spacing: 2px; }
+    .social-proof .stars { color: var(--star); letter-spacing: 2px; }
 
     /* ── SECTION SHARED ── */
     section { padding: 88px 24px; }
     .section-inner { max-width: 1040px; margin: 0 auto; }
     .section-label {
       font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase; color: #e63935; margin-bottom: 12px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
     }
     .section-heading {
       font-size: clamp(1.6rem, 3.5vw, 2.25rem);
@@ -172,33 +279,88 @@
     }
 
     /* ── FEATURES ── */
-    .features { background: #070707; }
+    .features { background: var(--bg-alt); }
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
     }
     .feature-card {
-      background: #111; border: 1px solid #1f1f1f;
+      background: var(--bg-card); border: 1px solid var(--border);
       border-radius: 12px; padding: 26px 22px;
       transition: border-color 0.2s, transform 0.2s;
     }
-    .feature-card:hover { border-color: #2a2a2a; }
+    .feature-card:hover { border-color: var(--border-strong); }
     .feature-card.highlight {
-      border-color: #3a1817; background: linear-gradient(180deg, #150a0a 0%, #111 100%);
+      border-color: var(--highlight-border); background: var(--highlight-bg);
     }
     .feature-icon {
-      color: #e63935; margin-bottom: 14px;
+      color: var(--accent); margin-bottom: 14px;
       display: inline-flex; align-items: center; justify-content: center;
       width: 40px; height: 40px; border-radius: 10px;
-      background: rgba(230, 57, 53, 0.08);
+      background: var(--feature-icon-bg);
     }
     .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
-    .feature-card p { font-size: 0.92rem; color: #999; line-height: 1.55; }
+    .feature-card p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.55; }
     .feature-card .pill {
       display: inline-block; margin-top: 10px;
       font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; color: #e63935;
+      text-transform: uppercase; color: var(--accent);
+    }
+
+    /* ── FEATURES: MINI TIER ── */
+    .features-sublabel {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      margin-top: 56px;
+      margin-bottom: 16px;
+    }
+    .features-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .feature-mini {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 16px 18px;
+      transition: border-color 0.2s;
+    }
+    .feature-mini:hover { border-color: var(--border); }
+    .feature-mini .feature-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      color: var(--accent);
+      background: var(--feature-icon-bg);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .feature-mini .feature-icon svg { width: 16px; height: 16px; }
+    .feature-mini h3 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .feature-mini p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .features-tail {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-subtle);
+      margin-top: 32px;
+      line-height: 1.6;
+      text-wrap: pretty;
     }
 
     /* ── HOW IT WORKS ── */
@@ -209,104 +371,192 @@
     .step { display: flex; align-items: flex-start; gap: 14px; }
     .step-icon {
       flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px;
-      background: #111; border: 1px solid #1f1f1f;
-      display: flex; align-items: center; justify-content: center; color: #e63935;
+      background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; color: var(--accent);
     }
     .step-num {
       font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: #555; margin-bottom: 4px;
+      text-transform: uppercase; color: var(--text-subtle); margin-bottom: 4px;
     }
     .step h3 { font-size: 0.95rem; font-weight: 600; }
 
     /* ── TESTIMONIALS ── */
-    .testimonials { background: #070707; }
+    .testimonials { background: var(--bg-alt); }
     .testimonials-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 16px; align-items: stretch;
     }
     .testimonial {
-      background: #111; border: 1px solid #1f1f1f;
+      background: var(--bg-card); border: 1px solid var(--border);
       border-radius: 12px; padding: 22px 22px;
       display: flex; flex-direction: column; gap: 14px;
       height: 100%;
     }
-    .testimonial .stars { color: #ffb400; letter-spacing: 3px; font-size: 0.95rem; }
-    .testimonial .stars-empty { color: #444; letter-spacing: 3px; font-size: 0.95rem; }
+    .testimonial .stars { color: var(--star); letter-spacing: 3px; font-size: 0.95rem; }
+    .testimonial .stars-empty { color: var(--stars-empty); letter-spacing: 3px; font-size: 0.95rem; }
     .testimonial blockquote {
-      font-size: 0.98rem; color: #e8e8e8; line-height: 1.55;
+      font-size: 0.98rem; color: var(--text); line-height: 1.55;
       flex: 1; font-style: normal;
     }
     .testimonial .author {
-      font-size: 0.85rem; color: #888; display: flex; gap: 6px; flex-wrap: wrap;
+      font-size: 0.85rem; color: var(--text-muted); display: flex; gap: 6px; flex-wrap: wrap;
     }
-    .testimonial .author .name { color: #bbb; font-weight: 500; }
-    .testimonial .author .source { color: #666; }
+    .testimonial .author .name { color: var(--text-secondary); font-weight: 500; }
+    .testimonial .author .source { color: var(--text-subtle); }
+    .testimonial .author a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--border);
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.2s, color 0.2s;
+    }
+    .testimonial .author a:hover {
+      color: var(--text-secondary);
+      text-decoration-color: var(--ghost-hover-border);
+    }
+
+    /* ── WALL OF LOVE ── */
+    .wall-of-love-label {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--text-subtle);
+      margin-top: 56px; margin-bottom: 16px;
+    }
+    .wall-of-love-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+    .wall-blurb {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .wall-blurb blockquote {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.5;
+      font-style: normal;
+    }
+    .wall-blurb .meta {
+      font-size: 0.78rem;
+      color: var(--text-subtle);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .wall-blurb .meta .stars {
+      color: var(--star);
+      letter-spacing: 2px;
+      font-size: 0.75rem;
+    }
+    .wall-blurb .meta .author-name {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+    .wall-blurb .meta a {
+      color: inherit;
+      text-decoration: underline;
+      text-decoration-color: var(--border);
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.2s, color 0.2s;
+    }
+    .wall-blurb .meta a:hover {
+      color: var(--text-secondary);
+      text-decoration-color: var(--ghost-hover-border);
+    }
 
     /* ── FAQ ── */
     .faq { max-width: 720px; margin: 0 auto; }
-    .faq-list { border-top: 1px solid #1a1a1a; }
-    .faq-item { border-bottom: 1px solid #1a1a1a; }
+    .faq-list { border-top: 1px solid var(--border-subtle); }
+    .faq-item { border-bottom: 1px solid var(--border-subtle); }
     .faq-q {
       width: 100%; text-align: left; background: transparent; border: 0;
-      color: #fff; font-size: 1rem; font-weight: 600;
+      color: var(--text); font-size: 1rem; font-weight: 600;
       padding: 20px 0; display: flex; justify-content: space-between;
       align-items: center; gap: 20px;
     }
-    .faq-q:hover { color: #e63935; }
+    .faq-q:hover { color: var(--accent); }
     .faq-q .plus {
-      color: #e63935; font-size: 1.3rem; line-height: 1; font-weight: 300;
+      color: var(--accent); font-size: 1.3rem; line-height: 1; font-weight: 300;
       transition: transform 0.2s;
     }
     .faq-item[aria-expanded="true"] .plus { transform: rotate(45deg); }
     .faq-a {
       max-height: 0; overflow: hidden;
       transition: max-height 0.25s ease, padding 0.25s ease;
-      color: #999; font-size: 0.95rem; line-height: 1.65;
+      color: var(--text-muted); font-size: 0.95rem; line-height: 1.65;
     }
     .faq-item[aria-expanded="true"] .faq-a {
       max-height: 400px; padding: 0 0 20px;
     }
 
     /* ── PRIVACY ── */
-    .privacy { background: #070707; text-align: center; }
+    .privacy { background: var(--bg-alt); text-align: center; }
     .privacy .section-inner { max-width: 640px; }
     .privacy .section-heading { margin-bottom: 16px; }
-    .privacy p { font-size: 1rem; color: #999; line-height: 1.7; }
+    .privacy p { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; }
     .privacy .chips {
       display: inline-flex; gap: 10px; margin-top: 24px; flex-wrap: wrap;
       justify-content: center;
     }
     .privacy .chip {
       font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
-      text-transform: uppercase; color: #aaa;
-      border: 1px solid #1f1f1f; border-radius: 999px;
-      padding: 7px 14px; background: #0a0a0a;
+      text-transform: uppercase; color: var(--text-secondary);
+      border: 1px solid var(--border); border-radius: 999px;
+      padding: 7px 14px; background: var(--bg-card);
     }
 
     /* ── FOOTER ── */
-    footer { border-top: 1px solid #1a1a1a; padding: 40px 24px 36px; text-align: center; }
+    footer { border-top: 1px solid var(--border-subtle); padding: 40px 24px 36px; text-align: center; }
     .footer-links {
       display: flex; justify-content: center; flex-wrap: wrap;
       gap: 10px 20px; margin-bottom: 20px; align-items: center;
     }
-    .footer-links a { font-size: 0.9rem; color: #aaa; transition: color 0.2s; }
-    .footer-links a:hover { color: #fff; }
+    .footer-links a { font-size: 0.9rem; color: var(--text-muted); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
     .footer-links .btn-footer {
-      background: #e63935; color: #fff; font-weight: 600;
+      background: var(--accent); color: #fff; font-weight: 600;
       padding: 8px 18px; border-radius: 6px; transition: background 0.2s;
     }
-    .footer-links .btn-footer:hover { background: #cc2e2a; color: #fff; }
-    .copyright { font-size: 0.8rem; color: #444; }
+    .footer-links .btn-footer:hover { background: var(--accent-hover); color: #fff; }
+    .copyright { font-size: 0.8rem; color: var(--text-subtle); }
 
     /* ── VIDEO ── */
     .video-wrapper {
       width: 100%; max-width: 880px; aspect-ratio: 16 / 9;
-      border-radius: 14px; overflow: hidden; border: 1px solid #1f1f1f;
+      border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
       margin: 0 auto;
-      box-shadow: 0 24px 80px -32px rgba(230, 57, 53, 0.18);
+      box-shadow: var(--shadow-accent);
     }
     .video-wrapper iframe { width: 100%; height: 100%; display: block; border: 0; }
     .demo-section { padding-top: 16px; padding-bottom: 24px; }
+
+    /* ── FOUNDER STORY ── */
+    .founder-story { background: var(--bg); }
+    .founder-story .section-inner { max-width: 720px; }
+    .founder-story .section-heading {
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
+      margin-bottom: 28px;
+    }
+    .founder-story p.body {
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+      text-wrap: pretty;
+    }
+    .founder-story p.body:last-of-type { margin-bottom: 0; }
+    .founder-story .signature {
+      margin-top: 28px;
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--text-subtle);
+    }
 
     /* ── Screen-reader only ── */
     .sr-only {
@@ -317,6 +567,20 @@
   </style>
 </head>
 <body>
+
+  <!-- ── THEME TOGGLE ── -->
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2"/><path d="M12 20v2"/>
+      <path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/>
+      <path d="M2 12h2"/><path d="M20 12h2"/>
+      <path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+    </svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+  </button>
 
   <!-- ── HERO ── -->
   <section class="hero">
@@ -359,11 +623,29 @@
     </div>
   </section>
 
+  <!-- ── FOUNDER STORY ── -->
+  <section class="founder-story">
+    <div class="section-inner">
+      <p class="section-label">Why I built this</p>
+      <h2 class="section-heading">I hit the 5,000 limit. Then I lost too many evenings to YouTube.</h2>
+
+      <p class="body">For years I dumped everything into Watch Later like it was a bottomless pit. Turns out it isn't. YouTube has a hidden 5,000-video limit, and once you hit it, new videos silently fail to save — no error, no warning. The only way I noticed was when videos I thought I'd saved weren't there anymore.</p>
+
+      <p class="body">The "fix" was even worse: no bulk delete, no filtering, no search. Just me, scrolling through an endless list, removing videos one by one. Every 1-2 months I'd lose an evening to it.</p>
+
+      <p class="body">I finally snapped and built TidyWL — a free Chrome extension that gives you an actual dashboard for your Watch Later. See a breakdown by channel, filter and sort by date or duration, search by title, and bulk-delete hundreds of videos in seconds.</p>
+
+      <p class="signature">— Dominic, indie developer</p>
+    </div>
+  </section>
+
   <!-- ── FEATURES ── -->
   <section class="features">
     <div class="section-inner">
       <p class="section-label">Features</p>
       <h2 class="section-heading">Everything you wish YouTube had</h2>
+
+      <!-- Tier 1: big cards -->
       <div class="features-grid">
 
         <div class="feature-card">
@@ -374,7 +656,7 @@
             </svg>
           </div>
           <h3>Channel Breakdown</h3>
-          <p>See your Watch Later organized by channel at a glance.</p>
+          <p>See your Watch Later organized by channel. Find all the videos from that one YouTuber you binged three months ago in one click.</p>
         </div>
 
         <div class="feature-card">
@@ -385,23 +667,64 @@
               <line x1="14" x2="14" y1="11" y2="17"/>
             </svg>
           </div>
-          <h3>Bulk Delete</h3>
-          <p>Select and remove hundreds of videos in seconds.</p>
+          <h3>Delete Hundreds at Once</h3>
+          <p>YouTube forces you to delete videos one by one. TidyWL lets you select hundreds with checkboxes and bulk-delete in seconds.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+              <path d="M2 9V5a2 2 0 0 1 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2"/>
+              <path d="M2 13h10"/>
+              <path d="m9 16 3-3-3-3"/>
             </svg>
           </div>
-          <h3>Filter &amp; Sort</h3>
-          <p>Search, filter by channel, sort by date or duration.</p>
+          <h3>Bulk Move to Playlist</h3>
+          <p>Move selected videos to any playlist — or create a new one right from the dashboard. YouTube has no bulk-move at all.</p>
         </div>
 
-        <div class="feature-card">
+        <div class="feature-card highlight">
           <div class="feature-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+            </svg>
+          </div>
+          <h3>Beat the 5,000 Limit</h3>
+          <p>YouTube silently stops saving videos past 5,000. TidyWL helps you clean out old videos so you can keep adding new ones.</p>
+          <span class="pill">Unique to TidyWL</span>
+        </div>
+
+      </div>
+
+      <!-- Tier 2: mini cards -->
+      <p class="features-sublabel">And everything else you'd expect</p>
+      <div class="features-mini-grid">
+
+        <div class="feature-mini">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="10 8 16 12 10 16 10 8"/>
+            </svg>
+          </div>
+          <h3>Watch Progress</h3>
+          <p>Filter watched or unwatched, with progress bars on each video.</p>
+        </div>
+
+        <div class="feature-mini">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" x2="16.65" y1="21" y2="16.65"/>
+            </svg>
+          </div>
+          <h3>Search, Filter, Sort</h3>
+          <p>Find videos by title, channel, date, or duration.</p>
+        </div>
+
+        <div class="feature-mini">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
               <circle cx="9" cy="7" r="4"/>
               <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
@@ -409,24 +732,49 @@
             </svg>
           </div>
           <h3>Multi-Account</h3>
-          <p>Seamlessly switch between YouTube accounts.</p>
+          <p>Isolated storage per YouTube account. No cross-contamination.</p>
         </div>
 
-        <div class="feature-card highlight">
+        <div class="feature-mini">
           <div class="feature-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v4"/><path d="M12 18v4"/>
-              <path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/>
-              <path d="M2 12h4"/><path d="M18 12h4"/>
-              <path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"/>
+              <line x1="12" x2="12" y1="10" y2="16"/>
+              <line x1="9" x2="15" y1="13" y2="13"/>
             </svg>
           </div>
-          <h3>Past 5,000 Videos</h3>
-          <p>YouTube caps Watch Later at 5,000. TidyWL doesn't.</p>
-          <span class="pill">Unique to TidyWL</span>
+          <h3>Create Playlists Inline</h3>
+          <p>Make a new playlist without leaving the dashboard.</p>
+        </div>
+
+        <div class="feature-mini">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" x2="12" y1="15" y2="3"/>
+            </svg>
+          </div>
+          <h3>Export Your Data</h3>
+          <p>Export to JSON or CSV anytime.</p>
+        </div>
+
+        <div class="feature-mini">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+              <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+              <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+              <line x1="2" x2="22" y1="2" y2="22"/>
+            </svg>
+          </div>
+          <h3>See Hidden Videos</h3>
+          <p>Surface deleted, private, region-locked, and claimed videos YouTube hides.</p>
         </div>
 
       </div>
+
+      <p class="features-tail">Plus keyboard shortcuts, shift-click selection, filter chips, and more.</p>
     </div>
   </section>
 
@@ -484,6 +832,8 @@
     <div class="section-inner">
       <p class="section-label">Reviews</p>
       <h2 class="section-heading">What users are saying</h2>
+
+      <!-- Tier 1: Featured -->
       <div class="testimonials-grid">
 
         <article class="testimonial" itemscope itemtype="https://schema.org/Review">
@@ -495,7 +845,7 @@
           <blockquote itemprop="reviewBody">"The dev spent DAYS solving why I couldn't get this to work and built a new version that fixed the issue. Beyond 5-star service. The plugin itself works PERFECTLY."</blockquote>
           <div class="author">
             <span itemprop="author" itemscope itemtype="https://schema.org/Person"><span class="name" itemprop="name">— Sia</span></span>
-            <span class="source">Chrome Web Store review</span>
+            <span class="source"><a href="https://chromewebstore.google.com/reviews/ea9752f9-5dbe-4723-8033-d81ac9029b6d" target="_blank" rel="noopener">Chrome Web Store review</a></span>
           </div>
         </article>
 
@@ -508,16 +858,67 @@
           <blockquote itemprop="reviewBody">"The only one that actually worked and was useful."</blockquote>
           <div class="author">
             <span itemprop="author" itemscope itemtype="https://schema.org/Person"><span class="name" itemprop="name">— Santiago</span></span>
-            <span class="source">Chrome Web Store review</span>
+            <span class="source"><a href="https://chromewebstore.google.com/reviews/2f526726-ed80-449e-92ed-969dbec14079" target="_blank" rel="noopener">Chrome Web Store review</a></span>
           </div>
         </article>
 
         <article class="testimonial" itemscope itemtype="https://schema.org/Review">
-          <div class="stars-empty" aria-hidden="true">“”</div>
           <blockquote itemprop="reviewBody">"Finally — I NEEDED something to categorize my Watch Later videos. So many damn tabs open for later, it was keeping me from using my browser."</blockquote>
           <div class="author">
             <span itemprop="author" itemscope itemtype="https://schema.org/Person"><span class="name" itemprop="name">— @DETahaX</span></span>
-            <span class="source">YouTube viewer</span>
+            <span class="source"><a href="https://www.youtube.com/watch?v=JLG_2wGa2eo" target="_blank" rel="noopener">YouTube viewer</a></span>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Tier 2: Wall of love -->
+      <p class="wall-of-love-label">More from the community</p>
+      <div class="wall-of-love-grid">
+
+        <article class="wall-blurb" itemscope itemtype="https://schema.org/Review">
+          <blockquote itemprop="reviewBody">"We were all waiting for an extension like this. Keep up, great job!"</blockquote>
+          <div class="meta">
+            <span class="stars" itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating" aria-label="5 out of 5 stars">
+              <meta itemprop="ratingValue" content="5">
+              <meta itemprop="bestRating" content="5">
+              ★★★★★
+            </span>
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person"><span class="author-name" itemprop="name">Donato C.</span></span>
+            <span aria-hidden="true">·</span>
+            <a href="https://chromewebstore.google.com/reviews/b111feb6-b00d-40de-8739-72bc8eb968a3" target="_blank" rel="noopener">Chrome Web Store</a>
+          </div>
+        </article>
+
+        <article class="wall-blurb" itemscope itemtype="https://schema.org/Review">
+          <blockquote itemprop="reviewBody">"Thanks bro!"</blockquote>
+          <div class="meta">
+            <span class="stars" itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating" aria-label="5 out of 5 stars">
+              <meta itemprop="ratingValue" content="5">
+              <meta itemprop="bestRating" content="5">
+              ★★★★★
+            </span>
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person"><span class="author-name" itemprop="name">Olexandr S.</span></span>
+            <span aria-hidden="true">·</span>
+            <a href="https://chromewebstore.google.com/reviews/523d5f75-da18-4e1c-af61-7899b264e93f" target="_blank" rel="noopener">Chrome Web Store</a>
+          </div>
+        </article>
+
+        <article class="wall-blurb" itemscope itemtype="https://schema.org/Review">
+          <blockquote itemprop="reviewBody">"I was literally searching for something like this. I have soooo many Watch later videos."</blockquote>
+          <div class="meta">
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person"><span class="author-name" itemprop="name">@JabJab-y8r</span></span>
+            <span aria-hidden="true">·</span>
+            <a href="https://www.youtube.com/watch?v=JLG_2wGa2eo" target="_blank" rel="noopener">YouTube</a>
+          </div>
+        </article>
+
+        <article class="wall-blurb" itemscope itemtype="https://schema.org/Review">
+          <blockquote itemprop="reviewBody">"I just added it."</blockquote>
+          <div class="meta">
+            <span itemprop="author" itemscope itemtype="https://schema.org/Person"><span class="author-name" itemprop="name">@jeong-ilkajokaya</span></span>
+            <span aria-hidden="true">·</span>
+            <a href="https://www.youtube.com/watch?v=JLG_2wGa2eo" target="_blank" rel="noopener">YouTube</a>
           </div>
         </article>
 
@@ -612,6 +1013,20 @@
         const open = item.getAttribute('aria-expanded') === 'true';
         item.setAttribute('aria-expanded', open ? 'false' : 'true');
       });
+    });
+
+    // Theme toggle
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    function currentTheme() {
+      const attr = root.getAttribute('data-theme');
+      if (attr === 'light' || attr === 'dark') return attr;
+      return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    toggle.addEventListener('click', () => {
+      const next = currentTheme() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
     });
   </script>
 
