@@ -94,8 +94,8 @@
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', sans-serif;
-      background: #000;
-      color: #fff;
+      background: #faf4eb;
+      color: #2a231d;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
@@ -125,7 +125,7 @@
     .hero h1 .em { color: #e63935; }
     .hero .tagline {
       font-size: clamp(1.05rem, 2.2vw, 1.2rem);
-      color: #aaa;
+      color: #4f443a;
       max-width: 600px;
       margin-bottom: 36px;
       line-height: 1.55;
@@ -145,18 +145,18 @@
     .btn-primary:hover { background: #cc2e2a; }
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 8px;
-      background: transparent; color: #fff;
+      background: transparent; color: #2a231d;
       font-size: 1rem; font-weight: 600;
       padding: 13px 24px; border-radius: 8px;
-      border: 1px solid #1f1f1f;
+      border: 1px solid #d9cdbd;
       transition: border-color 0.2s, background 0.2s;
     }
-    .btn-ghost:hover { border-color: #555; background: #0d0d0d; }
+    .btn-ghost:hover { border-color: #8a7863; background: #f3ebdd; }
     .social-proof {
       display: inline-flex; align-items: center; gap: 8px;
-      font-size: 0.875rem; color: #888;
+      font-size: 0.875rem; color: #6d5d4f;
     }
-    .social-proof .stars { color: #ffb400; letter-spacing: 2px; }
+    .social-proof .stars { color: #d99a1a; letter-spacing: 2px; }
 
     /* ── SECTION SHARED ── */
     section { padding: 88px 24px; }
@@ -172,20 +172,20 @@
     }
 
     /* ── FEATURES ── */
-    .features { background: #070707; }
+    .features { background: #f3ebdd; }
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
     }
     .feature-card {
-      background: #111; border: 1px solid #1f1f1f;
+      background: #ffffff; border: 1px solid #d9cdbd;
       border-radius: 12px; padding: 26px 22px;
       transition: border-color 0.2s, transform 0.2s;
     }
-    .feature-card:hover { border-color: #2a2a2a; }
+    .feature-card:hover { border-color: #b8a58e; }
     .feature-card.highlight {
-      border-color: #3a1817; background: linear-gradient(180deg, #150a0a 0%, #111 100%);
+      border-color: #e9a8a6; background: linear-gradient(180deg, #fff3f2 0%, #ffffff 100%);
     }
     .feature-icon {
       color: #e63935; margin-bottom: 14px;
@@ -194,7 +194,7 @@
       background: rgba(230, 57, 53, 0.08);
     }
     .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
-    .feature-card p { font-size: 0.92rem; color: #999; line-height: 1.55; }
+    .feature-card p { font-size: 0.92rem; color: #6d5d4f; line-height: 1.55; }
     .feature-card .pill {
       display: inline-block; margin-top: 10px;
       font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
@@ -209,46 +209,46 @@
     .step { display: flex; align-items: flex-start; gap: 14px; }
     .step-icon {
       flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px;
-      background: #111; border: 1px solid #1f1f1f;
+      background: #ffffff; border: 1px solid #d9cdbd;
       display: flex; align-items: center; justify-content: center; color: #e63935;
     }
     .step-num {
       font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: #555; margin-bottom: 4px;
+      text-transform: uppercase; color: #a8968a; margin-bottom: 4px;
     }
     .step h3 { font-size: 0.95rem; font-weight: 600; }
 
     /* ── TESTIMONIALS ── */
-    .testimonials { background: #070707; }
+    .testimonials { background: #f3ebdd; }
     .testimonials-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 16px; align-items: stretch;
     }
     .testimonial {
-      background: #111; border: 1px solid #1f1f1f;
+      background: #ffffff; border: 1px solid #d9cdbd;
       border-radius: 12px; padding: 22px 22px;
       display: flex; flex-direction: column; gap: 14px;
       height: 100%;
     }
-    .testimonial .stars { color: #ffb400; letter-spacing: 3px; font-size: 0.95rem; }
-    .testimonial .stars-empty { color: #444; letter-spacing: 3px; font-size: 0.95rem; }
+    .testimonial .stars { color: #d99a1a; letter-spacing: 3px; font-size: 0.95rem; }
+    .testimonial .stars-empty { color: #c4b5a3; letter-spacing: 3px; font-size: 0.95rem; }
     .testimonial blockquote {
-      font-size: 0.98rem; color: #e8e8e8; line-height: 1.55;
+      font-size: 0.98rem; color: #2a231d; line-height: 1.55;
       flex: 1; font-style: normal;
     }
     .testimonial .author {
-      font-size: 0.85rem; color: #888; display: flex; gap: 6px; flex-wrap: wrap;
+      font-size: 0.85rem; color: #6d5d4f; display: flex; gap: 6px; flex-wrap: wrap;
     }
-    .testimonial .author .name { color: #bbb; font-weight: 500; }
-    .testimonial .author .source { color: #666; }
+    .testimonial .author .name { color: #4f443a; font-weight: 500; }
+    .testimonial .author .source { color: #a8968a; }
 
     /* ── FAQ ── */
     .faq { max-width: 720px; margin: 0 auto; }
-    .faq-list { border-top: 1px solid #1a1a1a; }
-    .faq-item { border-bottom: 1px solid #1a1a1a; }
+    .faq-list { border-top: 1px solid #ece1cf; }
+    .faq-item { border-bottom: 1px solid #ece1cf; }
     .faq-q {
       width: 100%; text-align: left; background: transparent; border: 0;
-      color: #fff; font-size: 1rem; font-weight: 600;
+      color: #2a231d; font-size: 1rem; font-weight: 600;
       padding: 20px 0; display: flex; justify-content: space-between;
       align-items: center; gap: 20px;
     }
@@ -261,52 +261,74 @@
     .faq-a {
       max-height: 0; overflow: hidden;
       transition: max-height 0.25s ease, padding 0.25s ease;
-      color: #999; font-size: 0.95rem; line-height: 1.65;
+      color: #6d5d4f; font-size: 0.95rem; line-height: 1.65;
     }
     .faq-item[aria-expanded="true"] .faq-a {
       max-height: 400px; padding: 0 0 20px;
     }
 
     /* ── PRIVACY ── */
-    .privacy { background: #070707; text-align: center; }
+    .privacy { background: #f3ebdd; text-align: center; }
     .privacy .section-inner { max-width: 640px; }
     .privacy .section-heading { margin-bottom: 16px; }
-    .privacy p { font-size: 1rem; color: #999; line-height: 1.7; }
+    .privacy p { font-size: 1rem; color: #4f443a; line-height: 1.7; }
     .privacy .chips {
       display: inline-flex; gap: 10px; margin-top: 24px; flex-wrap: wrap;
       justify-content: center;
     }
     .privacy .chip {
       font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
-      text-transform: uppercase; color: #aaa;
-      border: 1px solid #1f1f1f; border-radius: 999px;
-      padding: 7px 14px; background: #0a0a0a;
+      text-transform: uppercase; color: #4f443a;
+      border: 1px solid #d9cdbd; border-radius: 999px;
+      padding: 7px 14px; background: #ffffff;
     }
 
     /* ── FOOTER ── */
-    footer { border-top: 1px solid #1a1a1a; padding: 40px 24px 36px; text-align: center; }
+    footer { border-top: 1px solid #ece1cf; padding: 40px 24px 36px; text-align: center; }
     .footer-links {
       display: flex; justify-content: center; flex-wrap: wrap;
       gap: 10px 20px; margin-bottom: 20px; align-items: center;
     }
-    .footer-links a { font-size: 0.9rem; color: #aaa; transition: color 0.2s; }
-    .footer-links a:hover { color: #fff; }
+    .footer-links a { font-size: 0.9rem; color: #6d5d4f; transition: color 0.2s; }
+    .footer-links a:hover { color: #2a231d; }
     .footer-links .btn-footer {
       background: #e63935; color: #fff; font-weight: 600;
       padding: 8px 18px; border-radius: 6px; transition: background 0.2s;
     }
     .footer-links .btn-footer:hover { background: #cc2e2a; color: #fff; }
-    .copyright { font-size: 0.8rem; color: #444; }
+    .copyright { font-size: 0.8rem; color: #a8968a; }
 
     /* ── VIDEO ── */
     .video-wrapper {
       width: 100%; max-width: 880px; aspect-ratio: 16 / 9;
-      border-radius: 14px; overflow: hidden; border: 1px solid #1f1f1f;
+      border-radius: 14px; overflow: hidden; border: 1px solid #d9cdbd;
       margin: 0 auto;
       box-shadow: 0 24px 80px -32px rgba(230, 57, 53, 0.18);
     }
     .video-wrapper iframe { width: 100%; height: 100%; display: block; border: 0; }
     .demo-section { padding-top: 16px; padding-bottom: 24px; }
+
+    /* ── FOUNDER STORY ── */
+    .founder-story { background: #faf4eb; }
+    .founder-story .section-inner { max-width: 720px; }
+    .founder-story .section-heading {
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
+      margin-bottom: 28px;
+    }
+    .founder-story p.body {
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: #4f443a;
+      margin-bottom: 18px;
+      text-wrap: pretty;
+    }
+    .founder-story p.body:last-of-type { margin-bottom: 0; }
+    .founder-story .signature {
+      margin-top: 28px;
+      font-size: 0.9rem;
+      font-style: italic;
+      color: #a8968a;
+    }
 
     /* ── Screen-reader only ── */
     .sr-only {
@@ -356,6 +378,22 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
         loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <!-- ── FOUNDER STORY ── -->
+  <section class="founder-story">
+    <div class="section-inner">
+      <p class="section-label">Why I built this</p>
+      <h2 class="section-heading">I hit the 5,000 limit. Then I lost too many evenings to YouTube.</h2>
+
+      <p class="body">For years I dumped everything into Watch Later like it was a bottomless pit. Turns out it isn't. YouTube has a hidden 5,000-video limit, and once you hit it, new videos silently fail to save — no error, no warning. The only way I noticed was when videos I thought I'd saved weren't there anymore.</p>
+
+      <p class="body">The "fix" was even worse: no bulk delete, no filtering, no search. Just me, scrolling through an endless list, removing videos one by one. Every 1-2 months I'd lose an evening to it.</p>
+
+      <p class="body">I finally snapped and built TidyWL — a free Chrome extension that gives you an actual dashboard for your Watch Later. See a breakdown by channel, filter and sort by date or duration, search by title, and bulk-delete hundreds of videos in seconds.</p>
+
+      <p class="signature">— Dominic, indie developer</p>
     </div>
   </section>
 
@@ -410,20 +448,6 @@
           </div>
           <h3>Multi-Account</h3>
           <p>Seamlessly switch between YouTube accounts.</p>
-        </div>
-
-        <div class="feature-card highlight">
-          <div class="feature-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2v4"/><path d="M12 18v4"/>
-              <path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/>
-              <path d="M2 12h4"/><path d="M18 12h4"/>
-              <path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/>
-            </svg>
-          </div>
-          <h3>Past 5,000 Videos</h3>
-          <p>YouTube caps Watch Later at 5,000. TidyWL doesn't.</p>
-          <span class="pill">Unique to TidyWL</span>
         </div>
 
       </div>

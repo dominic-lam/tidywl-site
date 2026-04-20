@@ -18,10 +18,13 @@
   do NOT confuse the two
 
 ## File Structure
-- `index.html` — the entire landing page (markup + inline CSS)
+- `index.html` — production landing page (markup + inline CSS + tiny FAQ accordion JS)
+- `index-warm-dark.html`, `index-warm-light.html` — alternate design variants kept as reference; not linked from anywhere
+- `DESIGN.md` — notes from the UI rebuild (some `../../` path refs are stale from the original design kit)
+- `sitemap.xml`, `robots.txt` — SEO files at root
 - `CNAME` — GitHub Pages custom domain config (`tidywl.com`)
 - `config/api-config.json` — YouTube response path config consumed by the extension
-- `assets/` — static images (icon128.png, small_promo_tile.png)
+- `assets/` — static images (icon128.png, small_promo_tile.png, og-image.png)
 - `.gitignore` — standard ignores
 
 ## Key Constraints
