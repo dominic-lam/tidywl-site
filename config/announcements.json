@@ -1,0 +1,16 @@
+{
+  "announcement": {
+    "id": "v1.2.0-release",
+    "title": "Testing - What's New in v1.2.0",
+    "bullets": [
+      "Unavailable videos filter — find deleted, private, or region-locked videos cluttering your list",
+      "Drag-and-drop reordering, plus bulk Move to Top / Move to Bottom",
+      "Per-video action menu (open in tab, move, delete)",
+      "Open selected videos in new tabs",
+      "Brand-channel sync fix",
+      "Hidden-count tooltip explaining why YouTube's total can exceed what TidyWL fetches"
+    ],
+    "type": "info",
+    "expires_at": "2026-06-30"
+  }
+}
