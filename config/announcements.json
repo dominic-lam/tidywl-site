@@ -1,16 +1,32 @@
 {
-  "announcement": {
-    "id": "v1.2.0-release",
-    "title": "Testing - What's New in v1.2.0",
-    "bullets": [
-      "Unavailable videos filter — find deleted, private, or region-locked videos cluttering your list",
-      "Drag-and-drop reordering, plus bulk Move to Top / Move to Bottom",
-      "Per-video action menu (open in tab, move, delete)",
-      "Open selected videos in new tabs",
-      "Brand-channel sync fix",
-      "Hidden-count tooltip explaining why YouTube's total can exceed what TidyWL fetches"
-    ],
-    "type": "info",
-    "expires_at": "2026-06-30"
-  }
+  "announcements": [
+    {
+      "id": "v1.2.0-release",
+      "title": "Testing - What's New in v1.2.0",
+      "bullets": [
+        "Unavailable videos filter — find deleted, private, or region-locked videos cluttering your list",
+        "Drag-and-drop reordering, plus bulk Move to Top / Move to Bottom",
+        "Per-video action menu (open in tab, move, delete)",
+        "Open selected videos in new tabs",
+        "Brand-channel sync fix",
+        "Hidden-count tooltip explaining why YouTube's total can exceed what TidyWL fetches"
+      ],
+      "type": "info",
+      "expires_at": "2026-06-30"
+    },
+    {
+      "id": "2026-04-25-tidywl-com-live",
+      "title": "We have a new home: tidywl.com",
+      "message": "TidyWL's landing page is now live at tidywl.com — bookmark it for quick access and share it with anyone whose Watch Later is out of control.",
+      "type": "info",
+      "expires_at": "2026-05-31"
+    },
+    {
+      "id": "2026-04-22-api-monitor",
+      "title": "Heads-up: YouTube API changes can break sync",
+      "message": "TidyWL relies on YouTube's internal API, which changes without notice. If sync stops working, please check for an extension update or file an issue at github.com/dominic-lam/tidywl.",
+      "type": "warning",
+      "expires_at": "2026-05-15"
+    }
+  ]
 }
