@@ -23,6 +23,17 @@
 - `sitemap.xml`, `robots.txt` — SEO files at root
 - `CNAME` — GitHub Pages custom domain config (`tidywl.com`)
 - `config/api-config.json` — YouTube response path config consumed by the extension
+- `config/announcements.json` — in-product "What's new" banners consumed by the extension
+  - Fetched from `https://tidywl.com/config/announcements.json` by
+    `src/content-scripts/content.js` (`fetchAnnouncements`) in the extension repo
+  - Rendered as dismissible cards in the TidyWL dashboard (see
+    `src/dashboard/dashboard-data.js::checkAnnouncements` and
+    `src/dashboard/dashboard-ui.js::renderAnnouncements`)
+  - Expected shape: `{ "announcements": [ { id, title, bullets[], type, expires_at }, ... ] }`
+    — **plural array**, not a singular `announcement` object
+  - `id` is used for dismissal tracking (stored in `chrome.storage.local`
+    under `wl_announcement_dismissed_ids`); `expires_at` auto-hides the entry;
+    `type` maps to a banner variant (e.g. `info`)
 - `assets/` — static images (icon128.png, small_promo_tile.png, og-image.png)
 - `.gitignore` — standard ignores
 

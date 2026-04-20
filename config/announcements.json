@@ -27,6 +27,13 @@
       "message": "TidyWL relies on YouTube's internal API, which changes without notice. If sync stops working, please check for an extension update or file an issue at github.com/dominic-lam/tidywl.",
       "type": "warning",
       "expires_at": "2026-05-15"
+    },
+    {
+      "id": "2026-04-21-action-required",
+      "title": "Action required: back up before bulk-delete",
+      "message": "Before doing a large bulk-delete (100+ videos), export your Watch Later to JSON first — YouTube does not provide a way to undo removals from Watch Later.",
+      "type": "important",
+      "expires_at": "2026-07-01"
     }
   ]
 }
