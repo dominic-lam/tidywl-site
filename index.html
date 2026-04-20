@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TidyWL — Clean Up Your YouTube Watch Later &amp; Beat the 5,000-Video Limit</title>
-  <meta name="description" content="TidyWL is a free Chrome extension to clean up your YouTube Watch Later playlist. Bulk-delete videos, filter by channel, and stay under YouTube's hidden 5,000-video cap — runs locally, no account needed.">
+  <meta name="description" content="Bulk delete, filter, sort, reorder, and group your YouTube Watch Later by topic or channel. Escape the 5,000-video limit. Works on brand channels. Runs locally, no data sent.">
 
   <link rel="canonical" href="https://tidywl.com/">
   <link rel="icon" type="image/png" href="assets/icon128.png">
@@ -12,14 +12,14 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="TidyWL — Clean Up Your YouTube Watch Later &amp; Beat the 5,000-Video Limit">
-  <meta property="og:description" content="Free Chrome extension to clean up your YouTube Watch Later playlist. Bulk-delete, filter by channel, and stay under YouTube's hidden 5,000-video cap — entirely in your browser.">
+  <meta property="og:description" content="Bulk delete, filter, sort, reorder, and group your YouTube Watch Later by topic or channel. Escape the 5,000-video limit. Works on brand channels. Runs locally, no data sent.">
   <meta property="og:image" content="/assets/og-image.png">
   <meta property="og:url" content="https://tidywl.com/">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="TidyWL — Clean Up Your YouTube Watch Later">
-  <meta name="twitter:description" content="Free Chrome extension. Bulk-delete, filter, and organize your YouTube Watch Later — no account, no upload.">
+  <meta name="twitter:description" content="Bulk delete, filter, sort, reorder, and group your YouTube Watch Later by topic or channel. Escape the 5,000-video limit. Works on brand channels. Runs locally, no data sent.">
   <meta name="twitter:image" content="/assets/og-image.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,6 +79,14 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Install the extension, go to your Watch Later page, click \"Open Dashboard\", hit Sync, then select videos (individually, by channel, by filter, or with Cmd/Ctrl+A) and press Delete. YouTube's API requires sequential deletion, so large batches take a few seconds."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the By Topic grouping work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It scans the titles of videos in your cached Watch Later and clusters them by recurring keywords (e.g. \"recipe\", \"react\", \"interview\"). Each video is assigned to its single strongest keyword, and topics with fewer than 3 videos are excluded to avoid noise. It runs entirely in your browser: no API calls, no external service, no data sent anywhere."
         }
       },
       {
@@ -677,13 +685,13 @@
       <p class="section-label">Why I built this</p>
       <h2 class="section-heading">I hit the 5,000 limit. Then I lost too many evenings to YouTube.</h2>
 
-      <p class="body">For years I dumped everything into Watch Later like it was a bottomless pit. Turns out it isn't. YouTube has a hidden 5,000-video limit, and once you hit it, new videos silently fail to save — no error, no warning. The only way I noticed was when videos I thought I'd saved weren't there anymore.</p>
+      <p class="body">For years I dumped everything into Watch Later like it was a bottomless pit. Turns out it isn't. YouTube has a hidden 5,000-video limit, and once you hit it, new videos silently fail to save: no error, no warning. The only way I noticed was when videos I thought I'd saved weren't there anymore.</p>
 
       <p class="body">The "fix" was even worse: no bulk delete, no filtering, no search. Just me, scrolling through an endless list, removing videos one by one. Every 1-2 months I'd lose an evening to it.</p>
 
-      <p class="body">I finally snapped and built TidyWL — a free Chrome extension that gives you an actual dashboard for your Watch Later. See a breakdown by channel, filter and sort by date or duration, search by title, and bulk-delete hundreds of videos in seconds.</p>
+      <p class="body">I finally snapped and built TidyWL, a free Chrome extension that gives you an actual dashboard for your Watch Later. See a breakdown by channel, filter and sort by date or duration, search by title, and bulk-delete hundreds of videos in seconds.</p>
 
-      <p class="signature">— Dominic, indie developer</p>
+      <p class="signature">Dominic, indie developer</p>
     </div>
   </section>
 
@@ -695,6 +703,17 @@
 
       <!-- Tier 1: big cards -->
       <div class="features-grid">
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+              <line x1="7" y1="7" x2="7.01" y2="7"/>
+            </svg>
+          </div>
+          <h3>By Topic tab</h3>
+          <p>Automatically groups your Watch Later by recurring keywords in titles (e.g. "recipe", "react", "interview"). Click a topic row to filter the video list, the same way the By Channel view works. Runs 100% client-side, no API calls, no data sent anywhere.</p>
+        </div>
 
         <div class="feature-card">
           <div class="feature-icon">
@@ -887,20 +906,20 @@
           </div>
           <div>
             <p class="step-num">Step 1</p>
-            <h3>Install the extension</h3>
+            <h3>Install the extension and go to your Watch Later page (youtube.com/playlist?list=WL).</h3>
           </div>
         </div>
 
         <div class="step">
           <div class="step-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <polygon points="10 8 16 12 10 16 10 8"/>
+              <polyline points="20 6 9 17 4 12"/>
+              <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
             </svg>
           </div>
           <div>
             <p class="step-num">Step 2</p>
-            <h3>Open your Watch Later playlist</h3>
+            <h3>Click "Open Dashboard" and hit Sync to load your playlist.</h3>
           </div>
         </div>
 
@@ -912,7 +931,7 @@
           </div>
           <div>
             <p class="step-num">Step 3</p>
-            <h3>Click the TidyWL button</h3>
+            <h3>Browse by channel or topic, filter, sort, select, and bulk-delete, reorder, or export.</h3>
           </div>
         </div>
 
@@ -1045,6 +1064,16 @@
             </button>
             <div class="faq-a" id="faq-2">
               Install the extension, go to your Watch Later page, click "Open Dashboard", hit Sync, then select videos (individually, by channel, by filter, or with Cmd/Ctrl+A) and press Delete. YouTube's API requires sequential deletion, so large batches take a few seconds.
+            </div>
+          </div>
+
+          <div class="faq-item" aria-expanded="false">
+            <button class="faq-q" aria-controls="faq-topic">
+              <span>How does the By Topic grouping work?</span>
+              <span class="plus" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-topic">
+              It scans the titles of videos in your cached Watch Later and clusters them by recurring keywords (e.g. "recipe", "react", "interview"). Each video is assigned to its single strongest keyword, and topics with fewer than 3 videos are excluded to avoid noise. It runs entirely in your browser: no API calls, no external service, no data sent anywhere.
             </div>
           </div>
 
