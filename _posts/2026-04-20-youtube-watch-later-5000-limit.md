@@ -8,7 +8,7 @@ faq:
   - q: "Does deleting videos from Watch Later affect my watch history or recommendations?"
     a: "No. Watch Later is a separate playlist from your watch history. Removing videos from Watch Later does not delete watch history or change your recommendations."
   - q: "Is TidyWL safe to use?"
-    a: "TidyWL runs entirely in your browser and uses your existing YouTube login. No password, no OAuth token, no API key leaves your machine. It's free, open-source-adjacent, and has no server backend."
+    a: "TidyWL runs entirely in your browser using your existing YouTube login. No password, OAuth token, or API key leaves your machine. It is closed-source but has no server backend, no analytics, and no telemetry. The only outbound network call besides YouTube itself is to a public config file on tidywl.com, which contains no identifiers or user data."
   - q: "Why hasn't YouTube raised the limit?"
     a: "YouTube has never publicly explained it. The most plausible reason is technical: Watch Later uses server-side pagination that would need to be re-architected to support more entries. There's no public roadmap indicating a change."
 ---
@@ -23,7 +23,7 @@ YouTube has never publicly explained the 5,000 cap. The same limit applies to ev
 
 The most plausible explanation is technical. YouTube fetches playlists in pages, using continuation tokens that chain sequentially. The larger a playlist gets, the more the pagination logic has to deal with reordering, deduplication, and partial failures on long-tail entries. A 5,000-entry hard cap puts a predictable ceiling on how much work any one playlist load has to do.
 
-Watch Later is also stored differently from user-created playlists. It is a system playlist with its own ID (`WL`), its own access rules, and its own deletion semantics. Users cannot rename it, cannot make it public, and cannot export it. That special-case status probably makes lifting the cap harder than flipping a config value, because any change could ripple into the shared playlist infrastructure that every list on YouTube depends on.
+Watch Later is also stored differently from user-created playlists. It is a system playlist with its own ID (`WL`), its own access rules, and its own deletion semantics. Users cannot rename it, cannot make it public, and cannot export it. That special-case status probably makes lifting the cap harder than flipping a config value, because any change could ripple through the shared playlist infrastructure that every list on YouTube depends on.
 
 You can spot the cap coming if you know where to look. Open Watch Later and the header shows a running count of how many videos are in the list. Once that number stops moving even as you click "Save to Watch Later" elsewhere, you have hit the ceiling.
 
@@ -48,7 +48,7 @@ For developers, this is a closed door. If you want to build something that helps
 
 ## What are your options when Watch Later is full?
 
-You have three realistic choices. None of them are pleasant, but they differ in effort and control.
+You have four realistic choices. None of them are pleasant, but they differ in effort and control.
 
 **Option 1: Delete videos manually through YouTube's UI.**
 
@@ -64,11 +64,19 @@ Search GitHub or Greasy Fork for "YouTube Watch Later delete" and you will find 
 
 The tradeoffs are real. You need to install Tampermonkey or Violentmonkey first. You have to trust the script author. Scripts break when YouTube ships DOM changes, which happens often. There is no UI for filtering by channel, sorting by duration, or isolating one Google account from another. If you are comfortable reading JavaScript and only managing one account, this is a reasonable path.
 
-**Option 3: A dedicated extension.**
+**Option 3: Paid web apps like VidNest.**
 
-We built [TidyWL](https://tidywl.com) because options 1 and 2 were the only things available and neither scaled. It is a free Chrome extension that gives Watch Later a full-screen dashboard, bulk selection, filtering by channel, sorting by date or duration, and multi-account isolation. It runs entirely in your browser against your existing YouTube session, with no server backend. Behind the scenes it talks to the same internal endpoints userscripts use, but wraps them in a UI that is maintained so it does not silently break every time YouTube ships a release. You can [install it from the Chrome Web Store](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo).
+A handful of web apps take a cloud-hosted approach. [VidNest](https://vidnest.cloud) is the most visible example. You sign in with Google, grant OAuth access, and your Watch Later is mirrored to their servers so you can browse, filter, and manage it from any device.
 
-## How to prevent Watch Later from filling up again
+The tradeoff is the architecture itself. You are granting a third party OAuth access to your YouTube account, and your playlist data lives on their servers rather than your own machine. These apps are typically freemium or paid. If cross-device sync is the feature you care about and you are comfortable with the data-custody model, this is the category that offers it.
+
+**Option 4: A dedicated browser extension like TidyWL.**
+
+I built [TidyWL](https://tidywl.com) as a free Chrome extension that gives Watch Later a full-screen dashboard, bulk selection, filtering by channel, sorting by date or duration, and multi-account isolation. It runs entirely in your browser against your existing YouTube session, with no OAuth, no server backend, and no data leaving your machine.
+
+The architectural tradeoff is the mirror image of Option 3: you get local privacy and zero account setup, but no cross-device sync. Under the hood TidyWL talks to the same internal endpoints userscripts target, with two differences: it parses the structured JSON response (more stable than the DOM selectors userscripts rely on), and it ships a remote config layer so small breakages can be patched without forcing an extension update. You can [install it from the Chrome Web Store](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo).
+
+## How do you prevent Watch Later from filling up again?
 
 Cleanup is easier than emergency cleanup. A few habits keep Watch Later usable:
 
@@ -76,6 +84,6 @@ Cleanup is easier than emergency cleanup. A few habits keep Watch Later usable:
 - **Use custom playlists for long-term saves.** Watch Later is a queue, not an archive. Anything you genuinely want to keep, like a reference tutorial or a favorite talk, belongs in a named playlist. Each custom playlist has its own 5,000-entry budget, so this also gives you more total headroom.
 - **Unsubscribe from channels whose videos pile up unwatched.** If you are saving everything a channel posts and watching none of it, the channel is not serving you. Unsubscribing is the fix.
 - **Treat Watch Later as a maybe-pile, not a todo list.** Items you are curious about can go in Watch Later. Items you have actually committed to watching deserve a spot in a named playlist or a calendar block.
-- **Be realistic about watch time.** Most people watch somewhere between five and ten hours of YouTube a week. If you are queuing twenty hours, the backlog only grows.
+- **Be realistic about watch time.** Most people watch far less YouTube than they queue. If the backlog only grows week over week, the problem is not storage, it is scope.
 
 The 5,000 cap is not going anywhere. The fastest way to stop worrying about it is to keep Watch Later small enough that you never need to.
