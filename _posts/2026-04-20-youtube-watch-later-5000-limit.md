@@ -1,6 +1,6 @@
 ---
 title: "YouTube Watch Later Is Capped at 5,000 Videos. Here's Why and What to Do."
-description: "The 5,000 video cap on YouTube Watch Later isn't a bug. It's by design. Here's what causes it, why YouTube hasn't removed it, and three ways to get your playlist under control."
+description: "The 5,000 video cap on YouTube Watch Later isn't a bug. It's by design. Here's what causes it, why YouTube hasn't removed it, and four ways to get your playlist under control."
 date: 2026-04-20
 faq:
   - q: "Can I increase the 5,000 video limit?"

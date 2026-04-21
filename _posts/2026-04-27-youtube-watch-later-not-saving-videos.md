@@ -1,7 +1,7 @@
 ---
 title: "Why Isn't My YouTube Watch Later Saving Videos? The Real Reasons (and Why Nobody Tells You)"
 description: "YouTube Watch Later silently fails to save videos for several reasons, and the most common one is a hidden 5,000-video cap. Here's the full list of causes and what to actually do about each."
-date: 2026-04-20
+date: 2026-04-27
 faq:
   - q: "Does YouTube notify you when Watch Later is full?"
     a: "No. YouTube shows no error, toast, or warning when the 5,000-video cap is reached. The save button still flashes its normal confirmation and the video is silently discarded."

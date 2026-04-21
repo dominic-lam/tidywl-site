@@ -1,7 +1,7 @@
 ---
 title: "How to Organize Your YouTube Watch Later Playlist (Beyond Just Sorting)"
 description: "YouTube's built-in Watch Later organization is limited to a handful of sort options. Here's the full landscape of what you can actually do, from YouTube's native features to third-party tools."
-date: 2026-04-20
+date: 2026-05-11
 faq:
   - q: "Can I create folders inside Watch Later?"
     a: "No. Watch Later is a flat list with no subfolders, tags, or nested groups. The closest native substitute is to create named playlists alongside Watch Later and move videos into them one at a time. Some browser extensions add a group-by-channel or group-by-topic view that behaves like folders inside the list itself, but the underlying YouTube data model has no folder concept."
@@ -64,9 +64,8 @@ I built [TidyWL](https://tidywl.com) specifically to treat Watch Later as a real
 - Group by channel, so every creator's videos collapse into one folder
 - Group by topic, with keyword clustering across titles
 - Filter by watched or unwatched
-- Sort by duration, date added, or date published
+- Sort by date added (newest or oldest), channel, or title
 - Multi-select and bulk-move videos to another playlist in one pass
-- Filter by a custom date range
 
 It runs entirely in your browser against your existing YouTube session. No OAuth, no server backend, no data leaving your machine. You can [install it from the Chrome Web Store](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo).
 

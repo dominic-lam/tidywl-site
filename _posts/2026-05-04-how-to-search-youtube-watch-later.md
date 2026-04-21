@@ -1,7 +1,7 @@
 ---
 title: "How to Search Inside Your YouTube Watch Later Playlist"
 description: "YouTube has no built-in search inside the Watch Later playlist. Here are three ways to find a specific video without scrolling through thousands of entries."
-date: 2026-04-20
+date: 2026-05-04
 faq:
   - q: "Does YouTube plan to add playlist search?"
     a: "YouTube has not announced playlist-scoped search. Requests on the Google Help Community go back years without an official response, and nothing public suggests it is on the roadmap. Any answer here is speculation."
@@ -54,7 +54,7 @@ Each approach covers a different surface.
 - **Title keywords.** All three methods. Ctrl+F matches visible text, Takeout exports include titles only indirectly (via ID lookup), and TidyWL indexes titles on load.
 - **Channel name.** Only Option 3. Ctrl+F technically sees channel names mixed into the DOM, but there is no way to restrict a match to the channel field. Takeout does not include channel names.
 - **Upload date or duration.** Only Option 3. YouTube renders dates and durations on the playlist page, but they are not structured in a way Ctrl+F can filter on, and Takeout does not export either field.
-- **Watched status.** Only Option 3, and imperfectly. YouTube does not expose a per-video watched flag in the Watch Later response. TidyWL infers watched status from the playback progress bar rendered on each video card. Videos you have started but not finished can read as either, depending on how YouTube is surfacing progress that day. This inference is a best effort, not a guarantee.
+- **Watched status.** Only Option 3. YouTube does expose a watched flag inside the Watch Later JSON response, but only on videos it has tagged as fully watched. TidyWL reads that flag directly from the same response YouTube's own UI uses, so anything YouTube has marked WATCHED shows as watched, and everything else, including videos you started but did not finish, reads as unwatched. The classification is deterministic; it is only as granular as YouTube's own tagging.
 
 ## Why this matters past 500 videos
 
