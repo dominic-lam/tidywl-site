@@ -49,3 +49,7 @@
   Pages auto-deploys
 - Adding screenshots → drop in `assets/` folder, reference with relative path
 - SEO changes → `og:` tags and canonical link are in `<head>` of `index.html`
+
+## Working Style
+- When reporting follow-ups, rank them by impact and state a
+  recommendation, not just options.

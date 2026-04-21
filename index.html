@@ -545,6 +545,53 @@
       max-height: 600px; padding: 0 0 20px;
     }
 
+    /* ── SUPPORT ── */
+    #support .section-heading { margin-bottom: 12px; }
+    .support-sub {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.55;
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .support-card { display: flex; flex-direction: column; }
+    .support-card .support-list {
+      margin: 0; padding: 0; list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .support-card .support-list li {
+      position: relative;
+      padding-left: 16px;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .support-card .support-list li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0.6em;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .support-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #fff;
+      font-size: 0.95rem; font-weight: 600;
+      padding: 11px 20px; border-radius: 8px;
+      margin-top: 16px; align-self: flex-start;
+      transition: background 0.2s;
+    }
+    .support-cta:hover { background: var(--accent-hover); color: #fff; }
+
     /* ── PRIVACY ── */
     .privacy { background: var(--bg-alt); text-align: center; }
     .privacy .section-inner { max-width: 640px; }
@@ -1148,6 +1195,54 @@
           </div>
 
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SUPPORT ── -->
+  <section id="support">
+    <div class="section-inner">
+      <p class="section-label">Support</p>
+      <h2 class="section-heading">Need help?</h2>
+      <p class="support-sub">Most issues have a quick fix. Start here before reaching out.</p>
+
+      <div class="support-grid">
+
+        <div class="feature-card support-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 16v-4"/>
+              <path d="M12 8h.01"/>
+            </svg>
+          </div>
+          <h3>Common issues</h3>
+          <ul class="support-list">
+            <li>Sync stuck or showing the wrong count? Check the hidden-video explainer in the FAQ above. YouTube hides deleted, private, region-locked, copyright-blocked, expired livestream, suspended-channel, and age-restricted videos from its own API.</li>
+            <li>Wrong account showing? Refresh the YouTube tab to pick up your current login, then reopen the dashboard.</li>
+            <li>Extension not loading? Make sure you are on youtube.com/playlist?list=WL and signed in.</li>
+          </ul>
+        </div>
+
+        <div class="feature-card support-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="16" x="2" y="4" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+          </div>
+          <h3>Still stuck? Email us</h3>
+          <p>For anything the common fixes above don't cover: bug reports, questions, feedback, Ko-fi issues.</p>
+          <!-- TODO: replace SUPPORT_EMAIL_TBD with the real support email once confirmed -->
+          <a class="support-cta" href="mailto:SUPPORT_EMAIL_TBD">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m22 2-7 20-4-9-9-4Z"/>
+              <path d="M22 2 11 13"/>
+            </svg>
+            Email support
+          </a>
+        </div>
+
       </div>
     </div>
   </section>
