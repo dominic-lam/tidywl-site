@@ -1,0 +1,35 @@
+title: TidyWL
+description: Free Chrome extension to clean up YouTube Watch Later. Bulk-delete videos, filter by channel, and stay under YouTube's hidden 5,000-video cap.
+url: https://tidywl.com
+baseurl: ""
+
+permalink: /blog/:slug/
+
+plugins:
+  - jekyll-feed
+
+feed:
+  path: /blog/feed.xml
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+exclude:
+  - .claude
+  - .idea
+  - CLAUDE.md
+  - DESIGN.md
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+  - "*.af"
+  - "*.af~lock~"
+  - _site
+
+keep_files:
+  - .git

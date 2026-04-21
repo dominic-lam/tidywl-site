@@ -1,0 +1,11 @@
+  <!-- Theme init — runs before paint to avoid FOUC -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        if (stored === 'light' || stored === 'dark') {
+          document.documentElement.setAttribute('data-theme', stored);
+        }
+      } catch (e) {}
+    })();
+  </script>

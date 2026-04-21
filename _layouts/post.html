@@ -1,0 +1,40 @@
+---
+layout: default
+---
+<article class="blog-wrap">
+  <p class="section-label">Blog</p>
+  <h1 class="post-title">{{ page.title }}</h1>
+  <p class="post-meta">
+    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+    <span class="dot" aria-hidden="true">·</span>
+    <span>{{ content | number_of_words | divided_by: 200 | plus: 1 }} min read</span>
+  </p>
+
+  <div class="post-body">
+    {{ content }}
+  </div>
+
+  {% if page.faq %}
+  <section class="post-faq">
+    <h2 class="section-heading">FAQ</h2>
+    <div class="faq">
+      <div class="faq-list">
+        {% for item in page.faq %}
+        <div class="faq-item" aria-expanded="false">
+          <button class="faq-q">
+            <span>{{ item.q }}</span>
+            <span class="plus" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-a">{{ item.a | markdownify }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <div class="post-footer">
+    <a href="/blog/">← Back to blog</a>
+    <a href="/">TidyWL home</a>
+  </div>
+</article>

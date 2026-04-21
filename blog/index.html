@@ -1,0 +1,27 @@
+---
+layout: default
+title: Blog
+description: Notes from the TidyWL team — product updates, reverse-engineering YouTube's internals, and the occasional opinion about playlist management.
+permalink: /blog/
+---
+<section class="blog-wrap">
+  <p class="section-label">Blog</p>
+  <h1 class="blog-title">{{ page.title }}</h1>
+  <p class="blog-subtitle">{{ page.description }}</p>
+
+  <ul class="post-list">
+    {% for post in site.posts %}
+    <li>
+      <a href="{{ post.url }}">
+        <h2 class="post-list-title">{{ post.title }}</h2>
+        <p class="post-list-meta">
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %-d, %Y" }}</time>
+          <span class="dot" aria-hidden="true">·</span>
+          <span>{{ post.content | number_of_words | divided_by: 200 | plus: 1 }} min read</span>
+        </p>
+        <p class="post-list-excerpt">{{ post.description | default: post.excerpt | strip_html | truncate: 180 }}</p>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
