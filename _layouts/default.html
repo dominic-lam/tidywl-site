@@ -48,12 +48,64 @@
   </script>
   {% endif %}
 
+  {% if page.json_ld_blog %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "TidyWL Blog",
+    "description": {{ page.description | jsonify }},
+    "url": "{{ site.url }}{{ page.url }}",
+    "author": {
+      "@type": "Person",
+      "name": "Dominic Lam",
+      "url": "https://github.com/dominic-lam"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "TidyWL",
+      "url": "{{ site.url }}"
+    }
+  }
+  </script>
+  {% endif %}
+
+  {% if page.layout == 'post' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "{{ site.url }}/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "{{ site.url }}/blog/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": {{ page.title | jsonify }},
+        "item": "{{ site.url }}{{ page.url }}"
+      }
+    ]
+  }
+  </script>
+  {% endif %}
+
   {% include styles.html %}
   {% include styles-blog.html %}
 </head>
 <body>
 
   {% include theme-toggle.html %}
+  {% include blog-header.html %}
 
   {{ content }}
 

@@ -1,6 +1,22 @@
   <style>
+    /* ── BLOG: header ── */
+    .blog-header {
+      max-width: 720px; margin: 0 auto; padding: 20px 24px 0;
+    }
+    .blog-header-home {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--text); font-weight: 600; font-size: 0.95rem;
+      letter-spacing: -0.01em; text-decoration: none;
+    }
+    .blog-header-home:hover { color: var(--accent); }
+    .blog-header-icon {
+      width: 28px; height: 28px;
+      border-radius: 6px; display: block;
+    }
+    .blog-header-wordmark { line-height: 1; }
+
     /* ── BLOG: shared ── */
-    .blog-wrap { max-width: 720px; margin: 0 auto; padding: 64px 24px 48px; }
+    .blog-wrap { max-width: 720px; margin: 0 auto; padding: 32px 24px 48px; }
     .blog-wrap .section-label { margin-bottom: 12px; }
     .blog-title {
       font-size: clamp(1.6rem, 3.5vw, 2.25rem);
