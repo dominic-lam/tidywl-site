@@ -7,3 +7,6 @@
 .idea/
 .vscode/
 *.iml
+
+# Affinity Designer lock files
+*.af~lock~
