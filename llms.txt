@@ -1,0 +1,26 @@
+# TidyWL — YouTube Watch Later Tidy
+
+> Free Chrome extension that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist. Built because YouTube caps Watch Later at 5,000 videos and the official API refuses to touch it.
+
+## What it does
+
+TidyWL gives you a full-screen dashboard for YouTube's Watch Later playlist, inspired by macOS Storage Manager. You can bulk delete hundreds of videos in seconds, see your playlist broken down by channel, filter and sort by channel/date/duration, search, switch between YouTube accounts, and export your data.
+
+## Why it exists
+
+YouTube's Watch Later playlist has a hard 5,000 video cap. Once you hit it, YouTube stops adding new videos and gives you no bulk management tools — you have to delete videos one at a time through a three-dot menu. The official YouTube Data API explicitly excludes Watch Later. TidyWL works around this by using your existing logged-in YouTube session, so no account, API key, or OAuth is needed.
+
+## Technical details
+
+TidyWL works by reading the user's active YouTube session (SAPISID cookie and session index from window.ytcfg) and calling YouTube's internal InnerTube API the same way the YouTube web app does. No OAuth, no API key, no stored tokens. The extension only functions while the user is actively logged into YouTube.
+
+## Privacy
+
+TidyWL runs entirely in your browser. No servers, no tracking, no account required. Your YouTube data never leaves your machine.
+
+## Links
+
+- Install: https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo
+- Landing page: https://tidywl.com
+- Support: https://ko-fi.com/dominiclam
+- Contact: support@tidywl.com
