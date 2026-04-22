@@ -1,6 +1,19 @@
 {
   "announcements": [
     {
+      "id": "v1.3.0-release",
+      "title": "What's New in v1.3.0",
+      "bullets": [
+        "Filter by duration — Shorts, Under 5 min, 5–20 min, 20–60 min, Over 1 hour",
+        "Sort by duration (longest or shortest first)",
+        "Sort by published date (newest or oldest first)",
+        "Topic-breakdown auto-refresh after delete — no more stranded empty groups",
+        "Honest sort labels — \"Date Added\" renamed to \"Playlist order\" because YouTube doesn't expose per-video added-date timestamps on web"
+      ],
+      "type": "info",
+      "expires_at": "2026-07-31"
+    },
+    {
       "id": "v1.2.0-release",
       "title": "Testing - What's New in v1.2.0",
       "bullets": [
@@ -12,7 +25,7 @@
         "Hidden-count tooltip explaining why YouTube's total can exceed what TidyWL fetches"
       ],
       "type": "info",
-      "expires_at": "2026-06-30"
+      "expires_at": "2026-04-22"
     },
     {
       "id": "2026-04-25-tidywl-com-live",
