@@ -1,0 +1,78 @@
+{
+  "version": "2",
+  "endpoints": {
+    "browse":         "/youtubei/v1/browse?prettyPrint=false",
+    "editPlaylist":   "/youtubei/v1/browse/edit_playlist?prettyPrint=false",
+    "getPanel":       "/youtubei/v1/get_panel?prettyPrint=false",
+    "createPlaylist": "/youtubei/v1/playlist/create?prettyPrint=false"
+  },
+  "constants": {
+    "watchLaterBrowseId":       "VLWL",
+    "watchLaterInitialParams":  "wgYCCAA%3D",
+    "watchLaterPlaylistId":     "WL",
+    "editPlaylistParams":       "CAFAAQ%3D%3D",
+    "addVideoDefaultParams":    "IAE%3D",
+    "addToPlaylistPanelId":     "PAadd_to_playlist",
+    "addToPlaylistPanelParams": "-gYPCgtWZk5SZDVSazBjTSgE"
+  },
+  "actions": {
+    "removeVideo":     "ACTION_REMOVE_VIDEO",
+    "addVideo":        "ACTION_ADD_VIDEO",
+    "moveVideoAfter":  "ACTION_MOVE_VIDEO_AFTER",
+    "moveVideoBefore": "ACTION_MOVE_VIDEO_BEFORE"
+  },
+  "browseResponse": {
+    "initialItemsPath": [
+      "contents", "twoColumnBrowseResultsRenderer", "tabs", 0,
+      "tabRenderer", "content", "sectionListRenderer", "contents", 0,
+      "itemSectionRenderer", "contents", 0, "playlistVideoListRenderer", "contents"
+    ],
+    "continuationItemsPath": [
+      "onResponseReceivedActions", 0, "appendContinuationItemsAction", "continuationItems"
+    ],
+    "headerTitlePath":      ["header", "playlistHeaderRenderer", "title", "simpleText"],
+    "headerVideoCountPath": ["header", "playlistHeaderRenderer", "numVideosText", "runs", 0, "text"]
+  },
+  "videoFields": {
+    "wrapperKey":              "playlistVideoRenderer",
+    "videoIdPath":             ["videoId"],
+    "indexPath":               ["index", "simpleText"],
+    "titlePaths":              [["title", "runs", 0, "text"], ["title", "simpleText"]],
+    "channelNamePath":         ["shortBylineText", "runs", 0, "text"],
+    "channelIdPath":           ["shortBylineText", "runs", 0, "navigationEndpoint", "browseEndpoint", "browseId"],
+    "videoInfoRunsPath":       ["videoInfo", "runs"],
+    "videoInfoSimpleTextPath": ["videoInfo", "simpleText"],
+    "viewCountMarker":         "view",
+    "durationPath":            ["lengthText", "simpleText"],
+    "setVideoIdMenuPath":      ["menu", "menuRenderer", "items"],
+    "setVideoIdEndpointPath":  ["menuServiceItemRenderer", "serviceEndpoint", "playlistEditEndpoint", "actions", 0, "setVideoId"],
+    "thumbnailOverlaysPath":   ["thumbnailOverlays"],
+    "watchedOverlayKey":       "thumbnailOverlayPlaybackStatusRenderer",
+    "watchedStatusTextPath":   ["texts", 0, "runs", 0, "text"],
+    "watchedStatusValue":      "WATCHED",
+    "resumeOverlayKey":        "thumbnailOverlayResumePlaybackRenderer",
+    "resumePercentPath":       ["percentDurationWatched"],
+    "urlTemplate":             "https://www.youtube.com/watch?v={videoId}"
+  },
+  "continuationToken": {
+    "wrapperKey":          "continuationItemRenderer",
+    "endpointPath":        ["continuationEndpoint"],
+    "primaryCommandsPath": ["commandExecutorCommand", "commands"],
+    "primaryTokenSubPath": ["continuationCommand", "token"],
+    "fallbackTokenPath":   ["continuationCommand", "token"]
+  },
+  "panelResponse": {
+    "itemsPath":            ["content", "sheetViewModel", "content", "listViewModel", "listItems"],
+    "wrapperKey":           "toggleableListItemViewModel",
+    "listItemPath":         ["defaultListItem", "listItemViewModel"],
+    "playlistEndpointPath": ["rendererContext", "commandContext", "onTap", "parallelCommand", "commands", 0, "innertubeCommand", "playlistEditEndpoint"],
+    "playlistIdPath":       ["playlistId"],
+    "playlistParamsPath":   ["params"],
+    "titlePath":            ["title", "content"],
+    "privacyPath":          ["subtitle", "content"],
+    "thumbnailPath":        ["leadingAccessory", "collectionThumbnailViewModel", "primaryThumbnail", "thumbnailViewModel", "image", "sources", 0, "url"]
+  },
+  "createPlaylistResponse": {
+    "playlistIdPaths": [["playlistId"], ["actions", 0, "addToPlaylistAction", "playlistId"]]
+  }
+}
