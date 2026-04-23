@@ -1,6 +1,37 @@
 {
   "announcements": [
     {
+      "id": "2026-04-23-v1.3.1-manual-update-nudge",
+      "title": "TidyWL v1.3.1 is live — force-update if you don't have it yet",
+      "bullets": [
+        "Open a new tab and go to chrome://extensions",
+        "Top-right corner: turn on Developer mode",
+        "Top-left corner: click the \"Update\" button",
+        "Reload your YouTube tab — you should now be on v1.3.1"
+      ],
+      "type": "warning",
+      "created_at": "2026-04-23",
+      "expires_at": "2026-05-15"
+    },
+    {
+      "id": "v1.3.1-release",
+      "title": "What's New in v1.3.1",
+      "bullets": [
+        "Custom duration range — filter by any min/max (in minutes), not just the preset buckets",
+        "Toolbar stays pinned while scrolling so Sort / Filter / Delete are always reachable",
+        "Sort dropdown polished — \"By Playlist Order\" is now its own section with a (i) hover tip explaining where to set it on YouTube",
+        "Info announcements now show as a red counter on the 🔔 bell button instead of stacking above your videos — click the bell to read them",
+        "Announcement dates are shown next to the title",
+        "Success confirmations (like bulk move) no longer wear the yellow warning style",
+        "View counts restored on video cards (YouTube changed their data shape — we adapted)",
+        "Links inside announcements are now clickable",
+        "Under the hood: every YouTube endpoint / action / response path now lives on tidywl.com, so most future YouTube API changes can be fixed without a new extension release"
+      ],
+      "type": "info",
+      "created_at": "2026-04-23",
+      "expires_at": "2026-07-31"
+    },
+    {
       "id": "2026-04-22-discord-community",
       "title": "Join the TidyWL Discord 👥",
       "message": "We now have a Discord community for bug reports, feature requests, and general chat. The invite link never expires — come say hi: https://discord.gg/natc623GhX",
