@@ -1,5 +1,11 @@
 {
-  "version": "2-broken-for-phase6-test",
+  "version": "2",
+  "endpoints": {
+    "browse":         "/youtubei/v1/browse?prettyPrint=false",
+    "editPlaylist":   "/youtubei/v1/browse/edit_playlist?prettyPrint=false",
+    "getPanel":       "/youtubei/v1/get_panel?prettyPrint=false",
+    "createPlaylist": "/youtubei/v1/playlist/create?prettyPrint=false"
+  },
   "constants": {
     "watchLaterBrowseId":       "VLWL",
     "watchLaterInitialParams":  "wgYCCAA%3D",
