@@ -1,6 +1,13 @@
 {
   "announcements": [
     {
+      "id": "2026-04-22-discord-community",
+      "title": "Join the TidyWL Discord 👥",
+      "message": "We now have a Discord community for bug reports, feature requests, and general chat. The invite link never expires — come say hi: https://discord.gg/natc623GhX",
+      "type": "info",
+      "expires_at": "2026-07-31"
+    },
+    {
       "id": "v1.3.0-release",
       "title": "What's New in v1.3.0",
       "bullets": [
