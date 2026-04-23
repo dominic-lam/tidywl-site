@@ -32,7 +32,7 @@
         "Hidden-count tooltip explaining why YouTube's total can exceed what TidyWL fetches"
       ],
       "type": "info",
-      "expires_at": "2026-04-22"
+      "expires_at": "2026-05-31"
     },
     {
       "id": "2026-04-25-tidywl-com-live",
