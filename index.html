@@ -69,10 +69,33 @@
     ],
     "aggregateRating": {
       "@type": "AggregateRating",
-      "ratingValue": "5.0",
-      "reviewCount": "5",
+      "ratingValue": "{{ site.data.cws-rating.ratingValue }}",
+      "reviewCount": "{{ site.data.cws-rating.reviewCount }}",
       "bestRating": "5"
-    }
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Sia" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "The dev spent DAYS solving why I couldn't get this to work and built a new version that fixed the issue. Beyond 5-star service. The plugin itself works PERFECTLY.",
+        "url": "https://chromewebstore.google.com/reviews/ea9752f9-5dbe-4723-8033-d81ac9029b6d"
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Santiago" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "The only one that actually worked and was useful.",
+        "url": "https://chromewebstore.google.com/reviews/2f526726-ed80-449e-92ed-969dbec14079"
+      },
+      {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Donato C." },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "We were all waiting for an extension like this. Keep up, great job!",
+        "url": "https://chromewebstore.google.com/reviews/b111feb6-b00d-40de-8739-72bc8eb968a3"
+      }
+    ]
   }
   </script>
 
@@ -189,10 +212,12 @@
       </a>
     </div>
 
-    <div class="social-proof">
+    <a class="social-proof" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener" aria-label="{{ site.data.cws-rating.ratingValue }} out of 5 stars, {{ site.data.cws-rating.reviewCount }} reviews on Chrome Web Store">
       <span class="stars" aria-hidden="true">★★★★★</span>
-      <span>on the Chrome Web Store</span>
-    </div>
+      <span class="rating-value">{{ site.data.cws-rating.ratingValue }}</span>
+      <span class="sep" aria-hidden="true">·</span>
+      <span class="rating-link-text">{{ site.data.cws-rating.reviewCount }} reviews on Chrome Web Store</span>
+    </a>
   </section>
 
   <!-- ── DEMO VIDEO ── -->

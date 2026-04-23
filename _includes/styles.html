@@ -161,8 +161,13 @@
     .social-proof {
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 0.875rem; color: var(--text-muted);
+      text-decoration: none;
     }
+    .social-proof:hover { color: var(--text-secondary); }
+    .social-proof:hover .rating-link-text { text-decoration: underline; }
     .social-proof .stars { color: var(--star); letter-spacing: 2px; }
+    .social-proof .rating-value { font-weight: 600; color: var(--text-secondary); }
+    .social-proof .sep { color: var(--text-subtle); }
 
     /* ── SECTION SHARED ── */
     section { padding: 88px 24px; }
