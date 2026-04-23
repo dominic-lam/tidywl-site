@@ -1,0 +1,144 @@
+name: Update CWS rating
+
+on:
+  schedule:
+    # Weekly, Sunday 06:00 UTC
+    - cron: '0 6 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      CWS_URL: https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo
+      UA: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
+      DATA_FILE: _data/cws-rating.yml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch CWS listing HTML
+        id: fetch
+        run: |
+          set -euo pipefail
+          mkdir -p .cws-scrape
+          # -f: fail on HTTP error; -sS: silent but show errors; -L: follow redirects
+          # --compressed: accept gzip/brotli (CWS uses compression)
+          # Save both headers and body for post-mortem debugging.
+          curl -fsSL --compressed \
+               -H "User-Agent: $UA" \
+               -H "Accept-Language: en-US,en;q=0.9" \
+               -H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" \
+               -D .cws-scrape/headers.txt \
+               -o .cws-scrape/raw.html \
+               "$CWS_URL"
+          echo "Fetched $(wc -c < .cws-scrape/raw.html) bytes."
+
+      - name: Parse rating and review count
+        id: parse
+        run: |
+          set -euo pipefail
+          HTML=.cws-scrape/raw.html
+
+          # Strip HTML entities we care about (primarily &nbsp; → space) and
+          # collapse whitespace to simplify regex matching.
+          sed -e 's/&nbsp;/ /g' -e 's/&amp;/\&/g' "$HTML" \
+            | tr '\n\r\t' '   ' \
+            | tr -s ' ' > .cws-scrape/normalized.html
+          NORM=.cws-scrape/normalized.html
+
+          # -- Rating: anchor tightly to "X out of 5" context --------------
+          # Matches e.g. "5 out of 5", "4.8 out of 5". Not bare floats.
+          # First match wins: the main listing's hero rating is always
+          # rendered before any cross-promoted extension on the page.
+          RATING_MATCH="$(grep -oE '[0-9](\.[0-9]+)? out of 5\b' "$NORM" | head -1 || true)"
+          if [ -z "$RATING_MATCH" ]; then
+            echo "::error::Could not find rating pattern ('X out of 5') in CWS HTML."
+            exit 1
+          fi
+          RATING_VALUE="$(printf '%s' "$RATING_MATCH" | grep -oE '^[0-9](\.[0-9]+)?')"
+          # Normalize "5" → "5.0" so the visible display stays consistent.
+          if ! printf '%s' "$RATING_VALUE" | grep -q '\.'; then
+            RATING_VALUE="${RATING_VALUE}.0"
+          fi
+          echo "Rating matched string: '$RATING_MATCH'"
+          echo "Rating parsed value:   '$RATING_VALUE'"
+
+          # -- Review count: "\bN rating(s)\b" with word boundary ----------
+          COUNT_MATCH="$(grep -oE '\b[0-9]+ ratings?\b' "$NORM" | head -1 || true)"
+          if [ -z "$COUNT_MATCH" ]; then
+            echo "::error::Could not find review count pattern ('N ratings') in CWS HTML."
+            exit 1
+          fi
+          REVIEW_COUNT="$(printf '%s' "$COUNT_MATCH" | grep -oE '^[0-9]+')"
+          echo "Count matched string:  '$COUNT_MATCH'"
+          echo "Count parsed value:    '$REVIEW_COUNT'"
+
+          # -- Validation --------------------------------------------------
+          # ratingValue: numeric in [0, 5]. Format is already guaranteed by
+          # the capture regex; this asserts the range.
+          if ! awk -v r="$RATING_VALUE" 'BEGIN { v = r + 0; exit !(v >= 0 && v <= 5) }'; then
+            echo "::error::ratingValue '$RATING_VALUE' is not in [0, 5]."
+            exit 1
+          fi
+
+          # reviewCount: positive integer
+          if ! printf '%s' "$REVIEW_COUNT" | grep -qE '^[1-9][0-9]*$'; then
+            echo "::error::reviewCount '$REVIEW_COUNT' is not a positive integer."
+            exit 1
+          fi
+
+          # reviewCount must be >= 50% of the previously committed value
+          PREV_COUNT="$(grep -E '^reviewCount:' "$DATA_FILE" | grep -oE '[0-9]+' | head -1 || echo 0)"
+          if [ -z "$PREV_COUNT" ]; then
+            PREV_COUNT=0
+          fi
+          echo "Previous reviewCount: $PREV_COUNT"
+          # Guard: if prev > 0 and new < prev/2, reject as likely stale/cached response.
+          if [ "$PREV_COUNT" -gt 0 ]; then
+            # Use awk for the half-compare (integer math is fine here).
+            if ! awk -v n="$REVIEW_COUNT" -v p="$PREV_COUNT" 'BEGIN { exit !(n*2 >= p) }'; then
+              echo "::error::reviewCount $REVIEW_COUNT is less than 50% of previous ($PREV_COUNT). Refusing to update."
+              exit 1
+            fi
+          fi
+
+          echo "rating_value=$RATING_VALUE"   >> "$GITHUB_OUTPUT"
+          echo "review_count=$REVIEW_COUNT"   >> "$GITHUB_OUTPUT"
+          echo "today=$(date -u +%Y-%m-%d)"   >> "$GITHUB_OUTPUT"
+
+      - name: Write data file
+        run: |
+          set -euo pipefail
+          cat > "$DATA_FILE" <<EOF
+          ratingValue: "${{ steps.parse.outputs.rating_value }}"
+          reviewCount: "${{ steps.parse.outputs.review_count }}"
+          lastUpdated: "${{ steps.parse.outputs.today }}"
+          EOF
+          echo "Wrote $DATA_FILE:"
+          cat "$DATA_FILE"
+
+      - name: Commit and push
+        run: |
+          set -euo pipefail
+          if git diff --quiet "$DATA_FILE"; then
+            echo "No change to $DATA_FILE. Skipping commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DATA_FILE"
+          git commit -m "chore: update CWS rating (auto)"
+          git push
+
+      - name: Upload fetched HTML on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cws-scrape-${{ github.run_id }}
+          path: .cws-scrape/
+          retention-days: 30
+          if-no-files-found: warn
