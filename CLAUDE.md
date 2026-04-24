@@ -27,6 +27,8 @@ Keep the site as simple as possible. No local build tools, no bundlers, no frame
 - `_includes/` — shared snippets: `fonts.html`, `theme-init.html`, `styles.html` (the big CSS block, shared with landing), `styles-blog.html` (blog-only typography), `theme-toggle.html`, `footer.html`, `scripts.html`.
 - `_layouts/` — `default.html` (blog pages) and `post.html` (extends default, adds post-specific markup + optional FAQ rendering).
 - `_posts/` — blog posts in Markdown, filename `YYYY-MM-DD-slug.md`. Permalink pattern: `/blog/:slug/`.
+- `_data/cws-rating.yml` — single source of truth for the Chrome Web Store aggregate rating. Read via Liquid in `index.html` (both the visible hero `.social-proof` link and the JSON-LD `aggregateRating` block). Shape: `ratingValue`, `reviewCount`, `lastUpdated`. Auto-updated weekly by `.github/workflows/update-cws-rating.yml`; do not hand-edit unless the workflow is broken.
+- `.github/workflows/update-cws-rating.yml` — scheduled (Sun 06:00 UTC) + `workflow_dispatch` job that scrapes the CWS listing HTML, validates the parsed rating/count (range, positive int, >=50% of previous), writes `_data/cws-rating.yml`, and commits as `github-actions[bot]`. On parse failure it uploads the fetched HTML + headers as a 30-day artifact. CWS does not expose JSON-LD or microdata, so parsing anchors on `"X out of 5"` and `"N ratings"` text — if Google ever redesigns the markup, expect a Sunday failure email and the artifact will show the new shape.
 - `blog/index.html` — blog post listing page.
 - `DESIGN.md` — notes from the UI rebuild (some `../../` path refs are stale from the original design kit)
 - `sitemap.xml`, `robots.txt`, `llms.txt` — SEO/GEO files at root
@@ -53,6 +55,7 @@ Keep the site as simple as possible. No local build tools, no bundlers, no frame
 - Canonical URL is https://tidywl.com/ — any new meta tags or
   internal links should use this, not the github.io URL
 - Landing page `<head>` keeps its SoftwareApplication + FAQPage JSON-LD blocks inline. Do not move them into Jekyll layouts/includes — they're tied to the landing page content and the GEO work treats them as sacred.
+- Reviews live in JSON-LD only. The visible testimonial cards in `index.html` intentionally carry no Schema.org microdata (`itemscope`/`itemtype`/`itemprop`). Adding microdata back creates a parallel set of Reviews that Google parses independently of the JSON-LD, triggering "Missing field itemReviewed" and duplicate-entry warnings in GSC. Keep the visible cards as plain HTML.
 
 ## Common Tasks
 - Updating landing page copy → edit `index.html` directly, commit, push, GitHub Pages auto-deploys
