@@ -1,17 +1,28 @@
 {
   "announcements": [
     {
-      "id": "2026-04-23-v1.3.1-manual-update-nudge",
-      "title": "TidyWL v1.3.1 is live — force-update if you don't have it yet",
+      "id": "2026-04-25-v1.3.2-manual-update-nudge",
+      "title": "YouTube Watch Later Tidy v1.3.2 is live — force-update if you don't have it yet",
       "bullets": [
         "Open a new tab and go to chrome://extensions",
         "Top-right corner: turn on Developer mode",
         "Top-left corner: click the \"Update\" button",
-        "Reload your YouTube tab — you should now be on v1.3.1"
+        "Reload your YouTube tab — you should now be on v1.3.2"
       ],
       "type": "warning",
-      "created_at": "2026-04-23",
-      "expires_at": "2026-05-15"
+      "created_at": "2026-04-25",
+      "expires_at": "2026-05-17"
+    },
+    {
+      "id": "v1.3.2-release",
+      "title": "What's New in v1.3.2",
+      "bullets": [
+        "Bug fix: the sticky toolbar (Sort / Filter / Delete) no longer floats over progress dialogs while deleting, syncing, loading unavailable videos, or moving videos between playlists",
+        "No other changes — everything from v1.3.1 still applies"
+      ],
+      "type": "info",
+      "created_at": "2026-04-25",
+      "expires_at": "2026-07-31"
     },
     {
       "id": "v1.3.1-release",
