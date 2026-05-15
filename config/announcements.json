@@ -1,6 +1,14 @@
 {
   "announcements": [
     {
+      "id": "2026-05-15-discord-community",
+      "title": "Join the TidyWL Discord 👥",
+      "message": "We now have a Discord community for bug reports, feature requests, and general chat. The invite link never expires — come say hi: https://discord.gg/natc623GhX",
+      "type": "warning",
+      "created_at": "2026-05-15",
+      "expires_at": "2026-07-31"
+    },
+    {
       "id": "2026-04-25-v1.3.2-manual-update-nudge",
       "title": "YouTube Watch Later Tidy v1.3.2 is live — force-update if you don't have it yet",
       "bullets": [
@@ -11,7 +19,7 @@
       ],
       "type": "warning",
       "created_at": "2026-04-25",
-      "expires_at": "2026-05-17"
+      "expires_at": "2026-05-14"
     },
     {
       "id": "v1.3.2-release",
@@ -40,14 +48,6 @@
       ],
       "type": "info",
       "created_at": "2026-04-23",
-      "expires_at": "2026-07-31"
-    },
-    {
-      "id": "2026-04-22-discord-community",
-      "title": "Join the TidyWL Discord 👥",
-      "message": "We now have a Discord community for bug reports, feature requests, and general chat. The invite link never expires — come say hi: https://discord.gg/natc623GhX",
-      "type": "info",
-      "created_at": "2026-04-22",
       "expires_at": "2026-07-31"
     },
     {
