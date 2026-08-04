@@ -91,7 +91,7 @@
       "content", "transcriptSearchPanelRenderer", "body",
       "transcriptSegmentListRenderer", "initialSegments"
     ],
-    "segmentWrapperKey":   "transcriptSegmentRenderer",
+    "segmentWrapperKey":   "transcriptSegmentViewModel",
     "segmentStartMsPath":  ["startMs"],
     "segmentTextPath":     ["snippet", "simpleText"],
     "segmentTextRunsPath": ["snippet", "runs"]
