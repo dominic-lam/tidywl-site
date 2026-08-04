@@ -4,7 +4,9 @@
     "browse":         "/youtubei/v1/browse?prettyPrint=false",
     "editPlaylist":   "/youtubei/v1/browse/edit_playlist?prettyPrint=false",
     "getPanel":       "/youtubei/v1/get_panel?prettyPrint=false",
-    "createPlaylist": "/youtubei/v1/playlist/create?prettyPrint=false"
+    "createPlaylist": "/youtubei/v1/playlist/create?prettyPrint=false",
+    "player":         "/youtubei/v1/player?prettyPrint=false",
+    "getTranscript":  "/youtubei/v1/get_transcript?prettyPrint=false"
   },
   "constants": {
     "watchLaterBrowseId":       "VLWL",
@@ -74,6 +76,25 @@
   },
   "createPlaylistResponse": {
     "playlistIdPaths": [["playlistId"], ["actions", 0, "addToPlaylistAction", "playlistId"]]
+  },
+  "playerResponse": {
+    "captionTracksPath":     ["captions", "playerCaptionsTracklistRenderer", "captionTracks"],
+    "playabilityStatusPath": ["playabilityStatus", "status"],
+    "playabilityReasonPath": ["playabilityStatus", "reason"],
+    "trackLanguageCodeKey":  "languageCode",
+    "trackKindKey":          "kind",
+    "asrKindValue":          "asr"
+  },
+  "transcriptResponse": {
+    "segmentsPath": [
+      "actions", 0, "updateEngagementPanelAction", "content", "transcriptRenderer",
+      "content", "transcriptSearchPanelRenderer", "body",
+      "transcriptSegmentListRenderer", "initialSegments"
+    ],
+    "segmentWrapperKey":   "transcriptSegmentRenderer",
+    "segmentStartMsPath":  ["startMs"],
+    "segmentTextPath":     ["snippet", "simpleText"],
+    "segmentTextRunsPath": ["snippet", "runs"]
   },
   "notebook": {
     "batchExecutePath": "/_/LabsTailwindUi/data/batchexecute",
