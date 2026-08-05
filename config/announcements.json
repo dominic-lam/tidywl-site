@@ -1,91 +1,31 @@
 {
   "announcements": [
     {
-      "id": "2026-05-15-discord-community",
-      "title": "Join the TidyWL Discord 👥",
-      "message": "We now have a Discord community for bug reports, feature requests, and general chat. The invite link never expires — come say hi: https://discord.gg/natc623GhX",
-      "type": "warning",
-      "created_at": "2026-05-15",
-      "expires_at": "2026-07-31"
+      "id": "v1.4.0-release",
+      "title": "What's New in v1.4.0",
+      "bullets": [
+        "Send to Gemini Notebook — push your selected videos straight into a notebook as sources, without leaving the dashboard",
+        "Download transcripts in bulk — select any number of videos and get a text file per video, named after the video and timestamped line by line",
+        "TidyWL checks which videos actually have captions first, and tells you exactly which ones it couldn't get and why",
+        "Exclude videos by topic — hide whole topics from the list instead of filtering down to one",
+        "Sort by views, and see which version of TidyWL you're running in the dashboard header"
+      ],
+      "type": "info",
+      "created_at": "2026-08-05",
+      "expires_at": "2026-11-05"
     },
     {
-      "id": "2026-04-25-v1.3.2-manual-update-nudge",
-      "title": "YouTube Watch Later Tidy v1.3.2 is live — force-update if you don't have it yet",
+      "id": "2026-08-05-v1.4.0-manual-update-nudge",
+      "title": "YouTube Watch Later Tidy v1.4.0 is live — force-update if you don't have it yet",
       "bullets": [
         "Open a new tab and go to chrome://extensions",
         "Top-right corner: turn on Developer mode",
         "Top-left corner: click the \"Update\" button",
-        "Reload your YouTube tab — you should now be on v1.3.2"
+        "Reload your YouTube tab — you should now be on v1.4.0 (the version is shown under the dashboard title)"
       ],
       "type": "warning",
-      "created_at": "2026-04-25",
-      "expires_at": "2026-05-14"
-    },
-    {
-      "id": "v1.3.2-release",
-      "title": "What's New in v1.3.2",
-      "bullets": [
-        "Bug fix: the sticky toolbar (Sort / Filter / Delete) no longer floats over progress dialogs while deleting, syncing, loading unavailable videos, or moving videos between playlists",
-        "No other changes — everything from v1.3.1 still applies"
-      ],
-      "type": "info",
-      "created_at": "2026-04-25",
-      "expires_at": "2026-07-31"
-    },
-    {
-      "id": "v1.3.1-release",
-      "title": "What's New in v1.3.1",
-      "bullets": [
-        "Custom duration range — filter by any min/max (in minutes), not just the preset buckets",
-        "Toolbar stays pinned while scrolling so Sort / Filter / Delete are always reachable",
-        "Sort dropdown polished — \"By Playlist Order\" is now its own section with a (i) hover tip explaining where to set it on YouTube",
-        "Info announcements now show as a red counter on the 🔔 bell button instead of stacking above your videos — click the bell to read them",
-        "Announcement dates are shown next to the title",
-        "Success confirmations (like bulk move) no longer wear the yellow warning style",
-        "View counts restored on video cards (YouTube changed their data shape — we adapted)",
-        "Links inside announcements are now clickable",
-        "Under the hood: every YouTube endpoint / action / response path now lives on tidywl.com, so most future YouTube API changes can be fixed without a new extension release"
-      ],
-      "type": "info",
-      "created_at": "2026-04-23",
-      "expires_at": "2026-07-31"
-    },
-    {
-      "id": "v1.3.0-release",
-      "title": "What's New in v1.3.0",
-      "bullets": [
-        "Filter by duration — Shorts, Under 5 min, 5–20 min, 20–60 min, Over 1 hour",
-        "Sort by duration (longest or shortest first)",
-        "Sort by published date (newest or oldest first)",
-        "Topic-breakdown auto-refresh after delete — no more stranded empty groups",
-        "Honest sort labels — \"Date Added\" renamed to \"Playlist order\" because YouTube doesn't expose per-video added-date timestamps on web"
-      ],
-      "type": "info",
-      "created_at": "2026-04-22",
-      "expires_at": "2026-07-31"
-    },
-    {
-      "id": "v1.2.0-release",
-      "title": "Testing - What's New in v1.2.0",
-      "bullets": [
-        "Unavailable videos filter — find deleted, private, or region-locked videos cluttering your list",
-        "Drag-and-drop reordering, plus bulk Move to Top / Move to Bottom",
-        "Per-video action menu (open in tab, move, delete)",
-        "Open selected videos in new tabs",
-        "Brand-channel sync fix",
-        "Hidden-count tooltip explaining why YouTube's total can exceed what TidyWL fetches"
-      ],
-      "type": "info",
-      "created_at": "2026-04-21",
-      "expires_at": "2026-05-31"
-    },
-    {
-      "id": "2026-04-25-tidywl-com-live",
-      "title": "We have a new home: tidywl.com",
-      "message": "TidyWL's landing page is now live at tidywl.com — bookmark it for quick access and share it with anyone whose Watch Later is out of control.",
-      "type": "info",
-      "created_at": "2026-04-19",
-      "expires_at": "2026-05-31"
+      "created_at": "2026-08-05",
+      "expires_at": "2026-08-26"
     }
   ]
 }
