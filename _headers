@@ -1,0 +1,16 @@
+# Cloudflare Pages custom headers.
+#
+# Firefox only offers the install prompt when an .xpi is served as
+# application/x-xpinstall. Without this it arrives as octet-stream and the
+# browser just downloads the file, which looks broken to the user.
+#
+# Jekyll excludes underscore-prefixed files by default — this file only reaches
+# _site because it is listed under `include:` in _config.yml. Removing it there
+# silently disables everything below.
+
+/firefox/*.xpi
+  Content-Type: application/x-xpinstall
+
+/firefox/updates.json
+  Content-Type: application/json
+  Cache-Control: public, max-age=600

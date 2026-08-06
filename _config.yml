@@ -19,6 +19,12 @@ defaults:
     values:
       layout: post
 
+# Jekyll drops underscore-prefixed files by default. `_headers` is Cloudflare
+# Pages config (the .xpi MIME type) and must reach _site or Firefox installs
+# arrive as octet-stream and merely download instead of prompting to install.
+include:
+  - _headers
+
 exclude:
   - .claude
   - .idea

@@ -1,0 +1,12 @@
+{
+  "addons": {
+    "tidywl@tidywl.com": {
+      "updates": [
+        {
+          "version": "1.4.0",
+          "update_link": "https://tidywl.com/firefox/tidywl-1.4.0.xpi"
+        }
+      ]
+    }
+  }
+}
