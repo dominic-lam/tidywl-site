@@ -486,6 +486,16 @@
       padding: 8px 18px; border-radius: 6px; transition: background 0.2s;
     }
     .footer-links .btn-footer:hover { background: var(--accent-hover); color: #fff; }
+    /* Ko-fi badge sits on its own row below the link list — dropping a 150px
+       image into that flex row of 0.9rem text links reads as a misplaced ad.
+       line-height: 0 kills the inline-image descender gap. */
+    .kofi-badge {
+      display: inline-block; line-height: 0; margin-bottom: 20px;
+      border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .kofi-badge img { display: block; width: 150px; height: auto; border-radius: 8px; }
+    .kofi-badge:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
     .copyright { font-size: 0.8rem; color: var(--text-subtle); }
 
     /* ── VIDEO ── */
