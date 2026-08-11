@@ -1,0 +1,216 @@
+<!-- Reviews carousel — index.html only.
+     Its own <script> on purpose: separate script elements execute
+     independently, so a throw in here can never stop scripts.html from running
+     (whose theme-toggle listener has no null guard). Synchronous at end of
+     body, NOT deferred — the grid->track swap has to happen before this section
+     first paints or it becomes a visible layout shift. -->
+<script>
+(function () {
+  var root = document.querySelector('[data-reviews-carousel]');
+  if (!root) return;                       // every page that isn't the landing page
+  var track = root.querySelector('.testimonials-grid');
+  if (!track) return;
+  var slides = Array.prototype.slice.call(track.children);
+  if (slides.length < 2) return;
+
+  var ICON = {
+    prev:  '<path d="m15 18-6-6 6-6"/>',
+    next:  '<path d="m9 18 6-6-6-6"/>',
+    play:  '<polygon points="6 3 20 12 6 21 6 3"/>',
+    pause: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>'
+  };
+  function svg(d) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+           'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
+  }
+
+  var INTERVAL = 6000;
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var timer = null, userStopped = false, hovering = false, perPage = 1, pageCount = 1;
+  var controls = null, dots = [], playBtn = null, ro = null, rafId = 0;
+
+  /* ---- geometry, always re-derived from the live DOM so a manual swipe,
+          a resize, or a font swap can never desync the dots ---- */
+  function offsetOf(i) { return slides[i].offsetLeft - slides[0].offsetLeft; }
+  function maxScroll() { return track.scrollWidth - track.clientWidth; }
+
+  function measure() {
+    var step = offsetOf(1) || slides[0].offsetWidth;
+    var gap = Math.max(0, step - slides[0].offsetWidth);
+    // floor((width + gap) / step), not round(width / step): rounding reports 3
+    // cards fitting in 800px when only 2 actually do, and the last page then
+    // scrolls to a position that does not exist.
+    perPage = Math.max(1, Math.floor((track.clientWidth + gap) / step));
+    pageCount = Math.ceil(slides.length / perPage);
+  }
+
+  function currentPage() {
+    if (track.scrollLeft >= maxScroll() - 2) return pageCount - 1;  // last page may be short
+    var best = 0, bestD = Infinity;
+    for (var i = 0; i < slides.length; i++) {
+      var d = Math.abs(offsetOf(i) - track.scrollLeft);
+      if (d < bestD) { bestD = d; best = i; }
+    }
+    return Math.min(Math.floor(best / perPage), pageCount - 1);
+  }
+
+  function goTo(page) {
+    var p = ((page % pageCount) + pageCount) % pageCount;           // wraps both ways
+    var i = Math.min(p * perPage, slides.length - 1);
+    track.scrollTo({ left: offsetOf(i), behavior: 'smooth' });
+  }
+
+  /* ---- rotation ---- */
+  function play() {
+    if (userStopped || hovering || timer || pageCount < 2) return;
+    timer = setInterval(function () { goTo(currentPage() + 1); }, INTERVAL);
+    sync();
+  }
+  function pause() { if (timer) { clearInterval(timer); timer = null; } sync(); }
+  function stop() { userStopped = true; pause(); }   // APG: explicit input halts rotation
+
+  function sync() {
+    var p = currentPage();
+    for (var i = 0; i < dots.length; i++) {
+      dots[i].setAttribute('aria-current', i === p ? 'true' : 'false');
+    }
+    // APG: live region off while auto-rotating, polite once it has stopped.
+    // This will not actually announce anything with this technique — no DOM
+    // content changes, only scroll position. The real AT affordance is the
+    // per-slide "3 of 9" label plus aria-current on the dots.
+    track.setAttribute('aria-live', timer ? 'off' : 'polite');
+    if (playBtn) {
+      playBtn.setAttribute('aria-label', timer ? 'Pause automatic review rotation'
+                                              : 'Start automatic review rotation');
+      playBtn.innerHTML = svg(timer ? ICON.pause : ICON.play);
+    }
+  }
+
+  function buildDots() {
+    var wrap = controls.querySelector('.reviews-dots');
+    wrap.innerHTML = '';
+    dots = [];
+    for (var i = 0; i < pageCount; i++) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'reviews-dot';
+      b.setAttribute('aria-label', 'Reviews, page ' + (i + 1) + ' of ' + pageCount);
+      b.setAttribute('aria-controls', 'reviews-track');
+      (function (n) {
+        b.addEventListener('click', function () { stop(); goTo(n); });
+      })(i);
+      wrap.appendChild(b);
+      dots.push(b);
+    }
+    // One page means everything is already on screen: no controls, no rotation.
+    controls.hidden = pageCount < 2;
+  }
+
+  function enhance() {
+    root.classList.add('is-on');
+
+    // ARIA is applied by JS only, so the no-JS and reduced-motion grid never
+    // calls itself a carousel.
+    root.setAttribute('role', 'group');
+    root.setAttribute('aria-roledescription', 'carousel');
+    root.setAttribute('aria-label', 'What users are saying');
+    track.setAttribute('role', 'group');
+    track.setAttribute('aria-label', 'Reviews');
+    track.setAttribute('tabindex', '0');   // scrollable regions must be keyboard-operable
+    slides.forEach(function (s, i) {
+      s.setAttribute('role', 'group');
+      s.setAttribute('aria-roledescription', 'slide');
+      s.setAttribute('aria-label', (i + 1) + ' of ' + slides.length);
+    });
+
+    controls = document.createElement('div');
+    controls.className = 'reviews-controls';
+    controls.innerHTML =
+      '<button type="button" class="reviews-btn" data-act="prev" aria-controls="reviews-track" aria-label="Previous reviews">' + svg(ICON.prev) + '</button>' +
+      '<button type="button" class="reviews-btn" data-act="play" aria-controls="reviews-track" aria-label="Pause automatic review rotation"></button>' +
+      '<div class="reviews-dots" role="group" aria-label="Choose a page of reviews"></div>' +
+      '<button type="button" class="reviews-btn" data-act="next" aria-controls="reviews-track" aria-label="Next reviews">' + svg(ICON.next) + '</button>';
+    root.appendChild(controls);
+    playBtn = controls.querySelector('[data-act="play"]');
+
+    controls.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-act]');
+      if (!b) return;
+      var a = b.getAttribute('data-act');
+      if (a === 'prev') { stop(); goTo(currentPage() - 1); }
+      if (a === 'next') { stop(); goTo(currentPage() + 1); }
+      if (a === 'play') {
+        if (timer) { stop(); } else { userStopped = false; play(); }
+      }
+    });
+
+    // Arrow keys scoped to the track and the controls only — never hijacked
+    // from a link inside a card.
+    root.addEventListener('keydown', function (e) {
+      if (e.target !== track && !controls.contains(e.target)) return;
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); stop(); goTo(currentPage() - 1); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); stop(); goTo(currentPage() + 1); }
+      if (e.key === 'Home')       { e.preventDefault(); stop(); goTo(0); }
+      if (e.key === 'End')        { e.preventDefault(); stop(); goTo(pageCount - 1); }
+    });
+
+    root.addEventListener('mouseenter', function () { hovering = true; pause(); });
+    root.addEventListener('mouseleave', function () { hovering = false; play(); });
+    root.addEventListener('focusin', pause);
+    root.addEventListener('focusout', function (e) {
+      if (!root.contains(e.relatedTarget)) play();
+    });
+    track.addEventListener('pointerdown', stop);   // a swipe means "leave me alone"
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { pause(); } else { play(); }
+    });
+
+    track.addEventListener('scroll', function () {
+      if (rafId) return;
+      rafId = requestAnimationFrame(function () { rafId = 0; sync(); });
+    }, { passive: true });
+
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(function () {
+        var before = pageCount;
+        measure();
+        if (pageCount !== before) buildDots();
+        // Page count is width-dependent, so rotation has to be started or
+        // stopped here too: a wide viewport fits every card on one page and
+        // must not rotate, but narrowing it creates real pages that must.
+        if (pageCount < 2) { pause(); } else { play(); }
+        sync();
+      });
+      ro.observe(track);
+    }
+
+    measure();
+    buildDots();
+    play();
+  }
+
+  function teardown() {
+    pause();
+    userStopped = false;
+    if (ro) { ro.disconnect(); ro = null; }
+    root.classList.remove('is-on');
+    ['role', 'aria-roledescription', 'aria-label'].forEach(function (a) { root.removeAttribute(a); });
+    ['role', 'aria-label', 'tabindex', 'aria-live'].forEach(function (a) { track.removeAttribute(a); });
+    slides.forEach(function (s) {
+      ['role', 'aria-roledescription', 'aria-label'].forEach(function (a) { s.removeAttribute(a); });
+    });
+    if (controls) { controls.remove(); controls = null; dots = []; playBtn = null; }
+    track.scrollLeft = 0;
+  }
+
+  if (!mq.matches) enhance();
+
+  // Honour a live OS-level preference change, both directions.
+  var onMQ = function () {
+    if (mq.matches) { if (controls) teardown(); }
+    else if (!controls) { enhance(); }
+  };
+  if (mq.addEventListener) { mq.addEventListener('change', onMQ); }
+  else if (mq.addListener) { mq.addListener(onMQ); }
+})();
+</script>
