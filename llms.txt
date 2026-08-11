@@ -1,26 +1,52 @@
 # TidyWL — YouTube Watch Later Tidy
 
-> Free Chrome extension that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist. Built because YouTube caps Watch Later at 5,000 videos and the official API refuses to touch it.
+> Free browser extension for Chrome and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos and the official API refuses to touch it.
 
 ## What it does
 
-TidyWL gives you a full-screen dashboard for YouTube's Watch Later playlist, inspired by macOS Storage Manager. You can bulk delete hundreds of videos in seconds, see your playlist broken down by channel, filter and sort by channel/date/duration, search, switch between YouTube accounts, and export your data.
+TidyWL gives you a full-screen dashboard for YouTube's Watch Later playlist, inspired by macOS Storage Manager. You can bulk delete hundreds of videos in seconds, see your playlist broken down by channel or by topic, hide topics you are not interested in, search, and filter by title, channel, watched status, availability, or duration — either preset buckets including a Shorts bucket, or your own minimum and maximum in minutes. You can sort by playlist order, duration, view count, published date, channel, or title. You can move or copy selected videos into any other playlist, create a playlist inline, reorder with Move to Top and Move to Bottom or by dragging, open every selected video in background tabs, switch between YouTube accounts, and export to JSON or CSV.
+
+Two features go beyond playlist management. **Bulk transcript download** gives you one timestamped text file per video, named after the video title, after first checking with YouTube which videos have captions at all. **Send to Gemini Notebook** (formerly NotebookLM) pushes your selected videos into a notebook as sources, either a new notebook or one you already have.
 
 ## Why it exists
 
 YouTube's Watch Later playlist has a hard 5,000 video cap. Once you hit it, YouTube stops adding new videos and gives you no bulk management tools — you have to delete videos one at a time through a three-dot menu. The official YouTube Data API explicitly excludes Watch Later. TidyWL works around this by using your existing logged-in YouTube session, so no account, API key, or OAuth is needed.
 
+## Browser support
+
+- **Chrome** — published on the Chrome Web Store. Also works on Chromium-based browsers such as Edge and Brave.
+- **Firefox 153 or newer** — signed by Mozilla but submitted as unlisted, so it is distributed from https://tidywl.com/firefox/ rather than published in the addons.mozilla.org directory. There is no public AMO listing page. It updates automatically from tidywl.com.
+- **Firefox for Android** — not supported. YouTube's mobile site is a different page structure and it has not been tested.
+
+Both channels are built from a single source tree and ship the same feature set.
+
+## Ratings
+
+Rated 5.0 out of 5 on the Chrome Web Store. It also carries Google's "Featured" editorial badge and a verified-publisher checkmark. The live rating and review count are published on https://tidywl.com and refreshed weekly from the store listing.
+
 ## Technical details
 
-TidyWL works by reading the user's active YouTube session (SAPISID cookie and session index from window.ytcfg) and calling YouTube's internal InnerTube API the same way the YouTube web app does. No OAuth, no API key, no stored tokens. The extension only functions while the user is actively logged into YouTube.
+TidyWL works by reading the user's active YouTube session (SAPISID cookie and session index from window.ytcfg) and calling YouTube's internal InnerTube API the same way the YouTube web app does. No OAuth, no API key, no stored tokens. The extension only functions while the user is actively logged into YouTube. Because it depends on undocumented internal endpoints, it fetches a small public configuration file from tidywl.com at runtime so that many YouTube-side changes can be patched without shipping a store update.
 
 ## Privacy
 
-TidyWL runs entirely in your browser. No servers, no tracking, no account required. Your YouTube data never leaves your machine.
+TidyWL runs in your browser. No servers, no tracking, no account. Network calls go to YouTube's own endpoints using your existing session, and to a public config file on tidywl.com that carries no identifiers and no payload. One feature is an explicit exception: Send to Gemini Notebook passes the video links you selected to Google's Gemini Notebook using your own Google session. It is opt-in per use and gated behind a browser permission prompt. Nothing else leaves your machine.
+
+## Limitations
+
+- Deletions are permanent; YouTube provides no undo.
+- Bulk deletion is necessarily sequential, because YouTube rejects parallel playlist edits, so large batches take time.
+- "Playlist order" is not date-added — YouTube does not expose per-video add timestamps on the web.
+- Transcript download opens a small visible window and takes roughly three seconds per video; videos without captions are reported as skipped.
+- Free Gemini Notebook accounts cap a notebook at 50 sources.
+- The cache is local to each browser and does not sync across devices.
 
 ## Links
 
-- Install: https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo
+- Install for Chrome: https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo
+- Install for Firefox: https://tidywl.com/firefox/
 - Landing page: https://tidywl.com
+- Blog: https://tidywl.com/blog/
+- Community (Discord): https://discord.gg/natc623GhX
 - Support: https://ko-fi.com/dominiclam
 - Contact: support@tidywl.com

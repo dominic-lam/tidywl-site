@@ -1,0 +1,82 @@
+---
+layout: default
+title: TidyWL for Firefox
+description: Install TidyWL on Firefox 153 or newer. Mozilla-signed, distributed from tidywl.com, updates automatically. Bulk-delete, filter, and organize your YouTube Watch Later.
+permalink: /firefox/
+faq:
+  - q: "Why isn't TidyWL on addons.mozilla.org?"
+    a: "The Firefox build is signed by Mozilla, but submitted as unlisted rather than published in the public add-ons directory, so it is distributed from tidywl.com instead. It is the same code as the Chrome release, built from the same source tree. Signing is what matters for security: Firefox refuses to install an unsigned extension at all, and this one carries Mozilla's signature."
+  - q: "Will it update automatically?"
+    a: "Yes. The extension ships with an update URL pointing at tidywl.com, so Firefox checks for new versions the same way it does for directory add-ons. You do not need to come back to this page."
+  - q: "Which Firefox versions are supported?"
+    a: "Firefox 153 and newer. Earlier versions are not supported: 153 is the only version TidyWL has been tested against, and claiming support for releases nobody has verified would be guessing."
+  - q: "Does it work on Firefox for Android?"
+    a: "Not yet. YouTube's mobile site is a different page structure entirely, so the desktop build will not work there and it has not been tested. Chrome for Android supports no extensions at all, so Firefox is the only browser where mobile support is even possible — it is on the list, not in the build."
+  # NOTE: front matter is plain YAML — Jekyll does not run Liquid in it, so a
+  # {{ ... }} here renders literally in both the page and the FAQPage JSON-LD.
+  # Keep version numbers out of these answers; the install button is templated.
+  - q: "Is the Firefox version behind the Chrome one?"
+    a: "No. Both channels are built from one source tree and ship the same version, and the exact build number is on the install button above. Every feature is verified working on Firefox 153, including sync, bulk delete, multi-account, move to playlist, bulk transcript download, and Send to Gemini Notebook."
+---
+<section class="blog-wrap">
+  <h1 class="blog-title">TidyWL for Firefox</h1>
+  <p class="blog-subtitle">Every TidyWL feature, on Firefox 153 or newer. Signed by Mozilla, served from here, updates itself.</p>
+
+  <div class="post-body">
+    <p class="ff-cta-row">
+      <a class="btn-primary" href="/firefox/tidywl-{{ site.data.versions.firefox }}.xpi">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" x2="12" y1="15" y2="3"/>
+        </svg>
+        <span>Install for Firefox — Free.<span class="btn-sub">Version {{ site.data.versions.firefox }} · Firefox 153+</span></span>
+      </a>
+    </p>
+
+    <p class="ff-note">Open this page <strong>in Firefox</strong> and click Install, then accept the permission prompt. In any other browser the button just downloads a file that does nothing.</p>
+
+    <h2>What you get</h2>
+    <p>The same extension as the Chrome release, from the same source tree — not a cut-down port. Every feature is verified working on Firefox 153: syncing your Watch Later, bulk delete, the channel and topic breakdowns, filtering and sorting, bulk move or copy to another playlist, drag-and-drop reordering, multi-account support, bulk transcript download, and Send to Gemini Notebook.</p>
+
+    <h2>Installing</h2>
+    <ol>
+      <li>Open this page in Firefox 153 or newer.</li>
+      <li>Click <strong>Install for Firefox</strong> above.</li>
+      <li>Firefox asks you to confirm the add-on and its permissions. Accept.</li>
+      <li>Go to your <a href="https://www.youtube.com/playlist?list=WL" target="_blank" rel="noopener">Watch Later playlist</a> and click <strong>Open Dashboard</strong>.</li>
+    </ol>
+    <p>Updates arrive on their own from this domain — there is nothing to subscribe to and no reason to revisit.</p>
+
+    <h2>Privacy, same as everywhere else</h2>
+    <p>No servers, no tracking, no account. TidyWL uses the YouTube session you already have, and your playlist data stays on your machine. The single exception is Send to Gemini Notebook, which you trigger yourself: the links you picked go to Google under your own login, because that is the entire point of the feature. Nothing else leaves.</p>
+  </div>
+
+  <div class="post-faq">
+    <h2>Questions</h2>
+    {% for item in page.faq %}
+    <div class="faq-item" aria-expanded="false">
+      <button class="faq-q" aria-controls="ff-faq-{{ forloop.index }}">
+        <span>{{ item.q }}</span>
+        <span class="plus" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-a" id="ff-faq-{{ forloop.index }}">
+        {{ item.a }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="post-footer">
+    <p>On Chrome instead? <a href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Get it from the Chrome Web Store</a>, or read <a href="/">what TidyWL does</a>.</p>
+  </div>
+</section>
+
+<style>
+  .ff-cta-row { margin: 28px 0 12px; }
+  .ff-note {
+    font-size: 0.9rem; color: var(--text-muted);
+    border-left: 3px solid var(--border-strong);
+    padding-left: 14px; margin-bottom: 8px;
+  }
+</style>

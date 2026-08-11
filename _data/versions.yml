@@ -1,0 +1,12 @@
+# Shipped version per channel. Hand-maintained — bump alongside the extension's
+# manifest.json when a release actually goes live on that channel.
+#
+# The two can legitimately differ: a Chrome Web Store release waits on review,
+# while the Firefox build is self-distributed and lands immediately.
+#
+# WARNING: bumping `firefox` here is NOT what tells installed Firefox copies an
+# update exists — firefox/updates.json does that, and it has to be bumped
+# separately. Nothing errors when the two drift; Firefox installs just quietly
+# stop updating.
+chrome: "1.4.1"
+firefox: "1.4.1"

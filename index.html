@@ -49,7 +49,8 @@
     "name": "TidyWL — YouTube Watch Later Tidy",
     "alternateName": "YouTube Watch Later Tidy",
     "applicationCategory": "BrowserApplication",
-    "operatingSystem": "Chrome",
+    "operatingSystem": "Chrome, Firefox",
+    "softwareRequirements": "Google Chrome, or Firefox 153 or newer",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "description": "Free browser extension for Chrome and Firefox that cleans up YouTube Watch Later. Bulk-delete videos, filter and sort, download transcripts in bulk, send videos to Gemini Notebook, and stay under YouTube's hidden 5,000-video cap. Runs with your existing YouTube session; no account, no API key.",
     "url": "https://tidywl.com",
@@ -60,12 +61,23 @@
       "url": "https://github.com/dominic-lam"
     },
     "featureList": [
-      "Bulk delete videos from Watch Later",
+      "Bulk delete videos from YouTube Watch Later",
+      "Stay under YouTube's hidden 5,000-video Watch Later cap",
+      "Download video transcripts in bulk as timestamped text files",
+      "Send selected videos to Gemini Notebook (formerly NotebookLM) as sources",
       "Channel breakdown dashboard",
-      "Filter and sort by channel, date, or duration",
-      "Search within Watch Later",
-      "Multi-account support",
-      "Export playlist data"
+      "Group Watch Later by topic, and hide topics you do not want to see",
+      "Search and filter by title, channel, watched status, availability, or duration",
+      "Custom duration range filter in minutes",
+      "Sort by playlist order, duration, views, published date, channel, or title",
+      "Move or copy videos to another playlist, and create playlists inline",
+      "Reorder with Move to Top, Move to Bottom, or drag and drop",
+      "Open all selected videos in background tabs",
+      "Explains why YouTube hides videos from its own playlist API",
+      "Brand-channel (Page account) support",
+      "Multi-account support with isolated storage",
+      "Export playlist data to JSON or CSV",
+      "Works in Chrome and Firefox"
     ],
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -127,6 +139,22 @@
       },
       {
         "@type": "Question",
+        "name": "How do I download YouTube transcripts in bulk?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Select the videos you want and click Download Transcripts. You get one timestamped text file per video, named after the video title. TidyWL first asks YouTube which of them have captions at all, then opens one small visible window and works through the rest, roughly three seconds per video, and closes it when it is done. Leave that window on top while it runs: YouTube only builds transcripts in a window it considers visible. Not every video has captions, so the summary at the end lists exactly which ones were skipped and why."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does Send to Gemini Notebook do?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It pushes the videos you selected into a Gemini Notebook (formerly NotebookLM) as sources, either a brand-new notebook or one you already have, without leaving the dashboard. This is the one feature that sends anything off your machine: the links you picked go to Google under your own Google login. Free Gemini Notebook accounts cap a notebook at 50 sources and batches larger than that have not been tested, so keep them under 50 for now. Videos Gemini Notebook cannot ingest, such as ones with no captions, private ones, or ones uploaded in the last few days, come back reported as skipped."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "How does the By Topic grouping work?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -139,6 +167,14 @@
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "No. It uses the same internal endpoints your browser already calls when you use YouTube. No API key, no OAuth, no account setup."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does TidyWL work in Firefox?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, on Firefox 153 or newer. The Firefox build is signed by Mozilla but distributed from tidywl.com rather than published in the add-ons directory, so you install it from the Firefox page on this site: click Install, then accept Firefox's prompt. Updates arrive automatically from the same place. Firefox for Android is not supported yet."
         }
       },
       {
@@ -203,7 +239,7 @@
   <section class="hero">
     <img src="assets/icon128.png" alt="TidyWL icon" class="hero-icon" width="88" height="88">
     <h1>Your YouTube Watch Later hit <span class="em">5,000 videos</span>?</h1>
-    <p class="tagline">TidyWL is a free Chrome extension that bulk-deletes, filters, and organizes your Watch Later — entirely in your browser. No account. No uploads.</p>
+    <p class="tagline">TidyWL is a free extension for Chrome and Firefox that bulk-deletes, filters, and organizes your Watch Later — and downloads transcripts in bulk. No account. Nothing leaves your browser unless you ask it to.</p>
 
     <div class="cta-row">
       <a class="btn-primary" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">
@@ -213,6 +249,16 @@
           <line x1="10.88" x2="15.46" y1="21.94" y2="14"/>
         </svg>
         <span>Add to Chrome — Free.<span class="btn-sub">Always free.</span></span>
+      </a>
+      <!-- Neutral download glyph, not the Firefox logo: the mark is full-colour
+           and clashes with this site's 2px-stroke monoline icon set. -->
+      <a class="btn-ghost" href="/firefox/">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" x2="12" y1="15" y2="3"/>
+        </svg>
+        <span>Get for Firefox</span>
       </a>
     </div>
 
@@ -277,26 +323,15 @@
       <!-- Tier 1: big cards -->
       <div class="features-grid">
 
-        <div class="feature-card">
+        <div class="feature-card highlight">
           <div class="feature-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-              <line x1="7" y1="7" x2="7.01" y2="7"/>
+              <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
             </svg>
           </div>
-          <h3>By Topic tab</h3>
-          <p>Automatically groups your Watch Later by recurring keywords in titles (e.g. "recipe", "react", "interview"). Click a topic row to filter the video list, the same way the By Channel view works. Runs 100% client-side, no API calls, no data sent anywhere.</p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/>
-              <rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>
-            </svg>
-          </div>
-          <h3>Channel Breakdown</h3>
-          <p>See your Watch Later organized by channel. Find all the videos from that one YouTuber you binged three months ago in one click.</p>
+          <h3>Beat the 5,000 Limit</h3>
+          <p>YouTube silently stops saving videos past 5,000. TidyWL helps you clean out old videos so you can keep adding new ones.</p>
+          <span class="pill">Unique to TidyWL</span>
         </div>
 
         <div class="feature-card">
@@ -314,35 +349,46 @@
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 9V5a2 2 0 0 1 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2"/>
-              <path d="M2 13h10"/>
-              <path d="m9 16 3-3-3-3"/>
+              <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+              <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+              <path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/>
             </svg>
           </div>
-          <h3>Bulk Move to Playlist</h3>
-          <p>Move selected videos to any playlist, or create a new one right from the dashboard. YouTube has no bulk-move at all.</p>
+          <h3>Download Transcripts in Bulk</h3>
+          <p>Select any number of videos and get one timestamped text file each, named after the video. TidyWL checks which ones actually have captions first, then tells you exactly what it couldn't get and why. Runs in a small visible window, about three seconds per video.</p>
         </div>
 
         <div class="feature-card">
           <div class="feature-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/>
-              <circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/>
+              <path d="M12 7v14"/>
+              <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>
             </svg>
           </div>
-          <h3>Reorder Your Way</h3>
-          <p>Send selected videos to the top or bottom with one click, or drag and drop (single or multi-select) to place them exactly where you want.</p>
+          <h3>Send to Gemini Notebook</h3>
+          <p>Push your chosen videos straight into a Gemini Notebook (formerly NotebookLM) as sources — a new notebook or one you already have — without leaving the dashboard. It's the one feature that leaves your machine: the links you pick go to Google under your own login. Nothing else does.</p>
         </div>
 
-        <div class="feature-card highlight">
+        <div class="feature-card">
           <div class="feature-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
+              <rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/>
+              <rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>
             </svg>
           </div>
-          <h3>Beat the 5,000 Limit</h3>
-          <p>YouTube silently stops saving videos past 5,000. TidyWL helps you clean out old videos so you can keep adding new ones.</p>
-          <span class="pill">Unique to TidyWL</span>
+          <h3>Channel Breakdown</h3>
+          <p>See your Watch Later organized by channel. Find all the videos from that one YouTuber you binged three months ago in one click.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+              <line x1="7" y1="7" x2="7.01" y2="7"/>
+            </svg>
+          </div>
+          <h3>By Topic tab</h3>
+          <p>Automatically groups your Watch Later by recurring keywords in titles (e.g. "recipe", "react", "interview"). Click a topic to filter down to it, or hide it to get it out of the way — as many topics as you like. Runs 100% client-side, no API calls, no data sent anywhere.</p>
         </div>
 
       </div>
@@ -406,7 +452,18 @@
             </svg>
           </div>
           <h3>Search, Filter, Sort</h3>
-          <p>Find videos by title, channel, watched status, availability, or duration (incl. a Shorts bucket). Sort by playlist order, duration, published date, channel, or title.</p>
+          <p>Find videos by title, channel, watched status, availability, or duration — preset buckets including Shorts, or your own min/max in minutes. Sort by playlist order, duration, views, published date, channel, or title.</p>
+        </div>
+
+        <div class="feature-mini">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/>
+              <circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/>
+            </svg>
+          </div>
+          <h3>Reorder Your Way</h3>
+          <p>Send videos to the top or bottom in one click, or drag and drop — single or multi-select.</p>
         </div>
 
         <div class="feature-mini">
@@ -436,13 +493,13 @@
         <div class="feature-mini">
           <div class="feature-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"/>
-              <line x1="12" x2="12" y1="10" y2="16"/>
-              <line x1="9" x2="15" y1="13" y2="13"/>
+              <path d="M2 9V5a2 2 0 0 1 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H20a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2"/>
+              <path d="M2 13h10"/>
+              <path d="m9 16 3-3-3-3"/>
             </svg>
           </div>
-          <h3>Create Playlists Inline</h3>
-          <p>Make a new playlist without leaving the dashboard.</p>
+          <h3>Move or Copy to Any Playlist</h3>
+          <p>Move or copy selected videos to any playlist, or create a new one inline. YouTube has no bulk-move at all.</p>
         </div>
 
         <div class="feature-mini">
@@ -459,7 +516,7 @@
 
       </div>
 
-      <p class="features-tail">Plus keyboard shortcuts, shift-click selection, filter chips, and dismissible in-app announcements.</p>
+      <p class="features-tail">Plus a toolbar that stays pinned while you scroll, a notification bell that badges when there's something new, keyboard shortcuts, shift-click selection, filter chips, and the version number right in the dashboard header. Works in Chrome and in Firefox 153+.</p>
     </div>
   </section>
 
@@ -613,6 +670,26 @@
           </div>
 
           <div class="faq-item" aria-expanded="false">
+            <button class="faq-q" aria-controls="faq-transcripts">
+              <span>How do I download YouTube transcripts in bulk?</span>
+              <span class="plus" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-transcripts">
+              Select the videos you want and click Download Transcripts. You get one timestamped text file per video, named after the video title. TidyWL first asks YouTube which of them have captions at all, then opens one small visible window and works through the rest, roughly three seconds per video, and closes it when it is done. Leave that window on top while it runs: YouTube only builds transcripts in a window it considers visible. Not every video has captions, so the summary at the end lists exactly which ones were skipped and why.
+            </div>
+          </div>
+
+          <div class="faq-item" aria-expanded="false">
+            <button class="faq-q" aria-controls="faq-notebook">
+              <span>What does Send to Gemini Notebook do?</span>
+              <span class="plus" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-notebook">
+              It pushes the videos you selected into a Gemini Notebook (formerly NotebookLM) as sources, either a brand-new notebook or one you already have, without leaving the dashboard. This is the one feature that sends anything off your machine: the links you picked go to Google under your own Google login. Free Gemini Notebook accounts cap a notebook at 50 sources and batches larger than that have not been tested, so keep them under 50 for now. Videos Gemini Notebook cannot ingest, such as ones with no captions, private ones, or ones uploaded in the last few days, come back reported as skipped.
+            </div>
+          </div>
+
+          <div class="faq-item" aria-expanded="false">
             <button class="faq-q" aria-controls="faq-topic">
               <span>How does the By Topic grouping work?</span>
               <span class="plus" aria-hidden="true">+</span>
@@ -629,6 +706,16 @@
             </button>
             <div class="faq-a" id="faq-3">
               No. It uses the same internal endpoints your browser already calls when you use YouTube. No API key, no OAuth, no account setup.
+            </div>
+          </div>
+
+          <div class="faq-item" aria-expanded="false">
+            <button class="faq-q" aria-controls="faq-firefox">
+              <span>Does TidyWL work in Firefox?</span>
+              <span class="plus" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-firefox">
+              Yes, on Firefox 153 or newer. The Firefox build is signed by Mozilla but distributed from tidywl.com rather than published in the add-ons directory, so you install it from the Firefox page on this site: click Install, then accept Firefox's prompt. Updates arrive automatically from the same place. Firefox for Android is not supported yet.
             </div>
           </div>
 
