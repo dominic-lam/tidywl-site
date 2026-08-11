@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TidyWL — Clean Up Your YouTube Watch Later &amp; Beat the 5,000-Video Limit</title>
-  <meta name="description" content="Bulk delete, filter, sort, reorder, and group your YouTube Watch Later by topic or channel. Escape the 5,000-video limit. Works on brand channels. Runs locally, no data sent.">
+  <meta name="description" content="Bulk delete, filter, sort, and group your YouTube Watch Later. Download transcripts in bulk. Escape the 5,000-video limit. Runs locally. Chrome and Firefox.">
 
   <link rel="canonical" href="https://tidywl.com/">
   <link rel="icon" type="image/png" href="assets/icon128.png">
@@ -14,7 +14,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="TidyWL — Clean Up Your YouTube Watch Later &amp; Beat the 5,000-Video Limit">
-  <meta property="og:description" content="Bulk delete, filter, sort, reorder, and group your YouTube Watch Later by topic or channel. Escape the 5,000-video limit. Works on brand channels. Runs locally, no data sent.">
+  <meta property="og:description" content="Bulk delete, filter, sort, and group your YouTube Watch Later. Download transcripts in bulk. Escape the 5,000-video limit. Runs locally. Chrome and Firefox.">
   <meta property="og:image" content="https://tidywl.com/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="TidyWL — Clean Up Your YouTube Watch Later">
-  <meta name="twitter:description" content="Bulk delete, filter, sort, reorder, and group your YouTube Watch Later by topic or channel. Escape the 5,000-video limit. Works on brand channels. Runs locally, no data sent.">
+  <meta name="twitter:description" content="Bulk delete, filter, sort, and group your YouTube Watch Later. Download transcripts in bulk. Escape the 5,000-video limit. Runs locally. Chrome and Firefox.">
   <meta name="twitter:image" content="https://tidywl.com/assets/og-image.png">
 
 {% include fonts.html %}
@@ -51,7 +51,7 @@
     "applicationCategory": "BrowserApplication",
     "operatingSystem": "Chrome",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "description": "Free Chrome extension to clean up YouTube Watch Later. Bulk-delete videos, filter by channel, and stay under YouTube's hidden 5,000-video cap. Local-only, no account.",
+    "description": "Free browser extension for Chrome and Firefox that cleans up YouTube Watch Later. Bulk-delete videos, filter and sort, download transcripts in bulk, send videos to Gemini Notebook, and stay under YouTube's hidden 5,000-video cap. Runs with your existing YouTube session; no account, no API key.",
     "url": "https://tidywl.com",
     "downloadUrl": "https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo",
     "author": {
@@ -151,7 +151,7 @@
         "name": "Is my data sent anywhere?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. Everything runs locally in your browser. No login, no servers, no analytics, no telemetry. The extension calls YouTube's own endpoints (with your existing session) and a public config file on tidywl.com (no identifiers, no payload)."
+          "text": "No — with one exception that you trigger yourself. Everything runs locally in your browser: no login, no servers, no analytics, no telemetry. The extension calls YouTube's own endpoints (with your existing session) and a public config file on tidywl.com (no identifiers, no payload). The exception is Send to Gemini Notebook: if you use it, the video links you selected go to Google's Gemini Notebook using your own Google session, because that is the entire point of the feature. Nothing else ever leaves your machine."
         }
       },
       {
@@ -653,7 +653,7 @@
               <span class="plus" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-5">
-              No. Everything runs locally in your browser. No login, no servers, no analytics, no telemetry. The extension calls YouTube's own endpoints (with your existing session) and a public config file on tidywl.com (no identifiers, no payload).
+              No — with one exception that you trigger yourself. Everything runs locally in your browser: no login, no servers, no analytics, no telemetry. The extension calls YouTube's own endpoints (with your existing session) and a public config file on tidywl.com (no identifiers, no payload). The exception is Send to Gemini Notebook: if you use it, the video links you selected go to Google's Gemini Notebook using your own Google session, because that is the entire point of the feature. Nothing else ever leaves your machine.
             </div>
           </div>
 
@@ -754,12 +754,13 @@
     <div class="section-inner">
       <p class="section-label">Privacy</p>
       <h2 class="section-heading">Your data stays yours</h2>
-      <p>No servers. No tracking. No accounts. TidyWL works entirely in your browser — your YouTube data never leaves your machine.</p>
+      <p>No servers. No tracking. No accounts. TidyWL works in your browser using the YouTube session you already have, and your playlist data stays on your machine.</p>
+      <p class="note">One exception, and you trigger it yourself: Send to Gemini Notebook hands the video links you picked to Google under your own login, because that is the entire point of the feature. Nothing else ever leaves.</p>
       <div class="chips">
         <span class="chip">No Servers</span>
         <span class="chip">No Tracking</span>
         <span class="chip">No Accounts</span>
-        <span class="chip">Local Only</span>
+        <span class="chip">Local by Default</span>
       </div>
     </div>
   </section>

@@ -407,7 +407,9 @@
       color: var(--text-muted); font-size: 0.95rem; line-height: 1.65;
     }
     .faq-item[aria-expanded="true"] .faq-a {
-      max-height: 600px; padding: 0 0 20px;
+      /* 1200px, not 600: the longest answers (privacy, Gemini Notebook) exceed
+         600px of rendered height at a 375px viewport and would clip. */
+      max-height: 1200px; padding: 0 0 20px;
     }
 
     /* ── SUPPORT ── */
@@ -461,7 +463,10 @@
     .privacy { background: var(--bg-alt); text-align: center; }
     .privacy .section-inner { max-width: 640px; }
     .privacy .section-heading { margin-bottom: 16px; }
-    .privacy p { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; }
+    /* :not(.section-label) so the eyebrow keeps its own 0.75rem uppercase accent
+       styling — a bare `.privacy p` outranks `.section-label` on specificity. */
+    .privacy p:not(.section-label) { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; }
+    .privacy .note { font-size: 0.9rem; color: var(--text-muted); margin-top: 14px; }
     .privacy .chips {
       display: inline-flex; gap: 10px; margin-top: 24px; flex-wrap: wrap;
       justify-content: center;
