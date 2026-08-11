@@ -7,6 +7,10 @@
 # cards, and Jekyll reports no error at all. Only the count-parity check catches
 # it — see CLAUDE.md.
 #
+# Chrome Web Store text below was read from the rendered reviews page DOM on
+# 2026-08-11, not transcribed by hand or summarised. Re-read it the same way if
+# you ever doubt a quote; an LLM summary of that page silently paraphrases.
+#
 # Fields
 #   quote        (required) Verbatim review text, WITHOUT surrounding quote
 #                marks — the template adds them. Elide with [...], never
@@ -20,49 +24,138 @@
 #   source_long  (optional) Link text on featured cards. Defaults to `source`.
 #   url          (optional) Permalink to the INDIVIDUAL review. Omit rather than
 #                pointing at the generic store listing — Review.url must resolve
-#                to the review itself.
+#                to the review itself. The store no longer exposes per-review
+#                permalinks in the page, so only older entries carry one.
 #   date         (optional) "YYYY-MM-DD", QUOTED so YAML keeps it a string.
 #                Emitted as datePublished. Only set it if the date is real;
 #                never backfill a guess into structured data.
 #   featured     (optional) true -> big carousel card. Otherwise -> wall of love.
-#                KEEP FEATURED QUOTES UNDER ~200 CHARACTERS: the carousel track
+#                KEEP FEATURED QUOTES UNDER ~230 CHARACTERS: the carousel track
 #                is a single flex line, so every card is as tall as the longest.
+#                Featured count should stay a multiple of 3 (3 per page at
+#                desktop) — 9 gives exactly three full pages.
 
-- quote: "The dev spent DAYS solving why I couldn't get this to work and built a new version that fixed the issue. Beyond 5-star service. The plugin itself works PERFECTLY."
+# ── Featured (carousel) ───────────────────────────────────────────────────────
+
+- quote: "The dev spent DAYS solving why I couldn't get this to work and built a new version that fixed the issue, which is beyond 5-star service! And the plugin itself works PERFECTLY - so grateful for a workaround for Youtube's idiocy!"
   author: "Sia"
   rating: 5
   source: "Chrome Web Store"
   source_long: "Chrome Web Store review"
   url: "https://chromewebstore.google.com/reviews/ea9752f9-5dbe-4723-8033-d81ac9029b6d"
+  date: "2026-04-08"
   featured: true
+
+- quote: "Worked perfectly ! 580+ videos deleted in just 6 minutes ! All I wanted"
+  author: "Matheus Link"
+  rating: 5
+  source: "Chrome Web Store"
+  source_long: "Chrome Web Store review"
+  date: "2026-07-08"
+  featured: true
+
+- quote: "Perfect. I was considering making something like this myself out of frustration, I'm thankful someone already beat me to it. It's wild YouTube hasn't bothered to implement this themselves yet."
+  author: "Heather"
+  rating: 5
+  source: "Chrome Web Store"
+  source_long: "Chrome Web Store review"
+  date: "2026-06-03"
+  featured: true
+
+- quote: "I've been hoping for an extension like this for a long time! Works great and I'm finally organized. Thanks so much!"
+  author: "Katherine Houseal"
+  rating: 5
+  source: "Chrome Web Store"
+  source_long: "Chrome Web Store review"
+  date: "2026-08-07"
+  featured: true
+
+- quote: "Been looking for an extension like this forever. I don't understand why YouTube has a 5k video limit for Watch Later, but no bulk delete function."
+  author: "Bill Shaw"
+  rating: 5
+  source: "Chrome Web Store"
+  source_long: "Chrome Web Store review"
+  date: "2026-08-05"
+  featured: true
+
+- quote: "I've been looking for a tool like this forever - a true time-saver. I really like how the extension will breakdown your list by channel, so that you can see what channels are taking up the most real estate on your list."
+  author: "J May"
+  rating: 5
+  source: "Chrome Web Store"
+  source_long: "Chrome Web Store review"
+  date: "2026-06-13"
+  featured: true
+
+- quote: "By far the best extension to manage the watch later playlist on youtube, it is really easy to understand and use. Don´t get it? don't worry look the video in this page and that's all, clear as water!"
+  author: "Juan David Reyes Lopez"
+  rating: 5
+  source: "Chrome Web Store"
+  source_long: "Chrome Web Store review"
+  date: "2026-07-29"
+  featured: true
+
+- quote: "this is life saving for an adhd brain like mine. manually categorizing my WL was super tedious."
+  author: "Prateek"
+  rating: 5
+  source: "Chrome Web Store"
+  source_long: "Chrome Web Store review"
+  date: "2026-07-06"
+  featured: true
+
+- quote: "Fast and easy to use. Love that you can select videos by topic. Fantastic."
+  author: "Boris Radulovic"
+  rating: 5
+  source: "Chrome Web Store"
+  source_long: "Chrome Web Store review"
+  date: "2026-05-15"
+  featured: true
+
+# ── Wall of love ──────────────────────────────────────────────────────────────
 
 - quote: "The only one that actually worked and was useful."
   author: "Santiago"
   rating: 5
   source: "Chrome Web Store"
-  source_long: "Chrome Web Store review"
   url: "https://chromewebstore.google.com/reviews/2f526726-ed80-449e-92ed-969dbec14079"
-  featured: true
-
-- quote: "Finally — I NEEDED something to categorize my Watch Later videos. So many damn tabs open for later, it was keeping me from using my browser."
-  author: "@DETahaX"
-  source: "YouTube"
-  source_long: "YouTube viewer"
-  url: "https://www.youtube.com/watch?v=JLG_2wGa2eo"
-  featured: true
+  date: "2026-04-09"
 
 - quote: "We were all waiting for an extension like this. Keep up, great job!"
   author: "Donato C."
   rating: 5
   source: "Chrome Web Store"
   url: "https://chromewebstore.google.com/reviews/b111feb6-b00d-40de-8739-72bc8eb968a3"
+  date: "2026-04-19"
 
-- quote: "I was literally searching for something like this. I have soooo many Watch later videos."
-  author: "@JabJab-y8r"
+- quote: "A much needed tool for someone who hoards watch later videos like crazy."
+  author: "Sarick Shah"
+  rating: 5
+  source: "Chrome Web Store"
+  date: "2026-06-15"
+
+- quote: "saved me hours! 10/10 would recommend"
+  author: "Alegria Gaspacho"
+  rating: 5
+  source: "Chrome Web Store"
+  date: "2026-06-09"
+
+- quote: "The most efficient youtube extension ever!"
+  author: "Nisreen Alzaraee"
+  rating: 5
+  source: "Chrome Web Store"
+  date: "2026-07-23"
+
+- quote: "Just what I was looking for. Great app!"
+  author: "Craig Bainton"
+  rating: 5
+  source: "Chrome Web Store"
+  date: "2026-05-02"
+
+- quote: "Finally — I NEEDED something to categorize my Watch Later videos. So many damn tabs open for later, it was keeping me from using my browser."
+  author: "@DETahaX"
   source: "YouTube"
   url: "https://www.youtube.com/watch?v=JLG_2wGa2eo"
 
-- quote: "I just added it."
-  author: "@jeong-ilkajokaya"
+- quote: "I was literally searching for something like this. I have soooo many Watch later videos."
+  author: "@JabJab-y8r"
   source: "YouTube"
   url: "https://www.youtube.com/watch?v=JLG_2wGa2eo"
