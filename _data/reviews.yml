@@ -1,0 +1,68 @@
+# Reviews — single source of truth for BOTH the visible cards in index.html and
+# the JSON-LD `review` array in its <head>. Adding a review is an entry here,
+# never HTML surgery.
+#
+# THIS FILE MUST BE A BARE TOP-LEVEL SEQUENCE. Nest it under a `reviews:` key
+# and `site.data.reviews` becomes a Hash: every loop silently renders zero
+# cards, and Jekyll reports no error at all. Only the count-parity check catches
+# it — see CLAUDE.md.
+#
+# Fields
+#   quote        (required) Verbatim review text, WITHOUT surrounding quote
+#                marks — the template adds them. Elide with [...], never
+#                paraphrase. Escape any internal " as \" in double-quoted YAML.
+#   author       (required) Display name exactly as shown on the source.
+#   rating       (optional) Integer 1-5. OMIT for sources with no star rating
+#                (YouTube comments). Entries without a rating are excluded from
+#                JSON-LD: schema.org Review requires reviewRating, and emitting
+#                one without it produces a GSC "Missing field" warning.
+#   source       (required) Short label: "Chrome Web Store", "YouTube".
+#   source_long  (optional) Link text on featured cards. Defaults to `source`.
+#   url          (optional) Permalink to the INDIVIDUAL review. Omit rather than
+#                pointing at the generic store listing — Review.url must resolve
+#                to the review itself.
+#   date         (optional) "YYYY-MM-DD", QUOTED so YAML keeps it a string.
+#                Emitted as datePublished. Only set it if the date is real;
+#                never backfill a guess into structured data.
+#   featured     (optional) true -> big carousel card. Otherwise -> wall of love.
+#                KEEP FEATURED QUOTES UNDER ~200 CHARACTERS: the carousel track
+#                is a single flex line, so every card is as tall as the longest.
+
+- quote: "The dev spent DAYS solving why I couldn't get this to work and built a new version that fixed the issue. Beyond 5-star service. The plugin itself works PERFECTLY."
+  author: "Sia"
+  rating: 5
+  source: "Chrome Web Store"
+  source_long: "Chrome Web Store review"
+  url: "https://chromewebstore.google.com/reviews/ea9752f9-5dbe-4723-8033-d81ac9029b6d"
+  featured: true
+
+- quote: "The only one that actually worked and was useful."
+  author: "Santiago"
+  rating: 5
+  source: "Chrome Web Store"
+  source_long: "Chrome Web Store review"
+  url: "https://chromewebstore.google.com/reviews/2f526726-ed80-449e-92ed-969dbec14079"
+  featured: true
+
+- quote: "Finally — I NEEDED something to categorize my Watch Later videos. So many damn tabs open for later, it was keeping me from using my browser."
+  author: "@DETahaX"
+  source: "YouTube"
+  source_long: "YouTube viewer"
+  url: "https://www.youtube.com/watch?v=JLG_2wGa2eo"
+  featured: true
+
+- quote: "We were all waiting for an extension like this. Keep up, great job!"
+  author: "Donato C."
+  rating: 5
+  source: "Chrome Web Store"
+  url: "https://chromewebstore.google.com/reviews/b111feb6-b00d-40de-8739-72bc8eb968a3"
+
+- quote: "I was literally searching for something like this. I have soooo many Watch later videos."
+  author: "@JabJab-y8r"
+  source: "YouTube"
+  url: "https://www.youtube.com/watch?v=JLG_2wGa2eo"
+
+- quote: "I just added it."
+  author: "@jeong-ilkajokaya"
+  source: "YouTube"
+  url: "https://www.youtube.com/watch?v=JLG_2wGa2eo"

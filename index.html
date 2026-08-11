@@ -74,28 +74,31 @@
       "bestRating": "5"
     },
     "award": "Featured by Google on the Chrome Web Store",
+    {%- comment -%}
+      Driven by _data/reviews.yml, same file as the visible cards below.
+      Filter BEFORE the loop so forloop.last lands on the real last element —
+      an "if" tag inside the loop emits a trailing comma and invalid JSON.
+      Use "r.rating" (Liquid truthiness), never "r.rating > 0": comparing
+      nil > 0 raises Liquid::ArgumentError and takes the whole page down.
+      Entries without a rating (YouTube comments) are excluded on purpose —
+      schema.org Review requires reviewRating.
+    {%- endcomment -%}
+    {%- assign rated_reviews = site.data.reviews | where_exp: "r", "r.rating" -%}
     "review": [
+    {%- for r in rated_reviews %}
       {
         "@type": "Review",
-        "author": { "@type": "Person", "name": "Sia" },
-        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "The dev spent DAYS solving why I couldn't get this to work and built a new version that fixed the issue. Beyond 5-star service. The plugin itself works PERFECTLY.",
-        "url": "https://chromewebstore.google.com/reviews/ea9752f9-5dbe-4723-8033-d81ac9029b6d"
-      },
-      {
-        "@type": "Review",
-        "author": { "@type": "Person", "name": "Santiago" },
-        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "The only one that actually worked and was useful.",
-        "url": "https://chromewebstore.google.com/reviews/2f526726-ed80-449e-92ed-969dbec14079"
-      },
-      {
-        "@type": "Review",
-        "author": { "@type": "Person", "name": "Donato C." },
-        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "We were all waiting for an extension like this. Keep up, great job!",
-        "url": "https://chromewebstore.google.com/reviews/b111feb6-b00d-40de-8739-72bc8eb968a3"
-      }
+        "author": { "@type": "Person", "name": {{ r.author | jsonify }} },
+        "reviewRating": { "@type": "Rating", "ratingValue": "{{ r.rating }}", "bestRating": "5" },
+        "reviewBody": {{ r.quote | jsonify }}
+        {%- if r.url %},
+        "url": {{ r.url | jsonify }}
+        {%- endif -%}
+        {%- if r.date %},
+        "datePublished": {{ r.date | jsonify }}
+        {%- endif %}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor %}
     ]
   }
   </script>
@@ -515,75 +518,67 @@
       <p class="section-label">Reviews</p>
       <h2 class="section-heading">What users are saying</h2>
 
+      {%- comment -%}
+        Cards come from _data/reviews.yml — the same file that feeds the JSON-LD
+        `review` array in <head>. Add a review there, not here.
+
+        No Schema.org microdata on these cards, deliberately (CLAUDE.md). The
+        JSON-LD is the single source Google parses; duplicating it as microdata
+        creates a parallel set of Reviews and reintroduces the GSC
+        "Missing field itemReviewed" warnings that removing it fixed.
+
+        Ships as a plain grid. scripts-reviews.html adds .is-on to upgrade it
+        into a scroll track — that is the ONLY thing that makes it a carousel.
+        Nothing here is ever display:none, and every quote stays in normal flow,
+        which is what non-JS crawlers see.
+      {%- endcomment -%}
+      {%- assign featured_reviews = site.data.reviews | where_exp: "r", "r.featured" -%}
+      {%- assign more_reviews = site.data.reviews | where_exp: "r", "r.featured != true" -%}
+
       <!-- Tier 1: Featured -->
-      <div class="testimonials-grid">
-
-        <article class="testimonial">
-          <div class="stars">
-            <span aria-label="5 out of 5 stars">★★★★★</span>
-          </div>
-          <blockquote>"The dev spent DAYS solving why I couldn't get this to work and built a new version that fixed the issue. Beyond 5-star service. The plugin itself works PERFECTLY."</blockquote>
-          <div class="author">
-            <span><span class="name">— Sia</span></span>
-            <span class="source"><a href="https://chromewebstore.google.com/reviews/ea9752f9-5dbe-4723-8033-d81ac9029b6d" target="_blank" rel="noopener">Chrome Web Store review</a></span>
-          </div>
-        </article>
-
-        <article class="testimonial">
-          <div class="stars">
-            <span aria-label="5 out of 5 stars">★★★★★</span>
-          </div>
-          <blockquote>"The only one that actually worked and was useful."</blockquote>
-          <div class="author">
-            <span><span class="name">— Santiago</span></span>
-            <span class="source"><a href="https://chromewebstore.google.com/reviews/2f526726-ed80-449e-92ed-969dbec14079" target="_blank" rel="noopener">Chrome Web Store review</a></span>
-          </div>
-        </article>
-
-        <article class="testimonial">
-          <blockquote>"Finally — I NEEDED something to categorize my Watch Later videos. So many damn tabs open for later, it was keeping me from using my browser."</blockquote>
-          <div class="author">
-            <span><span class="name">— @DETahaX</span></span>
-            <span class="source"><a href="https://www.youtube.com/watch?v=JLG_2wGa2eo" target="_blank" rel="noopener">YouTube viewer</a></span>
-          </div>
-        </article>
-
+      <div class="reviews" data-reviews-carousel>
+        <div class="testimonials-grid" id="reviews-track">
+          {%- for r in featured_reviews %}
+          <article class="testimonial">
+            {%- if r.rating %}
+            <div class="stars">
+              <span aria-label="{{ r.rating }} out of 5 stars">{% for i in (1..r.rating) %}★{% endfor %}</span>
+            </div>
+            {%- endif %}
+            <blockquote>"{{ r.quote }}"</blockquote>
+            <div class="author">
+              <span><span class="name">— {{ r.author }}</span></span>
+              {%- if r.url %}
+              <span class="source"><a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.source_long | default: r.source }}</a></span>
+              {%- else %}
+              <span class="source">{{ r.source_long | default: r.source }}</span>
+              {%- endif %}
+            </div>
+          </article>
+          {%- endfor %}
+        </div>
       </div>
 
       <!-- Tier 2: Wall of love -->
       <p class="wall-of-love-label">More from the community</p>
       <div class="wall-of-love-grid">
-
+        {%- for r in more_reviews %}
         <article class="wall-blurb">
-          <blockquote>"We were all waiting for an extension like this. Keep up, great job!"</blockquote>
+          <blockquote>"{{ r.quote }}"</blockquote>
           <div class="meta">
-            <span class="stars" aria-label="5 out of 5 stars">
-              ★★★★★
-            </span>
-            <span><span class="author-name">Donato C.</span></span>
+            {%- if r.rating %}
+            <span class="stars" aria-label="{{ r.rating }} out of 5 stars">{% for i in (1..r.rating) %}★{% endfor %}</span>
+            {%- endif %}
+            <span><span class="author-name">{{ r.author }}</span></span>
             <span aria-hidden="true">·</span>
-            <a href="https://chromewebstore.google.com/reviews/b111feb6-b00d-40de-8739-72bc8eb968a3" target="_blank" rel="noopener">Chrome Web Store</a>
+            {%- if r.url %}
+            <a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.source }}</a>
+            {%- else %}
+            <span>{{ r.source }}</span>
+            {%- endif %}
           </div>
         </article>
-
-        <article class="wall-blurb">
-          <blockquote>"I was literally searching for something like this. I have soooo many Watch later videos."</blockquote>
-          <div class="meta">
-            <span><span class="author-name">@JabJab-y8r</span></span>
-            <span aria-hidden="true">·</span>
-            <a href="https://www.youtube.com/watch?v=JLG_2wGa2eo" target="_blank" rel="noopener">YouTube</a>
-          </div>
-        </article>
-
-        <article class="wall-blurb">
-          <blockquote>"I just added it."</blockquote>
-          <div class="meta">
-            <span><span class="author-name">@jeong-ilkajokaya</span></span>
-            <span aria-hidden="true">·</span>
-            <a href="https://www.youtube.com/watch?v=JLG_2wGa2eo" target="_blank" rel="noopener">YouTube</a>
-          </div>
-        </article>
-
+        {%- endfor %}
       </div>
     </div>
   </section>
