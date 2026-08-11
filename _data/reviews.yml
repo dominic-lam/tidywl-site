@@ -24,8 +24,15 @@
 #   source_long  (optional) Link text on featured cards. Defaults to `source`.
 #   url          (optional) Permalink to the INDIVIDUAL review. Omit rather than
 #                pointing at the generic store listing — Review.url must resolve
-#                to the review itself. The store no longer exposes per-review
-#                permalinks in the page, so only older entries carry one.
+#                to the review itself.
+#
+#                To find one: the store renders no review links, but each
+#                review's options menu contains <li data-ugc-id="UUID">, and
+#                https://chromewebstore.google.com/reviews/UUID is the
+#                permalink. Each review carries TWO such ids — the first is the
+#                review, the second is the developer reply. Verify before use:
+#                a real one 302s to /detail/<extension-id>/reviews/UUID, while
+#                a reply id or a bad guess 302s to /detail/not_found/.
 #   date         (optional) "YYYY-MM-DD", QUOTED so YAML keeps it a string.
 #                Emitted as datePublished. Only set it if the date is real;
 #                never backfill a guess into structured data.
@@ -51,6 +58,7 @@
   rating: 5
   source: "Chrome Web Store"
   source_long: "Chrome Web Store review"
+  url: "https://chromewebstore.google.com/reviews/93523ccf-e101-409c-8318-03136e5d9aaa"
   date: "2026-07-08"
   featured: true
 
@@ -59,6 +67,7 @@
   rating: 5
   source: "Chrome Web Store"
   source_long: "Chrome Web Store review"
+  url: "https://chromewebstore.google.com/reviews/2b6a129c-765f-48ac-9f3c-6d16f6fb77e8"
   date: "2026-06-03"
   featured: true
 
@@ -67,6 +76,7 @@
   rating: 5
   source: "Chrome Web Store"
   source_long: "Chrome Web Store review"
+  url: "https://chromewebstore.google.com/reviews/96f77caa-8975-4fb2-9f98-4a0861f5e1d3"
   date: "2026-08-07"
   featured: true
 
@@ -75,6 +85,7 @@
   rating: 5
   source: "Chrome Web Store"
   source_long: "Chrome Web Store review"
+  url: "https://chromewebstore.google.com/reviews/4092b47c-a820-41c5-af59-c89ba1cbeab3"
   date: "2026-08-05"
   featured: true
 
@@ -83,6 +94,7 @@
   rating: 5
   source: "Chrome Web Store"
   source_long: "Chrome Web Store review"
+  url: "https://chromewebstore.google.com/reviews/6930d6d5-2eae-45eb-bc7e-4aeea9134117"
   date: "2026-06-13"
   featured: true
 
@@ -91,6 +103,7 @@
   rating: 5
   source: "Chrome Web Store"
   source_long: "Chrome Web Store review"
+  url: "https://chromewebstore.google.com/reviews/b2a44f4d-3ca3-459b-9269-c09462e7971e"
   date: "2026-07-29"
   featured: true
 
@@ -99,6 +112,7 @@
   rating: 5
   source: "Chrome Web Store"
   source_long: "Chrome Web Store review"
+  url: "https://chromewebstore.google.com/reviews/e8a7d1ba-c84b-4c3f-a0c2-0e950a5cd9c3"
   date: "2026-07-06"
   featured: true
 
@@ -107,6 +121,7 @@
   rating: 5
   source: "Chrome Web Store"
   source_long: "Chrome Web Store review"
+  url: "https://chromewebstore.google.com/reviews/35787d10-371d-47f4-be3b-bb4ad32afc48"
   date: "2026-05-15"
   featured: true
 
@@ -130,24 +145,28 @@
   author: "Sarick Shah"
   rating: 5
   source: "Chrome Web Store"
+  url: "https://chromewebstore.google.com/reviews/94b0f127-26b9-4867-a15f-bebab0862170"
   date: "2026-06-15"
 
 - quote: "saved me hours! 10/10 would recommend"
   author: "Alegria Gaspacho"
   rating: 5
   source: "Chrome Web Store"
+  url: "https://chromewebstore.google.com/reviews/97ef21c7-732a-4302-a91b-da714653d1a2"
   date: "2026-06-09"
 
 - quote: "The most efficient youtube extension ever!"
   author: "Nisreen Alzaraee"
   rating: 5
   source: "Chrome Web Store"
+  url: "https://chromewebstore.google.com/reviews/3b849379-c251-41e0-8fc2-8b7cf4c4f31a"
   date: "2026-07-23"
 
 - quote: "Just what I was looking for. Great app!"
   author: "Craig Bainton"
   rating: 5
   source: "Chrome Web Store"
+  url: "https://chromewebstore.google.com/reviews/94633ba3-15d3-4ade-8a23-65b445f8b5fd"
   date: "2026-05-02"
 
 - quote: "Finally — I NEEDED something to categorize my Watch Later videos. So many damn tabs open for later, it was keeping me from using my browser."
