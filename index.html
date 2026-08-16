@@ -85,6 +85,7 @@
       "reviewCount": "{{ site.data.cws-rating.reviewCount }}",
       "bestRating": "5"
     },
+    "publisher": { "@id": "https://tidywl.com/#organization" },
     "award": "Featured by Google on the Chrome Web Store",
     {%- comment -%}
       Driven by _data/reviews.yml, same file as the visible cards below.
@@ -114,6 +115,8 @@
     ]
   }
   </script>
+
+{% include schema-organization.html %}
 
   <!-- JSON-LD: FAQPage -->
   <script type="application/ld+json">

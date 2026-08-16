@@ -8,6 +8,15 @@ layout: default
     <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
     <span class="dot" aria-hidden="true">·</span>
     <span>{{ content | number_of_words | divided_by: 200 | plus: 1 }} min read</span>
+    {%- comment -%}
+      Only rendered when the post has actually been revised. Showing "Updated"
+      on every post with the published date would be a freshness signal that
+      means nothing, which is worse than no signal at all.
+    {%- endcomment -%}
+    {%- if page.last_modified_at and page.last_modified_at != page.date %}
+    <span class="dot" aria-hidden="true">·</span>
+    <span>Updated <time datetime="{{ page.last_modified_at | date_to_xmlschema }}">{{ page.last_modified_at | date: "%B %-d, %Y" }}</time></span>
+    {%- endif %}
   </p>
 
   <div class="post-body">

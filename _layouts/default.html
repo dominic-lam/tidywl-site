@@ -61,14 +61,48 @@
       "name": "Dominic Lam",
       "url": "https://github.com/dominic-lam"
     },
-    "publisher": {
-      "@type": "Organization",
-      "name": "TidyWL",
-      "url": "{{ site.url }}"
-    }
+    "publisher": { "@id": "{{ site.url }}/#organization" }
   }
   </script>
   {% endif %}
+
+  {%- comment -%}
+    BlogPosting for every post. Previously posts emitted only BreadcrumbList and
+    FAQPage, so headline, author, datePublished and wordCount were invisible to
+    machines on six pieces of long-form content.
+
+    dateModified falls back to date, because schema.org treats a missing
+    dateModified as unknown rather than "same as published". Set
+    last_modified_at in a post's front matter when you actually revise it —
+    never bump it for a typo, since a freshness signal that does not correspond
+    to changed content is just noise.
+  {%- endcomment -%}
+  {% if page.layout == 'post' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": {{ page.title | jsonify }},
+    "description": {{ page.description | default: site.description | jsonify }},
+    "url": "{{ site.url }}{{ page.url }}",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ site.url }}{{ page.url }}" },
+    "datePublished": "{{ page.date | date_to_xmlschema }}",
+    "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+    "wordCount": {{ content | number_of_words }},
+    "inLanguage": "en",
+    "image": "{{ site.url }}{{ page.og_image | default: '/assets/og-image.png' }}",
+    "author": {
+      "@type": "Person",
+      "name": "Dominic Lam",
+      "url": "https://github.com/dominic-lam"
+    },
+    "publisher": { "@id": "{{ site.url }}/#organization" },
+    "isPartOf": { "@type": "Blog", "name": "TidyWL Blog", "url": "{{ site.url }}/blog/" }
+  }
+  </script>
+  {% endif %}
+
+{% include schema-organization.html %}
 
   {% if page.layout == 'post' %}
   <script type="application/ld+json">

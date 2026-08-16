@@ -1,0 +1,40 @@
+{%- comment -%}
+  Organization as a first-class entity, not just a nested publisher.
+
+  Lives in an include because the landing page and the blog layout have separate
+  <head> blocks, and this must be defined ONCE: the @id is what lets
+  SoftwareApplication.publisher, Blog.publisher and BlogPosting.publisher all
+  point at a single entity instead of restating it and risking three slightly
+  different Organizations. Duplicating the literal here would defeat that.
+
+  Note this is not the landing page's SoftwareApplication or FAQPage — those
+  stay inline in index.html per CLAUDE.md. This is a new, shared block.
+{%- endcomment -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "{{ site.url }}/#organization",
+    "name": "TidyWL",
+    "alternateName": "YouTube Watch Later Tidy",
+    "url": "{{ site.url }}",
+    "description": {{ site.description | jsonify }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ site.url }}/assets/icon128.png",
+      "width": 128,
+      "height": 128
+    },
+    "founder": {
+      "@type": "Person",
+      "name": "Dominic Lam",
+      "url": "https://github.com/dominic-lam"
+    },
+    "sameAs": [
+      "https://github.com/dominic-lam/tidywl",
+      "https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo",
+      "https://discord.gg/natc623GhX",
+      "https://ko-fi.com/dominiclam"
+    ]
+  }
+  </script>
