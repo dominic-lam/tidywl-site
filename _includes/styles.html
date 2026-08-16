@@ -180,6 +180,62 @@
     }
     .hero-trust-pill svg { color: var(--text-subtle); flex-shrink: 0; }
 
+    /* ── HERO PRODUCT SHOT ──
+       The screenshot is a light-theme capture, so in dark mode it is a bright
+       rectangle no matter what. It is framed rather than filtered: a filter
+       would misrepresent what the product actually looks like. The padded
+       surround gives it an edge to sit against in both themes. */
+    .hero-shot {
+      margin: 44px auto 0;
+      max-width: 835px;                 /* image + 2x24px surround */
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 12px 4px;
+      box-shadow: var(--shadow-accent);
+    }
+    .hero-shot img {
+      display: block; width: 100%; height: auto;
+      border-radius: 8px; border: 1px solid var(--border-subtle);
+    }
+    .hero-shot figcaption {
+      font-size: 0.82rem; color: var(--text-muted);
+      padding: 10px 6px 8px; text-wrap: pretty;
+    }
+
+    /* ── BEFORE / AFTER ──
+       No connecting arrow between the columns on purpose: it would still point
+       sideways once they stack, and this codebase has no width media queries to
+       reorient it with. The two states are distinguished by styling instead. */
+    .beforeafter { background: var(--bg-alt); }
+    .ba-grid {
+      display: grid; gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      align-items: stretch;
+    }
+    .ba-col {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 22px;
+    }
+    .ba-col.ba-after { background: var(--highlight-bg); border-color: var(--highlight-border); }
+    .ba-head {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-subtle); margin-bottom: 14px;
+    }
+    .ba-after .ba-head { color: var(--accent); }
+    .ba-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .ba-col li {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 0.95rem; line-height: 1.5; text-wrap: pretty;
+    }
+    .ba-col li::before {
+      flex-shrink: 0; font-weight: 700; line-height: 1.45;
+    }
+    .ba-before li { color: var(--text-muted); }
+    .ba-before li::before { content: "\00d7"; color: var(--text-subtle); }
+    .ba-after li { color: var(--text); }
+    .ba-after li::before { content: "\2713"; color: var(--accent); }
+
     /* ── SECTION SHARED ── */
     section { padding: 88px 24px; }
     .section-inner { max-width: 1040px; margin: 0 auto; }

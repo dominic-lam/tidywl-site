@@ -1,0 +1,92 @@
+---
+layout: default
+title: How to Bulk Delete YouTube Watch Later Videos
+description: YouTube has no bulk delete for Watch Later. Here is how to remove hundreds of videos at once, why the playlist stops at 5,000, and what to do when the list is too long to scroll.
+permalink: /bulk-delete-watch-later/
+faq:
+  - q: "Can you bulk delete YouTube Watch Later videos natively?"
+    a: "No. YouTube gives you no multi-select and no select-all for Watch Later. The only built-in way to remove a video is the three-dot menu on that single video, which means three clicks per video and a page that re-renders after each one. There is a Remove watched videos option, but it only clears videos YouTube considers fully watched, so it does nothing for a list of things you never got round to."
+  - q: "How do I delete all my Watch Later videos at once?"
+    a: "Install TidyWL, open your Watch Later page, click Open Dashboard and hit Sync. Press Cmd+A or Ctrl+A to select every video, then Delete. Deletion runs one video at a time because YouTube rejects parallel edits to a playlist with a 409 error, so a few hundred videos takes a few minutes. The dashboard shows live progress and you can stop it at any point without losing count."
+  - q: "Why does bulk deleting take a few minutes instead of being instant?"
+    a: "YouTube's own playlist endpoint returns a 409 Conflict if you send edits in parallel, so removals have to be sequential. That is a limit on YouTube's side, not a throttle TidyWL adds. Roughly, expect a few hundred videos per few minutes. Leave the tab open while it runs."
+  - q: "Can I delete only some videos, like everything from one channel?"
+    a: "Yes, and this is usually the better move. The dashboard breaks your Watch Later down by channel and by topic, so you can click one channel, see only its videos, select all of them, and delete. You can also filter by watched status, by availability, or by duration, including a Shorts bucket and your own minimum and maximum in minutes."
+  - q: "Is bulk deleting reversible?"
+    a: "No. Removals are permanent on YouTube's side and there is no undo, in TidyWL or in YouTube. Export your list to JSON or CSV first if you want a record of what was there. Export takes one click and reflects whatever filter you currently have applied."
+  - q: "Will this delete the videos themselves or unsubscribe me from anything?"
+    a: "No. Removing a video from Watch Later only removes it from that playlist. The video stays on YouTube, your subscriptions are untouched, your other playlists are untouched, and your watch history is untouched."
+  - q: "How do I get rid of deleted and private videos in Watch Later?"
+    a: "Those show up as unavailable placeholders and they still count toward the 5,000 cap, which is why clearing them frees real space. TidyWL has an Unavailable filter that surfaces them so you can select and remove them in one pass. YouTube hides them from its own playlist API, so the dashboard also explains why its count and yours can differ."
+---
+<section class="blog-wrap">
+  <h1 class="blog-title">How to bulk delete YouTube Watch Later videos</h1>
+  <p class="blog-subtitle">YouTube never built a bulk delete. Here is how to clear hundreds of videos in one pass instead of three clicks at a time.</p>
+
+  <div class="post-body">
+    <p><strong>Short answer:</strong> YouTube has no native bulk delete for Watch Later — the only built-in option is the three-dot menu on one video at a time. To remove videos in bulk you need an extension. <a href="/">TidyWL</a> adds checkboxes, select-all, and filters to the playlist, so you can clear hundreds of videos in a single pass, and it is free.</p>
+
+    <figure class="hero-shot">
+      <img src="/assets/dashboard-channel-breakdown.png"
+           alt="The TidyWL dashboard showing a Watch Later playlist of 3,520 videos broken down by channel, with a bar per channel and a video count beside each."
+           width="787" height="581">
+      <figcaption>Watch Later broken down by channel. Click a row to filter to it, select all, delete.</figcaption>
+    </figure>
+
+    <h2>Why YouTube makes this so hard</h2>
+    <p>Watch Later is the one playlist YouTube treats as a dead end. There is no multi-select, no select-all, and no bulk remove in the interface. The official YouTube Data API, which third-party tools would normally use, <em>explicitly excludes</em> Watch Later — so even a well-behaved app cannot touch it through supported channels.</p>
+    <p>There is a <strong>Remove watched videos</strong> option in the playlist menu, and it is worth trying first because it is free and native. It only clears videos YouTube considers fully watched, though, which is usually a small fraction of a list that grew because you never got round to watching any of it.</p>
+    <p>Meanwhile the playlist stops accepting new videos at 5,000, silently. Nothing warns you; saves simply stop working. That is covered in more depth in <a href="/blog/youtube-watch-later-5000-limit/">the 5,000-video limit explained</a>.</p>
+
+    <h2>The manual method, and what it costs</h2>
+    <ol>
+      <li>Open your <a href="https://www.youtube.com/playlist?list=WL" target="_blank" rel="noopener">Watch Later playlist</a>.</li>
+      <li>Hover a video and click the three-dot menu.</li>
+      <li>Choose <strong>Remove from Watch Later</strong>.</li>
+      <li>Wait for the list to re-render, find your place again, repeat.</li>
+    </ol>
+    <p>That is roughly three clicks and a re-render per video. For a list of 2,000 it is not a task you finish in an evening. This is the entire reason bulk tools exist.</p>
+
+    <h2>Bulk deleting with TidyWL</h2>
+    <ol>
+      <li>Install TidyWL for <a href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Chrome</a> or <a href="/firefox/">Firefox</a>.</li>
+      <li>Go to your Watch Later page and click <strong>Open Dashboard</strong>.</li>
+      <li>Click <strong>Sync</strong> to pull in the full playlist.</li>
+      <li>Select what you want gone — individually, by dragging across a range with shift-click, by clicking a channel or topic to filter first, or with <strong>Cmd/Ctrl+A</strong> for everything.</li>
+      <li>Press <strong>Delete</strong> and confirm.</li>
+    </ol>
+    <p>Deletion runs sequentially, because YouTube returns a 409 Conflict when playlist edits arrive in parallel. That is a constraint on their side rather than a limit TidyWL imposes. Progress is shown live, and you can stop mid-run without losing an accurate count of what was removed.</p>
+
+    <h2>Usually better than deleting everything</h2>
+    <p>Clearing the whole playlist is the blunt option, and most people regret it. The faster fix is to delete the bulk of it and keep what you actually wanted:</p>
+    <ul>
+      <li><strong>By channel.</strong> The dashboard ranks every channel by how many videos it has put in your queue. One binge from three months ago is often several hundred videos.</li>
+      <li><strong>By topic.</strong> Titles are clustered by recurring keywords, entirely in your browser, so you can clear a whole subject you have lost interest in.</li>
+      <li><strong>Unavailable only.</strong> Deleted and private videos still count toward the 5,000 cap. Clearing them frees real space and costs you nothing.</li>
+      <li><strong>By length.</strong> Filter to Shorts, or to anything over an hour, or set your own minimum and maximum in minutes.</li>
+      <li><strong>Move instead of delete.</strong> Anything worth keeping can be bulk-moved or copied into a normal playlist, which has no 5,000 cap on saving new items to Watch Later afterwards.</li>
+    </ul>
+
+    <h2>Before you delete anything</h2>
+    <p>Removals are permanent — YouTube offers no undo and neither does TidyWL. Export to JSON or CSV first if you want a record; it is one click and it exports whatever your current filter shows. Removing a video from Watch Later does not delete the video, touch your subscriptions, or alter your watch history.</p>
+  </div>
+
+  <div class="post-faq">
+    <h2>Frequently asked</h2>
+    {% for item in page.faq %}
+    <div class="faq-item" aria-expanded="false">
+      <button class="faq-q" aria-controls="bd-faq-{{ forloop.index }}">
+        <span>{{ item.q }}</span>
+        <span class="plus" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-a" id="bd-faq-{{ forloop.index }}">
+        {{ item.a }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="post-footer">
+    <p><a href="/">See everything TidyWL does</a>, or read about <a href="/blog/youtube-watch-later-5000-limit/">why Watch Later caps at 5,000</a> and <a href="/blog/clean-up-unavailable-videos-youtube-watch-later/">how to clear unavailable videos</a>.</p>
+  </div>
+</section>
