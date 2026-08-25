@@ -6,10 +6,12 @@
     "getPanel":       "/youtubei/v1/get_panel?prettyPrint=false",
     "createPlaylist": "/youtubei/v1/playlist/create?prettyPrint=false",
     "player":         "/youtubei/v1/player?prettyPrint=false",
-    "getTranscript":  "/youtubei/v1/get_transcript?prettyPrint=false"
+    "getTranscript":  "/youtubei/v1/get_transcript?prettyPrint=false",
+    "removeLike":     "/youtubei/v1/like/removelike?prettyPrint=false"
   },
   "constants": {
     "watchLaterBrowseId":       "VLWL",
+    "browseIdPrefix": "VL",
     "watchLaterInitialParams":  "wgYCCAA%3D",
     "watchLaterPlaylistId":     "WL",
     "editPlaylistParams":       "CAFAAQ%3D%3D",
@@ -21,7 +23,8 @@
     "removeVideo":     "ACTION_REMOVE_VIDEO",
     "addVideo":        "ACTION_ADD_VIDEO",
     "moveVideoAfter":  "ACTION_MOVE_VIDEO_AFTER",
-    "moveVideoBefore": "ACTION_MOVE_VIDEO_BEFORE"
+    "moveVideoBefore": "ACTION_MOVE_VIDEO_BEFORE",
+    "removeVideoByVideoId": "ACTION_REMOVE_VIDEO_BY_VIDEO_ID"
   },
   "browseResponse": {
     "initialItemsPath": [
@@ -33,7 +36,10 @@
       "onResponseReceivedActions", 0, "appendContinuationItemsAction", "continuationItems"
     ],
     "headerTitlePath":      ["header", "playlistHeaderRenderer", "title", "simpleText"],
-    "headerVideoCountPath": ["header", "playlistHeaderRenderer", "numVideosText", "runs", 0, "text"]
+    "headerVideoCountPath": ["header", "playlistHeaderRenderer", "numVideosText", "runs", 0, "text"],
+    "additionalInitialItemsPaths": [
+      ["contents", "twoColumnBrowseResultsRenderer", "tabs", 0, "tabRenderer", "content", "sectionListRenderer", "contents", 0, "itemSectionRenderer", "contents"]
+    ]
   },
   "videoFields": {
     "wrapperKey":              "playlistVideoRenderer",
@@ -63,6 +69,36 @@
     "primaryTokenSubPath": ["continuationCommand", "token"],
     "fallbackTokenPath":   ["continuationCommand", "token"]
   },
+  "additionalVideoRenderers": {
+    "lockupViewModel": {
+      "wrapperKey":            "lockupViewModel",
+      "parser":                "lockup",
+      "videoIdPath":           ["contentId"],
+      "contentTypePath":       ["contentType"],
+      "videoContentType":      "LOCKUP_CONTENT_TYPE_VIDEO",
+      "titlePath":             ["metadata", "lockupMetadataViewModel", "title", "content"],
+      "metadataRowsPath":      ["metadata", "lockupMetadataViewModel", "metadata", "contentMetadataViewModel", "metadataRows"],
+      "rowPartsPath":          ["metadataParts"],
+      "partTextPath":          ["text", "content"],
+      "channelMarkerPath":     ["text", "commandRuns"],
+      "channelIdPath":         ["text", "commandRuns", 0, "onTap", "innertubeCommand", "browseEndpoint", "browseId"],
+      "overlaysPath":          ["contentImage", "thumbnailViewModel", "overlays"],
+      "bottomOverlayKey":      "thumbnailBottomOverlayViewModel",
+      "durationBadgesPath":    ["badges"],
+      "durationBadgeTextPath": ["thumbnailBadgeViewModel", "text"],
+      "progressPercentPath":   ["progressBar", "thumbnailOverlayProgressBarViewModel", "startPercent"],
+      "urlTemplate":           "https://www.youtube.com/watch?v={videoId}"
+    }
+  },
+  "additionalContinuationShapes": [
+    {
+      "wrapperKey":          "continuationItemViewModel",
+      "endpointPath":        ["continuationCommand", "innertubeCommand"],
+      "primaryCommandsPath": ["commandExecutorCommand", "commands"],
+      "primaryTokenSubPath": ["continuationCommand", "token"],
+      "fallbackTokenPath":   ["continuationCommand", "token"]
+    }
+  ],
   "panelResponse": {
     "itemsPath":            ["content", "sheetViewModel", "content", "listViewModel", "listItems"],
     "wrapperKey":           "toggleableListItemViewModel",
