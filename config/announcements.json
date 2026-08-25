@@ -1,31 +1,31 @@
 {
   "announcements": [
     {
-      "id": "v1.4.0-release",
-      "title": "What's New in v1.4.0",
+      "id": "v1.5.0-release",
+      "title": "What's New in v1.5.0",
       "bullets": [
-        "Send to Gemini Notebook — push your selected videos straight into a notebook as sources, without leaving the dashboard",
-        "Download transcripts in bulk — select any number of videos and get a text file per video, named after the video and timestamped line by line",
-        "TidyWL checks which videos actually have captions first, and tells you exactly which ones it couldn't get and why",
-        "Exclude videos by topic — hide whole topics from the list instead of filtering down to one",
-        "Sort by views, and see which version of TidyWL you're running in the dashboard header"
+        "Liked videos — a new switch in the dashboard header opens your Liked list in the same dashboard: channel and topic breakdowns, search, every sort and filter, and export",
+        "Remove likes, one at a time or in bulk — on the Liked tab the delete button becomes \"Remove likes\", with the same confirmation, progress and stop button",
+        "Each playlist keeps its own cache and its own sync time, so your Watch Later data is untouched",
+        "Filter by how far through a video you got — a slider under Watched with marks at 25 / 50 / 75 / 100, or type any exact number",
+        "Fixed: the Watched filter came back empty unless your YouTube was set to English. It works in every language now, and starts working straight away with no re-sync"
       ],
       "type": "info",
-      "created_at": "2026-08-05",
-      "expires_at": "2026-11-05"
+      "created_at": "2026-08-25",
+      "expires_at": "2026-11-25"
     },
     {
-      "id": "2026-08-05-v1.4.0-manual-update-nudge",
-      "title": "YouTube Watch Later Tidy v1.4.0 is live — force-update if you don't have it yet",
+      "id": "2026-08-25-v1.5.0-manual-update-nudge",
+      "title": "YouTube Watch Later Tidy v1.5.0 is live — force-update if you don't have it yet",
       "bullets": [
         "Open a new tab and go to chrome://extensions",
         "Top-right corner: turn on Developer mode",
         "Top-left corner: click the \"Update\" button",
-        "Reload your YouTube tab — you should now be on v1.4.0 (the version is shown under the dashboard title)"
+        "Reload your YouTube tab — you should now be on v1.5.0 (the version is shown under the dashboard title)"
       ],
       "type": "warning",
-      "created_at": "2026-08-05",
-      "expires_at": "2026-08-26"
+      "created_at": "2026-08-25",
+      "expires_at": "2026-09-15"
     }
   ]
 }
