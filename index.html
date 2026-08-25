@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TidyWL — Clean Up Your YouTube Watch Later &amp; Beat the 5,000-Video Limit</title>
-  <meta name="description" content="Bulk delete, filter, sort, and group your YouTube Watch Later. Download transcripts in bulk. Escape the 5,000-video limit. Runs locally. Chrome and Firefox.">
+  <meta name="description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts, no 5,000-video wall. Runs locally. Chrome and Firefox.">
 
   <link rel="canonical" href="https://tidywl.com/">
   <link rel="icon" type="image/png" href="assets/icon128.png">
@@ -14,7 +14,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="TidyWL — Clean Up Your YouTube Watch Later &amp; Beat the 5,000-Video Limit">
-  <meta property="og:description" content="Bulk delete, filter, sort, and group your YouTube Watch Later. Download transcripts in bulk. Escape the 5,000-video limit. Runs locally. Chrome and Firefox.">
+  <meta property="og:description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts, no 5,000-video wall. Runs locally. Chrome and Firefox.">
   <meta property="og:image" content="https://tidywl.com/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="TidyWL — Clean Up Your YouTube Watch Later">
-  <meta name="twitter:description" content="Bulk delete, filter, sort, and group your YouTube Watch Later. Download transcripts in bulk. Escape the 5,000-video limit. Runs locally. Chrome and Firefox.">
+  <meta name="twitter:description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts, no 5,000-video wall. Runs locally. Chrome and Firefox.">
   <meta name="twitter:image" content="https://tidywl.com/assets/og-image.png">
 
 {% include fonts.html %}
@@ -52,7 +52,7 @@
     "operatingSystem": "Chrome, Firefox",
     "softwareRequirements": "Google Chrome, or Firefox 153 or newer",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "description": "Free browser extension for Chrome and Firefox that cleans up YouTube Watch Later. Bulk-delete videos, filter and sort, download transcripts in bulk, send videos to Gemini Notebook, and stay under YouTube's hidden 5,000-video cap. Runs with your existing YouTube session; no account, no API key.",
+    "description": "Free browser extension for Chrome and Firefox that cleans up YouTube Watch Later and Liked videos. Search across thousands of saved videos, bulk-delete, remove likes in bulk, filter and sort, download transcripts in bulk, send videos to Gemini Notebook, and stay under YouTube's hidden 5,000-video cap. Runs with your existing YouTube session; no account, no API key.",
     "url": "https://tidywl.com",
     "downloadUrl": "https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo",
     "author": {
@@ -62,12 +62,16 @@
     },
     "featureList": [
       "Bulk delete videos from YouTube Watch Later",
+      "Manage YouTube Liked videos in the same dashboard",
+      "Remove likes in bulk from YouTube Liked videos",
+      "Filter by watch progress with an adjustable threshold",
       "Stay under YouTube's hidden 5,000-video Watch Later cap",
       "Download video transcripts in bulk as timestamped text files",
       "Send selected videos to Gemini Notebook (formerly NotebookLM) as sources",
       "Channel breakdown dashboard",
       "Group Watch Later by topic, and hide topics you do not want to see",
-      "Search and filter by title, channel, watched status, availability, or duration",
+      "Search thousands of saved videos by title or channel",
+      "Filter by title, channel, watched status, availability, or duration",
       "Custom duration range filter in minutes",
       "Sort by playlist order, duration, views, published date, channel, or title",
       "Move or copy videos to another playlist, and create playlists inline",
@@ -242,7 +246,7 @@
   <section class="hero">
     <img src="assets/icon128.png" alt="TidyWL icon" class="hero-icon" width="88" height="88">
     <h1>Your YouTube Watch Later hit <span class="em">5,000 videos</span>?</h1>
-    <p class="tagline">TidyWL is a free extension for Chrome and Firefox that bulk-deletes, filters, and organizes your Watch Later — and downloads transcripts in bulk. No account. Nothing leaves your browser unless you ask it to.</p>
+    <p class="tagline">TidyWL is a free extension for Chrome and Firefox that searches, bulk-deletes, filters, and organizes your Watch Later — and now your Liked videos too. Bulk transcript download included. No account. Nothing leaves your browser unless you ask it to.</p>
 
     <div class="cta-row">
       <a class="btn-primary" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">
@@ -282,14 +286,24 @@
       </span>
     </div>
 
-    <!-- Product shot in the hero: the page previously showed nothing of the
-         actual dashboard above the fold, only a click-to-play video embed. -->
-    <figure class="hero-shot">
-      <img src="assets/dashboard-channel-breakdown.png"
-           alt="The TidyWL dashboard showing a Watch Later playlist of 3,520 videos broken down by channel, with a bar per channel and a video count beside each."
-           width="787" height="581" fetchpriority="high">
-      <figcaption>Your Watch Later, broken down by channel. Click a row to filter to it, then delete in bulk.</figcaption>
-    </figure>
+  </section>
+
+  <!-- ── DEMO VIDEO ── -->
+  <section class="demo-section">
+    <p class="demo-label">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polygon points="6 3 20 12 6 21 6 3"/>
+      </svg>
+      Watch the demo
+    </p>
+    <div class="video-wrapper">
+      <iframe
+        src="https://www.youtube.com/embed/JLG_2wGa2eo"
+        title="TidyWL demo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy"></iframe>
+    </div>
   </section>
 
   <!-- ── BEFORE / AFTER ── -->
@@ -321,24 +335,6 @@
           </ul>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ── DEMO VIDEO ── -->
-  <section class="demo-section">
-    <p class="demo-label">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <polygon points="6 3 20 12 6 21 6 3"/>
-      </svg>
-      Watch the demo
-    </p>
-    <div class="video-wrapper">
-      <iframe
-        src="https://www.youtube.com/embed/JLG_2wGa2eo"
-        title="TidyWL demo"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        loading="lazy"></iframe>
     </div>
   </section>
 
@@ -376,6 +372,29 @@
           <h3>Beat the 5,000 Limit</h3>
           <p>YouTube silently stops saving videos past 5,000. TidyWL helps you clean out old videos so you can keep adding new ones.</p>
           <span class="pill">Unique to TidyWL</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+            </svg>
+          </div>
+          <h3>Liked Videos Too</h3>
+          <p>Years of likes, finally navigable. Switch between Watch Later and Liked videos from the dashboard header — same breakdowns, same search, same filters, and each keeps its own cache.</p>
+          <span class="pill">New</span>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+              <line x1="2" x2="22" y1="2" y2="22"/>
+            </svg>
+          </div>
+          <h3>Remove Likes in Bulk</h3>
+          <p>Select as many liked videos as you want and clear them in one pass, with live progress and a stop button. Worth knowing: YouTube uses your likes to shape recommendations.</p>
+          <span class="pill">New</span>
         </div>
 
         <div class="feature-card">
@@ -449,7 +468,7 @@
             </svg>
           </div>
           <h3>Watch Progress &amp; Filters</h3>
-          <p>Filter watched, unwatched, or unavailable videos. Progress bars on every card.</p>
+          <p>Filter watched, unwatched, or unavailable — and drag a slider to set how far through counts as watched. Progress bars on every card.</p>
         </div>
 
         <div class="feature-mini">
