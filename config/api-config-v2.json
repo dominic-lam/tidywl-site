@@ -39,7 +39,15 @@
     "headerVideoCountPath": ["header", "playlistHeaderRenderer", "numVideosText", "runs", 0, "text"],
     "additionalInitialItemsPaths": [
       ["contents", "twoColumnBrowseResultsRenderer", "tabs", 0, "tabRenderer", "content", "sectionListRenderer", "contents", 0, "itemSectionRenderer", "contents"]
-    ]
+    ],
+    "additionalHeaderTitlePaths": [
+      ["metadata", "playlistMetadataRenderer", "title"],
+      ["header", "pageHeaderRenderer", "pageTitle"]
+    ],
+    "additionalHeaderVideoCountPaths": [
+      ["sidebar", "playlistSidebarRenderer", "items", 0, "playlistSidebarPrimaryInfoRenderer", "stats", 0, "runs", 0, "text"]
+    ],
+    "canonicalUrlPath": ["microformat", "microformatDataRenderer", "urlCanonical"]
   },
   "videoFields": {
     "wrapperKey":              "playlistVideoRenderer",
