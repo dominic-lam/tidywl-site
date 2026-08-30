@@ -30,7 +30,7 @@ TidyWL works by reading the user's active YouTube session (SAPISID cookie and se
 
 ## Privacy
 
-TidyWL runs in your browser. No servers, no tracking, no account. Network calls go to YouTube's own endpoints using your existing session, and to a public config file on tidywl.com that carries no identifiers and no payload. One feature is an explicit exception: Send to Gemini Notebook passes the video links you selected to Google's Gemini Notebook using your own Google session. It is opt-in per use and gated behind a browser permission prompt. Nothing else leaves your machine.
+TidyWL runs in your browser. No account, and your YouTube data — titles, video IDs, channels, playlists — never leaves it. Network calls go to YouTube's own endpoints using your existing session, and to a public config file on tidywl.com that carries no identifiers and no payload. Since version 1.6.0 the extension also sends tidywl.com one small usage report: a random identifier generated on install (not linked to any Google account) plus lifetime counts of videos deleted, likes removed, videos moved, bulk operations run, the size of the Watch Later playlist, and the browser name. It is sent only when a count changes, never carries a title, video ID, channel or timestamp, has no off switch on Chrome (uninstalling stops it), is controlled on Firefox by the Technical and interaction data toggle, and records idle for 12 months are deleted. One feature is an explicit exception you trigger yourself: Send to Gemini Notebook passes the video links you selected to Google's Gemini Notebook using your own Google session. It is opt-in per use and gated behind a browser permission prompt. Full policy: https://tidywl.com/privacy/
 
 ## Limitations
 
@@ -46,6 +46,7 @@ TidyWL runs in your browser. No servers, no tracking, no account. Network calls 
 - Install for Chrome: https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo
 - Install for Firefox: https://tidywl.com/firefox/
 - Landing page: https://tidywl.com
+- Privacy policy: https://tidywl.com/privacy/
 - Blog: https://tidywl.com/blog/
 - Community (Discord): https://discord.gg/natc623GhX
 - Support: https://ko-fi.com/dominiclam
