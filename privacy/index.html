@@ -1,0 +1,118 @@
+---
+layout: default
+title: Privacy Policy
+description: What TidyWL keeps in your browser, the one small report it sends to tidywl.com, how to stop it, and how long it is kept. Plain language, no hedging.
+permalink: /privacy/
+---
+<section class="blog-wrap">
+  <h1 class="blog-title">Privacy policy</h1>
+  <p class="blog-subtitle">What stays in your browser, what leaves, and how to stop it.</p>
+
+  <div class="post-body">
+    <p class="privacy-meta">Applies to YouTube Watch Later Tidy (TidyWL) version 1.6.0 and later, on Chrome and Firefox. Effective <strong>[[DATE: the 1.6.0 release date]]</strong>. Versions before 1.6.0 sent nothing about you or your install anywhere; that changed in 1.6.0, and this page exists because of it.</p>
+
+    <h2>The short version</h2>
+    <ul>
+      <li><strong>Your YouTube data never leaves your browser.</strong> Titles, video IDs, channels, your playlists, your account — none of it is sent to us or to anyone else.</li>
+      <li><strong>What does leave is a random identifier and some counts.</strong> After you delete, unlike or move videos, or sync, the extension sends tidywl.com a random ID for your install and your lifetime totals: videos deleted, likes removed, videos moved, bulk operations run, the size of your Watch Later, and whether you're on Chrome or Firefox. Never which videos.</li>
+      <li><strong>There is no switch in the extension to turn this off on Chrome.</strong> Uninstalling stops it. On Firefox the switch is Firefox's own: the <em>Technical and interaction data</em> toggle under the add-on's Permissions and data.</li>
+      <li><strong>Records not updated for 12 months are deleted.</strong></li>
+    </ul>
+
+    <h2>What stays in your browser</h2>
+    <p>TidyWL works by calling YouTube's own endpoints with the session you are already signed in with, exactly as the YouTube web app does. Everything it fetches — your Watch Later, your Liked videos, any playlist you open, and the per-video details on each card — is cached in your browser's extension storage so the dashboard can search, sort and filter thousands of videos without re-fetching. That cache is namespaced per Google account and per playlist. It is never uploaded anywhere, and it goes away when you uninstall the extension.</p>
+    <p>No sign-in, no account with us, no API key, no OAuth token. TidyWL cannot read your YouTube data when you are not signed in to YouTube in that browser.</p>
+
+    <h2>What TidyWL sends to tidywl.com</h2>
+    <p>Two things, both to this site and nowhere else.</p>
+
+    <h3>1. A public configuration file</h3>
+    <p>On each YouTube page load the extension fetches a small public JSON file (<code>/config/api-config-v2.json</code>) and, when you open the dashboard, a notices file (<code>/config/announcements.json</code>). These tell the extension where to find fields in YouTube's responses, so that many YouTube-side changes can be fixed without shipping a new version. The requests carry no identifier and no payload; everyone receives the same bytes. Nothing fetched is executed as code.</p>
+
+    <h3>2. A usage report</h3>
+    <p>Each install carries a random identifier, generated in your browser when the extension is installed. It is not derived from, linked to, or stored alongside your Google account, your email, or anything else about you, and it is not shown anywhere in the extension. Reinstalling generates a new one.</p>
+    <p>Whenever one of your lifetime counts changes — after a delete, an unlike, a move, or a sync — the extension sends that identifier and the counts to <code>https://tidywl.com/api/installs</code>. The report is exactly this, and nothing else:</p>
+
+    <div class="privacy-table-wrap">
+      <table class="privacy-table">
+        <thead>
+          <tr><th>Field</th><th>What it is</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>identifier</td><td>The random install ID described above.</td></tr>
+          <tr><td>browser</td><td>"chrome" or "firefox".</td></tr>
+          <tr><td>deleted</td><td>How many videos you have removed from Watch Later and from playlists, ever, with TidyWL.</td></tr>
+          <tr><td>unliked</td><td>How many likes you have removed, ever, with TidyWL.</td></tr>
+          <tr><td>moved</td><td>How many videos you have moved to another playlist, ever, with TidyWL. Copies are not counted.</td></tr>
+          <tr><td>operations</td><td>How many bulk runs you have completed — one per batch, whatever its size.</td></tr>
+          <tr><td>Watch Later size</td><td>How many videos were in your Watch Later the last time you synced it.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Never sent:</strong> a video title, a video ID, a channel, a playlist name, a URL, a timestamp of when you did anything, your watch progress, your Google account or email, your extension settings, or an IP address the extension has read. The report format has no field that could hold any of these, so none can be sent by mistake.</p>
+    <p><strong>Counts include what you did before 1.6.0.</strong> The extension has counted deletions locally since version 1.4.1 (that is what powers the "you've cleaned up N videos" note). Those totals are reported on the first YouTube page load after updating, so a long-time user's first report already carries their history. One consequence: likes removed before 1.6.0 were counted as deletions at the time and stay in the <em>deleted</em> total; they cannot be separated out after the fact.</p>
+    <p><strong>No heartbeat, no install beacon.</strong> A report is sent only when a count has changed. An install that has never deleted, unliked, moved or synced anything sends nothing at all, and an install that is idle sends nothing while it is idle.</p>
+
+    <h2>Why</h2>
+    <p>To know how heavily TidyWL is actually used — how many installs clean up in one big purge versus a little every week, how large the lists are — which decides what gets built next. Reviews and donations are the only other signal and both come from a self-selected few. The numbers are used for that and for a public total on this site. They are not sold, not shared with anyone, and not used for advertising.</p>
+
+    <h2>How to stop it</h2>
+    <ul>
+      <li><strong>Chrome (and other Chromium browsers):</strong> there is no setting in the extension to turn reporting off. Uninstalling the extension stops it, and the record expires after 12 months of no updates. We chose not to add a switch rather than add one and then design around people flipping it; that trade-off is ours and this page says so plainly.</li>
+      <li><strong>Firefox:</strong> Firefox shows a <em>Technical and interaction data</em> toggle for this add-on, in the install prompt and afterwards under <code>about:addons</code> → TidyWL → <em>Permissions and data</em>. When it is off, the extension sends no report. [[FIREFOX-UPDATE-STATE: confirm with agent B — state what the toggle reads for someone who updated from 1.5.0 rather than installing fresh.]]</li>
+    </ul>
+
+    <h2>How long it is kept, and where</h2>
+    <p>One record per install, on a server we run at tidywl.com [[HOST: confirm "on Cloudflare Workers with a D1 database" is what shipped, and name it here]]. The server keeps the highest value it has seen for each count and the latest Watch Later size. A record that has not been updated for <strong>12 months</strong> is deleted; before deletion its counts are added to a single running total so the public number never goes backwards, and after deletion nothing about that install remains.</p>
+    <p>The server does not keep request logs, does not read or store the IP address your report arrives from, and has no error-tracking service attached. The one thing it enforces on the way in is a rate limit, which does not store addresses.</p>
+
+    <h2>Requests about your data</h2>
+    <p>Because the identifier is random and lives only in your browser's extension storage, we cannot tell which record is yours, and neither can you without reading the extension's storage directly. There is therefore no lookup, export or delete-on-request for individual records; expiry after 12 months of inactivity is the deletion mechanism. If you have a question anyway, write to <a href="mailto:support@tidywl.com">support@tidywl.com</a>.</p>
+
+    <h2>The one thing you send yourself</h2>
+    <p><strong>Send to Gemini Notebook</strong> takes the videos you selected and adds their links as sources to a Gemini Notebook (formerly NotebookLM), using your own Google session. Those links go to Google, because that is the entire point of the feature. It only happens when you click the button, and only after you have granted the browser permission for notebook.google.com that the extension asks for the first time you use it. Google's handling of what arrives there is covered by Google's privacy policy, not this one.</p>
+
+    <h2>Permissions, and what each one is for</h2>
+    <ul>
+      <li><strong>youtube.com</strong> — where the extension works. Reading, reordering and deleting your playlists is done by calling YouTube with your existing session.</li>
+      <li><strong>tidywl.com</strong> — the config and notices files, and the usage report, described above.</li>
+      <li><strong>Storage</strong> and <strong>unlimited storage</strong> — the local playlist caches. "Unlimited" only raises the local quota so that syncing every playlist you own does not fail part-way; it sends nothing.</li>
+      <li><strong>Active tab</strong> — so the toolbar popup can tell whether you are on a playlist page.</li>
+      <li><strong>Scripting</strong> — used for one thing: adding sources to a Gemini Notebook tab, after you have granted that site.</li>
+      <li><strong>Downloads</strong> (asked for the first time you download transcripts) — writing transcript files to your Downloads folder. Decline it and the extension offers a Save button instead.</li>
+      <li><strong>notebook.google.com</strong> (asked the first time you send to Gemini Notebook) — see above. Decline it and the links are copied to your clipboard instead.</li>
+    </ul>
+
+    <h2>What is not in this policy, on purpose</h2>
+    <p>No analytics library, no crash reporter, no advertising SDK, no third-party script of any kind runs inside the extension. The extension ships unminified — every file in the package is the source — so anyone who wants to check what it sends can read it rather than take this page's word for it.</p>
+
+    <h2>Changes to this policy</h2>
+    <ul>
+      <li><strong>[[DATE: the 1.6.0 release date]]</strong> — first version, published with 1.6.0. Until this version the extension sent nothing about you or your install; the usage report described above is new.</li>
+    </ul>
+    <p>Material changes will be listed here with a date and announced in the dashboard's What's New. This page is the policy linked from the Chrome Web Store listing and from the Firefox add-on.</p>
+  </div>
+
+  <div class="post-footer">
+    <p>Questions? <a href="mailto:support@tidywl.com">support@tidywl.com</a>, or the <a href="https://discord.gg/natc623GhX" target="_blank" rel="noopener">Discord</a>. Back to <a href="/">what TidyWL does</a>.</p>
+  </div>
+</section>
+
+<style>
+  .privacy-meta {
+    font-size: 0.9rem; color: var(--text-muted);
+    border-left: 3px solid var(--border-strong);
+    padding-left: 14px;
+  }
+  .privacy-table-wrap { overflow-x: auto; }
+  .privacy-table {
+    width: 100%; border-collapse: collapse; font-size: 0.95rem;
+  }
+  .privacy-table th, .privacy-table td {
+    text-align: left; padding: 10px 12px; vertical-align: top;
+    border-bottom: 1px solid var(--border);
+  }
+  .privacy-table th { color: var(--text-secondary); font-weight: 600; white-space: nowrap; }
+  .privacy-table td:first-child { white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9rem; }
+</style>
