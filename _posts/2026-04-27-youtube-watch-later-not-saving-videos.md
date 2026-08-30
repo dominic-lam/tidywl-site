@@ -2,6 +2,7 @@
 title: "Why Isn't My YouTube Watch Later Saving Videos? The Real Reasons (and Why Nobody Tells You)"
 description: "YouTube Watch Later silently fails to save videos for several reasons, and the most common one is a hidden 5,000-video cap. Here's the full list of causes and what to actually do about each."
 date: 2026-04-27
+last_modified_at: 2026-08-29
 faq:
   - q: "Does YouTube notify you when Watch Later is full?"
     a: "No. YouTube shows no error, toast, or warning when the 5,000-video cap is reached. The save button still flashes its normal confirmation and the video is silently discarded."
@@ -94,7 +95,7 @@ The fix depends entirely on which cause you are dealing with.
 
 For causes 2 through 6, the remedy is on YouTube's side or in your account state: switch accounts, pause the ad-blocker, pick a different video, retry, or sign in again. No tool can paper over these, because the save is being rejected for a specific and fixable reason.
 
-Cause 1, the 5,000-video cap, is the one case where a tool helps. YouTube offers no bulk-delete UI, so clearing enough room to start saving again is painful to do manually. I built [TidyWL](https://tidywl.com) for this: a free Chrome extension that gives Watch Later a full-screen dashboard with bulk selection, filtering by channel, sorting by date or duration, and multi-account isolation. It runs entirely in your browser against your existing YouTube session, with no OAuth and no server backend. The tradeoff is that nothing leaves your machine, so it cannot sync across devices. If that fits what you need, you can [install it from the Chrome Web Store](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo).
+Cause 1, the 5,000-video cap, is the one case where a tool helps. YouTube offers no bulk-delete UI, so clearing enough room to start saving again is painful to do manually. I built [TidyWL](https://tidywl.com) for this: a free Chrome extension that gives Watch Later a full-screen dashboard with bulk selection, filtering by channel, sorting by date or duration, and multi-account isolation. It runs in your browser against your existing YouTube session, with no OAuth and no account. Your videos and playlists never leave your machine — since version 1.6.0 the only thing that does is a random install identifier with lifetime counts of what you cleaned up, described in the [privacy policy](https://tidywl.com/privacy/) — so it cannot sync across devices. If that fits what you need, you can [install it from the Chrome Web Store](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo).
 
 ## How to prevent silent failures going forward
 

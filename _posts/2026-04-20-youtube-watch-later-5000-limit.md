@@ -2,13 +2,14 @@
 title: "YouTube Watch Later Is Capped at 5,000 Videos. Here's Why and What to Do."
 description: "The 5,000 video cap on YouTube Watch Later isn't a bug. It's by design. Here's what causes it, why YouTube hasn't removed it, and four ways to get your playlist under control."
 date: 2026-04-20
+last_modified_at: 2026-08-29
 faq:
   - q: "Can I increase the 5,000 video limit?"
     a: "No. The cap is server-side and applies to every YouTube account. Premium does not change it."
   - q: "Does deleting videos from Watch Later affect my watch history or recommendations?"
     a: "No. Watch Later is a separate playlist from your watch history. Removing videos from Watch Later does not delete watch history or change your recommendations."
   - q: "Is TidyWL safe to use?"
-    a: "TidyWL runs entirely in your browser using your existing YouTube login. No password, OAuth token, or API key leaves your machine. It is closed-source but has no server backend, no analytics, and no telemetry. The only outbound network call besides YouTube itself is to a public config file on tidywl.com, which contains no identifiers or user data."
+    a: "TidyWL runs in your browser using your existing YouTube login. No password, OAuth token, or API key leaves your machine, and neither do your videos or playlists. Since version 1.6.0 it sends tidywl.com a random install identifier and lifetime counts — videos deleted, likes removed, videos moved — never which videos; the details are in the privacy policy at tidywl.com/privacy. Besides that and YouTube itself, its only outbound call is to a public config file on tidywl.com."
   - q: "Why hasn't YouTube raised the limit?"
     a: "YouTube has never publicly explained it. The most plausible reason is technical: Watch Later uses server-side pagination that would need to be re-architected to support more entries. There's no public roadmap indicating a change."
 ---
