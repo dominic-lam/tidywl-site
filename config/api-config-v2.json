@@ -7,7 +7,8 @@
     "createPlaylist": "/youtubei/v1/playlist/create?prettyPrint=false",
     "player":         "/youtubei/v1/player?prettyPrint=false",
     "getTranscript":  "/youtubei/v1/get_transcript?prettyPrint=false",
-    "removeLike":     "/youtubei/v1/like/removelike?prettyPrint=false"
+    "removeLike":     "/youtubei/v1/like/removelike?prettyPrint=false",
+    "deletePlaylist": "/youtubei/v1/playlist/delete?prettyPrint=false"
   },
   "constants": {
     "watchLaterBrowseId":       "VLWL",
@@ -158,5 +159,8 @@
       "urlIndex": 7
     },
     "createNotebookResponseIdIndex": 2
+  },
+  "usageReport": {
+    "installsPath": "/api/installs"
   }
 }
