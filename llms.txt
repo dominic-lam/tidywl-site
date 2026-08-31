@@ -1,10 +1,10 @@
 # TidyWL — YouTube Watch Later Tidy
 
-> Free browser extension for Chrome and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos and the official API refuses to touch it.
+> Free browser extension for Chrome and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist and your Liked videos — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos, gives Liked videos no management tools at all, and the official API refuses to touch either.
 
 ## What it does
 
-TidyWL gives you a full-screen dashboard for YouTube's Watch Later playlist, inspired by macOS Storage Manager. You can bulk delete hundreds of videos in seconds, see your playlist broken down by channel or by topic, hide topics you are not interested in, search, and filter by title, channel, watched status, availability, or duration — either preset buckets including a Shorts bucket, or your own minimum and maximum in minutes. You can sort by playlist order, duration, view count, published date, channel, or title. You can move or copy selected videos into any other playlist, create a playlist inline, reorder with Move to Top and Move to Bottom or by dragging, open every selected video in background tabs, switch between YouTube accounts, and export to JSON or CSV.
+TidyWL gives you a full-screen dashboard for YouTube's Watch Later playlist, inspired by macOS Storage Manager. Since version 1.5.0 the same dashboard also opens your **Liked videos** — a switch in the header moves between them, from either page — with the same breakdowns, search, filters, sorting, export and Gemini Notebook support. Each list keeps its own local cache and its own sync time, so working on one never disturbs the other. You can bulk delete hundreds of videos in seconds, **remove likes in bulk** on the Liked tab through the same flow, see your playlist broken down by channel or by topic, hide topics you are not interested in, search, and filter by title, channel, watched status, availability, or duration — either preset buckets including a Shorts bucket, or your own minimum and maximum in minutes. The watched filter carries an adjustable progress threshold, so you can ask for videos you are at least three-quarters through rather than merely ones you started. You can sort by playlist order, duration, view count, published date, channel, or title. You can move or copy selected videos into any other playlist, create a playlist inline, reorder with Move to Top and Move to Bottom or by dragging, open every selected video in background tabs, switch between YouTube accounts, and export to JSON or CSV.
 
 Two features go beyond playlist management. **Bulk transcript download** gives you one timestamped text file per video, named after the video title, after first checking with YouTube which videos have captions at all. **Send to Gemini Notebook** (formerly NotebookLM) pushes your selected videos into a notebook as sources, either a new notebook or one you already have.
 
@@ -34,7 +34,9 @@ TidyWL runs in your browser. No account, and your YouTube data — titles, video
 
 ## Limitations
 
-- Deletions are permanent; YouTube provides no undo.
+- Deletions are permanent; YouTube provides no undo. The same is true of removed likes.
+- Removing a like is not a playlist edit — YouTube treats it as un-liking the video, which can change what it recommends.
+- Reordering is not available on Liked videos: YouTube orders that list by when you liked something.
 - Bulk deletion is necessarily sequential, because YouTube rejects parallel playlist edits, so large batches take time.
 - "Playlist order" is not date-added — YouTube does not expose per-video add timestamps on the web.
 - Transcript download opens a small visible window and takes roughly three seconds per video; videos without captions are reported as skipped.
