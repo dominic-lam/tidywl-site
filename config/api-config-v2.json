@@ -126,6 +126,8 @@
     "captionTracksPath":     ["captions", "playerCaptionsTracklistRenderer", "captionTracks"],
     "playabilityStatusPath": ["playabilityStatus", "status"],
     "playabilityReasonPath": ["playabilityStatus", "reason"],
+    "keywordsPath":          ["videoDetails", "keywords"],
+    "descriptionPath":       ["videoDetails", "shortDescription"],
     "trackLanguageCodeKey":  "languageCode",
     "trackKindKey":          "kind",
     "asrKindValue":          "asr"
