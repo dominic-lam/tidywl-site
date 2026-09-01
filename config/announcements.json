@@ -1,31 +1,32 @@
 {
   "announcements": [
     {
-      "id": "v1.5.0-release",
-      "title": "What's New in v1.5.0",
+      "id": "v1.6.0-release",
+      "title": "What's New in v1.6.0",
       "bullets": [
-        "Liked videos — a new switch in the dashboard header opens your Liked list in the same dashboard: channel and topic breakdowns, search, every sort and filter, and export",
-        "Remove likes, one at a time or in bulk — on the Liked tab the delete button becomes \"Remove likes\", with the same confirmation, progress and stop button",
-        "Each playlist keeps its own cache and its own sync time, so your Watch Later data is untouched",
-        "Filter by how far through a video you got — a slider under Watched with marks at 25 / 50 / 75 / 100, or type any exact number",
-        "Fixed: the Watched filter came back empty unless your YouTube was set to English. It works in every language now, and starts working straight away with no re-sync"
+        "Your own playlists — the header has a Playlists menu listing every playlist you created, and each one opens in the same dashboard with search, filters, bulk delete, reorder, move and export",
+        "Tick several playlists and see them merged: one card per video, a chip for each playlist it's in, and Move takes a video out of every playlist you ticked",
+        "Video tags — the keywords the uploader gave a video, shown on every card and matched by search. Click a tag to filter by it, stack several to narrow",
+        "Delete a playlist you own, by name, from the menu — its videos stay on YouTube",
+        "New layout: stats and breakdowns moved into a sidebar you can collapse, search is a magnifier in the toolbar, and the panel is wider",
+        "TidyWL now sends usage counts — a random install ID and how many videos you've deleted, unliked and moved. Never which videos, never your playlist, never your account: https://tidywl.com/privacy/"
       ],
       "type": "info",
-      "created_at": "2026-08-25",
-      "expires_at": "2026-11-25"
+      "created_at": "2026-08-31",
+      "expires_at": "2026-11-30"
     },
     {
-      "id": "2026-08-25-v1.5.0-manual-update-nudge",
-      "title": "YouTube Watch Later Tidy v1.5.0 is live — force-update if you don't have it yet",
+      "id": "2026-08-31-v1.6.0-manual-update-nudge",
+      "title": "YouTube Watch Later Tidy v1.6.0 is live — force-update if you don't have it yet",
       "bullets": [
         "Open a new tab and go to chrome://extensions",
         "Top-right corner: turn on Developer mode",
         "Top-left corner: click the \"Update\" button",
-        "Reload your YouTube tab — you should now be on v1.5.0 (the version is shown under the dashboard title)"
+        "Reload your YouTube tab — you should now be on v1.6.0 (the version is shown under the dashboard title)"
       ],
       "type": "warning",
-      "created_at": "2026-08-25",
-      "expires_at": "2026-09-15"
+      "created_at": "2026-08-31",
+      "expires_at": "2026-09-21"
     }
   ]
 }
