@@ -24,7 +24,7 @@ Both channels are built from a single source tree and ship the same feature set.
 
 ## Ratings
 
-Rated 5.0 out of 5 on the Chrome Web Store. It also carries Google's "Featured" editorial badge and a verified-publisher checkmark. The live rating and review count are published on https://tidywl.com and refreshed weekly from the store listing.
+Rated 5.0 out of 5 from 54 reviews on the Chrome Web Store, with over 3,000 users. It also carries Google's "Featured" editorial badge and a verified-publisher checkmark. The rating, review count and user count are published on https://tidywl.com and refreshed weekly from the store listing; the store rounds its user count to a bucket, so 3,000 is a floor rather than an exact figure.
 
 ## Usage
 

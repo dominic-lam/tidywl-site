@@ -269,17 +269,28 @@
       </a>
     </div>
 
-    <div class="hero-trust-row">
-      <a class="social-proof" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener" aria-label="{{ site.data.cws-rating.ratingValue }} out of 5 stars, {{ site.data.cws-rating.reviewCount }} reviews on Chrome Web Store">
-        <span class="stars" aria-hidden="true">★★★★★</span>
-        <span class="rating-value">{{ site.data.cws-rating.ratingValue }}</span>
-        <span class="sep" aria-hidden="true">·</span>
-        <span class="rating-link-text">{{ site.data.cws-rating.reviewCount }} reviews on Chrome Web Store</span>
+    <!-- Three numbers, largest first. "videos cleaned up" leads because it is
+         the only one that is ours rather than the store's, and it is the number
+         the extension exists to move. Both counts carry a "+": the deletions
+         figure in the markup is a hand-written floor replaced live by
+         scripts.html, and the Chrome Web Store rounds its user count down to a
+         bucket, so neither is exact and neither should read as if it were. -->
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num"><span id="videos-cleaned">112,000</span>+</span>
+        <span class="hero-stat-label">videos cleaned up</span>
+      </div>
+      <a class="hero-stat" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">
+        <span class="hero-stat-num">{{ site.data.cws-rating.userCount }}+</span>
+        <span class="hero-stat-label">users on Chrome</span>
       </a>
-      <span class="hero-trust-pill">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-        <span>over <span id="videos-cleaned">112,000</span> videos cleaned up</span>
-      </span>
+      <a class="hero-stat" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener" aria-label="Rated {{ site.data.cws-rating.ratingValue }} out of 5 from {{ site.data.cws-rating.reviewCount }} reviews on the Chrome Web Store">
+        <span class="hero-stat-num">{{ site.data.cws-rating.ratingValue }}<span class="hero-stat-star" aria-hidden="true">★</span></span>
+        <span class="hero-stat-label">{{ site.data.cws-rating.reviewCount }} reviews</span>
+      </a>
+    </div>
+
+    <div class="hero-trust-row">
       <span class="hero-trust-pill">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
         Featured by Google

@@ -158,16 +158,28 @@
       transition: border-color 0.2s, background 0.2s;
     }
     .btn-ghost:hover { border-color: var(--ghost-hover-border); background: var(--ghost-hover-bg); }
-    .social-proof {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 0.875rem; color: var(--text-muted);
-      text-decoration: none;
+    /* ── HERO STATS ──
+       Replaces the old .social-proof rating link. Three numbers in one row,
+       the deletions total first. NOT a flex container at the number level: a
+       flex parent turns every bare text node into its own item, and
+       .hero-stat-num deliberately holds "<span>112,000</span>+" as mixed
+       content. Keep it block, not flex. */
+    .hero-stats {
+      display: flex; flex-wrap: wrap; align-items: baseline;
+      justify-content: center; gap: 10px 44px; margin-bottom: 22px;
     }
-    .social-proof:hover { color: var(--text-secondary); }
-    .social-proof:hover .rating-link-text { text-decoration: underline; }
-    .social-proof .stars { color: var(--star); letter-spacing: 2px; }
-    .social-proof .rating-value { font-weight: 600; color: var(--text-secondary); }
-    .social-proof .sep { color: var(--text-subtle); }
+    .hero-stat { display: block; text-align: center; text-decoration: none; color: inherit; }
+    a.hero-stat:hover .hero-stat-label { color: var(--text-secondary); text-decoration: underline; }
+    .hero-stat-num {
+      display: block; font-size: 1.7rem; font-weight: 700; line-height: 1.15;
+      color: var(--text); letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .hero-stat-star { color: var(--star); margin-left: 2px; font-size: 1.2rem; }
+    .hero-stat-label {
+      display: block; margin-top: 3px;
+      font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;
+    }
     .hero-trust-row {
       display: inline-flex; flex-wrap: wrap; align-items: center;
       justify-content: center; gap: 8px 14px;

@@ -1,4 +1,4 @@
-name: Update CWS rating
+name: Update CWS rating and user count
 
 on:
   schedule:
@@ -37,7 +37,7 @@ jobs:
                "$CWS_URL"
           echo "Fetched $(wc -c < .cws-scrape/raw.html) bytes."
 
-      - name: Parse rating and review count
+      - name: Parse rating, review count and user count
         id: parse
         run: |
           set -euo pipefail
@@ -77,6 +77,20 @@ jobs:
           echo "Count matched string:  '$COUNT_MATCH'"
           echo "Count parsed value:    '$REVIEW_COUNT'"
 
+          # -- User count: "\bN users\b", commas kept for display ----------
+          # The store rounds this to a bucket (3,000 / 4,000 / 10,000), so the
+          # site renders it with a trailing "+". Same first-match-wins reasoning
+          # as the rating: the hero figure precedes any cross-promoted item.
+          USERS_MATCH="$(grep -oE '\b[0-9][0-9,]* users\b' "$NORM" | head -1 || true)"
+          if [ -z "$USERS_MATCH" ]; then
+            echo "::error::Could not find user count pattern ('N users') in CWS HTML."
+            exit 1
+          fi
+          USER_COUNT="$(printf '%s' "$USERS_MATCH" | grep -oE '^[0-9][0-9,]*')"
+          USER_COUNT_NUM="$(printf '%s' "$USER_COUNT" | tr -d ',')"
+          echo "Users matched string:  '$USERS_MATCH'"
+          echo "Users parsed value:    '$USER_COUNT' ($USER_COUNT_NUM)"
+
           # -- Validation --------------------------------------------------
           # ratingValue: numeric in [0, 5]. Format is already guaranteed by
           # the capture regex; this asserts the range.
@@ -106,8 +120,29 @@ jobs:
             fi
           fi
 
+          # userCount: positive integer once commas are stripped
+          if ! printf '%s' "$USER_COUNT_NUM" | grep -qE '^[1-9][0-9]*$'; then
+            echo "::error::userCount '$USER_COUNT' is not a positive integer."
+            exit 1
+          fi
+
+          # Same 50% floor as reviewCount. The store's buckets can step down a
+          # level legitimately; a halving means the scrape grabbed the wrong node.
+          PREV_USERS="$(grep -E '^userCount:' "$DATA_FILE" | grep -oE '[0-9,]+' | tr -d ',' | head -1 || echo 0)"
+          if [ -z "$PREV_USERS" ]; then
+            PREV_USERS=0
+          fi
+          echo "Previous userCount: $PREV_USERS"
+          if [ "$PREV_USERS" -gt 0 ]; then
+            if ! awk -v n="$USER_COUNT_NUM" -v p="$PREV_USERS" 'BEGIN { exit !(n*2 >= p) }'; then
+              echo "::error::userCount $USER_COUNT_NUM is less than 50% of previous ($PREV_USERS). Refusing to update."
+              exit 1
+            fi
+          fi
+
           echo "rating_value=$RATING_VALUE"   >> "$GITHUB_OUTPUT"
           echo "review_count=$REVIEW_COUNT"   >> "$GITHUB_OUTPUT"
+          echo "user_count=$USER_COUNT"       >> "$GITHUB_OUTPUT"
           echo "today=$(date -u +%Y-%m-%d)"   >> "$GITHUB_OUTPUT"
 
       - name: Write data file
@@ -116,6 +151,7 @@ jobs:
           cat > "$DATA_FILE" <<EOF
           ratingValue: "${{ steps.parse.outputs.rating_value }}"
           reviewCount: "${{ steps.parse.outputs.review_count }}"
+          userCount: "${{ steps.parse.outputs.user_count }}"
           lastUpdated: "${{ steps.parse.outputs.today }}"
           EOF
           echo "Wrote $DATA_FILE:"
@@ -131,7 +167,7 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$DATA_FILE"
-          git commit -m "chore: update CWS rating (auto)"
+          git commit -m "chore: update CWS rating and user count (auto)"
           git push
 
       - name: Upload fetched HTML on failure
