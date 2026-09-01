@@ -166,16 +166,20 @@
        content. Keep it block, not flex. */
     .hero-stats {
       display: flex; flex-wrap: wrap; align-items: baseline;
-      /* Fluid gap, no breakpoint: the three stats are ~291px of content, so a
-         fixed 44px gutter overflows a 375px phone by 4px and orphans the third
-         onto its own row. 6vw closes to ~22px there and clamps back to 44px on
-         desktop. */
-      justify-content: center; gap: 10px clamp(20px, 6vw, 44px); margin-bottom: 22px;
+      /* Fluid gutter, no breakpoint — this stylesheet has none. On a 375px
+         phone the strip gets 327px (48px of hero padding), and the three stats
+         need 336px at desktop sizing, so the third orphans onto its own row.
+         The gutter alone cannot close a 9px gap without looking cramped; the
+         numeral size below does the real work. */
+      justify-content: center; gap: 10px clamp(18px, 5vw, 44px); margin-bottom: 22px;
     }
     .hero-stat { display: block; text-align: center; text-decoration: none; color: inherit; }
     a.hero-stat:hover .hero-stat-label { color: var(--text-secondary); text-decoration: underline; }
     .hero-stat-num {
-      display: block; font-size: 1.7rem; font-weight: 700; line-height: 1.15;
+      /* 27px numerals across three stats is oversized on a phone regardless of
+         the wrapping problem. Shrinking here narrows every stat at once, which
+         is what actually fits all three on one row at 375px. */
+      display: block; font-size: clamp(1.35rem, 4.6vw, 1.7rem); font-weight: 700; line-height: 1.15;
       color: var(--text); letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
       white-space: nowrap;
     }
