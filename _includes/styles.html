@@ -179,6 +179,10 @@
       padding: 4px 10px; background: var(--bg-card);
     }
     .hero-trust-pill svg { color: var(--text-subtle); flex-shrink: 0; }
+    /* A flex container makes an anonymous item out of every bare text node, so
+       a label split by an inline <span> would break into separate items and
+       stack. Keep each pill's label inside ONE element and stop it wrapping. */
+    .hero-trust-pill > span { white-space: nowrap; }
 
     /* ── HERO PRODUCT SHOT ──
        The screenshot is a light-theme capture, so in dark mode it is a bright
