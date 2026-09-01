@@ -166,7 +166,11 @@
        content. Keep it block, not flex. */
     .hero-stats {
       display: flex; flex-wrap: wrap; align-items: baseline;
-      justify-content: center; gap: 10px 44px; margin-bottom: 22px;
+      /* Fluid gap, no breakpoint: the three stats are ~291px of content, so a
+         fixed 44px gutter overflows a 375px phone by 4px and orphans the third
+         onto its own row. 6vw closes to ~22px there and clamps back to 44px on
+         desktop. */
+      justify-content: center; gap: 10px clamp(20px, 6vw, 44px); margin-bottom: 22px;
     }
     .hero-stat { display: block; text-align: center; text-decoration: none; color: inherit; }
     a.hero-stat:hover .hero-stat-label { color: var(--text-secondary); text-decoration: underline; }
