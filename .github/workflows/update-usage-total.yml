@@ -55,7 +55,9 @@ jobs:
           # Round DOWN to the nearest 1,000. The copy reads "over N", so a floor
           # stays true between runs; rounding up would not.
           FLOOR=$(( DELETED / 1000 * 1000 ))
-          DISPLAY="$(printf "%'d" "$FLOOR")"
+          # Comma grouping via python, not printf "%'d": the runner's default C
+          # locale applies no grouping, so printf silently produced "186000".
+          DISPLAY="$(python3 -c "print(f'{$FLOOR:,}')")"
 
           echo "deleted_raw=$DELETED"                >> "$GITHUB_OUTPUT"
           echo "deleted_floor=$FLOOR"                >> "$GITHUB_OUTPUT"
