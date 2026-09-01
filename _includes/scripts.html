@@ -21,4 +21,27 @@
       root.setAttribute('data-theme', next);
       try { localStorage.setItem('theme', next); } catch (e) {}
     });
+
+    // Live cleanup counter. /api/stats is the same origin as this page — the
+    // apex is proxied, /api/* routes to the Worker — so this is a plain
+    // relative fetch with no CORS involved.
+    //
+    // The figure in the HTML is a hand-written floor, and the copy reads
+    // "over", so a stale fallback stays true. That matters: most AI crawlers
+    // do not run JavaScript, and the number they index is the one in the
+    // markup, not the one this replaces it with. Bump the hardcoded value
+    // whenever you touch index.html; never let it exceed the live total.
+    //
+    // On any failure the fallback is left alone rather than blanked.
+    const cleaned = document.getElementById('videos-cleaned');
+    if (cleaned) {
+      fetch('/api/stats')
+        .then(r => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
+        .then(d => {
+          if (Number.isFinite(d.deleted) && d.deleted > 0) {
+            cleaned.textContent = d.deleted.toLocaleString('en-US');
+          }
+        })
+        .catch(() => {});
+    }
   </script>
