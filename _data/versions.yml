@@ -9,4 +9,4 @@
 # separately. Nothing errors when the two drift; Firefox installs just quietly
 # stop updating.
 chrome: "1.6.0"
-firefox: "1.5.0"
+firefox: "1.6.0"
