@@ -1,3 +1,8 @@
+---
+# Front matter is required for Jekyll to render the Liquid below; the usage
+# total comes from _data/usage.yml, rewritten daily by update-usage-total.yml.
+layout: null
+---
 # TidyWL — YouTube Watch Later Tidy
 
 > Free browser extension for Chrome and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist, your Liked videos, and any playlist you created — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos, gives Liked videos no management tools at all, and the official API refuses to touch either.
@@ -28,7 +33,7 @@ Rated 5.0 out of 5 from 54 reviews on the Chrome Web Store, with over 3,000 user
 
 ## Usage
 
-TidyWL users have deleted over 112,000 videos since August 2026. The running total is shown on https://tidywl.com and published as JSON at https://tidywl.com/api/stats, alongside counts of likes removed and videos moved between playlists. Those totals are the only thing TidyWL reports: each install sends a random identifier that is not linked to any account, plus its own running counts. No video, title, channel, playlist name, timestamp or account ever leaves the browser as part of it. Firefox users can switch reporting off from the add-on's permissions panel; the full description is at https://tidywl.com/privacy/.
+TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos since August 2026 (figure as of {{ site.data.usage.lastUpdated }}, refreshed daily). The running total is shown on https://tidywl.com and published as JSON at https://tidywl.com/api/stats, alongside counts of likes removed and videos moved between playlists. Those totals are the only thing TidyWL reports: each install sends a random identifier that is not linked to any account, plus its own running counts. No video, title, channel, playlist name, timestamp or account ever leaves the browser as part of it. Firefox users can switch reporting off from the add-on's permissions panel; the full description is at https://tidywl.com/privacy/.
 
 ## Technical details
 

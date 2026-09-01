@@ -130,6 +130,14 @@
     "mainEntity": [
       {
         "@type": "Question",
+        "name": "How many videos have TidyWL users actually deleted?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos, as of {{ site.data.usage.lastUpdated }}. Each install reports a running count of videos deleted, likes removed and videos moved, and the live total is published as JSON at https://tidywl.com/api/stats. The count reaches back to August 2026 and includes deletions made before the counter shipped, because the extension has tracked them locally since v1.4.1. No video, title, channel, playlist or account is ever part of that report."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "Why can I only add 5000 videos to Watch Later?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -277,12 +285,13 @@
     <!-- Three numbers, largest first. "videos cleaned up" leads because it is
          the only one that is ours rather than the store's, and it is the number
          the extension exists to move. Both counts carry a "+": the deletions
-         figure in the markup is a hand-written floor replaced live by
-         scripts.html, and the Chrome Web Store rounds its user count down to a
-         bucket, so neither is exact and neither should read as if it were. -->
+         figure in the markup is a floor written daily by the update-usage-total
+         workflow and replaced live by scripts.html, and the Chrome Web Store
+         rounds its user count down to a bucket, so neither is exact and neither
+         should read as if it were. -->
     <div class="hero-stats">
       <div class="hero-stat">
-        <span class="hero-stat-num"><span id="videos-cleaned">112,000</span>+</span>
+        <span class="hero-stat-num"><span id="videos-cleaned">{{ site.data.usage.deletedTotal }}</span>+</span>
         <span class="hero-stat-label">videos cleaned up</span>
       </div>
       <a class="hero-stat" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">
@@ -762,6 +771,16 @@
 
       <div class="faq">
         <div class="faq-list">
+
+          <div class="faq-item" aria-expanded="false">
+            <button class="faq-q" aria-controls="faq-scale">
+              <span>How many videos have TidyWL users actually deleted?</span>
+              <span class="plus" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-scale">
+              TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos, as of {{ site.data.usage.lastUpdated }}. Each install reports a running count of videos deleted, likes removed and videos moved, and the live total is published as JSON at <a href="/api/stats">https://tidywl.com/api/stats</a>. The count reaches back to August 2026 and includes deletions made before the counter shipped, because the extension has tracked them locally since v1.4.1. No video, title, channel, playlist or account is ever part of that report — see the <a href="/privacy/">privacy policy</a>.
+            </div>
+          </div>
 
           <div class="faq-item" aria-expanded="false">
             <button class="faq-q" aria-controls="faq-1">

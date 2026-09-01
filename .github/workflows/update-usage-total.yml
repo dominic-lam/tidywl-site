@@ -1,0 +1,90 @@
+name: Update usage total
+
+# The deletions total is the site's only first-party number and it moves fast:
+# it went 112,000 -> 183,200 in the 24 hours after v1.6.0 shipped, so the
+# hand-written floor that launched with it was 39% stale within a day.
+#
+# This writes the number into _data at build time, which is what makes it
+# visible to crawlers that do not run JavaScript — most AI crawlers. The live
+# fetch in scripts.html still hydrates it for humans; this is the floor beneath.
+
+on:
+  schedule:
+    # Daily, 05:40 UTC — before the weekly CWS scrape so the two never collide.
+    - cron: '40 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      STATS_URL: https://tidywl.com/api/stats
+      DATA_FILE: _data/usage.yml
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch and parse the total
+        id: parse
+        run: |
+          set -euo pipefail
+          RAW="$(curl -fsSL --compressed "$STATS_URL")"
+          echo "Response: $RAW"
+
+          DELETED="$(printf '%s' "$RAW" | python3 -c 'import sys,json; print(json.load(sys.stdin)["deleted"])')"
+
+          # Positive integer, or the endpoint is broken and we keep what we have.
+          if ! printf '%s' "$DELETED" | grep -qE '^[1-9][0-9]*$'; then
+            echo "::error::deleted '$DELETED' is not a positive integer."
+            exit 1
+          fi
+
+          # Monotonic. Counters keep the MAX ever reported and retired rows roll
+          # into retired_total, so this number cannot legitimately fall. A drop
+          # means a bad response or a wiped table — refuse rather than publish it.
+          PREV="$(grep -E '^deletedRaw:' "$DATA_FILE" | grep -oE '[0-9]+' | head -1 || echo 0)"
+          echo "Previous: $PREV  New: $DELETED"
+          if [ "$DELETED" -lt "$PREV" ]; then
+            echo "::error::deleted $DELETED is below the previous $PREV. Refusing to update."
+            exit 1
+          fi
+
+          # Round DOWN to the nearest 1,000. The copy reads "over N", so a floor
+          # stays true between runs; rounding up would not.
+          FLOOR=$(( DELETED / 1000 * 1000 ))
+          DISPLAY="$(printf "%'d" "$FLOOR")"
+
+          echo "deleted_raw=$DELETED"                >> "$GITHUB_OUTPUT"
+          echo "deleted_floor=$FLOOR"                >> "$GITHUB_OUTPUT"
+          echo "deleted_display=$DISPLAY"            >> "$GITHUB_OUTPUT"
+          echo "today=$(date -u +%Y-%m-%d)"          >> "$GITHUB_OUTPUT"
+
+      - name: Write data file
+        run: |
+          set -euo pipefail
+          cat > "$DATA_FILE" <<EOF
+          # Written by .github/workflows/update-usage-total.yml — do not hand-edit.
+          # deletedTotal is a FLOOR, rounded down to the nearest 1,000, because every
+          # place that renders it says "over". deletedRaw is the unrounded value the
+          # monotonic guard compares against on the next run.
+          deletedTotal: "${{ steps.parse.outputs.deleted_display }}"
+          deletedRaw: ${{ steps.parse.outputs.deleted_raw }}
+          lastUpdated: "${{ steps.parse.outputs.today }}"
+          EOF
+          cat "$DATA_FILE"
+
+      - name: Commit and push
+        run: |
+          set -euo pipefail
+          if git diff --quiet "$DATA_FILE"; then
+            echo "No change. Skipping commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DATA_FILE"
+          git commit -m "chore: update usage total (auto)"
+          git push
