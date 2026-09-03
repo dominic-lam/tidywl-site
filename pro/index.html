@@ -1,7 +1,7 @@
 ---
 layout: default
 title: TidyWL Pro
-description: TidyWL Pro keeps your YouTube Watch Later under control automatically and makes every cleanup reversible. $4.99 a month or $39 a year. Ships with version 2.0.
+description: TidyWL Pro keeps your YouTube Watch Later under control automatically and makes every cleanup reversible. $4.99 a month or $47.88 a year. Ships with version 2.0.
 permalink: /pro/
 faq:
   - q: "Is the free version changing?"
@@ -38,23 +38,54 @@ faq:
 
   <section class="pro-plans">
     <div class="section-inner">
-      <div class="plans">
+      <!-- Both period prices are in the markup. [data-billing] on .plans decides
+           which one is shown, so with JavaScript off the page renders the yearly
+           price below and only the switch stops responding. -->
+      <div class="plans" id="plans" data-billing="yearly">
         <div class="plan">
-          <p class="plan-name">Monthly</p>
-          <p class="plan-price">$4.99<small> / month</small></p>
-          <p class="plan-sub">The price of a coffee a month. Saves you hours of headache.</p>
-          <p class="plan-note">Checkout opens with version 2.0.</p>
+          <div class="plan-head">
+            <h2 class="plan-name">Free</h2>
+          </div>
+          <p class="plan-sub">Everything the extension does today. No account, no card.</p>
+          <p class="plan-price"><span class="price-amount">$0</span><small>USD / month</small></p>
+          <p class="plan-billed">Free to install — no account</p>
+          <a class="btn-ghost plan-cta" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
+          <p class="plan-list-head">What free does</p>
+          <ul class="plan-list">
+            <li>Search, filter and sort across thousands of videos</li>
+            <li>Bulk delete, and remove likes in bulk</li>
+            <li>Reorder, move and copy between playlists</li>
+            <li>Watch Later, Liked videos and every playlist you own</li>
+            <li>Video tags, transcript download and export</li>
+          </ul>
         </div>
         <div class="plan best">
-          <p class="plan-name">Yearly <span class="plan-badge">Best value</span></p>
-          <p class="plan-price">$39<small> / year</small></p>
-          <p class="plan-sub">$3.25 a month. Two months of Pro for a hoarder's whole year.</p>
-          <p class="plan-note">Checkout opens with version 2.0.</p>
+          <div class="plan-head">
+            <h2 class="plan-name">Pro</h2>
+            <div class="billing-switch" role="group" aria-label="Billing period">
+              <button type="button" class="billing-opt" data-billing-set="monthly" aria-pressed="false">Monthly</button>
+              <button type="button" class="billing-opt" data-billing-set="yearly" aria-pressed="true">Yearly <span class="billing-save">· Save 20%</span></button>
+            </div>
+          </div>
+          <p class="plan-sub">Keeps it clean by itself every month, and makes every cleanup reversible.</p>
+          <p class="plan-price"><span class="price-amount is-yearly">$3.99</span><span class="price-amount is-monthly">$4.99</span><small>USD / month</small></p>
+          <p class="plan-billed"><span class="is-yearly">$47.88 billed annually</span><span class="is-monthly">billed monthly</span></p>
+          <button type="button" class="plan-cta plan-cta-locked" disabled>Available with version 2.0</button>
+          <p class="plan-list-head">Everything in Free, and:</p>
+          <ul class="plan-list">
+            <li>Finished videos archived automatically</li>
+            <li>Dead entries cleared out</li>
+            <li>The bottom 10%, archived every month</li>
+            <li>Pin a video so every rule skips it</li>
+            <li>Preview the exact list before any bulk action</li>
+            <li>Undo removals for 90 days</li>
+            <li>Saved views</li>
+            <li>Feature requests and support answered first</li>
+          </ul>
         </div>
       </div>
-      <ul class="plans-both" aria-label="Included with both plans">
-        <li>Everything in Pro</li>
-        <li>Feature requests and support answered first</li>
+      <ul class="plans-both" aria-label="True on either plan">
+        <li>Everything free does today stays free</li>
         <li>7-day full refund on every charge, no questions asked</li>
         <li>Cancel any time</li>
       </ul>
@@ -244,45 +275,96 @@ faq:
   .pro-status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
   .pro-hero .cta-row { margin-bottom: 0; }
 
+  /* ── PLANS ──
+     Free and Pro side by side. Two columns while the grid can give each card
+     320px, which is a 704px viewport once the 24px section padding is taken
+     off; below that auto-fit stacks them. minmax() takes min(100%, 320px) so a
+     360px phone cannot be made to scroll sideways by the track floor. */
   .pro-plans { padding-top: 8px; }
   .plans {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px; max-width: 640px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 16px; max-width: 880px; margin: 0 auto;
   }
   .plan {
     background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
     padding: 26px 24px; display: flex; flex-direction: column; gap: 10px;
   }
   .plan.best { border-color: var(--highlight-border); background: var(--highlight-bg); }
-  .plan-name {
-    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--text-subtle);
-    display: flex; align-items: center; gap: 10px;
+  /* min-height holds the Free card's name row level with the Pro card's, which
+     carries the switch. */
+  .plan-head {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px 12px; min-height: 34px;
   }
-  .plan-badge {
-    font-size: 0.68rem; letter-spacing: 0.06em; color: var(--accent);
-    border: 1px solid var(--highlight-border); border-radius: 999px; padding: 2px 8px;
+  .plan-name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; color: var(--text); }
+
+  /* ── BILLING SWITCH ──
+     Two toggle buttons rather than a radio group: no arrow-key contract to
+     honour, and the pressed state is readable straight off aria-pressed. The
+     selected segment takes an inset ring instead of a border so nothing
+     reflows when the selection moves. */
+  .billing-switch {
+    display: inline-flex; align-items: center; gap: 2px;
+    background: var(--bg-alt); border: 1px solid var(--border);
+    border-radius: 999px; padding: 3px;
   }
+  .billing-opt {
+    border: 0; background: transparent; color: var(--text-muted);
+    font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+    padding: 5px 11px; border-radius: 999px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+  .billing-opt:hover { color: var(--text); }
+  .billing-opt[aria-pressed="true"] {
+    background: var(--bg-card); color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+  .billing-opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .billing-save { color: var(--accent); }
+
   .plan-price {
-    font-size: 2.4rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 8px; margin-top: 2px;
+    font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
     font-variant-numeric: tabular-nums; color: var(--text);
   }
-  .plan-price small { font-size: 1rem; font-weight: 500; letter-spacing: 0; color: var(--text-muted); }
+  .plan-price small { font-size: 0.9rem; font-weight: 500; letter-spacing: 0; color: var(--text-muted); }
+  .plan-billed { font-size: 0.85rem; color: var(--text-subtle); line-height: 1.5; }
   .plan-sub { font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; text-wrap: pretty; }
-  .plan ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
-  .plan li { display: flex; gap: 10px; align-items: flex-start; font-size: 0.92rem; line-height: 1.45; }
-  .plan li::before { content: "\2713"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
-  .plan-note {
-    margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--border-subtle);
-    font-size: 0.82rem; color: var(--text-subtle);
+  .plans[data-billing="yearly"] .is-monthly,
+  .plans[data-billing="monthly"] .is-yearly { display: none; }
+
+  .plan-cta {
+    width: 100%; justify-content: center; margin-top: 8px;
+    font-size: 0.95rem; padding: 12px 20px;
   }
+  /* No checkout exists yet, so this is a real disabled button, not a dead link.
+     The global button rule sets cursor:pointer on every button including
+     disabled ones, hence the explicit override. */
+  .plan-cta-locked {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--bg-alt); color: var(--text-secondary);
+    border: 1px dashed var(--border-strong); border-radius: 8px;
+    font-weight: 600; cursor: not-allowed;
+  }
+
+  .plan-list-head {
+    margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--border-subtle);
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-subtle);
+  }
+  .plan-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .plan-list li {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 0.92rem; line-height: 1.45; color: var(--text-secondary); text-wrap: pretty;
+  }
+  .plan-list li::before { content: "\2713"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
   .plans-both {
     list-style: none; display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 8px 22px; max-width: 640px; margin: 20px auto 0;
+    gap: 8px 22px; max-width: 880px; margin: 24px auto 0;
   }
   .plans-both li {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 0.9rem; color: var(--text-secondary); white-space: nowrap;
+    display: inline-flex; align-items: flex-start; gap: 8px;
+    font-size: 0.9rem; color: var(--text-secondary); text-wrap: pretty;
   }
   .plans-both li::before { content: "\2713"; color: var(--accent); font-weight: 700; }
   .plans-foot {
@@ -322,3 +404,20 @@ faq:
   .pro-faq { padding-bottom: 40px; }
   .faq-a p a, .later a { text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; }
 </style>
+
+<script>
+  // Billing switch on the Pro card. Both prices are already in the markup and
+  // CSS shows one off [data-billing]; this only moves the attribute and the
+  // aria-pressed state, so nothing here is load-bearing for the rendered price.
+  const plans = document.getElementById('plans');
+  if (plans) {
+    const opts = plans.querySelectorAll('[data-billing-set]');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const period = btn.getAttribute('data-billing-set');
+        plans.setAttribute('data-billing', period);
+        opts.forEach(o => o.setAttribute('aria-pressed', o === btn ? 'true' : 'false'));
+      });
+    });
+  }
+</script>
