@@ -48,7 +48,14 @@
     "additionalHeaderVideoCountPaths": [
       ["sidebar", "playlistSidebarRenderer", "items", 0, "playlistSidebarPrimaryInfoRenderer", "stats", 0, "runs", 0, "text"]
     ],
-    "canonicalUrlPath": ["microformat", "microformatDataRenderer", "urlCanonical"]
+    "canonicalUrlPath": ["microformat", "microformatDataRenderer", "urlCanonical"],
+    "sortFilterMenuPaths": [
+      [
+        "contents", "twoColumnBrowseResultsRenderer", "tabs", 0,
+        "tabRenderer", "content", "sectionListRenderer", "contents", 0,
+        "itemSectionRenderer", "contents", 0, "playlistVideoListRenderer", "sortFilterMenu"
+      ]
+    ]
   },
   "videoFields": {
     "wrapperKey":              "playlistVideoRenderer",
