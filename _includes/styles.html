@@ -262,6 +262,70 @@
 
     /* ── SECTION SHARED ── */
     section { padding: 88px 24px; }
+    /* ── SITE HEADER ──
+       1040px matches .section-inner, the widest container on the site, so the
+       header lines up with the landing page rather than the narrower blog.
+       Padding stays symmetric here: the theme toggle is position:fixed at
+       top:16px/right:16px, so it only reaches the CTA once the centred 1040px
+       container gets close to the viewport edge. That happens below
+       1040 + 2*56 = 1152px, and the media query further down reserves the
+       space there and only there — padding it at every width would leave the
+       header visibly lopsided on a desktop screen for no reason. */
+    .site-header {
+      max-width: 1040px; margin: 0 auto;
+      padding: 20px 24px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap;
+    }
+    @media (max-width: 1152px) {
+      .site-header { padding-right: 72px; }
+    }
+    /* On a phone the four items cannot share a row with the wordmark, so the
+       nav drops to its own full-width row. Tighter than the desktop spacing
+       purely to keep that to ONE row: at the desktop padding it wrapped again
+       and the header ate 142px above the hero. The 72px right padding above
+       still applies and still clears the toggle, which only ever overlaps the
+       first row. */
+    @media (max-width: 560px) {
+      /* The 72px reservation above is dropped here and the gap widened
+         instead: the nav is a full-width row BELOW the toggle, so it needs
+         horizontal clearance from nothing — and paying 72px for it was what
+         forced a second row back. The gap is what keeps the row clear of the
+         toggle vertically (fixed, 16px top, 40px tall). */
+      .site-header { padding: 20px 16px 0; gap: 14px; }
+      .site-nav { width: 100%; gap: 2px; }
+      .site-nav a { padding: 7px 9px; font-size: 0.875rem; }
+      .site-nav .site-nav-cta { margin-left: auto; padding: 7px 12px; }
+    }
+    /* Below ~390px the four items wrap to a second nav row and the header
+       goes 101px -> 144px. Tightening padding and font further was measured
+       and does not recover it — the CTA's own text is the binding constraint,
+       so the only real fix is shorter CTA copy on mobile. Left as is. */
+    .site-header-home {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--text); font-weight: 600; font-size: 0.95rem;
+      letter-spacing: -0.01em; text-decoration: none;
+    }
+    .site-header-home:hover { color: var(--accent); }
+    .site-header-icon {
+      width: 28px; height: 28px;
+      border-radius: 6px; display: block;
+    }
+    .site-header-wordmark { line-height: 1; }
+    .site-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    .site-nav a {
+      color: var(--text-muted); font-size: 0.9rem; font-weight: 500;
+      padding: 8px 12px; border-radius: 6px; text-decoration: none;
+      transition: color 0.2s, background 0.2s;
+    }
+    .site-nav a:hover { color: var(--text); background: var(--ghost-hover-bg); }
+    .site-nav a[aria-current="page"] { color: var(--accent); }
+    .site-nav .site-nav-cta {
+      background: var(--accent); color: #fff; font-weight: 600;
+      margin-left: 4px; padding: 8px 16px;
+    }
+    .site-nav .site-nav-cta:hover { background: var(--accent-hover); color: #fff; }
+
     .section-inner { max-width: 1040px; margin: 0 auto; }
     .section-label {
       font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
