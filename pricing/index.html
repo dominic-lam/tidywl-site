@@ -1,0 +1,423 @@
+---
+layout: default
+title: TidyWL Pro
+description: TidyWL Pro keeps your YouTube Watch Later under control automatically and makes every cleanup reversible. $4.99 a month or $47.88 a year. Ships with version 2.0.
+permalink: /pricing/
+faq:
+  - q: "Is the free version changing?"
+    a: "No. Everything the extension does today stays in the free version: search, filters, sorting, bulk delete, reorder, move, every playlist you own, tags, transcripts, export. Pro adds to it."
+  - q: "What happens if YouTube breaks a Pro feature?"
+    a: "TidyWL works with YouTube's web endpoints rather than an official API, and YouTube can change them. Most changes are fixed within hours through a remote configuration; some need an extension update. If a Pro feature is not restored within 30 days, yearly subscribers can ask for the unused part back, and monthly subscribers can cancel. The full rule is in the terms of sale."
+  - q: "Who charges my card?"
+    a: "Paddle, our merchant of record. Paddle takes the payment in your currency, adds any tax that applies where you live, sends the receipt and processes refunds. We never see your card number."
+  - q: "Can I cancel?"
+    a: "Any time, from the link in your receipt or by emailing support@tidywl.com. Pro keeps working until the end of the period you paid for, then the extension goes back to free. Nothing in your browser is deleted."
+  - q: "What is the refund policy?"
+    a: "Every charge, first payment or renewal, can be refunded in full within 14 days — no questions, no conditions, no exceptions. One email. After that, cancel any time and Pro runs to the end of the period you paid for."
+  - q: "How many devices can I use Pro on?"
+    a: "The browsers and devices you use yourself. The exact limit is shown when you activate your key, and you can deactivate a device you no longer use."
+  - q: "Does Pro send my playlist anywhere?"
+    a: "No. Rules, undo, pin and saved views all run in your browser, like the rest of the extension. The only new thing tidywl.com stores is your licence key and its activation record, so it can check the subscription is live. We take your privacy seriously and keep the list of what leaves your browser short and public. If we later add a removal history kept with your subscription, so you can restore from another device, it will be off unless you turn it on, and the privacy policy will say exactly what it stores."
+  - q: "Do Pro subscribers get a say in what gets built?"
+    a: "Yes. Feature requests and bug reports from Pro subscribers are read first and weigh most when deciding what to build next, and support emails from subscribers are answered first. It is a promise to listen first, not to build everything. Email from the address you used at checkout so we can tell."
+  - q: "Is TidyWL affiliated with YouTube?"
+    a: "No. TidyWL is an independent extension and is not affiliated with, endorsed by or sponsored by YouTube or Google. YouTube is a trademark of Google LLC."
+---
+<div class="pro-page">
+
+  <section class="pro-hero">
+    <p class="section-label">TidyWL Pro</p>
+    <h1>Keep your Watch Later under control. <span class="em">Automatically.</span></h1>
+    <p class="tagline">The free extension cleans a playlist up in an afternoon. Pro keeps it clean every month, and makes every cleanup reversible.</p>
+    <p class="pro-status"><span class="dot" aria-hidden="true"></span>Ships with version 2.0. Not on sale yet.</p>
+    <div class="cta-row">
+      <a class="btn-ghost" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome, free</a>
+      <a class="btn-ghost" href="/firefox/">Get for Firefox</a>
+    </div>
+  </section>
+
+  <section class="pro-plans">
+    <div class="section-inner">
+      <!-- Both period prices are in the markup. [data-billing] on .plans decides
+           which one is shown, so with JavaScript off the page renders the yearly
+           price below and only the switch stops responding. -->
+      <div class="plans" id="plans" data-billing="yearly">
+        <div class="plan">
+          <div class="plan-head">
+            <h2 class="plan-name">Free</h2>
+          </div>
+          <p class="plan-sub">Everything the extension does today. No account, no card.</p>
+          <p class="plan-price"><span class="price-amount">$0</span><small>USD / month</small></p>
+          <p class="plan-billed">Free to install — no account</p>
+          <a class="btn-ghost plan-cta" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
+          <p class="plan-list-head">What free does</p>
+          <ul class="plan-list">
+            <li>Search, filter and sort across thousands of videos</li>
+            <li>Bulk delete, and remove likes in bulk</li>
+            <li>Reorder, move and copy between playlists</li>
+            <li>Watch Later, Liked videos and every playlist you own</li>
+            <li>Video tags, transcript download and export</li>
+          </ul>
+        </div>
+        <div class="plan best">
+          <div class="plan-head">
+            <h2 class="plan-name">Pro</h2>
+            <div class="billing-switch" role="group" aria-label="Billing period">
+              <button type="button" class="billing-opt" data-billing-set="monthly" aria-pressed="false">Monthly</button>
+              <button type="button" class="billing-opt" data-billing-set="yearly" aria-pressed="true">Yearly <span class="billing-save">· Save 20%</span></button>
+            </div>
+          </div>
+          <p class="plan-sub">Keeps it clean by itself every month, and makes every cleanup reversible.</p>
+          <p class="plan-price"><span class="price-amount is-yearly">$3.99</span><span class="price-amount is-monthly">$4.99</span><small>USD / month</small></p>
+          <p class="plan-billed"><span class="is-yearly">$47.88 billed annually</span><span class="is-monthly">billed monthly</span></p>
+          <button type="button" class="plan-cta plan-cta-locked" disabled>Available with version 2.0</button>
+          <p class="plan-list-head">Everything in Free, and:</p>
+          <ul class="plan-list">
+            <li>Finished videos archived automatically</li>
+            <li>Dead entries cleared out</li>
+            <li>The bottom 10%, archived every month</li>
+            <li>Pin a video so every rule skips it</li>
+            <li>Preview the exact list before any bulk action</li>
+            <li>Undo deletions for 90 days</li>
+            <li>Saved views</li>
+            <li>Feature requests and support answered first</li>
+          </ul>
+        </div>
+      </div>
+      <ul class="plans-both" aria-label="True on either plan">
+        <li>Everything free does today stays free</li>
+        <li>14-day full refund on every charge — no questions, no conditions</li>
+        <li>Cancel any time</li>
+      </ul>
+      <p class="plans-foot">Prices in US dollars before tax. Checkout, by Paddle, shows your currency and any tax for your country. Nothing is charged until version 2.0 ships.</p>
+    </div>
+  </section>
+
+  <section class="features pro-features">
+    <div class="section-inner">
+      <p class="section-label">What Pro adds</p>
+      <h2 class="section-heading">Eight things Pro gives you that free does not</h2>
+
+      <div class="pro-group">
+        <div class="pro-group-head">
+          <h3>Rules</h3>
+          <p>Run when you open YouTube. They never delete a video you could still watch: they move it to an archive playlist you own.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card highlight">
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <h3>Finished videos, archived</h3>
+            <p>Anything you watched past 95% moves to the archive. Near-zero regret, so it runs first and earns your trust for the rest.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+            <h3>Dead entries, removed</h3>
+            <p>Private, deleted and unavailable videos are cleared out. They cannot be moved, so this one deletes, after a preview.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg></div>
+            <h3>Bottom 10%, every month</h3>
+            <p>Once a month, the oldest tenth of your Watch Later moves to the archive. Set the percentage yourself. The dashboard tells you the size your list settles at.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg></div>
+            <h3>Pin</h3>
+            <p>Mark a video "keep forever". Every rule skips it. The one you saved for a trip stays saved.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pro-group">
+        <div class="pro-group-head">
+          <h3>Safety</h3>
+          <p>For the bulk actions you already have.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg></div>
+            <h3>Preview before you act</h3>
+            <p>Every bulk delete, move, unlike or rule shows the exact list first. Untick anything, then go.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></div>
+            <h3>Undo, for 90 days</h3>
+            <p>What you deleted from Watch Later or a playlist is kept on this device for 90 days. Restore one video or a whole batch, back into the playlist it came from.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pro-group">
+        <div class="pro-group-head">
+          <h3>Power</h3>
+          <p>Get back to a view in one click, and be heard first.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+            <h3>Saved views</h3>
+            <p>Name a filter combination, say unwatched, over 20 minutes, from three channels, and open it in one click.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg></div>
+            <h3>Requests and support, answered first</h3>
+            <p>Your feature requests and bug reports are read first and weigh most in what gets built next. Support emails from subscribers go to the front of the queue.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pro-compare">
+    <div class="section-inner">
+      <p class="section-label">Free and Pro, side by side</p>
+      <h2 class="section-heading">The free column is the extension as it is today</h2>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead>
+            <tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Pro</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Search, filter, sort, channel and topic breakdown</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Bulk delete, remove likes in bulk</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Reorder, move and copy between playlists</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Watch Later, Liked videos and every playlist you own, together or one at a time</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Video tags, transcript download, export, Send to Gemini Notebook</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Rules: finished videos, dead entries, bottom 10% monthly</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Pin a video so rules skip it</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Preview the exact list before any bulk action</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Undo deletions for 90 days</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Saved views</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Feature requests and support answered first</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="later">
+        <p class="later-label">Planned for Pro, not part of what you buy today</p>
+        <ul>
+          <li><strong>Undo from any device.</strong> Removal history kept with your subscription, so you can restore after a reinstall or on another computer. Off unless you turn it on.</li>
+          <li><strong>An age rule, with Google Takeout import.</strong> Archive anything older than a number of months, using the real date-added values a Takeout import brings in.</li>
+        </ul>
+        <p class="later-note">Listed so you know the direction. Buy Pro for what is on this page today.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pro-faq">
+    <div class="faq">
+      <p class="section-label">Questions</p>
+      <h2 class="section-heading">Before you decide</h2>
+      <div class="faq-list">
+        <div class="faq-item" aria-expanded="false">
+          <button class="faq-q" type="button">Is the free version changing?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>No. Everything the extension does today stays in the free version: search, filters, sorting, bulk delete, reorder, move, every playlist you own, tags, transcripts, export. Pro adds to it.</p></div>
+        </div>
+        <div class="faq-item" aria-expanded="false">
+          <button class="faq-q" type="button">What happens if YouTube breaks a Pro feature?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>TidyWL works with YouTube's web endpoints rather than an official API, and YouTube can change them. Most changes are fixed within hours through a remote configuration; some need an extension update. If a Pro feature is not restored within 30 days, yearly subscribers can ask for the unused part back, and monthly subscribers can cancel. The full rule is in the <a href="/terms/">terms of sale</a>.</p></div>
+        </div>
+        <div class="faq-item" aria-expanded="false">
+          <button class="faq-q" type="button">Who charges my card?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>Paddle, our merchant of record. Paddle takes the payment in your currency, adds any tax that applies where you live, sends the receipt and processes refunds. We never see your card number.</p></div>
+        </div>
+        <div class="faq-item" aria-expanded="false">
+          <button class="faq-q" type="button">Can I cancel?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>Any time, from the link in your receipt or by emailing <a href="mailto:support@tidywl.com">support@tidywl.com</a>. Pro keeps working until the end of the period you paid for, then the extension goes back to free. Nothing in your browser is deleted.</p></div>
+        </div>
+        <div class="faq-item" aria-expanded="false">
+          <button class="faq-q" type="button">What is the refund policy?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>Every charge, first payment or renewal, can be refunded in full within 14 days — no questions, no conditions, no exceptions. One email. After that, cancel any time and Pro runs to the end of the period you paid for. The <a href="/refunds/">refund policy</a> has the rest.</p></div>
+        </div>
+        <div class="faq-item" aria-expanded="false">
+          <button class="faq-q" type="button">How many devices can I use Pro on?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>The browsers and devices you use yourself. The exact limit is shown when you activate your key, and you can deactivate a device you no longer use.</p></div>
+        </div>
+        <div class="faq-item" aria-expanded="false">
+          <button class="faq-q" type="button">Does Pro send my playlist anywhere?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>No. Rules, undo, pin and saved views all run in your browser, like the rest of the extension. The only new thing tidywl.com stores is your licence key and its activation record, so it can check the subscription is live. We take your privacy seriously and keep the list of what leaves your browser short and public. If we later add a removal history kept with your subscription, so you can restore from another device, it will be off unless you turn it on, and the <a href="/privacy/">privacy policy</a> will say exactly what it stores.</p></div>
+        </div>
+        <div class="faq-item" aria-expanded="false">
+          <button class="faq-q" type="button">Do Pro subscribers get a say in what gets built?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>Yes. Feature requests and bug reports from Pro subscribers are read first and weigh most when deciding what to build next, and support emails from subscribers are answered first. It is a promise to listen first, not to build everything. Email <a href="mailto:support@tidywl.com">support@tidywl.com</a> from the address you used at checkout so we can tell.</p></div>
+        </div>
+        <div class="faq-item" aria-expanded="false">
+          <button class="faq-q" type="button">Is TidyWL affiliated with YouTube?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>No. TidyWL is an independent extension and is not affiliated with, endorsed by or sponsored by YouTube or Google. YouTube is a trademark of Google LLC.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<style>
+  .pro-page section { padding: 64px 24px; }
+  .pro-hero {
+    text-align: center; padding: 72px 24px 32px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .pro-hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
+    letter-spacing: -0.02em; line-height: 1.12; max-width: 720px;
+    margin: 0 auto 18px; text-wrap: balance;
+  }
+  .pro-hero h1 .em { color: var(--accent); }
+  .pro-hero .tagline {
+    font-size: clamp(1.05rem, 2.2vw, 1.2rem); color: var(--text-secondary);
+    max-width: 560px; margin: 0 auto 22px; line-height: 1.55; text-wrap: pretty;
+  }
+  .pro-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);
+    border: 1px solid var(--highlight-border); background: var(--bg-card);
+    border-radius: 999px; padding: 6px 14px; margin-bottom: 24px;
+  }
+  .pro-status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .pro-hero .cta-row { margin-bottom: 0; }
+
+  /* ── PLANS ──
+     Free and Pro side by side. Two columns while the grid can give each card
+     320px, which is a 704px viewport once the 24px section padding is taken
+     off; below that auto-fit stacks them. minmax() takes min(100%, 320px) so a
+     360px phone cannot be made to scroll sideways by the track floor. */
+  .pro-plans { padding-top: 8px; }
+  .plans {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 16px; max-width: 880px; margin: 0 auto;
+  }
+  .plan {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 26px 24px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .plan.best { border-color: var(--highlight-border); background: var(--highlight-bg); }
+  /* min-height holds the Free card's name row level with the Pro card's, which
+     carries the switch. */
+  .plan-head {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px 12px; min-height: 34px;
+  }
+  .plan-name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; color: var(--text); }
+
+  /* ── BILLING SWITCH ──
+     Two toggle buttons rather than a radio group: no arrow-key contract to
+     honour, and the pressed state is readable straight off aria-pressed. The
+     selected segment takes an inset ring instead of a border so nothing
+     reflows when the selection moves. */
+  .billing-switch {
+    display: inline-flex; align-items: center; gap: 2px;
+    background: var(--bg-alt); border: 1px solid var(--border);
+    border-radius: 999px; padding: 3px;
+  }
+  .billing-opt {
+    border: 0; background: transparent; color: var(--text-muted);
+    font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+    padding: 5px 11px; border-radius: 999px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+  .billing-opt:hover { color: var(--text); }
+  .billing-opt[aria-pressed="true"] {
+    background: var(--bg-card); color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+  .billing-opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .billing-save { color: var(--accent); }
+
+  .plan-price {
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 8px; margin-top: 2px;
+    font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+    font-variant-numeric: tabular-nums; color: var(--text);
+  }
+  .plan-price small { font-size: 0.9rem; font-weight: 500; letter-spacing: 0; color: var(--text-muted); }
+  .plan-billed { font-size: 0.85rem; color: var(--text-subtle); line-height: 1.5; }
+  .plan-sub { font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; text-wrap: pretty; }
+  .plans[data-billing="yearly"] .is-monthly,
+  .plans[data-billing="monthly"] .is-yearly { display: none; }
+
+  .plan-cta {
+    width: 100%; justify-content: center; margin-top: 8px;
+    font-size: 0.95rem; padding: 12px 20px;
+  }
+  /* No checkout exists yet, so this is a real disabled button, not a dead link.
+     The global button rule sets cursor:pointer on every button including
+     disabled ones, hence the explicit override. */
+  .plan-cta-locked {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--bg-alt); color: var(--text-secondary);
+    border: 1px dashed var(--border-strong); border-radius: 8px;
+    font-weight: 600; cursor: not-allowed;
+  }
+
+  .plan-list-head {
+    margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--border-subtle);
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-subtle);
+  }
+  .plan-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .plan-list li {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 0.92rem; line-height: 1.45; color: var(--text-secondary); text-wrap: pretty;
+  }
+  .plan-list li::before { content: "\2713"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  .plans-both {
+    list-style: none; display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 8px 22px; max-width: 880px; margin: 24px auto 0;
+  }
+  .plans-both li {
+    display: inline-flex; align-items: flex-start; gap: 8px;
+    font-size: 0.9rem; color: var(--text-secondary); text-wrap: pretty;
+  }
+  .plans-both li::before { content: "\2713"; color: var(--accent); font-weight: 700; }
+  .plans-foot {
+    text-align: center; font-size: 0.85rem; color: var(--text-subtle);
+    max-width: 560px; margin: 20px auto 0; line-height: 1.55; text-wrap: pretty;
+  }
+
+  .pro-features .section-heading { margin-bottom: 32px; }
+  .pro-group + .pro-group { margin-top: 40px; }
+  .pro-group-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-bottom: 14px; }
+  .pro-group-head h3 { font-size: 1.05rem; font-weight: 700; }
+  .pro-group-head p { font-size: 0.9rem; color: var(--text-muted); text-wrap: pretty; }
+
+  .compare-wrap { overflow-x: auto; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  .compare th, .compare td {
+    text-align: left; padding: 12px 12px; vertical-align: top;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare th { color: var(--text-secondary); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .compare th:not(:first-child), .compare td:not(:first-child) { text-align: center; width: 90px; white-space: nowrap; }
+  .compare td.yes { color: var(--accent); font-weight: 700; font-size: 1.1rem; line-height: 1; }
+  .compare td.no { color: var(--text-subtle); }
+
+  .later {
+    margin-top: 40px; padding: 22px 24px; border: 1px dashed var(--border-strong); border-radius: 12px;
+  }
+  .later-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-subtle); margin-bottom: 12px;
+  }
+  .later ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .later li { font-size: 0.92rem; color: var(--text-muted); line-height: 1.55; text-wrap: pretty; }
+  .later li strong { color: var(--text); font-weight: 600; }
+  .later-note { margin-top: 12px; font-size: 0.85rem; color: var(--text-subtle); }
+
+  .pro-faq { padding-bottom: 40px; }
+  .faq-a p a, .later a { text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; }
+</style>
+
+<script>
+  // Billing switch on the Pro card. Both prices are already in the markup and
+  // CSS shows one off [data-billing]; this only moves the attribute and the
+  // aria-pressed state, so nothing here is load-bearing for the rendered price.
+  const plans = document.getElementById('plans');
+  if (plans) {
+    const opts = plans.querySelectorAll('[data-billing-set]');
+    opts.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const period = btn.getAttribute('data-billing-set');
+        plans.setAttribute('data-billing', period);
+        opts.forEach(o => o.setAttribute('aria-pressed', o === btn ? 'true' : 'false'));
+      });
+    });
+  }
+</script>
