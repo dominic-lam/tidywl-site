@@ -286,21 +286,27 @@
        and the header ate 142px above the hero. The 72px right padding above
        still applies and still clears the toggle, which only ever overlaps the
        first row. */
-    @media (max-width: 560px) {
-      /* The 72px reservation above is dropped here and the gap widened
-         instead: the nav is a full-width row BELOW the toggle, so it needs
-         horizontal clearance from nothing — and paying 72px for it was what
-         forced a second row back. The gap is what keeps the row clear of the
-         toggle vertically (fixed, 16px top, 40px tall). */
-      .site-header { padding: 20px 16px 0; gap: 14px; }
-      .site-nav { width: 100%; gap: 2px; }
-      .site-nav a { padding: 7px 9px; font-size: 0.875rem; }
-      .site-nav .site-nav-cta { margin-left: auto; padding: 7px 12px; }
+    .cta-short { display: none; }
+    /* Phone: everything on ONE row. Two rows read as a stacked menu rather
+       than a header bar. Three things buy the space — Firefox drops out (the
+       footer still carries it, and a phone visitor is not installing a desktop
+       extension right now anyway), the CTA shortens to "Install", and the
+       right padding falls to just what clears the fixed theme toggle. */
+    @media (max-width: 640px) {
+      .site-header { padding: 16px 60px 0 16px; gap: 8px; }
+      .site-nav { gap: 0; }
+      .site-nav a { padding: 7px 6px; font-size: 0.875rem; }
+      .site-nav .site-nav-firefox { display: none; }
+      .site-nav .site-nav-cta { margin-left: 4px; padding: 7px 14px; }
+      .cta-long { display: none; }
+      .cta-short { display: inline; }
     }
-    /* Below ~390px the four items wrap to a second nav row and the header
-       goes 101px -> 144px. Tightening padding and font further was measured
-       and does not recover it — the CTA's own text is the binding constraint,
-       so the only real fix is shorter CTA copy on mobile. Left as is. */
+    /* Under 400px the wordmark is the last 60px standing between this and one
+       row: at 390 the row needed 314px against 310px available. The icon still
+       links home and still reads as the logo, so the text is what goes. */
+    @media (max-width: 400px) {
+      .site-header-wordmark { display: none; }
+    }
     .site-header-home {
       display: inline-flex; align-items: center; gap: 10px;
       color: var(--text); font-weight: 600; font-size: 0.95rem;

@@ -10,8 +10,8 @@
     </a>
     <nav class="site-nav" aria-label="Main">
       <a href="/pricing/"{% if page.url == '/pricing/' %} aria-current="page"{% endif %}>Pricing</a>
-      <a href="/firefox/"{% if page.url == '/firefox/' %} aria-current="page"{% endif %}>Firefox</a>
+      <a class="site-nav-firefox" href="/firefox/"{% if page.url == '/firefox/' %} aria-current="page"{% endif %}>Firefox</a>
       <a href="/blog/"{% if page.url contains '/blog/' %} aria-current="page"{% endif %}>Blog</a>
-      <a class="site-nav-cta" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
+      <a class="site-nav-cta" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener"><span class="cta-long">Add to Chrome</span><span class="cta-short">Install</span></a>
     </nav>
   </header>
