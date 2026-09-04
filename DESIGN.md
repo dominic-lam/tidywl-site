@@ -11,7 +11,7 @@ The rebuilt landing page for [tidywl.com](https://tidywl.com), implementing the 
 
 ## Sections, in order
 
-1. **Hero** — brand mark, H1 ("Your YouTube Watch Later hit 5,000 videos?"), tagline, primary + ghost CTAs, 5-star social proof line
+1. **Hero** — brand mark, H1 ("Your YouTube Watch Later is out of control"), tagline, primary + ghost CTAs, 5-star social proof line
 2. **Demo video** — 16:9 YouTube embed
 3. **Features** — 5 cards (2×3 grid collapsing to 1 col); "Past 5,000" card is visually highlighted
 4. **How it works** — 3 numbered steps with icon wells
