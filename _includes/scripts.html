@@ -22,6 +22,27 @@
       try { localStorage.setItem('theme', next); } catch (e) {}
     });
 
+    // Demo video: build the iframe on click, never before.
+    //
+    // The point of the facade is that no request reaches Google until the visitor
+    // asks for one, so this handler is the only place a YouTube URL may appear.
+    // youtube-nocookie.com is the privacy-enhanced host: it serves the same player
+    // without the advertising cookies. Keep both properties — swapping in the
+    // ordinary domain, or pre-creating the iframe hidden, quietly undoes it.
+    document.querySelectorAll('.video-facade').forEach(facade => {
+      facade.addEventListener('click', () => {
+        const id = facade.dataset.videoId;
+        if (!id) return;
+        const frame = document.createElement('iframe');
+        frame.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1&rel=0';
+        frame.title = 'TidyWL demo';
+        frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        frame.allowFullscreen = true;
+        facade.replaceWith(frame);
+        document.getElementById('video-note')?.remove();
+      });
+    });
+
     // Live cleanup counter. /api/stats is the same origin as this page — the
     // apex is proxied, /api/* routes to the Worker — so this is a plain
     // relative fetch with no CORS involved.

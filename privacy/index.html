@@ -84,11 +84,21 @@ permalink: /privacy/
       <li><strong>notebook.google.com</strong> (asked the first time you send to Gemini Notebook) — see above. Decline it and the links are copied to your clipboard instead.</li>
     </ul>
 
+    <h2>Visiting this website</h2>
+    <p>Everything above is about the extension. This section is about tidywl.com itself, which is a separate thing you may use without ever installing anything.</p>
+    <p><strong>There is no analytics on this site.</strong> No Google Analytics, no Plausible, no Fathom, no pixel, no tag manager, no session recorder. We do not know how many people read this page, which pages they came from, or what they clicked. The only usage number we have anywhere is the extension's own counter described above, and the store's own dashboard.</p>
+    <p><strong>We set no cookies of our own.</strong> The site stores exactly one thing in your browser: whether you chose light or dark mode, kept in local storage under <code>theme</code>, written only when you click the toggle and never sent anywhere. Clear your site data and it is gone.</p>
+    <p><strong>Our host sets one.</strong> The site is served through Cloudflare, which sets a short-lived cookie (<code>__cf_bm</code>) to tell browsers apart from bots. It is a security measure, it expires within half an hour, and it is not used to profile you or to advertise.</p>
+    <p><strong>The demo video does not load until you press play.</strong> The thumbnail on the front page is an image on our own server, not an embed. Only when you click it does a YouTube player load, from <code>youtube-nocookie.com</code>, and only then does YouTube see you. If you never press play, no request reaches Google at all.</p>
+    <p><strong>Fonts are served from here, not from Google.</strong> The typeface is stored on our own server, so loading a page on this site does not tell Google you did.</p>
+    <p>Web servers necessarily see the IP address of whoever asks for a page; Cloudflare's are kept briefly for security and abuse handling, and we do not build them into logs, profiles or reports of our own.</p>
+
     <h2>What is not in this policy, on purpose</h2>
     <p>No analytics library, no crash reporter, no advertising SDK, no third-party script of any kind runs inside the extension. The extension ships unminified — every file in the package is the source — so anyone who wants to check what it sends can read it rather than take this page's word for it.</p>
 
     <h2>Changes to this policy</h2>
     <ul>
+      <li><strong>2026-09-04</strong> — added <em>Visiting this website</em>. Nothing about the extension changed. The site itself gained no tracking; the section documents what was already true, and two third-party requests were removed rather than disclosed — the typeface now loads from this server instead of Google's, and the demo video loads nothing until you press play.</li>
       <li><strong>2026-08-29</strong> — first version, published ahead of 1.6.0 and effective from the day it ships. Until this version the extension sent nothing about you or your install; the usage report described above is new.</li>
     </ul>
     <p>Material changes will be listed here with a date and announced in the dashboard's What's New. This page is the policy linked from the Chrome Web Store listing and from the Firefox add-on.</p>

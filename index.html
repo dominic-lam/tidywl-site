@@ -326,14 +326,20 @@
       </svg>
       Watch the demo
     </p>
+    <!-- Click-to-play facade. Nothing from YouTube loads until the visitor asks for
+         it: the poster is ours, and the iframe (youtube-nocookie.com) is only created
+         on click. Embedding it directly would set YouTube and DoubleClick cookies on
+         every visitor who scrolls this far, before any of them pressed play. -->
     <div class="video-wrapper">
-      <iframe
-        src="https://www.youtube.com/embed/JLG_2wGa2eo"
-        title="TidyWL demo"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        loading="lazy"></iframe>
+      <button type="button" class="video-facade" data-video-id="JLG_2wGa2eo"
+              aria-label="Play the TidyWL demo video">
+        <img src="/assets/demo-poster.jpg" alt="" width="1280" height="720" fetchpriority="low" decoding="async">
+        <span class="video-play" aria-hidden="true">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><polygon points="7 4 20 12 7 20 7 4"/></svg>
+        </span>
+      </button>
     </div>
+    <p class="video-note" id="video-note">Nothing loads from YouTube until you press play.</p>
   </section>
 
   <!-- ── BEFORE / AFTER ── -->
