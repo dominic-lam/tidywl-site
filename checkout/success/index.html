@@ -73,11 +73,19 @@ sitemap: false
     var status = document.getElementById('key-status');
     var value = document.getElementById('key-value');
     var copy = document.getElementById('key-copy');
+    // A hosted checkout redirects here with (observed 2026-09-05):
+    //   ?price_id=pri_…&transaction_id=txn_…&customer_email=…&paddle_customer_id=ctm_…
+    // Only the transaction id is used; the email is never read or sent
+    // anywhere. `_ptxn` is what a Paddle.js payment link carries, and `txn`
+    // is ours, for support-issued links.
     var params = new URLSearchParams(location.search);
-    var txn = params.get('_ptxn') || params.get('txn');
+    var txn = ['transaction_id', '_ptxn', 'txn', 'transactionId']
+      .map(function (k) { return params.get(k); })
+      .filter(Boolean)[0] || null;
 
     if (!txn || !/^txn_[A-Za-z0-9]{1,64}$/.test(txn)) {
-      fail('This page needs the link Paddle sent you to after checkout. Open it from your receipt, or email support@tidywl.com from the address you paid with and we will send your key.');
+      var seen = Array.from(new URLSearchParams(location.search).keys()).join(', ') || 'none';
+      fail('This page could not find your payment in the link. Email support@tidywl.com from the address you paid with, quoting your Paddle receipt, and we will send your key. (Link parameters seen: ' + seen + ')');
       return;
     }
 
