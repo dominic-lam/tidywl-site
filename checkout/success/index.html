@@ -1,0 +1,127 @@
+---
+layout: default
+title: Your TidyWL Pro key
+description: The page Paddle sends you to after checkout. It shows your licence key and how to activate it.
+permalink: /checkout/success/
+sitemap: false
+---
+<section class="blog-wrap">
+  <h1 class="blog-title">Thank you.</h1>
+  <p class="blog-subtitle">Here is your TidyWL Pro key. Paddle has emailed you a receipt.</p>
+
+  <div class="post-body">
+    <div class="key-box" id="key-box" aria-live="polite">
+      <div class="key-status" id="key-status">Fetching your key…</div>
+      <div class="key-value" id="key-value" hidden></div>
+      <button type="button" class="key-copy" id="key-copy" hidden>Copy key</button>
+    </div>
+
+    <h2>Activate it</h2>
+    <ol>
+      <li>Open YouTube and open the TidyWL dashboard.</li>
+      <li>Click the <strong>ⓘ About</strong> button in the top right.</li>
+      <li>Paste the key under <strong>TidyWL Pro</strong> and click <strong>Activate</strong>. The badge turns <strong>PRO</strong>.</li>
+    </ol>
+    <p>One key works on up to three computers. Deactivate a device from the same panel to free a seat.</p>
+
+    <h2>Keep this page</h2>
+    <p>Bookmark it or copy the key somewhere safe: it comes back on this page as long as the link keeps its <code>_ptxn</code> part. If you lose both, email <a href="mailto:support@tidywl.com">support@tidywl.com</a> from the address you paid with.</p>
+
+    <p class="privacy-meta">Fourteen-day full refund on every charge, no questions — <a href="/refunds/">refund policy</a>. Cancel any time from your Paddle receipt.</p>
+  </div>
+</section>
+
+<style>
+  .key-box {
+    margin: 8px 0 32px;
+    padding: 20px 22px;
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    background: var(--surface, rgba(127, 127, 127, 0.06));
+  }
+  .key-status { font-size: 0.95rem; color: var(--muted, #6b7280); }
+  .key-status[data-tone="error"] { color: #b42318; }
+  .key-value {
+    margin-top: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 1.45rem;
+    letter-spacing: 0.06em;
+    word-break: break-all;
+    user-select: all;
+  }
+  .key-copy {
+    margin-top: 14px;
+    padding: 9px 16px;
+    border: 1px solid var(--border, #d1d5db);
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  .key-copy:hover { background: rgba(127, 127, 127, 0.12); }
+  .key-box [hidden] { display: none !important; }
+</style>
+
+<script>
+  // Paddle appends the transaction id to the success URL as `_ptxn`. The
+  // Worker learns about the transaction from Paddle's webhook, which usually
+  // lands within seconds of the redirect but is not guaranteed to have landed
+  // yet — so poll the claim endpoint for a while before giving up. Same
+  // origin (/api/* is proxied to the Worker), no third-party request.
+  (function () {
+    var status = document.getElementById('key-status');
+    var value = document.getElementById('key-value');
+    var copy = document.getElementById('key-copy');
+    var params = new URLSearchParams(location.search);
+    var txn = params.get('_ptxn') || params.get('txn');
+
+    if (!txn || !/^txn_[A-Za-z0-9]{1,64}$/.test(txn)) {
+      fail('This page needs the link Paddle sent you to after checkout. Open it from your receipt, or email support@tidywl.com from the address you paid with and we will send your key.');
+      return;
+    }
+
+    var attempts = 0, maxAttempts = 30; // ~90 s at 3 s
+    poll();
+
+    function poll() {
+      attempts += 1;
+      fetch('/api/license/claim?txn=' + encodeURIComponent(txn), { cache: 'no-store', credentials: 'omit' })
+        .then(function (res) {
+          if (res.status === 200) return res.json().then(show);
+          if (res.status === 404 && attempts < maxAttempts) {
+            status.textContent = 'Waiting for Paddle to confirm the payment… (' + attempts + ')';
+            setTimeout(poll, 3000);
+            return;
+          }
+          if (res.status === 429 && attempts < maxAttempts) { setTimeout(poll, 10000); return; }
+          fail('We could not find a key for this payment yet. Wait a minute and reload this page. If it still does not appear, email support@tidywl.com with your Paddle receipt and we will send it.');
+        })
+        .catch(function () {
+          if (attempts < maxAttempts) { setTimeout(poll, 5000); return; }
+          fail('Could not reach tidywl.com. Check your connection and reload this page.');
+        });
+    }
+
+    function show(data) {
+      status.textContent = data.status === 'active' ? 'Your key' : 'Your key (subscription ' + data.status + ')';
+      value.textContent = data.key;
+      value.hidden = false;
+      copy.hidden = false;
+      copy.addEventListener('click', function () {
+        navigator.clipboard.writeText(data.key).then(function () {
+          copy.textContent = 'Copied';
+          setTimeout(function () { copy.textContent = 'Copy key'; }, 1500);
+        }, function () {
+          var range = document.createRange(); range.selectNodeContents(value);
+          var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        });
+      });
+    }
+
+    function fail(message) {
+      status.textContent = message;
+      status.setAttribute('data-tone', 'error');
+    }
+  })();
+</script>

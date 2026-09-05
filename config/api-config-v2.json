@@ -171,5 +171,10 @@
   },
   "usageReport": {
     "installsPath": "/api/installs"
+  },
+  "license": {
+    "activatePath": "/api/license/activate",
+    "validatePath": "/api/license/validate",
+    "deactivatePath": "/api/license/deactivate"
   }
 }
