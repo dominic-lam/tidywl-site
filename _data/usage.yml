@@ -2,6 +2,6 @@
 # deletedTotal is a FLOOR, rounded down to the nearest 1,000, because every
 # place that renders it says "over". deletedRaw is the unrounded value the
 # monotonic guard compares against on the next run.
-deletedTotal: "384,000"
-deletedRaw: 384744
-lastUpdated: "2026-09-05"
+deletedTotal: "407,000"
+deletedRaw: 407528
+lastUpdated: "2026-09-06"
