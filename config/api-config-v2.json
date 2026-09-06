@@ -175,6 +175,11 @@
   "license": {
     "activatePath": "/api/license/activate",
     "validatePath": "/api/license/validate",
-    "deactivatePath": "/api/license/deactivate"
+    "deactivatePath": "/api/license/deactivate",
+    "portalPath": "/api/license/portal",
+    "checkout": {
+      "monthly": "https://sandbox-pay.paddle.io/hsc_01m1sq4n5fajtyfyt17hjfj1nf_se0hnce463gd6gc9xzbtmtj5ghydbh31?price_id=pri_01m1sp0fs4qse2jgsvnm3chh85",
+      "yearly": "https://sandbox-pay.paddle.io/hsc_01m1sq4n5fajtyfyt17hjfj1nf_se0hnce463gd6gc9xzbtmtj5ghydbh31?price_id=pri_01m1sp1ghk583bvzxw2sj4mwq5"
+    }
   }
 }

@@ -7,6 +7,10 @@
         item.setAttribute('aria-expanded', open ? 'false' : 'true');
       });
     });
+    // A link straight to a question (/pricing/#cancel, from the extension's
+    // About modal) lands on a closed row; open it.
+    const asked = location.hash && document.getElementById(location.hash.slice(1));
+    if (asked && asked.classList.contains('faq-item')) asked.setAttribute('aria-expanded', 'true');
 
     // Theme toggle
     const root = document.documentElement;
