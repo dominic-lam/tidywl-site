@@ -17,7 +17,7 @@ faq:
   - q: "How many devices can I use Pro on?"
     a: "The browsers and devices you use yourself. The exact limit is shown when you activate your key, and you can deactivate a device you no longer use."
   - q: "Does Pro send my playlist anywhere?"
-    a: "No. Rules, undo, pin and saved views all run in your browser, like the rest of the extension. The only new thing tidywl.com stores is your licence key and its activation record, so it can check the subscription is live. We take your privacy seriously and keep the list of what leaves your browser short and public. If we later add a removal history kept with your subscription, so you can restore from another device, it will be off unless you turn it on, and the privacy policy will say exactly what it stores."
+    a: "No. Rules, undo, pin, the Lineup and saved views all run in your browser, like the rest of the extension. The Lineup reads your YouTube watch history and subscriptions to rank what to suggest, and both stay on your device. The only new thing tidywl.com stores is your licence key and its activation record, so it can check the subscription is live. We take your privacy seriously and keep the list of what leaves your browser short and public. If we later add a removal history kept with your subscription, so you can restore from another device, it will be off unless you turn it on, and the privacy policy will say exactly what it stores."
   - q: "Do Pro subscribers get a say in what gets built?"
     a: "Yes. Feature requests and bug reports from Pro subscribers are read first and weigh most when deciding what to build next, and support emails from subscribers are answered first. It is a promise to listen first, not to build everything. Email from the address you used at checkout so we can tell."
   - q: "Is TidyWL affiliated with YouTube?"
@@ -38,10 +38,15 @@ faq:
 
   <section class="pro-plans">
     <div class="section-inner">
-      <!-- Both period prices are in the markup. [data-billing] on .plans decides
-           which one is shown, so with JavaScript off the page renders the yearly
-           price below and only the switch stops responding. -->
-      <div class="plans" id="plans" data-billing="yearly">
+      <!-- Every price below is also the no-JS floor. The script at the foot of
+           this page re-reads them from /config/api-config-v2.json — the same
+           `license.pricing` block the extension's upsell card resolves — so a
+           promotion shows in both places or in neither. With JavaScript off, or
+           if that fetch fails, these literals stand and only the switch stops
+           responding. Keep them equal to the config's `regular` set.
+           [data-billing] on .plans decides which period is shown; it opens on
+           monthly, matching the card (2026-09-06). -->
+      <div class="plans" id="plans" data-billing="monthly">
         <div class="plan">
           <div class="plan-head">
             <h2 class="plan-name">Free</h2>
@@ -63,20 +68,22 @@ faq:
           <div class="plan-head">
             <h2 class="plan-name">Pro</h2>
             <div class="billing-switch" role="group" aria-label="Billing period">
-              <button type="button" class="billing-opt" data-billing-set="monthly" aria-pressed="false">Monthly</button>
-              <button type="button" class="billing-opt" data-billing-set="yearly" aria-pressed="true">Yearly <span class="billing-save">· Save 20%</span></button>
+              <button type="button" class="billing-opt" data-billing-set="monthly" aria-pressed="true">Monthly</button>
+              <button type="button" class="billing-opt" data-billing-set="yearly" aria-pressed="false">Yearly <span class="billing-save">· Save 20%</span></button>
             </div>
           </div>
           <p class="plan-sub">Keeps it clean by itself every month, and makes every cleanup reversible.</p>
-          <p class="plan-price"><span class="price-amount is-yearly">$3.99</span><span class="price-amount is-monthly">$4.99</span><small>USD / month</small></p>
+          <p class="plan-price"><s class="price-was is-yearly"></s><s class="price-was is-monthly"></s><span class="price-amount is-yearly">$3.99</span><span class="price-amount is-monthly">$4.99</span><small>USD / month</small></p>
           <p class="plan-billed"><span class="is-yearly">$47.88 billed annually</span><span class="is-monthly">billed monthly</span></p>
+          <p class="plan-promo" hidden><span class="plan-promo-label"></span><span class="plan-promo-note"></span></p>
           <button type="button" class="plan-cta plan-cta-locked" disabled>Available with version 2.0</button>
           <p class="plan-list-head">Everything in Free, and:</p>
           <ul class="plan-list">
+            <li>The Lineup — a watchlist built to fit the time you have</li>
             <li>Finished videos archived automatically</li>
             <li>Dead entries cleared out</li>
             <li>The bottom 10%, archived every month</li>
-            <li>Pin a video so every rule skips it</li>
+            <li>Pin a video and nothing removes it — no rule, no bulk delete</li>
             <li>Preview the exact list before any bulk action</li>
             <li>Undo deletions for 90 days</li>
             <li>Saved views</li>
@@ -96,7 +103,7 @@ faq:
   <section class="features pro-features">
     <div class="section-inner">
       <p class="section-label">What Pro adds</p>
-      <h2 class="section-heading">Eight things Pro gives you that free does not</h2>
+      <h2 class="section-heading">Nine things Pro gives you that free does not</h2>
 
       <div class="pro-group">
         <div class="pro-group-head">
@@ -122,7 +129,7 @@ faq:
           <div class="feature-card">
             <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg></div>
             <h3>Pin</h3>
-            <p>Mark a video "keep forever". Every rule skips it. The one you saved for a trip stays saved.</p>
+            <p>Mark a video "keep forever" and nothing removes it — not a rule, not a bulk delete you ran yourself. A Move copies it instead. The one you saved for a trip stays saved.</p>
           </div>
         </div>
       </div>
@@ -182,8 +189,9 @@ faq:
             <tr><td>Reorder, move and copy between playlists</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
             <tr><td>Watch Later, Liked videos and every playlist you own, together or one at a time</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
             <tr><td>Video tags, transcript download, export, Send to Gemini Notebook</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>The Lineup: a watchlist built to fit the time you have</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
             <tr><td>Rules: finished videos, dead entries, bottom 10% monthly</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
-            <tr><td>Pin a video so rules skip it</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Pin a video so nothing removes it</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
             <tr><td>Preview the exact list before any bulk action</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
             <tr><td>Undo deletions for 90 days</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
             <tr><td>Saved views</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
@@ -234,7 +242,7 @@ faq:
         </div>
         <div class="faq-item" aria-expanded="false">
           <button class="faq-q" type="button">Does Pro send my playlist anywhere?<span class="plus" aria-hidden="true">+</span></button>
-          <div class="faq-a"><p>No. Rules, undo, pin and saved views all run in your browser, like the rest of the extension. The only new thing tidywl.com stores is your licence key and its activation record, so it can check the subscription is live. We take your privacy seriously and keep the list of what leaves your browser short and public. If we later add a removal history kept with your subscription, so you can restore from another device, it will be off unless you turn it on, and the <a href="/privacy/">privacy policy</a> will say exactly what it stores.</p></div>
+          <div class="faq-a"><p>No. Rules, undo, pin, the Lineup and saved views all run in your browser, like the rest of the extension. The Lineup reads your YouTube watch history and subscriptions to rank what to suggest, and both stay on your device. The only new thing tidywl.com stores is your licence key and its activation record, so it can check the subscription is live. We take your privacy seriously and keep the list of what leaves your browser short and public. If we later add a removal history kept with your subscription, so you can restore from another device, it will be off unless you turn it on, and the <a href="/privacy/">privacy policy</a> will say exactly what it stores.</p></div>
         </div>
         <div class="faq-item" aria-expanded="false">
           <button class="faq-q" type="button">Do Pro subscribers get a say in what gets built?<span class="plus" aria-hidden="true">+</span></button>
@@ -332,6 +340,19 @@ faq:
   .plan-sub { font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; text-wrap: pretty; }
   .plans[data-billing="yearly"] .is-monthly,
   .plans[data-billing="monthly"] .is-yearly { display: none; }
+  /* Both are empty in the markup and filled only by a whole discount, so an
+     empty one must not reserve space or draw a stray strike-through rule. */
+  .price-was:empty { display: none; }
+  .price-was {
+    margin-right: 8px; font-size: 1.35rem; font-weight: 600;
+    color: var(--text-subtle); text-decoration-thickness: 2px;
+  }
+  .plan-promo {
+    display: flex; flex-direction: column; gap: 2px;
+    margin-top: -4px; margin-bottom: 12px; text-wrap: pretty;
+  }
+  .plan-promo-label { font-size: 0.9rem; font-weight: 700; color: var(--accent); }
+  .plan-promo-note { font-size: 0.82rem; color: var(--text-subtle); line-height: 1.5; }
 
   .plan-cta {
     width: 100%; justify-content: center; margin-top: 8px;
@@ -406,18 +427,118 @@ faq:
 </style>
 
 <script>
-  // Billing switch on the Pro card. Both prices are already in the markup and
-  // CSS shows one off [data-billing]; this only moves the attribute and the
-  // aria-pressed state, so nothing here is load-bearing for the rendered price.
-  const plans = document.getElementById('plans');
-  if (plans) {
+  // The Pro card's prices, read from the same place the extension reads them.
+  //
+  // `license.pricing` in /config/api-config-v2.json is the single source for
+  // both surfaces. The extension resolves it in src/utils/pricing.js; the
+  // rounding, the "whole discount" test and the anchor rule below are a
+  // deliberate port of that file and must stay in step with it — the card and
+  // this page are quoted side by side, and a mismatch reads as a bait and
+  // switch. Same origin, so this is a plain fetch with no CORS to arrange.
+  //
+  // The literals already in the markup are the no-JS floor: crawlers, a failed
+  // fetch and a malformed block all leave them exactly as served.
+  (function () {
+    const plans = document.getElementById('plans');
+    if (!plans) return;
+
+    // --- the billing switch (unchanged behaviour: attribute + aria only) ---
     const opts = plans.querySelectorAll('[data-billing-set]');
     opts.forEach(btn => {
       btn.addEventListener('click', () => {
-        const period = btn.getAttribute('data-billing-set');
-        plans.setAttribute('data-billing', period);
+        plans.setAttribute('data-billing', btn.getAttribute('data-billing-set'));
         opts.forEach(o => o.setAttribute('aria-pressed', o === btn ? 'true' : 'false'));
       });
     });
-  }
+
+    // --- the resolver, ported from src/utils/pricing.js ---
+    const MIN_PRICE = 0.5, MAX_PRICE = 1000, MAX_LABEL = 120, MAX_BADGE = 24;
+    const DEFAULTS = { monthly: 4.99, yearly: 47.88 };
+
+    const cleanPrice = v =>
+      typeof v === 'number' && isFinite(v) && v >= MIN_PRICE && v <= MAX_PRICE
+        ? Math.round(v * 100) / 100 : null;
+    const cleanString = (v, max) =>
+      typeof v === 'string' && v.trim() && v.length <= (max || MAX_LABEL) ? v.trim() : null;
+    const cleanUrl = v => (typeof v === 'string' && /^https:\/\/[^\s]+$/.test(v) ? v : null);
+    const usd = n => '$' + n.toFixed(2);
+    // Never understate the monthly figure, never overstate the saving.
+    const perMonth = yearly => Math.ceil((yearly / 12) * 100 - 1e-9) / 100;
+    const savingPct = (monthly, yearly) => Math.floor((1 - yearly / (12 * monthly)) * 100 + 1e-9);
+
+    function resolve(block) {
+      block = block && typeof block === 'object' && !Array.isArray(block) ? block : {};
+      const regular = Object.assign({}, DEFAULTS);
+      let regularBadge = null;
+      if (block.regular && typeof block.regular === 'object') {
+        ['monthly', 'yearly'].forEach(period => {
+          const price = cleanPrice(block.regular[period]);
+          if (price != null) regular[period] = price;
+        });
+        regularBadge = cleanString(block.regular.badge, MAX_BADGE);
+      }
+
+      const d = block.discount && typeof block.discount === 'object' ? block.discount : null;
+      const label = d ? cleanString(d.label) : null;
+      const dPrices = d ? { monthly: cleanPrice(d.monthly), yearly: cleanPrice(d.yearly) } : null;
+      const dCheckout = d && d.checkout && typeof d.checkout === 'object' ? d.checkout : {};
+      // A discount shows whole or not at all. The checkout links are part of
+      // that test even though this page has no buy button yet: if they are not
+      // ready, the promotion is not ready, and the card would not show it.
+      const whole = !!d && d.enabled === true && label != null
+        && dPrices.monthly != null && dPrices.monthly < regular.monthly
+        && dPrices.yearly != null && dPrices.yearly < regular.yearly
+        && cleanUrl(dCheckout.monthly) != null && cleanUrl(dCheckout.yearly) != null;
+
+      const prices = whole ? dPrices : regular;
+      const anchor = regular.monthly;
+      const monthlyEq = perMonth(prices.yearly);
+      const pct = savingPct(anchor, prices.yearly);
+      const badge = (whole ? cleanString(d.badge, MAX_BADGE) : regularBadge)
+        || (pct >= 1 ? 'Save ' + pct + '%' : null);
+
+      return {
+        discount: whole,
+        promo: whole ? { label: label, note: cleanString(d.note) } : null,
+        monthly: { amount: usd(prices.monthly), was: prices.monthly < anchor ? usd(anchor) : null, billed: 'billed monthly' },
+        yearly:  { amount: usd(monthlyEq),      was: monthlyEq < anchor ? usd(anchor) : null,      billed: usd(prices.yearly) + ' billed annually', badge: badge }
+      };
+    }
+
+    function paint(model) {
+      const set = (sel, text) => { const el = plans.querySelector(sel); if (el) el.textContent = text; };
+      set('.price-amount.is-monthly', model.monthly.amount);
+      set('.price-amount.is-yearly', model.yearly.amount);
+      set('.plan-billed .is-monthly', model.monthly.billed);
+      set('.plan-billed .is-yearly', model.yearly.billed);
+      // Empty string, not a removed node: `.price-was:empty` hides it.
+      set('.price-was.is-monthly', model.monthly.was || '');
+      set('.price-was.is-yearly', model.yearly.was || '');
+
+      const save = plans.querySelector('.billing-save');
+      if (save) {
+        if (model.yearly.badge) { save.textContent = '· ' + model.yearly.badge; save.hidden = false; }
+        else { save.textContent = ''; save.hidden = true; }
+      }
+
+      const promo = plans.querySelector('.plan-promo');
+      if (promo) {
+        if (model.promo) {
+          promo.querySelector('.plan-promo-label').textContent = model.promo.label;
+          promo.querySelector('.plan-promo-note').textContent = model.promo.note || '';
+          promo.hidden = false;
+        } else {
+          promo.hidden = true;
+        }
+      }
+    }
+
+    fetch('/config/api-config-v2.json', { cache: 'no-cache' })
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+      .then(cfg => {
+        const block = cfg && cfg.license ? cfg.license.pricing : null;
+        if (block) paint(resolve(block));
+      })
+      .catch(() => { /* the markup literals stand */ });
+  })();
 </script>

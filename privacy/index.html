@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Privacy Policy
-description: What TidyWL keeps in your browser, the one small report it sends to tidywl.com, how to stop it, and how long it is kept. Plain language, no hedging.
+description: What TidyWL keeps in your browser, the small report it sends to tidywl.com, what a Pro licence adds, how to stop it, and how long it is kept. Plain language, no hedging.
 permalink: /privacy/
 ---
 <section class="blog-wrap">
@@ -9,29 +9,31 @@ permalink: /privacy/
   <p class="blog-subtitle">What stays in your browser, what leaves, and how to stop it.</p>
 
   <div class="post-body">
-    <p class="privacy-meta">Applies to YouTube Watch Later Tidy (TidyWL) version 1.6.0 and later, on Chrome and Firefox. Published 2026-08-29, ahead of the 1.6.0 release; effective from the day 1.6.0 ships. Versions before 1.6.0 sent nothing about you or your install anywhere; that changed in 1.6.0, and this page exists because of it.</p>
+    <p class="privacy-meta">Applies to YouTube Watch Later Tidy (TidyWL) version 1.6.0 and later, on Chrome and Firefox. Published 2026-08-29, ahead of the 1.6.0 release; effective from the day 1.6.0 ships. Versions before 1.6.0 sent nothing about you or your install anywhere; that changed in 1.6.0, and this page exists because of it. Updated 2026-09-07 for version 2.0.0, which adds a paid tier and a Lineup that reads your watch history. If you never buy Pro, the <em>TidyWL Pro</em> sections below do not apply to you.</p>
 
     <h2>The short version</h2>
     <ul>
-      <li><strong>Your YouTube data never leaves your browser.</strong> Titles, video IDs, channels, your playlists, your account — none of it is sent to us or to anyone else.</li>
-      <li><strong>What does leave is a random identifier and some counts.</strong> After you delete, unlike or move videos, or sync, the extension sends tidywl.com a random ID for your install and your lifetime totals: videos deleted, likes removed, videos moved, bulk operations run, the size of your Watch Later, and whether you're on Chrome or Firefox. Never which videos.</li>
+      <li><strong>Your YouTube data stays in your browser.</strong> Titles, video IDs, channels, your playlists, your watch history, your subscriptions — none of it is sent to us, ever. The one exception is <strong>Send to Gemini Notebook</strong>, which passes the links you picked to Google when you click the button. That is the whole point of that feature, and it is described below.</li>
+      <li><strong>What does leave is a random identifier and some counts.</strong> After you delete, unlike or move videos, sync, or build a Lineup, the extension sends tidywl.com a random ID for your install and your lifetime totals: videos deleted, likes removed, videos moved, bulk operations run, Lineups built, Lineups saved as a playlist, the size of your Watch Later, and whether you're on Chrome or Firefox. Never which videos.</li>
       <li><strong>There is no switch in the extension to turn this off on Chrome.</strong> Uninstalling stops it. On Firefox the switch is Firefox's own: the <em>Technical and interaction data</em> toggle under the add-on's Permissions and data.</li>
       <li><strong>Records not updated for 12 months are deleted.</strong></li>
+      <li><strong>If you buy Pro, your licence key goes to tidywl.com too.</strong> It switches Pro on and is checked again at most every 15 minutes while the dashboard is open, so a cancelled subscription or a device you removed elsewhere stops working here quickly. Paddle takes the payment; your card details and your email never reach us.</li>
     </ul>
 
     <h2>What stays in your browser</h2>
     <p>TidyWL works by calling YouTube's own endpoints with the session you are already signed in with, exactly as the YouTube web app does. Everything it fetches — your Watch Later, your Liked videos, any playlist you open, and the per-video details on each card — is cached in your browser's extension storage so the dashboard can search, sort and filter thousands of videos without re-fetching. That cache is namespaced per Google account and per playlist. It is never uploaded anywhere, and it goes away when you uninstall the extension.</p>
-    <p>No sign-in, no account with us, no API key, no OAuth token. TidyWL cannot read your YouTube data when you are not signed in to YouTube in that browser.</p>
+    <p><strong>The Lineup reads two more things, and they stay here as well.</strong> To suggest what to watch next, the Lineup reads your own YouTube watch history and your list of subscribed channels — the same way it reads a playlist, through YouTube's own endpoints with the session you are already signed in with. It also asks YouTube which category each video is in, so it can tell music from the rest. All three are cached in extension storage, per Google account, and re-read about once a day: <code>wl_watch_history_&lt;account&gt;</code>, <code>wl_subscriptions_&lt;account&gt;</code> and <code>wl_video_category_&lt;account&gt;</code>. The whole ranking — which videos are picked, and why — is worked out on your machine. <strong>None of it is sent to tidywl.com or anywhere else</strong>, and nothing derived from it appears in the usage report below. Uninstalling removes all three.</p>
+    <p>No sign-in, no account with us, no API key, no OAuth token. TidyWL cannot read your YouTube data when you are not signed in to YouTube in that browser. Pro does not change that: a licence key is not an account. There is no password, no profile, and we never learn your email address.</p>
 
     <h2>What TidyWL sends to tidywl.com</h2>
-    <p>Two things, both to this site and nowhere else.</p>
+    <p>Three things, all to this site and nowhere else. The third only happens if you buy Pro.</p>
 
     <h3>1. A public configuration file</h3>
     <p>On each YouTube page load the extension fetches a small public JSON file (<code>/config/api-config-v2.json</code>) and, when you open the dashboard, a notices file (<code>/config/announcements.json</code>). These tell the extension where to find fields in YouTube's responses, so that many YouTube-side changes can be fixed without shipping a new version. The requests carry no identifier and no payload; everyone receives the same bytes. Nothing fetched is executed as code.</p>
 
     <h3>2. A usage report</h3>
     <p>Each install carries a random identifier, generated in your browser when the extension is installed. It is not derived from, linked to, or stored alongside your Google account, your email, or anything else about you, and it is not shown anywhere in the extension. Reinstalling generates a new one.</p>
-    <p>Whenever one of your lifetime counts changes — after a delete, an unlike, a move, or a sync — the extension sends that identifier and the counts to <code>https://tidywl.com/api/installs</code>. The report is exactly this, and nothing else:</p>
+    <p>Whenever one of your lifetime counts changes — after a delete, an unlike, a move, a sync, or a Lineup — the extension sends that identifier and the counts to <code>https://tidywl.com/api/installs</code>. The report is exactly this, and nothing else:</p>
 
     <div class="privacy-table-wrap">
       <table class="privacy-table">
@@ -45,14 +47,23 @@ permalink: /privacy/
           <tr><td>unliked</td><td>How many likes you have removed, ever, with TidyWL.</td></tr>
           <tr><td>moved</td><td>How many videos you have moved to another playlist, ever, with TidyWL. Copies are not counted.</td></tr>
           <tr><td>operations</td><td>How many bulk runs you have completed — one per batch, whatever its size.</td></tr>
+          <tr><td>lineups</td><td>How many times you have built a Lineup, ever, with TidyWL.</td></tr>
+          <tr><td>lineups_saved</td><td>How many of those you saved as a YouTube playlist.</td></tr>
           <tr><td>Watch Later size</td><td>How many videos were in your Watch Later the last time you synced it.</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p><strong>Never sent:</strong> a video title, a video ID, a channel, a playlist name, a URL, a timestamp of when you did anything, your watch progress, your Google account or email, your extension settings, or an IP address the extension has read. The report format has no field that could hold any of these, so none can be sent by mistake.</p>
+    <p><strong>Never sent:</strong> a video title, a video ID, a channel, a playlist name, a URL, a timestamp of when you did anything, your watch progress, your watch history, your subscriptions, your Google account or email, your licence key, your extension settings, or an IP address the extension has read. The report format has no field that could hold any of these, so none can be sent by mistake.</p>
+    <p><strong>The two Lineup counts are counts and nothing else.</strong> They say how often the feature was used, never what it suggested, what you watched, or which playlist you saved.</p>
     <p><strong>Counts include what you did before 1.6.0.</strong> The extension has counted deletions locally since version 1.4.1 (that is what powers the "you've cleaned up N videos" note). Those totals are reported on the first YouTube page load after updating, so a long-time user's first report already carries their history. One consequence: likes removed before 1.6.0 were counted as deletions at the time and stay in the <em>deleted</em> total; they cannot be separated out after the fact.</p>
-    <p><strong>No heartbeat, no install beacon.</strong> A report is sent only when a count has changed. An install that has never deleted, unliked, moved or synced anything sends nothing at all, and an install that is idle sends nothing while it is idle.</p>
+    <p><strong>No heartbeat, no install beacon.</strong> A report is sent only when a count has changed. An install that has never done any of the things counted above sends nothing at all, and an install that is idle sends nothing while it is idle.</p>
+
+    <h3>3. A licence check, if you buy Pro</h3>
+    <p>A free install never calls these endpoints. Nothing in this section happens until you enter a key.</p>
+    <p>Buying Pro gets you a licence key — about twenty random characters, made by our server. It is not derived from your email, your name or anything else about you. It is kept in the extension's synced storage, so it follows your browser profile to your other computers.</p>
+    <p>The extension sends that key to <code>https://tidywl.com/api/license/…</code> to switch Pro on, and sends it again to check the subscription is still live — <strong>at most once every 15 minutes</strong>, and only while the dashboard is open. The interval is short on purpose: it is how a cancelled subscription, or a device you removed from another computer, stops working here within minutes instead of a day. If the server cannot be reached at all, Pro keeps working for 14 days and then switches itself off.</p>
+    <p>Each call carries the key, the activation ID for this device, and — the first time only — the device name you typed. Nothing about your playlists, your videos, your watch history or your Google account goes with it. The same is true of the button that removes a device and the one that opens the billing portal.</p>
 
     <h2>Why</h2>
     <p>To know how heavily TidyWL is actually used — how many installs clean up in one big purge versus a little every week, how large the lists are — which decides what gets built next. Reviews and donations are the only other signal and both come from a self-selected few. The numbers are used for that and for a public total on this site. They are not sold, not shared with anyone, and not used for advertising.</p>
@@ -61,22 +72,45 @@ permalink: /privacy/
     <ul>
       <li><strong>Chrome (and other Chromium browsers):</strong> there is no setting in the extension to turn reporting off. Uninstalling the extension stops it, and the record expires after 12 months of no updates. We chose not to add a switch rather than add one and then design around people flipping it; that trade-off is ours and this page says so plainly.</li>
       <li><strong>Firefox:</strong> Firefox shows a <em>Technical and interaction data</em> toggle for this add-on. On a fresh install it is in the install prompt, pre-ticked, and you can change it any time afterwards under <code>about:addons</code> → TidyWL → <em>Permissions and data</em>. If you already had TidyWL and updated to 1.6.0, Firefox does not ask and the toggle starts <strong>off</strong> — so the dashboard asks you once, the first time you open it after the update, and either answer can be changed there later. When it is off, the extension sends no report.</li>
+      <li><strong>The licence check is different, and there is no switch for it.</strong> It is how Pro works: if the key stopped being checked, there would be nothing keeping a cancelled subscription from running forever. Deactivating this device in the About modal removes the key, stops the calls, and puts the extension back to free.</li>
     </ul>
 
     <h2>How long it is kept, and where</h2>
     <p>One record per install, on a server we run at tidywl.com — a Cloudflare Worker with a Cloudflare D1 database. The server keeps the highest value it has seen for each count and the latest Watch Later size. A record that has not been updated for <strong>12 months</strong> is deleted; before deletion its counts are added to a single running total so the public number never goes backwards, and after deletion nothing about that install remains.</p>
     <p>The server does not keep request logs, does not read or store the IP address your report arrives from, and has no error-tracking service attached. Cloudflare, which fronts the site, rate-limits the endpoint per address at its edge; that happens in Cloudflare's infrastructure under Cloudflare's own policies, and nothing about the address reaches the server or its database.</p>
 
-    <h2>Requests about your data</h2>
-    <p>Because the identifier is random and lives only in your browser's extension storage, we cannot tell which record is yours, and neither can you without reading the extension's storage directly. There is therefore no lookup, export or delete-on-request for individual records; expiry after 12 months of inactivity is the deletion mechanism. If you have a question anyway, write to <a href="mailto:support@tidywl.com">support@tidywl.com</a>.</p>
+    <h2>TidyWL Pro — what the licence record holds</h2>
+    <p>Buying Pro creates rows in that same database. There are two kinds, and this is all of it.</p>
 
-    <h2>The one thing you send yourself</h2>
+    <h3>The licence</h3>
+    <p>One row per subscription. It holds a fingerprint of your key (the key itself is stored encrypted, so the checkout page can show it to you again, and never in readable form), which plan you are on, whether the subscription is active, past due, cancelled, expired or refunded, whether it is a trial, how many devices it allows, when the next charge is due, when the paid period ends, and Paddle's own identifiers for the subscription and for you as their customer.</p>
+    <p><strong>Not your email, not your name, not your address, not one digit of your card.</strong> None of those ever reach us. Paddle's customer identifier is the only thing on the row that points at a person, and only Paddle can turn it back into one.</p>
+
+    <h3>The activation</h3>
+    <p>One row per device you switch Pro on. It holds an activation ID we generate, which licence it belongs to, the device name, when it was activated, and when it last checked in. The name is yours to choose — the dashboard fills the box with something like "Chrome on Mac" so the list is not full of blanks, and you can type anything over it.</p>
+    <p><strong>A key activates on 3 devices.</strong> The About modal shows the whole list — every device, its name, when it was added, when it was last seen — and you can remove any of them from any device. Removing one frees the seat straight away; that device drops back to free at its next check, within 15 minutes.</p>
+    <p>Deactivating deletes the activation row outright. The licence row stays while the subscription exists, and after you cancel, so the key still works if you come back. Ask us and we will delete that too — see below.</p>
+
+    <h3>Renewal dates</h3>
+    <p>When Paddle tells our server that a subscription started, renewed, failed or was cancelled, the message carries the date of the next charge and the date the paid period ends. Both are stored on the licence row, and the extension reads them back. That is the only reason the About modal can say "Renews Oct 5, 2026" instead of saying nothing.</p>
+
+    <h2>Paddle, who takes the money</h2>
+    <p>TidyWL Pro is sold through <strong>Paddle</strong>, which is the merchant of record — legally the seller, and the one that charges you, files the sales tax and handles refunds. The checkout runs on Paddle's own page, in an ordinary browser tab, not inside the extension.</p>
+    <p><strong>Your card details, billing address and email go to Paddle, and never to us.</strong> What Paddle tells us is: this subscription exists, this is its plan, this is whether it is paid, and here are Paddle's own reference numbers for the subscription and for the customer. What Paddle does with what you gave them is covered by <a href="https://www.paddle.com/legal/privacy" target="_blank" rel="noopener">Paddle's privacy policy</a>, not this one.</p>
+    <p><strong>The page you land on after paying.</strong> Paddle sends you back to a page on this site with the transaction number in the address, and the page trades that number for your key. Paddle also puts your email address in the same address bar. The page does not read it, does not store it, and does not pass it on.</p>
+    <p><strong>Manage subscription.</strong> The button in the About modal asks our server for a link into Paddle's customer portal, where you can cancel, change your card or download invoices. The server looks up your Paddle customer identifier, asks Paddle for a signed-in link to that account, and hands it straight back for the browser to open in a new tab. It only happens when you click it. That link is a credential, so it is never written down: not stored, not logged, not kept once the tab is open.</p>
+
+    <h2>Requests about your data</h2>
+    <p>Because the usage identifier is random and lives only in your browser's extension storage, we cannot tell which usage record is yours, and neither can you without reading the extension's storage directly. There is therefore no lookup, export or delete-on-request for those records; expiry after 12 months of inactivity is the deletion mechanism. If you have a question anyway, write to <a href="mailto:support@tidywl.com">support@tidywl.com</a>.</p>
+    <p><strong>A Pro licence is different, because the key identifies it.</strong> Write to <a href="mailto:support@tidywl.com">support@tidywl.com</a> from any address and quote your key, and we can tell you exactly what is on your licence row, or delete the row and every activation on it. Deleting it is permanent — the key stops working and cannot be restored — so cancel your subscription with Paddle first. Anything Paddle holds, including your email and your invoices, has to be asked of Paddle.</p>
+
+    <h2>What you send yourself</h2>
     <p><strong>Send to Gemini Notebook</strong> takes the videos you selected and adds their links as sources to a Gemini Notebook (formerly NotebookLM), using your own Google session. Those links go to Google, because that is the entire point of the feature. It only happens when you click the button, and only after you have granted the browser permission for notebook.google.com that the extension asks for the first time you use it. Google's handling of what arrives there is covered by Google's privacy policy, not this one.</p>
 
     <h2>Permissions, and what each one is for</h2>
     <ul>
-      <li><strong>youtube.com</strong> — where the extension works. Reading, reordering and deleting your playlists is done by calling YouTube with your existing session.</li>
-      <li><strong>tidywl.com</strong> — the config and notices files, and the usage report, described above.</li>
+      <li><strong>youtube.com</strong> — where the extension works. Reading, reordering and deleting your playlists is done by calling YouTube with your existing session, and so is the Lineup's read of your watch history and your subscriptions.</li>
+      <li><strong>tidywl.com</strong> — the config and notices files, the usage report, and, for Pro, the licence check. All described above.</li>
       <li><strong>Storage</strong> and <strong>unlimited storage</strong> — the local playlist caches. "Unlimited" only raises the local quota so that syncing every playlist you own does not fail part-way; it sends nothing.</li>
       <li><strong>Active tab</strong> — so the toolbar popup can tell whether you are on a playlist page.</li>
       <li><strong>Scripting</strong> — used for one thing: adding sources to a Gemini Notebook tab, after you have granted that site.</li>
@@ -88,6 +122,7 @@ permalink: /privacy/
     <p>Everything above is about the extension. This section is about tidywl.com itself, which is a separate thing you may use without ever installing anything.</p>
     <p><strong>There is no analytics on this site.</strong> No Google Analytics, no Plausible, no Fathom, no pixel, no tag manager, no session recorder. We do not know how many people read this page, which pages they came from, or what they clicked. The only usage number we have anywhere is the extension's own counter described above, and the store's own dashboard.</p>
     <p><strong>We set no cookies of our own.</strong> The site stores exactly one thing in your browser: whether you chose light or dark mode, kept in local storage under <code>theme</code>, written only when you click the toggle and never sent anywhere. Clear your site data and it is gone.</p>
+    <p><strong>No payment script runs here either.</strong> Buying Pro takes you to Paddle's own checkout on Paddle's own domain; this site loads nothing from Paddle. The one page that talks to Paddle at all is the one you land on afterwards, which reads the transaction number out of the address and asks our server for your key — described under <em>Paddle</em> above.</p>
     <p><strong>Our host sets one.</strong> The site is served through Cloudflare, which sets a short-lived cookie (<code>__cf_bm</code>) to tell browsers apart from bots. It is a security measure, it expires within half an hour, and it is not used to profile you or to advertise.</p>
     <p><strong>The demo video does not load until you press play.</strong> The thumbnail on the front page is an image on our own server, not an embed. Only when you click it does a YouTube player load, from <code>youtube-nocookie.com</code>, and only then does YouTube see you. If you never press play, no request reaches Google at all.</p>
     <p><strong>Fonts are served from here, not from Google.</strong> The typeface is stored on our own server, so loading a page on this site does not tell Google you did.</p>
@@ -98,6 +133,7 @@ permalink: /privacy/
 
     <h2>Changes to this policy</h2>
     <ul>
+      <li><strong>2026-09-07</strong> — for version 2.0.0. Three additions, all new. <em>TidyWL Pro</em>: a licence key sent to tidywl.com to switch Pro on and re-checked every 15 minutes, a licence row and one activation row per device on our server, and Paddle as the seller who takes the payment — sections <em>3. A licence check</em>, <em>TidyWL Pro</em> and <em>Paddle</em>. <em>The Lineup</em>: it reads your watch history and your subscribed channels from YouTube, both of which stay in your browser — <em>What stays in your browser</em>. And the usage report gains two counts, Lineups built and Lineups saved as a playlist. Nothing was removed, and nothing that was local before is sent now. One earlier sentence was also corrected: the summary used to say your YouTube data is never sent "to anyone else", which skipped past Send to Gemini Notebook — a feature this page has always described further down, but which the summary should never have claimed away.</li>
       <li><strong>2026-09-04</strong> — added <em>Visiting this website</em>. Nothing about the extension changed. The site itself gained no tracking; the section documents what was already true, and two third-party requests were removed rather than disclosed — the typeface now loads from this server instead of Google's, and the demo video loads nothing until you press play.</li>
       <li><strong>2026-08-29</strong> — first version, published ahead of 1.6.0 and effective from the day it ships. Until this version the extension sent nothing about you or your install; the usage report described above is new.</li>
     </ul>
