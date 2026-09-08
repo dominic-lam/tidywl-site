@@ -41,6 +41,20 @@
       <a class="site-nav-firefox" href="/firefox/"{% if page.url == '/firefox/' %} aria-current="page"{% endif %}>Firefox</a>
       <a href="/blog/"{% if page.url contains '/blog/' %} aria-current="page"{% endif %}>Blog</a>
       <a href="/tutorials/"{% if page.url == '/tutorials/' %} aria-current="page"{% endif %}>Tutorials</a>
+
+      <!-- Drawer only, hidden above 640px. These are the footer's links, put
+           here so a phone visitor does not have to scroll a long page to its
+           bottom to reach Privacy or the Discord. They stay OUT of the desktop
+           bar: five more links there stops it being a minimal header, which is
+           why they live in the footer in the first place. -->
+      <div class="site-nav-more">
+        <a href="/privacy/"{% if page.url == '/privacy/' %} aria-current="page"{% endif %}>Privacy</a>
+        <a href="/terms/"{% if page.url == '/terms/' %} aria-current="page"{% endif %}>Terms</a>
+        <a href="/refunds/"{% if page.url == '/refunds/' %} aria-current="page"{% endif %}>Refunds</a>
+        <a href="https://discord.gg/natc623GhX" target="_blank" rel="noopener">Discord</a>
+        <a href="https://github.com/dominic-lam/tidywl-site/issues" target="_blank" rel="noopener">Report a bug</a>
+      </div>
+
       <a class="site-nav-cta site-nav-cta--drawer" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
     </nav>
 

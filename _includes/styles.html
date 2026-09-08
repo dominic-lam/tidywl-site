@@ -307,6 +307,8 @@
     /* The drawer CTA is the phone one; the bar CTA is the desktop one. Each
        breakpoint hides the other — see the comment in header.html. */
     .site-nav-cta--drawer { display: none; }
+    /* The footer's links ride in the drawer, never in the desktop bar. */
+    .site-nav-more { display: none; }
     .cta-short { display: none; }
 
     /* ── Phone: the links become a drawer ──
@@ -344,11 +346,31 @@
         box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.55);
       }
       .site-header .site-nav.is-open { display: flex; }
-      .site-header .site-nav a { padding: 11px 12px; font-size: 0.95rem; color: var(--text); }
+      /* line-height is set here on purpose. Rows inherit body's 1.6, which is a
+         reading line-height: with 11px padding it made every row 46px, and a
+         menu this long then ate a third of the screen. 1.25 with 10px padding
+         gives 39px, and the 2px gap plus the next row's padding keeps the tap
+         target honest. */
+      .site-header .site-nav a {
+        padding: 10px 12px; font-size: 0.95rem; line-height: 1.25; color: var(--text);
+      }
+
+      /* The footer's links: two columns, quieter than the pages above them. */
+      .site-header .site-nav-more {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 0 6px;
+        margin-top: 8px; padding-top: 8px;
+        border-top: 1px solid var(--border-subtle);
+      }
+      .site-header .site-nav-more a {
+        font-size: 0.85rem; color: var(--text-muted); padding: 8px 12px;
+      }
 
       .site-nav-cta--bar { display: none; }
-      .site-nav .site-nav-cta--drawer {
-        display: block; margin: 8px 0 0; padding: 11px 16px; text-align: center;
+      /* Sized to its text, not stretched. Full-width it read as a banner across
+         the panel rather than one control among the links. */
+      .site-header .site-nav .site-nav-cta--drawer {
+        display: inline-block; align-self: flex-start;
+        margin: 12px 0 2px; padding: 10px 18px; text-align: center;
       }
     }
     .site-header-home {
