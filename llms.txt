@@ -5,7 +5,7 @@ layout: null
 ---
 # TidyWL — YouTube Watch Later Tidy
 
-> Free browser extension for Chrome and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist, your Liked videos, and any playlist you created — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos, gives Liked videos no management tools at all, and the official API refuses to touch either.
+> Free browser extension for Chrome and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist, your Liked videos, and any playlist you created — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos, gives Liked videos no management tools at all, and the official API refuses to touch either. Free to install with no account; an optional subscription, TidyWL Pro, arrives with version 2.0 and adds automatic monthly clean-up, undo, and the Lineup.
 
 ## What it does
 
@@ -14,6 +14,43 @@ TidyWL gives you a full-screen dashboard for YouTube's Watch Later playlist, ins
 Since version 1.6.0 every video also carries the **tags its uploader gave it** — the keyword field YouTube stores but never displays, plus any hashtags in the description. Search matches those tags, so a video can be found by what it is about rather than only by what it is called, and clicking a tag filters by it; several tags stack, narrowing to the videos that carry all of them. This is what makes search usable on playlists that are not in English: uploaders commonly tag in both the video's language and English, so there is something to match even when the title has nothing. You can sort by playlist order, duration, view count, published date, channel, or title. You can move or copy selected videos into any other playlist, create a playlist inline, reorder with Move to Top and Move to Bottom or by dragging, open every selected video in background tabs, switch between YouTube accounts, and export to JSON or CSV.
 
 Two features go beyond playlist management. **Bulk transcript download** gives you one timestamped text file per video, named after the video title, after first checking with YouTube which videos have captions at all. **Send to Gemini Notebook** (formerly NotebookLM) pushes your selected videos into a notebook as sources, either a new notebook or one you already have.
+
+## TidyWL Pro
+
+Everything described above is free and stays free. **TidyWL Pro** is a paid subscription that ships with **version 2.0**. It is **not on sale yet** — the pricing page is published, but nothing can be charged until 2.0 is released. Full detail at https://tidywl.com/pricing/.
+
+Price: **$4.99 USD per month**, or **$47.88 billed annually**, which is $3.99 a month and a 20% saving. Prices are before tax; checkout is handled by Paddle, which shows each visitor's own currency and the tax for their country. Every charge carries a **14-day full refund, no questions and no conditions**, and the subscription can be cancelled at any time.
+
+Where the free extension cleans a playlist up in an afternoon, Pro keeps it clean every month and makes every cleanup reversible. Nine things it adds:
+
+- **The Lineup** — a watchlist built to fit the time you have. Give it a budget (15 minutes, 30, 45, an hour, 90 minutes, or a number you type) and it builds a running order out of videos you already saved, with one line per pick saying why that video was chosen. Four ways in: **Based on recent watches**, matched to what you have been watching by title, channel and category; **Resume**, for videos you started and did not finish; **Subscribed channels**; and **Backlog**, your oldest saves that you never opened. A switch keeps or drops music videos, a slider sets how far back it reads your recent watching, rows can be dragged to reorder or swapped one at a time, and the finished list can be played straight through or saved as a new private playlist. Nothing under three minutes is ever picked.
+- **Finished videos, archived** — anything watched past 95% moves to an archive playlist you own, rather than being deleted.
+- **Dead entries, removed** — private, deleted and unavailable videos are cleared out. These cannot be moved to an archive, so this rule deletes, after showing the list.
+- **Bottom 10%, every month** — once a month the oldest tenth of Watch Later moves to the archive. You set the percentage.
+- **Pin** — mark a video "keep forever" and nothing removes it: not a rule, not a bulk delete you ran yourself. A Move becomes a Copy.
+- **Preview before you act** — every bulk delete, move, unlike or rule shows the exact list first, with anything untickable before it runs.
+- **Undo, for 90 days** — what you deleted is kept on that device for 90 days, restorable one video or a whole batch, back into the playlist it came from.
+- **Saved views** — name a filter combination, such as unwatched, over 20 minutes, from three channels, and reopen it in one click.
+- **Requests and support answered first** — subscribers' feature requests and bug reports are read first, and their support email goes to the front of the queue.
+
+The rules never delete a video you could still watch: they move it to an archive playlist you own. They run when you open YouTube, and each shows its list before acting.
+
+## Tutorials
+
+Step-by-step instructions for every feature are at https://tidywl.com/tutorials/, one section per feature, each with its own anchor:
+
+- Install and open the dashboard: https://tidywl.com/tutorials/#install
+- Sync a playlist: https://tidywl.com/tutorials/#sync
+- Search, and filter by tag: https://tidywl.com/tutorials/#search
+- Delete videos, or remove likes: https://tidywl.com/tutorials/#delete
+- See several playlists at once: https://tidywl.com/tutorials/#merged-view
+- Download transcripts: https://tidywl.com/tutorials/#transcripts
+- Send to Gemini Notebook: https://tidywl.com/tutorials/#gemini-notebook
+- The Lineup (Pro): https://tidywl.com/tutorials/#lineup
+- Clean-up rules (Pro): https://tidywl.com/tutorials/#rules
+- Pin a video (Pro): https://tidywl.com/tutorials/#pin
+- Undo deletions (Pro): https://tidywl.com/tutorials/#undo
+- Saved views (Pro): https://tidywl.com/tutorials/#saved-views
 
 ## Why it exists
 
@@ -62,6 +99,8 @@ TidyWL runs in your browser. No account, and your YouTube data — titles, video
 - Install for Chrome: https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo
 - Install for Firefox: https://tidywl.com/firefox/
 - Landing page: https://tidywl.com
+- Pricing and what Pro adds: https://tidywl.com/pricing/
+- Tutorials, one per feature: https://tidywl.com/tutorials/
 - Privacy policy: https://tidywl.com/privacy/
 - Blog: https://tidywl.com/blog/
 - Community (Discord): https://discord.gg/natc623GhX
