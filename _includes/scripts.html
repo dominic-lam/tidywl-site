@@ -26,6 +26,41 @@
       try { localStorage.setItem('theme', next); } catch (e) {}
     });
 
+    // Phone menu. The links live in a drawer below 640px; above it the CSS
+    // shows them inline and this never fires, because the button is
+    // display:none and cannot be clicked.
+    const menuBtn = document.getElementById('siteMenuBtn');
+    const menu = document.getElementById('siteMenu');
+    if (menuBtn && menu) {
+      const setMenu = (open) => {
+        menu.classList.toggle('is-open', open);
+        menuBtn.setAttribute('aria-expanded', String(open));
+      };
+      menuBtn.addEventListener('click', () => {
+        setMenu(menuBtn.getAttribute('aria-expanded') !== 'true');
+      });
+      // Escape closes and returns focus to the button that opened it.
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menuBtn.getAttribute('aria-expanded') === 'true') {
+          setMenu(false);
+          menuBtn.focus();
+        }
+      });
+      // A tap anywhere else closes it. Following a link does too — same-page
+      // anchors do not reload, so the drawer would otherwise stay open over
+      // the section the visitor just asked to see.
+      document.addEventListener('click', (e) => {
+        if (menuBtn.getAttribute('aria-expanded') !== 'true') return;
+        if (e.target.closest('#siteMenu a')) { setMenu(false); return; }
+        if (!e.target.closest('#siteMenu, #siteMenuBtn')) setMenu(false);
+      });
+      // Leaving the breakpoint must not strand it open: the CSS stops applying
+      // and the drawer would reappear as a stray inline row.
+      matchMedia('(max-width: 640px)').addEventListener('change', (e) => {
+        if (!e.matches) setMenu(false);
+      });
+    }
+
     // Demo video: build the iframe on click, never before.
     //
     // The point of the facade is that no request reaches Google until the visitor

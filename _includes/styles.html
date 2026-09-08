@@ -79,12 +79,15 @@
     button { font-family: inherit; cursor: pointer; }
 
     /* ── THEME TOGGLE ── */
+    /* In the header bar since 2026-09-07, not floating over the page. It sat
+       fixed at top/right, which forced 72px of right padding on the header to
+       stay clear of it, overlapped page content at some widths, and read as a
+       stray icon in dead space rather than a control. The header does not
+       stick, so theme is now a top-of-page setting — acceptable because the
+       choice is written to localStorage and set once. */
     .theme-toggle {
-      position: fixed;
-      top: 16px; right: 16px;
-      z-index: 100;
-      width: 40px; height: 40px;
-      border-radius: 10px;
+      width: 36px; height: 36px; flex: none;
+      border-radius: 8px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       color: var(--text);
@@ -274,38 +277,79 @@
     .site-header {
       max-width: 1040px; margin: 0 auto;
       padding: 20px 24px 0;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px; flex-wrap: wrap;
+      display: flex; align-items: center;
+      gap: 12px;
+      position: relative;
     }
-    @media (max-width: 1152px) {
-      .site-header { padding-right: 72px; }
+    /* The wordmark takes the slack, so the toggle and CTA stay together on the
+       right. Replaces `justify-content: space-between`, which cannot keep three
+       right-hand items grouped once the nav sits between them. */
+    .site-header-home { margin-right: auto; }
+    /* The 72px right padding that used to live here is gone with the floating
+       toggle it existed to clear. */
+
+    /* ── Menu button: phones only ── */
+    .site-menu-btn {
+      display: none;
+      width: 40px; height: 40px; flex: none;
+      border-radius: 10px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text);
+      align-items: center; justify-content: center;
+      transition: border-color 0.2s;
     }
-    /* On a phone the four items cannot share a row with the wordmark, so the
-       nav drops to its own full-width row. Tighter than the desktop spacing
-       purely to keep that to ONE row: at the desktop padding it wrapped again
-       and the header ate 142px above the hero. The 72px right padding above
-       still applies and still clears the toggle, which only ever overlaps the
-       first row. */
+    .site-menu-btn:hover { border-color: var(--border-strong); }
+    .site-menu-btn svg { width: 20px; height: 20px; }
+    .site-menu-btn .icon-close { display: none; }
+    .site-menu-btn[aria-expanded="true"] .icon-menu { display: none; }
+    .site-menu-btn[aria-expanded="true"] .icon-close { display: block; }
+
+    /* The drawer CTA is the phone one; the bar CTA is the desktop one. Each
+       breakpoint hides the other — see the comment in header.html. */
+    .site-nav-cta--drawer { display: none; }
     .cta-short { display: none; }
-    /* Phone: everything on ONE row. Two rows read as a stacked menu rather
-       than a header bar. Three things buy the space — Firefox drops out (the
-       footer still carries it, and a phone visitor is not installing a desktop
-       extension right now anyway), the CTA shortens to "Install", and the
-       right padding falls to just what clears the fixed theme toggle. */
+
+    /* ── Phone: the links become a drawer ──
+       Until 2026-09-07 they all fought for one row, and the row won: Firefox
+       was display:none below 640px, so a Firefox user on a phone could not
+       reach the install page from the nav at all. The CTA shortened to
+       "Install" and every gap was squeezed, and there was still no room for a
+       fifth item.
+
+       The drawer ends that. What stays in the bar is the menu button, the
+       wordmark and the theme toggle — theme is a setting, not a page, so it
+       does not belong in a list of pages, and keeping it out holds a theme
+       change to one tap.
+
+       Install leaves the bar because it cannot work on a phone at all (see
+       header.html). The wordmark comes back below 400px as a result: the row
+       now spends 40px on the menu and 40px on the toggle and still leaves
+       about 262px, where before it was 4px short. */
     @media (max-width: 640px) {
-      .site-header { padding: 16px 60px 0 16px; gap: 8px; }
-      .site-nav { gap: 0; }
-      .site-nav a { padding: 7px 6px; font-size: 0.875rem; }
-      .site-nav .site-nav-firefox { display: none; }
-      .site-nav .site-nav-cta { margin-left: 4px; padding: 7px 14px; }
-      .cta-long { display: none; }
-      .cta-short { display: inline; }
-    }
-    /* Under 400px the wordmark is the last 60px standing between this and one
-       row: at 390 the row needed 314px against 310px available. The icon still
-       links home and still reads as the logo, so the text is what goes. */
-    @media (max-width: 400px) {
-      .site-header-wordmark { display: none; }
+      .site-header { padding: 16px; gap: 10px; }
+      .site-menu-btn { display: inline-flex; }
+
+      /* Scoped to .site-header on purpose: the base `.site-nav { display:flex }`
+         rule is declared LATER in this file, and at equal specificity the later
+         rule wins — which left the drawer permanently open, covering the page
+         heading. Do not flatten these back to `.site-nav`. */
+      .site-header .site-nav {
+        display: none;
+        position: absolute; top: calc(100% + 8px); left: 16px; right: 16px;
+        z-index: 60;
+        flex-direction: column; align-items: stretch; gap: 2px;
+        padding: 10px;
+        background: var(--bg-card);
+        border: 1px solid var(--border); border-radius: 12px;
+        box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.55);
+      }
+      .site-header .site-nav.is-open { display: flex; }
+      .site-header .site-nav a { padding: 11px 12px; font-size: 0.95rem; color: var(--text); }
+
+      .site-nav-cta--bar { display: none; }
+      .site-nav .site-nav-cta--drawer {
+        display: block; margin: 8px 0 0; padding: 11px 16px; text-align: center;
+      }
     }
     .site-header-home {
       display: inline-flex; align-items: center; gap: 10px;

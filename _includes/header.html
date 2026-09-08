@@ -1,17 +1,50 @@
   <!-- ── SITE HEADER ──
-       One row on every page including the landing page: wordmark home link,
-       the content pages, one CTA. The legal pages (privacy, terms, refunds)
-       stay in the footer on purpose — five more links here stops it being a
-       minimal header. -->
+       Wide: wordmark, the content pages, the theme toggle, one CTA. The toggle
+       sits BEFORE the CTA on purpose — the install button is where the eye
+       stops, and a utility icon past it competes with the primary action.
+
+       Phone (<=640px): the links collapse into a drawer. The menu button leads
+       on the left and the toggle holds the right, so changing theme stays one
+       tap; burying it in the drawer would make it two, which is worse than the
+       floating button this replaced.
+
+       The CTA is written twice — once in the drawer, once in the bar — and each
+       breakpoint hides the other. One element cannot sit inside the nav on a
+       phone and after it on a desktop, and two links with a display rule are
+       plainer than the CSS needed to move one.
+
+       Install drops out of the phone bar entirely because it cannot work there:
+       Chrome on Android has no extensions, and Firefox for Android installs
+       only from AMO's curated list, not a self-distributed .xpi. It stays in
+       the drawer for anyone who wants the link on a desktop later, and the hero
+       and footer both still carry it.
+
+       The legal pages (privacy, terms, refunds) stay in the footer on purpose. -->
   <header class="site-header">
+    <button class="site-menu-btn" type="button" id="siteMenuBtn"
+            aria-expanded="false" aria-controls="siteMenu" aria-label="Menu">
+      <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
     <a class="site-header-home" href="/" aria-label="TidyWL home">
       <img src="/assets/icon128.png" alt="" class="site-header-icon" width="28" height="28">
       <span class="site-header-wordmark">TidyWL</span>
     </a>
-    <nav class="site-nav" aria-label="Main">
+
+    <nav class="site-nav" id="siteMenu" aria-label="Main">
       <a href="/pricing/"{% if page.url == '/pricing/' %} aria-current="page"{% endif %}>Pricing</a>
       <a class="site-nav-firefox" href="/firefox/"{% if page.url == '/firefox/' %} aria-current="page"{% endif %}>Firefox</a>
       <a href="/blog/"{% if page.url contains '/blog/' %} aria-current="page"{% endif %}>Blog</a>
-      <a class="site-nav-cta" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener"><span class="cta-long">Add to Chrome</span><span class="cta-short">Install</span></a>
+      <a href="/tutorials/"{% if page.url == '/tutorials/' %} aria-current="page"{% endif %}>Tutorials</a>
+      <a class="site-nav-cta site-nav-cta--drawer" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
     </nav>
+
+    {% include theme-toggle.html %}
+
+    <a class="site-nav-cta site-nav-cta--bar" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener"><span class="cta-long">Add to Chrome</span><span class="cta-short">Install</span></a>
   </header>
