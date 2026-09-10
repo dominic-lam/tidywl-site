@@ -82,25 +82,36 @@
       });
     });
 
-    // Live cleanup counter. /api/stats is the same origin as this page — the
+    // Live usage counters. /api/stats is the same origin as this page — the
     // apex is proxied, /api/* routes to the Worker — so this is a plain
     // relative fetch with no CORS involved.
     //
-    // The figure in the HTML is a hand-written floor, and the copy reads
-    // "over", so a stale fallback stays true. That matters: most AI crawlers
-    // do not run JavaScript, and the number they index is the one in the
-    // markup, not the one this replaces it with. Bump the hardcoded value
-    // whenever you touch index.html; never let it exceed the live total.
+    // The figures in the HTML are floors written daily into _data/usage.yml by
+    // .github/workflows/update-usage-total.yml, rounded down to the nearest
+    // 1,000, and every place that renders one says "over" or carries a "+", so
+    // a stale fallback stays true. Nothing here is hand-maintained and nothing
+    // here should be: the last hand-written floor went 39% stale in a day.
     //
-    // On any failure the fallback is left alone rather than blanked.
-    const cleaned = document.getElementById('videos-cleaned');
-    if (cleaned) {
+    // This hydration is for humans only. Most AI crawlers do not run
+    // JavaScript, so the numbers they index are the ones in the markup, not
+    // the ones this replaces them with — which is why the workflow, not this
+    // block, is what keeps the published numbers honest.
+    //
+    // On any failure each figure is left alone rather than blanked.
+    const liveCounters = [
+      ['videos-cleaned', 'deleted'],
+      ['likes-removed', 'unliked'],
+      ['videos-moved', 'moved'],
+    ].map(([id, key]) => [document.getElementById(id), key]).filter(([el]) => el);
+
+    if (liveCounters.length) {
       fetch('/api/stats')
         .then(r => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
         .then(d => {
-          if (Number.isFinite(d.deleted) && d.deleted > 0) {
-            cleaned.textContent = d.deleted.toLocaleString('en-US');
-          }
+          liveCounters.forEach(([el, key]) => {
+            const n = d[key];
+            if (Number.isFinite(n) && n > 0) el.textContent = n.toLocaleString('en-US');
+          });
         })
         .catch(() => {});
     }

@@ -174,7 +174,7 @@
          need 336px at desktop sizing, so the third orphans onto its own row.
          The gutter alone cannot close a 9px gap without looking cramped; the
          numeral size below does the real work. */
-      justify-content: center; gap: 10px clamp(18px, 5vw, 44px); margin-bottom: 22px;
+      justify-content: center; gap: 10px clamp(18px, 5vw, 44px); margin-bottom: 10px;
     }
     .hero-stat { display: block; text-align: center; text-decoration: none; color: inherit; }
     a.hero-stat:hover .hero-stat-label { color: var(--text-secondary); text-decoration: underline; }
@@ -190,6 +190,22 @@
     .hero-stat-label {
       display: block; margin-top: 3px;
       font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;
+    }
+    /* The other two first-party counters, as a footnote to the tiles rather
+       than a fourth and fifth tile. Smaller and muted on purpose: it should be
+       readable at a glance but never pull the eye off the deletions number.
+       The 22px that used to close out .hero-stats moved down here, so the gap
+       to .hero-trust-row is unchanged and this line sits close to the tiles it
+       belongs to. --text-muted is defined on bare :root and redefined in both
+       dark blocks, so this needs no colour of its own and no media query. */
+    .hero-stats-more {
+      /* Wide enough that the sentence sits on ONE line at desktop width — at
+         44ch it broke after "videos" and left "moved between playlists." as a
+         short orphan under the tiles. Still narrow enough to wrap sensibly on
+         a phone, where the hero gives it 327px regardless. */
+      max-width: 62ch; margin: 0 auto 22px;
+      font-size: 0.85rem; line-height: 1.5; color: var(--text-muted);
+      font-variant-numeric: tabular-nums; text-wrap: pretty;
     }
     .hero-trust-row {
       display: inline-flex; flex-wrap: wrap; align-items: center;

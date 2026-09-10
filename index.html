@@ -133,7 +133,7 @@
         "name": "How many videos have TidyWL users actually deleted?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos, as of {{ site.data.usage.lastUpdated }}. Each install reports a running count of videos deleted, likes removed and videos moved, and the live total is published as JSON at https://tidywl.com/api/stats. The count reaches back to August 2026 and includes deletions made before the counter shipped, because the extension has tracked them locally since v1.4.1. No video, title, channel, playlist or account is ever part of that report."
+          "text": "TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos, as of {{ site.data.usage.lastUpdated }}. They have also removed over {{ site.data.usage.unlikedTotal }} likes and moved over {{ site.data.usage.movedTotal }} videos between playlists. Each install reports a running count of all three, and the live totals are published as JSON at https://tidywl.com/api/stats. Every figure here is a floor, rounded down, and refreshed daily. The deletions count reaches back to August 2026 and includes deletions made before the counter shipped, because the extension has tracked them locally since v1.4.1. No video, title, channel, playlist or account is ever part of that report."
         }
       },
       {
@@ -288,7 +288,17 @@
          figure in the markup is a floor written daily by the update-usage-total
          workflow and replaced live by scripts.html, and the Chrome Web Store
          rounds its user count down to a bucket, so neither is exact and neither
-         should read as if it were. -->
+         should read as if it were.
+
+         The other two first-party counters — likes removed, videos moved —
+         follow as one quiet sentence below, not as a fourth and fifth tile.
+         Five tiles do not fit one row on a phone, and adding them would dilute
+         the number that is supposed to lead. A sentence still puts both figures
+         in the static markup, which is the whole point: most AI crawlers do not
+         run JavaScript, so the number they index is this one and not the one
+         scripts.html hydrates over it. Same daily workflow, same floors, so
+         they carry a "+" for the same reason. All three read from
+         _data/usage.yml — never hard-code one here. -->
     <div class="hero-stats">
       <div class="hero-stat">
         <span class="hero-stat-num"><span id="videos-cleaned">{{ site.data.usage.deletedTotal }}</span>+</span>
@@ -303,6 +313,11 @@
         <span class="hero-stat-label">{{ site.data.cws-rating.reviewCount }} reviews</span>
       </a>
     </div>
+
+    <p class="hero-stats-more">
+      Plus <span id="likes-removed">{{ site.data.usage.unlikedTotal }}</span>+ likes removed
+      and <span id="videos-moved">{{ site.data.usage.movedTotal }}</span>+ videos moved between playlists.
+    </p>
 
     <div class="hero-trust-row">
       <span class="hero-trust-pill">
@@ -784,7 +799,7 @@
               <span class="plus" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-scale">
-              TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos, as of {{ site.data.usage.lastUpdated }}. Each install reports a running count of videos deleted, likes removed and videos moved, and the live total is published as JSON at <a href="/api/stats">https://tidywl.com/api/stats</a>. The count reaches back to August 2026 and includes deletions made before the counter shipped, because the extension has tracked them locally since v1.4.1. No video, title, channel, playlist or account is ever part of that report — see the <a href="/privacy/">privacy policy</a>.
+              TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos, as of {{ site.data.usage.lastUpdated }}. They have also removed over {{ site.data.usage.unlikedTotal }} likes and moved over {{ site.data.usage.movedTotal }} videos between playlists. Each install reports a running count of all three, and the live totals are published as JSON at <a href="/api/stats">https://tidywl.com/api/stats</a>. Every figure here is a floor, rounded down, and refreshed daily. The deletions count reaches back to August 2026 and includes deletions made before the counter shipped, because the extension has tracked them locally since v1.4.1. No video, title, channel, playlist or account is ever part of that report — see the <a href="/privacy/">privacy policy</a>.
             </div>
           </div>
 

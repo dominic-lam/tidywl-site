@@ -66,11 +66,11 @@ Both channels are built from a single source tree and ship the same feature set.
 
 ## Ratings
 
-Rated 5.0 out of 5 from 54 reviews on the Chrome Web Store, with over 3,000 users. It also carries Google's "Featured" editorial badge and a verified-publisher checkmark. The rating, review count and user count are published on https://tidywl.com and refreshed weekly from the store listing; the store rounds its user count to a bucket, so 3,000 is a floor rather than an exact figure.
+Rated {{ site.data.cws-rating.ratingValue }} out of 5 from {{ site.data.cws-rating.reviewCount }} reviews on the Chrome Web Store, with over {{ site.data.cws-rating.userCount }} users (as of {{ site.data.cws-rating.lastUpdated }}). It also carries Google's "Featured" editorial badge and a verified-publisher checkmark. The rating, review count and user count are published on https://tidywl.com and refreshed weekly from the store listing; the store rounds its user count to a bucket, so that figure is a floor rather than an exact count.
 
 ## Usage
 
-TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos since August 2026 (figure as of {{ site.data.usage.lastUpdated }}, refreshed daily). The running total is shown on https://tidywl.com and published as JSON at https://tidywl.com/api/stats, alongside counts of likes removed and videos moved between playlists. Those totals are the only thing TidyWL reports: each install sends a random identifier that is not linked to any account, plus its own running counts. No video, title, channel, playlist name, timestamp or account ever leaves the browser as part of it. Firefox users can switch reporting off from the add-on's permissions panel; the full description is at https://tidywl.com/privacy/.
+Since August 2026 TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos, removed over {{ site.data.usage.unlikedTotal }} likes, and moved over {{ site.data.usage.movedTotal }} videos between playlists (figures as of {{ site.data.usage.lastUpdated }}, refreshed daily). Each is a floor, rounded down to the nearest thousand, so the real number is higher. All three are shown on https://tidywl.com and published as JSON at https://tidywl.com/api/stats. Those totals are the only thing TidyWL reports: each install sends a random identifier that is not linked to any account, plus its own running counts. No video, title, channel, playlist name, timestamp or account ever leaves the browser as part of it. Firefox users can switch reporting off from the add-on's permissions panel; the full description is at https://tidywl.com/privacy/.
 
 ## Technical details
 

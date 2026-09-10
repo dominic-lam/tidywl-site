@@ -1,12 +1,14 @@
 name: Update usage total
 
-# The deletions total is the site's only first-party number and it moves fast:
-# it went 112,000 -> 183,200 in the 24 hours after v1.6.0 shipped, so the
-# hand-written floor that launched with it was 39% stale within a day.
+# The three first-party numbers the site publishes: videos deleted, likes
+# removed, videos moved between playlists. They move fast — deletions went
+# 112,000 -> 183,200 in the 24 hours after v1.6.0 shipped, so the hand-written
+# floor that launched with it was 39% stale within a day.
 #
-# This writes the number into _data at build time, which is what makes it
+# This writes the numbers into _data at build time, which is what makes them
 # visible to crawlers that do not run JavaScript — most AI crawlers. The live
-# fetch in scripts.html still hydrates it for humans; this is the floor beneath.
+# fetch in scripts.html still hydrates them for humans; this is the floor
+# beneath.
 
 on:
   schedule:
@@ -27,53 +29,85 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Fetch and parse the total
+      - name: Fetch and parse the totals
         id: parse
         run: |
           set -euo pipefail
           RAW="$(curl -fsSL --compressed "$STATS_URL")"
           echo "Response: $RAW"
 
-          DELETED="$(printf '%s' "$RAW" | python3 -c 'import sys,json; print(json.load(sys.stdin)["deleted"])')"
+          # ── PARTIAL FAILURE: all or nothing, deliberately. ──
+          # If any one counter fails to parse, validate or clear the monotonic
+          # guard, the whole run fails and ALL THREE stay at the last good
+          # snapshot. It does not update "the two that worked". Two reasons:
+          #
+          #  1. The three counters are three fields of one JSON body from one
+          #     Worker. One bad counter beside two good ones is not a failure
+          #     this endpoint actually has — a malformed or degraded response
+          #     takes all three down together. Per-counter recovery would buy
+          #     nothing real and add branches that can themselves be wrong.
+          #  2. The data file carries ONE lastUpdated, and the copy renders
+          #     "as of {{ lastUpdated }}" against all three figures. Carrying
+          #     one counter forward while stamping today's date on the file
+          #     would date a number to a response it never came from. Every
+          #     figure is rendered with "over" or a "+", so a stale number is
+          #     still true; a misdated one is quietly false, and that is the
+          #     worse of the two.
+          #
+          # A failed run also emails, which is the point: a human looks.
+          for KEY in deleted unliked moved; do
+            VALUE="$(printf '%s' "$RAW" | python3 -c "import sys,json; print(json.load(sys.stdin)['$KEY'])")"
 
-          # Positive integer, or the endpoint is broken and we keep what we have.
-          if ! printf '%s' "$DELETED" | grep -qE '^[1-9][0-9]*$'; then
-            echo "::error::deleted '$DELETED' is not a positive integer."
-            exit 1
-          fi
+            # Positive integer, or the endpoint is broken and we keep what we have.
+            if ! printf '%s' "$VALUE" | grep -qE '^[1-9][0-9]*$'; then
+              echo "::error::$KEY '$VALUE' is not a positive integer."
+              exit 1
+            fi
 
-          # Monotonic. Counters keep the MAX ever reported and retired rows roll
-          # into retired_total, so this number cannot legitimately fall. A drop
-          # means a bad response or a wiped table — refuse rather than publish it.
-          PREV="$(grep -E '^deletedRaw:' "$DATA_FILE" | grep -oE '[0-9]+' | head -1 || echo 0)"
-          echo "Previous: $PREV  New: $DELETED"
-          if [ "$DELETED" -lt "$PREV" ]; then
-            echo "::error::deleted $DELETED is below the previous $PREV. Refusing to update."
-            exit 1
-          fi
+            # Monotonic. Counters keep the MAX ever reported and retired rows roll
+            # into retired_total, so these numbers cannot legitimately fall. A drop
+            # means a bad response or a wiped table — refuse rather than publish it.
+            PREV="$(grep -E "^${KEY}Raw:" "$DATA_FILE" | grep -oE '[0-9]+' | head -1 || echo 0)"
+            echo "$KEY previous: $PREV  new: $VALUE"
+            if [ "$VALUE" -lt "$PREV" ]; then
+              echo "::error::$KEY $VALUE is below the previous $PREV. Refusing to update."
+              exit 1
+            fi
 
-          # Round DOWN to the nearest 1,000. The copy reads "over N", so a floor
-          # stays true between runs; rounding up would not.
-          FLOOR=$(( DELETED / 1000 * 1000 ))
-          # Comma grouping via python, not printf "%'d": the runner's default C
-          # locale applies no grouping, so printf silently produced "186000".
-          DISPLAY="$(python3 -c "print(f'{$FLOOR:,}')")"
+            # Round DOWN to the nearest 1,000. Every rendering reads "over N" or
+            # carries a "+", so a floor stays true between daily runs; rounding
+            # up would make the copy false. (All three counters are already well
+            # past 1,000 and the guard above forbids them falling, so a floor of
+            # zero is not reachable from here.)
+            FLOOR=$(( VALUE / 1000 * 1000 ))
+            # Comma grouping via python, not printf "%'d": the runner's default C
+            # locale applies no grouping, so printf silently produced "186000".
+            DISPLAY="$(python3 -c "print(f'{$FLOOR:,}')")"
 
-          echo "deleted_raw=$DELETED"                >> "$GITHUB_OUTPUT"
-          echo "deleted_floor=$FLOOR"                >> "$GITHUB_OUTPUT"
-          echo "deleted_display=$DISPLAY"            >> "$GITHUB_OUTPUT"
-          echo "today=$(date -u +%Y-%m-%d)"          >> "$GITHUB_OUTPUT"
+            echo "${KEY}_raw=$VALUE"         >> "$GITHUB_OUTPUT"
+            echo "${KEY}_floor=$FLOOR"       >> "$GITHUB_OUTPUT"
+            echo "${KEY}_display=$DISPLAY"   >> "$GITHUB_OUTPUT"
+          done
+
+          echo "today=$(date -u +%Y-%m-%d)"  >> "$GITHUB_OUTPUT"
 
       - name: Write data file
         run: |
           set -euo pipefail
           cat > "$DATA_FILE" <<EOF
           # Written by .github/workflows/update-usage-total.yml — do not hand-edit.
-          # deletedTotal is a FLOOR, rounded down to the nearest 1,000, because every
-          # place that renders it says "over". deletedRaw is the unrounded value the
-          # monotonic guard compares against on the next run.
+          # Three counters: videos deleted, likes removed, videos moved between
+          # playlists. Each *Total is a FLOOR, rounded down to the nearest 1,000,
+          # because every place that renders one says "over" or carries a "+".
+          # Each *Raw is the unrounded value that counter's monotonic guard
+          # compares against on the next run. One lastUpdated covers all three:
+          # the run is all-or-nothing, so they always come from one response.
           deletedTotal: "${{ steps.parse.outputs.deleted_display }}"
           deletedRaw: ${{ steps.parse.outputs.deleted_raw }}
+          unlikedTotal: "${{ steps.parse.outputs.unliked_display }}"
+          unlikedRaw: ${{ steps.parse.outputs.unliked_raw }}
+          movedTotal: "${{ steps.parse.outputs.moved_display }}"
+          movedRaw: ${{ steps.parse.outputs.moved_raw }}
           lastUpdated: "${{ steps.parse.outputs.today }}"
           EOF
           cat "$DATA_FILE"
@@ -88,5 +122,5 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add "$DATA_FILE"
-          git commit -m "chore: update usage total (auto)"
+          git commit -m "chore: update usage totals (auto)"
           git push
