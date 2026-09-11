@@ -76,7 +76,14 @@ faq:
           <p class="plan-price"><s class="price-was is-yearly"></s><s class="price-was is-monthly"></s><span class="price-amount is-yearly">$3.99</span><span class="price-amount is-monthly">$4.99</span><small>USD / month</small></p>
           <p class="plan-billed"><span class="is-yearly">$47.88 billed annually</span><span class="is-monthly">billed monthly</span></p>
           <p class="plan-promo" hidden><span class="plan-promo-label"></span><span class="plan-promo-note"></span></p>
+          {%- if site.data.paddle.onSale and site.data.paddle.clientToken and site.data.paddle.prices.monthly and site.data.paddle.prices.yearly %}
+          <button type="button" class="plan-cta plan-cta-buy" id="pro-buy"
+                  data-price-monthly="{{ site.data.paddle.prices.monthly }}"
+                  data-price-yearly="{{ site.data.paddle.prices.yearly }}">Get Pro</button>
+          <p class="plan-cta-note" id="pro-buy-note" hidden></p>
+          {%- else %}
           <button type="button" class="plan-cta plan-cta-locked" disabled>Available with version 2.0</button>
+          {%- endif %}
           <p class="plan-list-head">Everything in Free, and:</p>
           <ul class="plan-list">
             <li>The Lineup — a watchlist built to fit the time you have</li>
@@ -368,6 +375,33 @@ faq:
     font-weight: 600; cursor: not-allowed;
   }
 
+  /* The live buy button. Solid accent, matching .btn-primary, because this is
+     the one action the whole page exists to produce. Only rendered when
+     _data/paddle.yml has onSale: true — otherwise .plan-cta-locked stands. */
+  .plan-cta-buy {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--accent); color: #fff;
+    border: 0; border-radius: 8px; font-weight: 600;
+    transition: background 0.2s;
+  }
+  .plan-cta-buy:hover { background: var(--accent-hover); }
+  .plan-cta-buy:disabled {
+    background: var(--bg-alt); color: var(--text-secondary);
+    border: 1px dashed var(--border-strong); cursor: not-allowed;
+  }
+  /* Only ever shown when something went wrong opening the checkout. NOT red:
+     --accent is already red on this site, so a red message reads as branding
+     rather than as a problem. A bordered panel carries the weight instead, and
+     every token below is one this stylesheet actually defines — an undefined
+     variable with a same-surface fallback is how an invisible control shipped
+     once already. */
+  .plan-cta-note {
+    margin-top: 10px; padding: 10px 12px;
+    background: var(--bg-alt); border: 1px solid var(--highlight-border);
+    border-radius: 8px;
+    font-size: 0.82rem; line-height: 1.5; color: var(--text);
+  }
+
   .plan-list-head {
     margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--border-subtle);
     font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
@@ -542,3 +576,64 @@ faq:
       .catch(() => { /* the markup literals stand */ });
   })();
 </script>
+
+{%- if site.data.paddle.onSale and site.data.paddle.clientToken %}
+<!-- Paddle Checkout. Loaded ONLY when _data/paddle.yml sets onSale: true, so
+     until launch this page ships no third-party script at all — the rest of the
+     site never has. The token below is a client-side token: public by design,
+     it can open a checkout and read prices and nothing else. The secret API key
+     lives only in the Worker. -->
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script>
+  (function () {
+    var btn = document.getElementById('pro-buy');
+    var note = document.getElementById('pro-buy-note');
+    var plans = document.getElementById('plans');
+    if (!btn || !plans || typeof Paddle === 'undefined') {
+      // Paddle blocked by a content blocker, or the CDN is down. Say so rather
+      // than leaving a button that silently does nothing when clicked.
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Checkout unavailable';
+        if (note) {
+          note.textContent = 'Something is blocking the payment provider. Disable your content blocker for this page, or email support@tidywl.com.';
+          note.hidden = false;
+        }
+      }
+      return;
+    }
+
+    Paddle.Initialize({
+      token: {{ site.data.paddle.clientToken | jsonify }},
+      eventCallback: function (data) {
+        // Paddle redirects to successUrl on completion, so this is only for
+        // the states the overlay stays open through.
+        if (data && data.name === 'checkout.error' && note) {
+          note.textContent = 'The checkout could not open. Try again, or email support@tidywl.com.';
+          note.hidden = false;
+        }
+      }
+    });
+
+    btn.addEventListener('click', function () {
+      // Read the period at click time, not at load: the billing switch changes
+      // it and the button must follow what the customer can see.
+      var yearly = plans.getAttribute('data-billing') === 'yearly';
+      var priceId = yearly ? btn.dataset.priceYearly : btn.dataset.priceMonthly;
+      if (!priceId) return;
+      if (note) note.hidden = true;
+      Paddle.Checkout.open({
+        items: [{ priceId: priceId, quantity: 1 }],
+        settings: {
+          displayMode: 'overlay',
+          theme: 'light',
+          // The key is claimed here. /checkout/success/ already reads the
+          // transaction id from _ptxn or transaction_id and polls
+          // /api/license/claim, so nothing new is needed on that end.
+          successUrl: 'https://tidywl.com/checkout/success/'
+        }
+      });
+    });
+  })();
+</script>
+{%- endif %}

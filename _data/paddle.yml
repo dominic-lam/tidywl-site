@@ -1,0 +1,34 @@
+# Paddle client-side token for the live account, read by /pricing/ to initialise
+# Paddle.js. Created 2026-09-10 as "tidywl.com pricing page".
+#
+# This is NOT a secret. A client-side token is designed to ship in page source —
+# it can open a checkout and read prices, and nothing else. The secret API key
+# (pdl_live_apikey_…) lives only in the Worker's secret store and must never
+# appear in this repo. If you are ever unsure which you are holding: a token
+# starts `live_`, a secret key starts `pdl_live_apikey_`.
+#
+# Replace the placeholder below with the value from Paddle → Developer tools →
+# Authentication → Client-side tokens. Leaving it as the placeholder is safe:
+# /pricing/ falls back to its current behaviour and renders no checkout.
+clientToken: "live_ed1c25007f1bd7499e58a433e2e"
+
+# Live price ids, mirrored from tidywl-api/wrangler.toml [vars]. Product
+# pro_01m27g0h6stp4krnn3r5gw2den, created 2026-09-10.
+# These are public identifiers, not credentials.
+prices:
+  monthly: "pri_01m27g0hcg1nm72s246fx7j732"
+  yearly: "pri_01m27g0hjebrd1h1c82nsz8bwc"
+
+# The master switch for the buy button on /pricing/.
+#
+# false  -> the Pro button stays "Available with version 2.0", disabled. Paddle.js
+#           is not loaded at all, so the page ships no third-party script.
+# true   -> the button opens a real Paddle checkout and takes real money.
+#
+# Keep this false until v2.0.0 is live on the Chrome Web Store. The page and
+# llms.txt both still say "Not on sale yet", and /pricing/ promises "Nothing is
+# charged until version 2.0 ships" — flipping this without flipping those makes
+# the site contradict itself and sells a product nobody can install yet.
+# When it flips, so do: pricing/index.html's .pro-status line, the .plans-foot
+# sentence, and llms.txt. See OPEN-ITEMS B3.
+onSale: false
