@@ -1,13 +1,13 @@
 ---
 layout: default
 title: Your TidyWL Pro key
-description: The page Paddle sends you to after checkout. It shows your licence key and how to activate it.
+description: The page Paddle sends you to after checkout. It shows your licence key and how to activate it, and finds the key again from any Paddle receipt.
 permalink: /checkout/success/
 sitemap: false
 ---
 <section class="blog-wrap">
-  <h1 class="blog-title">Thank you.</h1>
-  <p class="blog-subtitle">Here is your TidyWL Pro key. Paddle has emailed you a receipt.</p>
+  <h1 class="blog-title" id="key-heading">Thank you.</h1>
+  <p class="blog-subtitle" id="key-subtitle">Here is your TidyWL Pro key. Paddle has emailed you a receipt.</p>
 
   <div class="post-body">
     <div class="key-box" id="key-box" aria-live="polite">
@@ -17,18 +17,29 @@ sitemap: false
         <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
         <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
       </button>
+      <form class="key-find" id="key-find" hidden>
+        <label class="key-find-label" for="key-find-txn">Transaction ID from your Paddle receipt</label>
+        <div class="key-find-row">
+          <input class="key-find-input" id="key-find-txn" type="text" placeholder="txn_…" autocomplete="off" spellcheck="false">
+          <button class="key-find-button" type="submit">Find my key</button>
+        </div>
+      </form>
     </div>
 
     <h2>Activate it</h2>
     <ol>
       <li>Open YouTube and open the TidyWL dashboard.</li>
       <li>Click the <strong>ⓘ About</strong> button in the top right.</li>
-      <li>Paste the key under <strong>TidyWL Pro</strong> and click <strong>Activate</strong>. The badge turns <strong>PRO</strong>.</li>
+      <li>Under <strong>TidyWL Pro</strong>, click <strong>Have a key?</strong>, paste the key and click <strong>Activate</strong>. The badge turns <strong>PRO</strong>.</li>
     </ol>
     <p>One key works on up to three computers. Deactivate a device from the same panel to free a seat.</p>
 
     <h2>Keep this page</h2>
-    <p>Bookmark it or copy the key somewhere safe: it comes back on this page as long as the link keeps its <code>_ptxn</code> part. If you lose both, email <a href="mailto:support@tidywl.com">support@tidywl.com</a> from the address you paid with.</p>
+    <p>Bookmark it or copy the key somewhere safe: it comes back on this page as long as the link keeps its <code>_ptxn</code> or <code>txn</code> part.</p>
+
+    <h2>Lost your key?</h2>
+    <p>Every Paddle receipt, the first and each renewal, shows a <strong>Transaction ID</strong> that starts with <code>txn_</code>. Paste it into <strong>Find my key</strong> on <a href="/checkout/success/">this page</a>, or into <strong>Have a key?</strong> in the TidyWL About card, which finds the key and switches Pro on in one step. On a computer where Pro is already on, the About card shows the key too.</p>
+    <p>Anyone holding a Transaction ID can see the key, so keep your receipts to yourself. Still stuck? Email <a href="mailto:support@tidywl.com">support@tidywl.com</a> from the address you paid with.</p>
 
     <p class="privacy-meta">Fourteen-day full refund on every charge, no questions — <a href="/refunds/">refund policy</a>. Cancel any time from your Paddle receipt.</p>
   </div>
@@ -38,12 +49,13 @@ sitemap: false
   .key-box {
     position: relative;
     margin: 8px 0 32px;
-    /* Right padding keeps a long key or an error message clear of the copy icon. */
-    padding: 20px 60px 20px 22px;
+    padding: 20px 22px;
     border: 1px solid var(--border, #e5e7eb);
     border-radius: 12px;
     background: var(--surface, rgba(127, 127, 127, 0.06));
   }
+  /* Room for the copy icon, only while a key is showing. */
+  .key-box.has-key { padding-right: 60px; }
   .key-status { font-size: 0.95rem; color: var(--muted, #6b7280); }
   .key-status[data-tone="error"] { color: #b42318; }
   .key-value {
@@ -76,6 +88,30 @@ sitemap: false
   .key-copy.copied .icon-check { display: block; }
   .key-copy:hover { background: rgba(127, 127, 127, 0.12); }
   .key-copy:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .key-find { margin-top: 14px; }
+  .key-find-label { display: block; margin-bottom: 6px; font-size: 0.9rem; color: var(--muted, #6b7280); }
+  .key-find-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .key-find-input {
+    flex: 1 1 220px;
+    min-width: 0;
+    padding: 9px 12px;
+    border: 1px solid var(--border, #d1d5db);
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.95rem;
+  }
+  .key-find-button {
+    padding: 9px 16px;
+    border: 1px solid var(--border, #d1d5db);
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  .key-find-button:hover { background: rgba(127, 127, 127, 0.12); }
   .key-box [hidden] { display: none !important; }
 </style>
 
@@ -83,59 +119,97 @@ sitemap: false
   // The pricing page sends buyers here with the transaction id as `_ptxn`,
   // taken from Paddle.js's checkout.completed event: an overlay checkout's own
   // successUrl redirect carries no parameters (2026-09-13). The Worker learns
-  // about the transaction from Paddle's webhook, which usually
-  // lands within seconds of the redirect but is not guaranteed to have landed
-  // yet — so poll the claim endpoint for a while before giving up. Same
-  // origin (/api/* is proxied to the Worker), no third-party request.
+  // about the transaction from Paddle's webhook, which usually lands within
+  // seconds of the redirect but is not guaranteed to have landed yet, so poll
+  // the claim endpoint for a while before giving up. Same origin (/api/* is
+  // proxied to the Worker), no third-party request.
+  //
+  // Opened without an id, the page asks for one instead (2026-09-13): every
+  // Paddle receipt, the first and each renewal, carries a Transaction ID the
+  // Worker has recorded against the licence.
   (function () {
+    var box = document.getElementById('key-box');
     var status = document.getElementById('key-status');
     var value = document.getElementById('key-value');
     var copy = document.getElementById('key-copy');
+    var find = document.getElementById('key-find');
+    var findInput = document.getElementById('key-find-txn');
+    var subtitle = document.getElementById('key-subtitle');
+    var copyWired = false;
+
     // A hosted checkout redirects here with (observed 2026-09-05):
     //   ?price_id=pri_…&transaction_id=txn_…&customer_email=…&paddle_customer_id=ctm_…
     // Only the transaction id is used; the email is never read or sent
-    // anywhere. `_ptxn` is what a Paddle.js payment link carries, and `txn`
-    // is ours, for support-issued links.
+    // anywhere. `_ptxn` is what the pricing page and a Paddle.js payment link
+    // carry, and `txn` is ours, for support-issued links and Find my key.
     var params = new URLSearchParams(location.search);
-    var txn = ['transaction_id', '_ptxn', 'txn', 'transactionId']
+    var fromLink = ['transaction_id', '_ptxn', 'txn', 'transactionId']
       .map(function (k) { return params.get(k); })
       .filter(Boolean)[0] || null;
 
-    if (!txn || !/^txn_[A-Za-z0-9]{1,64}$/.test(txn)) {
-      var seen = Array.from(new URLSearchParams(location.search).keys()).join(', ') || 'none';
-      fail('This page could not find your payment in the link. Email support@tidywl.com from the address you paid with, quoting your Paddle receipt, and we will send your key. (Link parameters seen: ' + seen + ')');
+    find.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var txn = findInput.value.trim().toLowerCase();
+      if (!/^txn_[a-z0-9]{1,64}$/.test(txn)) {
+        ask('That does not look like a Transaction ID. It starts with txn_ and is on your Paddle receipt.', true);
+        return;
+      }
+      find.hidden = true;
+      status.removeAttribute('data-tone');
+      // The address now carries the id, so bookmarking this page keeps the key.
+      history.replaceState(null, '', location.pathname + '?txn=' + encodeURIComponent(txn));
+      lookup(txn, 2, 'Looking up your key…',
+        'No purchase matches that Transaction ID. Copy it exactly from your Paddle receipt and try again.');
+    });
+
+    if (!fromLink || !/^txn_[A-Za-z0-9]{1,64}$/.test(fromLink)) {
+      // Nobody just paid: someone looking for a key they already have.
+      document.getElementById('key-heading').textContent = 'Find your key';
+      subtitle.textContent = 'Lost your TidyWL Pro key? Any of your Paddle receipts brings it back.';
+      ask('Paste the Transaction ID from your Paddle receipt. It starts with txn_.', false);
       return;
     }
+    lookup(fromLink, 30, 'Fetching your key…',
+      'We could not find a key for this payment yet. Wait a minute and reload this page. If it still does not appear, email support@tidywl.com with your Paddle receipt and we will send it.');
 
-    var attempts = 0, maxAttempts = 30; // ~90 s at 3 s
-    poll();
+    function lookup(txn, maxAttempts, lookingText, notFound) {
+      var attempts = 0;
+      status.textContent = lookingText;
+      poll();
 
-    function poll() {
-      attempts += 1;
-      fetch('/api/license/claim?txn=' + encodeURIComponent(txn), { cache: 'no-store', credentials: 'omit' })
-        .then(function (res) {
-          if (res.status === 200) return res.json().then(show);
-          if (res.status === 404 && attempts < maxAttempts) {
-            status.textContent = 'Waiting for Paddle to confirm the payment… (' + attempts + ')';
-            setTimeout(poll, 3000);
-            return;
-          }
-          if (res.status === 429 && attempts < maxAttempts) { setTimeout(poll, 10000); return; }
-          fail('We could not find a key for this payment yet. Wait a minute and reload this page. If it still does not appear, email support@tidywl.com with your Paddle receipt and we will send it.');
-        })
-        .catch(function () {
-          if (attempts < maxAttempts) { setTimeout(poll, 5000); return; }
-          fail('Could not reach tidywl.com. Check your connection and reload this page.');
-        });
+      function poll() {
+        attempts += 1;
+        fetch('/api/license/claim?txn=' + encodeURIComponent(txn), { cache: 'no-store', credentials: 'omit' })
+          .then(function (res) {
+            if (res.status === 200) return res.json().then(show);
+            if (res.status === 404 && attempts < maxAttempts) {
+              if (maxAttempts > 2) status.textContent = 'Waiting for Paddle to confirm the payment… (' + attempts + ')';
+              setTimeout(poll, 3000);
+              return;
+            }
+            if (res.status === 429 && attempts < maxAttempts) { setTimeout(poll, 10000); return; }
+            if (res.status === 429) { ask('Too many lookups from this connection. Wait a minute and try again.', true); return; }
+            ask(notFound, true);
+          })
+          .catch(function () {
+            if (attempts < maxAttempts) { setTimeout(poll, 5000); return; }
+            ask('Could not reach tidywl.com. Check your connection and try again.', true);
+          });
+      }
     }
 
     function show(data) {
+      find.hidden = true;
+      status.removeAttribute('data-tone');
       status.textContent = data.status === 'active' ? 'Your key' : 'Your key (subscription ' + data.status + ')';
       value.textContent = data.key;
       value.hidden = false;
       copy.hidden = false;
+      box.classList.add('has-key');
+      if (copyWired) return;
+      copyWired = true;
       copy.addEventListener('click', function () {
-        navigator.clipboard.writeText(data.key).then(function () {
+        navigator.clipboard.writeText(value.textContent).then(function () {
           // Icon-only, so the tick and the accessible name carry "Copied".
           copy.classList.add('copied');
           copy.setAttribute('aria-label', 'Copied');
@@ -152,9 +226,14 @@ sitemap: false
       });
     }
 
-    function fail(message) {
+    // The receipt form, with a prompt or an error above it.
+    function ask(message, isError) {
       status.textContent = message;
-      status.setAttribute('data-tone', 'error');
+      if (isError) status.setAttribute('data-tone', 'error'); else status.removeAttribute('data-tone');
+      value.hidden = true;
+      copy.hidden = true;
+      box.classList.remove('has-key');
+      find.hidden = false;
     }
   })();
 </script>

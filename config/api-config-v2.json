@@ -183,6 +183,7 @@
     "validatePath": "/api/license/validate",
     "deactivatePath": "/api/license/deactivate",
     "portalPath": "/api/license/portal",
+    "claimPath": "/api/license/claim",
     "checkout": {
       "monthly": "https://tidywl.com/pricing/?plan=monthly",
       "yearly": "https://tidywl.com/pricing/?plan=yearly"
