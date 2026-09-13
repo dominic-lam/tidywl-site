@@ -31,4 +31,4 @@ prices:
 # the site contradict itself and sells a product nobody can install yet.
 # When it flips, so do: pricing/index.html's .pro-status line, the .plans-foot
 # sentence, and llms.txt. See OPEN-ITEMS B3.
-onSale: false
+onSale: true
