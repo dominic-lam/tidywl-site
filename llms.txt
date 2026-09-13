@@ -11,17 +11,17 @@ layout: null
 
 TidyWL gives you a full-screen dashboard for YouTube's Watch Later playlist, inspired by macOS Storage Manager. Since version 1.5.0 the same dashboard also opens your **Liked videos** — a switch in the header moves between them, from either page — with the same breakdowns, search, filters, sorting, export and Gemini Notebook support. Since version 1.6.0 it opens **any playlist you created** as well, from a Playlists menu in the header, and you can **tick several playlists and see them merged**: one card per video, carrying a chip for each playlist it belongs to, so a video saved in three places is one row that tells you all three. From a merged view, moving a video removes it from every ticked playlist it was in. You can also delete a playlist you own outright, confirmed by name; its videos stay on YouTube. Each list keeps its own local cache and its own sync time, so working on one never disturbs the other. You can bulk delete hundreds of videos in seconds, **remove likes in bulk** on the Liked tab through the same flow, see your playlist broken down by channel or by topic, hide topics you are not interested in, search, and filter by title, channel, watched status, availability, or duration — either preset buckets including a Shorts bucket, or your own minimum and maximum in minutes. The watched filter carries an adjustable progress threshold, so you can ask for videos you are at least three-quarters through rather than merely ones you started.
 
-Since version 1.6.0 every video also carries the **tags its uploader gave it** — the keyword field YouTube stores but never displays, plus any hashtags in the description. Search matches those tags, so a video can be found by what it is about rather than only by what it is called, and clicking a tag filters by it; several tags stack, narrowing to the videos that carry all of them. This is what makes search usable on playlists that are not in English: uploaders commonly tag in both the video's language and English, so there is something to match even when the title has nothing. You can sort by playlist order, duration, view count, published date, channel, or title. You can move or copy selected videos into any other playlist, create a playlist inline, reorder with Move to Top and Move to Bottom or by dragging, open every selected video in background tabs, switch between YouTube accounts, and export to JSON or CSV.
+Since version 1.6.0 every video also carries the **tags its uploader gave it** — the keyword field YouTube stores but never displays, plus any hashtags in the description. Search matches those tags, so a video can be found by what it is about rather than only by what it is called, and clicking a tag filters by it; several tags stack, narrowing to the videos that carry all of them. This is what makes search usable on playlists that are not in English: uploaders commonly tag in both the video's language and English, so there is something to match even when the title has nothing. You can sort by playlist order, duration, view count, published date, channel, or title, and from version 2.0 group the grid by channel, most videos first, fewest first or A to Z, with a heading per channel that folds shut. You can move or copy selected videos into any other playlist, create a playlist inline, reorder with Move to Top and Move to Bottom or by dragging, open every selected video in background tabs, switch between YouTube accounts, and export to JSON or CSV.
 
 Two features go beyond playlist management. **Bulk transcript download** gives you one timestamped text file per video, named after the video title, after first checking with YouTube which videos have captions at all. **Send to Gemini Notebook** (formerly NotebookLM) pushes your selected videos into a notebook as sources, either a new notebook or one you already have.
 
 ## TidyWL Pro
 
-Everything described above is free and stays free. **TidyWL Pro** is a paid subscription that ships with **version 2.0**. It is **not on sale yet** — the pricing page is published, but nothing can be charged until 2.0 is released. Full detail at https://tidywl.com/pricing/.
+Everything described above is free. **TidyWL Pro** is a paid subscription that ships with **version 2.0**. It is **not on sale yet** — the pricing page is published, but nothing can be charged until 2.0 is released. Full detail at https://tidywl.com/pricing/.
 
 Price: **$4.99 USD per month**, or **$47.88 billed annually**, which is $3.99 a month and a 20% saving. Prices are before tax; checkout is handled by Paddle, which shows each visitor's own currency and the tax for their country. Every charge carries a **14-day full refund, no questions and no conditions**, and the subscription can be cancelled at any time.
 
-Where the free extension cleans a playlist up in an afternoon, Pro keeps it clean every month and makes every cleanup reversible. Nine things it adds:
+Where the free extension cleans a playlist up in an afternoon, Pro keeps it clean every month and makes every cleanup reversible. Ten things it adds:
 
 - **The Lineup** — a watchlist built to fit the time you have. Give it a budget (15 minutes, 30, 45, an hour, 90 minutes, or a number you type) and it builds a running order out of videos you already saved, with one line per pick saying why that video was chosen. Four ways in: **Based on recent watches**, matched to what you have been watching by title, channel and category; **Resume**, for videos you started and did not finish; **Subscribed channels**; and **Backlog**, your oldest saves that you never opened. A switch keeps or drops music videos, a slider sets how far back it reads your recent watching, rows can be dragged to reorder or swapped one at a time, and the finished list can be played straight through or saved as a new private playlist. Nothing under three minutes is ever picked.
 - **Finished videos, archived** — anything watched past 95% moves to an archive playlist you own, rather than being deleted.
@@ -29,8 +29,9 @@ Where the free extension cleans a playlist up in an afternoon, Pro keeps it clea
 - **Bottom 10%, every month** — once a month the oldest tenth of Watch Later moves to the archive. You set the percentage.
 - **Pin** — mark a video "keep forever" and nothing removes it: not a rule, not a bulk delete you ran yourself. A Move becomes a Copy.
 - **Preview before you act** — every bulk delete, move, unlike or rule shows the exact list first, with anything untickable before it runs.
-- **Undo, for 90 days** — what you deleted is kept on that device for 90 days, restorable one video or a whole batch, back into the playlist it came from.
+- **Undo, for 90 days** — what you deleted is kept on that device for 90 days, restorable one video or a whole batch, back into the playlist it came from. The record holds the newest 10,000 deletions by default; you can raise that to 50,000, 250,000 or no limit, with a warning about the storage and speed each costs. A long restore shows its progress and can be stopped.
 - **Saved views** — name a filter combination, such as unwatched, over 20 minutes, from three channels, and reopen it in one click.
+- **Sidebar search** — a search box above the By Channel and By Topic lists that narrows them as you type, across every row rather than only the first ten.
 - **Requests and support answered first** — subscribers' feature requests and bug reports are read first, and their support email goes to the front of the queue.
 
 The rules never delete a video you could still watch: they move it to an archive playlist you own. They run when you open YouTube, and each shows its list before acting.
@@ -42,13 +43,17 @@ Step-by-step instructions for every feature are at https://tidywl.com/tutorials/
 - Install and open the dashboard: https://tidywl.com/tutorials/#install
 - Sync a playlist: https://tidywl.com/tutorials/#sync
 - Search, and filter by tag: https://tidywl.com/tutorials/#search
+- By channel, by topic, and the sidebar search (Pro): https://tidywl.com/tutorials/#breakdown
+- Sort, and group by channel: https://tidywl.com/tutorials/#sort
 - Delete videos, or remove likes: https://tidywl.com/tutorials/#delete
 - See several playlists at once: https://tidywl.com/tutorials/#merged-view
 - Download transcripts: https://tidywl.com/tutorials/#transcripts
 - Send to Gemini Notebook: https://tidywl.com/tutorials/#gemini-notebook
+- Activate a Pro key: https://tidywl.com/tutorials/#activate
 - The Lineup (Pro): https://tidywl.com/tutorials/#lineup
 - Clean-up rules (Pro): https://tidywl.com/tutorials/#rules
 - Pin a video (Pro): https://tidywl.com/tutorials/#pin
+- Preview before acting (Pro): https://tidywl.com/tutorials/#preview
 - Undo deletions (Pro): https://tidywl.com/tutorials/#undo
 - Saved views (Pro): https://tidywl.com/tutorials/#saved-views
 
@@ -78,15 +83,15 @@ TidyWL works by reading the user's active YouTube session (SAPISID cookie and se
 
 ## Privacy
 
-TidyWL runs in your browser. No account, and your YouTube data — titles, video IDs, channels, playlists — never leaves it. Network calls go to YouTube's own endpoints using your existing session, and to a public config file on tidywl.com that carries no identifiers and no payload. Since version 1.6.0 the extension also sends tidywl.com one small usage report: a random identifier generated on install (not linked to any Google account) plus lifetime counts of videos deleted, likes removed, videos moved, bulk operations run, the size of the Watch Later playlist, and the browser name. It is sent only when a count changes, never carries a title, video ID, channel or timestamp, has no off switch on Chrome (uninstalling stops it), is controlled on Firefox by the Technical and interaction data toggle, and records idle for 12 months are deleted. One feature is an explicit exception you trigger yourself: Send to Gemini Notebook passes the video links you selected to Google's Gemini Notebook using your own Google session. It is opt-in per use and gated behind a browser permission prompt. Full policy: https://tidywl.com/privacy/
+TidyWL runs in your browser. No account, and your YouTube data — titles, video IDs, channels, playlists — never leaves it. Network calls go to YouTube's own endpoints using your existing session, and to a public config file on tidywl.com that carries no identifiers and no payload. Since version 1.6.0 the extension also sends tidywl.com one small usage report: a random identifier generated on install (not linked to any Google account) plus lifetime counts of videos deleted, likes removed, videos moved, bulk operations run, the size of the Watch Later playlist, and the browser name. It is sent only when a count changes, never carries a title, video ID, channel or timestamp, has no off switch on Chrome (uninstalling stops it), is controlled on Firefox by the Technical and interaction data toggle, and records idle for 12 months are deleted. From version 2.0 the report also counts Lineups built and saved, and a TidyWL Pro subscriber's extension sends its licence key to tidywl.com to check the subscription; on Firefox that check waits for the add-on's Authentication information permission. One feature is an explicit exception you trigger yourself: Send to Gemini Notebook passes the video links you selected to Google's Gemini Notebook using your own Google session. It is opt-in per use and gated behind a browser permission prompt. Full policy: https://tidywl.com/privacy/
 
 ## Limitations
 
-- Deletions are permanent; YouTube provides no undo. The same is true of removed likes.
+- YouTube provides no undo. TidyWL Pro keeps a 90-day record of deletions on that device and can restore them, at the top of the playlist; removed likes cannot be restored.
 - Removing a like is not a playlist edit — YouTube treats it as un-liking the video, which can change what it recommends.
 - Reordering is not available on Liked videos: YouTube orders that list by when you liked something.
 - Favorites, and playlists you saved but do not own, can be searched and cleaned up but not reordered — YouTube serves those without the per-item handle reordering needs.
-- A merged view of several playlists supports copy and move, but not delete or reorder; narrow to one playlist for those.
+- A merged view of several playlists supports copy, move and delete, but not reorder. Move and delete act on every ticked playlist a video is in, so narrow to one playlist to act on just that one.
 - Deleting a playlist is permanent. Its videos stay on YouTube; the playlist does not.
 - Bulk deletion is necessarily sequential, because YouTube rejects parallel playlist edits, so large batches take time.
 - "Playlist order" is not date-added — YouTube does not expose per-video add timestamps on the web.

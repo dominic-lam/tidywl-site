@@ -15,7 +15,7 @@ faq:
   - q: "Why does the monthly clean-up rule refuse to run?"
     a: "It needs the playlist sorted by date added on YouTube's own playlist page, because that is the only way a video's position tells TidyWL how old it is. Set the sort on YouTube, sync once in TidyWL, then run the rule again. If your last sync happened before you upgraded, one sync also fixes it."
   - q: "Do the Pro features send my playlist anywhere?"
-    a: "No. Clean-up rules, pin, undo, saved views and the Lineup all run in your browser. The Lineup reads your YouTube watch history and subscriptions to rank suggestions and both stay on your device. What tidywl.com receives is your licence key and its activation record, plus anonymous usage counts — how many videos you have deleted, moved or unliked, and how many Lineups you have built — tied to a random install ID, never to you or your Google account. No titles, no video IDs, no channels. On Firefox those counts are behind a switch you control. The privacy policy has the full list."
+    a: "No. Clean-up rules, pin, undo, saved views and the Lineup all run in your browser. The Lineup reads your YouTube watch history and subscriptions to rank suggestions and both stay on your device. What tidywl.com receives is your licence key and its activation record, plus anonymous usage counts — how many videos you have deleted, moved or unliked, and how many Lineups you have built — tied to a random install ID, never to you or your Google account. No titles, no video IDs, no channels. On Firefox those counts are behind a switch you control, and so is the licence check. The privacy policy has the full list."
 ---
 <div class="tut-page">
 
@@ -23,7 +23,7 @@ faq:
     <p class="section-label">Tutorials</p>
     <h1>How to use <span class="em">every part</span> of TidyWL</h1>
     <p class="tagline">One short guide per feature, in the order you would meet them. Written against version 2.0. Every button name below is the name on the button.</p>
-    <p class="tut-legend"><span class="tut-pill">Pro</span> marks a feature that needs a TidyWL Pro subscription. Everything else is free and always will be.</p>
+    <p class="tut-legend"><span class="tut-pill">Pro</span> marks a feature that needs a TidyWL Pro subscription. Everything else is free.</p>
   </section>
 
   <section class="tut-contents">
@@ -115,7 +115,7 @@ faq:
         <h2>Find your way around the dashboard</h2>
         <p class="tut-where">The panel that opens over the YouTube page</p>
         <ul class="tut-list">
-          <li><b class="ui">The header</b> carries the extension name and version, the playlist switcher in the middle, and on the right your plan badge, the announcements bell, an <b class="ui">About</b> button and the close ×.</li>
+          <li><b class="ui">The header</b> carries the extension name and version, the playlist switcher in the middle, and on the right your plan badge, the announcements bell, a <b class="ui">Help</b> button that opens this page, an <b class="ui">About</b> button and the close ×.</li>
           <li><b class="ui">The left sidebar</b> holds two stat cards — <b class="ui">Videos Fetched</b> and <b class="ui">Last Synced</b> with the <b class="ui">Sync</b> button — and, below them, the <b class="ui">By Channel</b> and <b class="ui">By Topic</b> breakdowns.</li>
           <li><b class="ui">The toolbar</b> across the top of the video grid holds every action, as icons. Hover any icon to see what it is; that hover label is the name used throughout these tutorials.</li>
           <li><b class="ui">The grid</b> below it is your videos, as cards.</li>
@@ -175,9 +175,11 @@ faq:
         <p class="tut-where">Sidebar → the <b class="ui">By Channel</b> and <b class="ui">By Topic</b> tabs</p>
         <ol class="tut-steps">
           <li><b class="ui">By Channel</b> lists the channels in the playlist with a bar for how many videos each contributed. Click a row to filter the grid to that channel. Clicking a channel name on a video card does the same thing.</li>
-          <li><b class="ui">By Topic</b> groups videos by keywords found in their titles. A keyword has to appear in at least three titles to become a group; everything else lands in <em>[No common keywords]</em>. Click a row to filter to it.</li>
-          <li>Both lists start at ten rows. <b class="ui">Show More</b> adds ten more each time.</li>
+          <li><b class="ui">By Topic</b> groups videos by keywords found in their titles. Each video goes under its most common keyword, and a keyword has to appear in at least three titles to count. A group that ends up with fewer than three videos is left off the list, so the rows do not always add up to the playlist. Videos with no qualifying keyword land in <em>[No common keywords]</em>. Click a row to filter to it.</li>
+          <li>Both lists start at ten rows. <b class="ui">Show 10 More</b> adds the next ten; near the end it reads however many are left.</li>
+          <li><span class="tut-pill">Pro</span> A search box above the rows narrows the list as you type. It reads <em>“Search channels”</em> on one tab and <em>“Search topics”</em> on the other, and looks through every row, not only the ten on screen. Escape clears it.</li>
         </ol>
+        <p class="tut-note">On the free plan the search box carries a <b class="ui">Pro</b> pill, and clicking into it or typing opens the Pro upsell instead. Clicking a row after a search filters the grid exactly as before.</p>
         <p class="tut-note">On a topic row, the crossed-out eye hides that topic from the grid rather than filtering to it — <em>“Hide these videos from the list”</em>. Hide as many as you like; the eye turns back on to <em>“Show these videos again”</em>. Videos with no matching keyword are never hidden this way.</p>
       </article>
     </div>
@@ -243,7 +245,8 @@ faq:
         <p class="tut-where">Toolbar → the arrows labelled <b class="ui">Sort</b></p>
         <ol class="tut-steps">
           <li>Under the <b class="ui">By Playlist Order</b> heading: <b class="ui">Playlist order (Top first)</b> and <b class="ui">Playlist order (Bottom first)</b>.</li>
-          <li>Below the divider: <b class="ui">Channel (A-Z)</b>, <b class="ui">Title (A-Z)</b>, <b class="ui">Duration (Longest first)</b>, <b class="ui">Duration (Shortest first)</b>, <b class="ui">Published date (Newest first)</b>, <b class="ui">Published date (Oldest first)</b>, <b class="ui">Views (Most first)</b> and <b class="ui">Views (Fewest first)</b>.</li>
+          <li>Below the divider: <b class="ui">Title (A-Z)</b>, <b class="ui">Duration (Longest first)</b>, <b class="ui">Duration (Shortest first)</b>, <b class="ui">Published date (Newest first)</b>, <b class="ui">Published date (Oldest first)</b>, <b class="ui">Views (Most first)</b> and <b class="ui">Views (Fewest first)</b>.</li>
+          <li>Under <b class="ui">Group by channel</b>: <b class="ui">Most videos first</b>, <b class="ui">Fewest videos first</b> and <b class="ui">Channel name (A-Z)</b>. Each draws a heading before every channel in the grid, with a chevron that folds that channel shut. Selecting still works across channels, and a bar at the foot of the grid says how many channels your selection spans. Folding a channel drops its videos from the selection.</li>
         </ol>
         <p class="tut-note">“Playlist order” is YouTube’s own server-side order, not a date-added sort — YouTube does not publish per-video add times on the web. To change what that order means, use the <b class="ui">Manual ⌄</b> dropdown at the top of the playlist page on YouTube itself. The info icon beside the section heading says the same thing.</p>
         <p class="tut-note">Published date is bucketed rather than exact, because YouTube only returns relative timestamps like “3 weeks ago”. Videos in the same bucket can come out in any order.</p>
@@ -332,7 +335,7 @@ faq:
         <p class="tut-where">Toolbar → the document icon (<b class="ui">Download Transcripts</b>)</p>
         <ol class="tut-steps">
           <li>Select the videos you want transcripts for, then press <b class="ui">Download Transcripts</b>.</li>
-          <li>The first time, a tab opens asking permission to save files. Allow it, then press the button again — TidyWL says so in a banner.</li>
+          <li>The first time, a tab opens asking permission to save files. Allow it, then press the button again — TidyWL says so in a banner. Decline it and TidyWL still fetches the transcripts, then offers a <b class="ui">Save N files</b> button at the end instead; files saved that way land loose in your Downloads, not in the folder below.</li>
           <li>For a large batch, TidyWL first tells you roughly how long it will take and asks you to confirm.</li>
           <li>It then asks YouTube which of your videos have captions at all, so it only opens the ones that do.</li>
           <li>A small window opens and works through them. Leave it alone until it finishes.</li>
@@ -371,7 +374,7 @@ faq:
   <section class="tut-band">
     <div class="section-inner">
       <p class="section-label">TidyWL Pro</p>
-      <p class="tut-band-note">This section covers TidyWL Pro: how to switch it on, then the eight tools it adds — each marked <span class="tut-pill">Pro</span> below. Pro ships with version 2.0; see <a href="/pricing/">pricing</a> for what it costs and what it covers. Nothing that is free today moves behind it.</p>
+      <p class="tut-band-note">This section covers TidyWL Pro: how to switch it on, then the tools it adds, each marked <span class="tut-pill">Pro</span>. The sidebar search, marked the same way, sits with <a href="#breakdown">the breakdown</a> above. Pro ships with version 2.0; see <a href="/pricing/">pricing</a> for what it costs and what it covers. There is no free trial: the free plan is yours to try, and every Pro charge carries a 14-day refund. Nothing that is free today moves behind it.</p>
 
       <article class="tut" id="activate">
         <h2>Activate your key, and manage your devices</h2>
@@ -380,11 +383,13 @@ faq:
           <li>Click the plan badge in the dashboard header — the small <b class="ui">Free</b> or <b class="ui">Pro</b> pill next to the bell. It opens the About panel on the licence card. The <b class="ui">About</b> ⓘ button gets you to the same place.</li>
           <li>With no key active, the card reads <em>“Not active on this device”</em> and offers <b class="ui">Upgrade to Pro</b> and <b class="ui">Have a key?</b>.</li>
           <li>Click <b class="ui">Have a key?</b>, paste your key into the <b class="ui">TWL-XXXXX-XXXXX-XXXXX-XXXXX</b> field, and check the device name — it is filled in for you and you can change it. Press <b class="ui">Activate</b>.</li>
-          <li>Once live, the card reads <b class="ui">Active</b> with your renewal date and lists every device the key is on.</li>
+          <li>On Firefox, the first Activate opens a page asking <em>“Let TidyWL check your Pro key?”</em>. Firefox files a licence check under <b class="ui">Authentication information</b>, so TidyWL asks first. Press <b class="ui">Allow</b>, then <b class="ui">Allow</b> in Firefox’s own prompt, and activation finishes by itself. <b class="ui">Not now</b> sends nothing.</li>
+          <li>Once live, the card reads <b class="ui">Active</b> with your renewal date, or <b class="ui">Trial</b> with its end date for a trial key, and lists every device the key is on. A key works on 3 devices at a time.</li>
         </ol>
         <p class="tut-note">To free up a device you no longer use, press <b class="ui">Remove</b> beside it in the list. The removed device drops back to free at its next dashboard open. <b class="ui">Deactivate this device</b> releases the one you are on.</p>
         <p class="tut-note"><b class="ui">Manage subscription</b> opens your billing page in a new tab — change your card, see invoices, or cancel. Payment is handled by Paddle; TidyWL never sees your card.</p>
         <p class="tut-note">If TidyWL cannot reach the licence server, Pro keeps working for two weeks, so an outage or a flight costs you nothing. Past that the card reads <b class="ui">Pro paused</b> and asks you to reconnect and reopen the dashboard.</p>
+        <p class="tut-note">On Firefox, if the <b class="ui">Authentication information</b> permission is off, the card says so and offers <b class="ui">Allow key checks</b>. Nothing is checked until you allow it, and Pro pauses 14 days after the last check. You can change it any time under <code>about:addons</code> → TidyWL → <b class="ui">Permissions and data</b>.</p>
       </article>
 
       <article class="tut" id="lineup">
@@ -462,7 +467,7 @@ faq:
         <ol class="tut-steps">
           <li>Hover a video card. A pin appears in the top-right corner of the thumbnail. Click it.</li>
           <li>Or open the card’s three-dot menu and pick <b class="ui">Pin (protect from deletion)</b>.</li>
-          <li>Or select several videos and press <b class="ui">Pin Selected</b> in the toolbar.</li>
+          <li>Or select several videos and press <b class="ui">Pin Selected</b> in the toolbar. Its label carries the count, <em>Pin Selected (12)</em>, and when everything selected is already pinned it reads <b class="ui">Unpin Selected</b> instead.</li>
           <li>A pinned card keeps its pin visible. To unpin, click it again, or pick <b class="ui">Unpin</b> from the menu.</li>
         </ol>
         <p class="tut-note">A pinned video survives <b>every</b> removal: clean-up rules, bulk delete, a single delete, removing a like, and archiving. A <a href="#move-copy">Move</a> on a pinned video quietly becomes a Copy — it is added to the destination and left where it was.</p>
@@ -476,7 +481,7 @@ faq:
         <ol class="tut-steps">
           <li>Run any bulk delete, bulk unlike, or clean-up rule. Instead of a plain confirmation, the full list opens: thumbnail, title and channel for every video, with a checkbox each.</li>
           <li>Untick anything you want to keep. The count updates live, and the confirm button carries the surviving number — <b class="ui">Delete 43 videos</b>.</li>
-          <li>Use <b class="ui">Search these videos…</b> to find one in a long list, and shift-click to tick a range. One button above the list toggles between <b class="ui">Deselect all</b> and <b class="ui">Select all</b>, so you can start from either end.</li>
+          <li>Use <b class="ui">Search these videos…</b> to find one in a long list. Shift-click copies what you just did across the range: untick one row, shift-click another, and everything between is unticked too. One button above the list toggles between <b class="ui">Deselect all</b> and <b class="ui">Select all</b>; while a search is running it reads <b class="ui">Deselect N shown</b> and acts only on the rows you can see.</li>
           <li>Press the confirm button, or <b class="ui">Cancel</b> — cancelling changes nothing at all.</li>
         </ol>
         <p class="tut-note">Untick every video and the confirm button simply disables, so there is no way to confuse “I changed my mind” with “I unticked everything”.</p>
@@ -487,12 +492,14 @@ faq:
         <h2>Undo deletions, for 90 days <span class="tut-pill">Pro</span></h2>
         <p class="tut-where">Toolbar → the anticlockwise arrow (<b class="ui">Deleted videos</b>)</p>
         <ol class="tut-steps">
-          <li>Press <b class="ui">Deleted videos</b>. Everything you have deleted through TidyWL in the last 90 days is there, grouped by the batch it went out in — each group headed with the date, how many videos, and which playlist they came from. The list holds the 10,000 most recent deletions; past that the oldest drop off even if they are inside the 90 days.</li>
+          <li>Press <b class="ui">Deleted videos</b>. Everything you have deleted through TidyWL in the last 90 days is there, grouped by the batch it went out in — each group headed with the date, how many videos, and which playlist they came from. The panel says how many records it is keeping.</li>
           <li>To put a whole batch back, press <b class="ui">Restore all N</b> on its header.</li>
-          <li>For individual videos, use <b class="ui">Restore</b> on the row — or find them with <b class="ui">Search deleted videos…</b>, tick them (shift-click selects a range) and press <b class="ui">Restore</b> at the bottom.</li>
+          <li>For individual videos, use <b class="ui">Restore</b> on the row — or find them with <b class="ui">Search deleted videos…</b>, tick them (shift-click selects a range) and press <b class="ui">Restore</b> at the bottom, which carries the count — <b class="ui">Restore 3</b>.</li>
+          <li>A restore runs one video at a time, showing <em>“Restoring... 12/430”</em> with a <b class="ui">Stop</b> button. Stop lets the video in flight finish and keeps everything not yet restored in the list.</li>
         </ol>
         <p class="tut-note tut-note--warn">A restored video lands at the <b>top</b> of the playlist. YouTube provides no way to put it back where it was.</p>
-        <p class="tut-note"><b class="ui">Delete</b> removes the ticked rows from this list without touching YouTube; <b class="ui">Empty</b> clears the whole list. Either way the videos stay deleted on YouTube — this list is a record, not a holding pen.</p>
+        <p class="tut-note"><b class="ui">Keep up to</b> sets how many records the list holds: <b class="ui">10,000</b>, the default, <b class="ui">50,000</b>, <b class="ui">250,000</b> or <b class="ui">No limit</b>. Past the limit the oldest drop off first, even inside the 90 days. A bigger list costs space and speed: about 9 MB and at least 40 ms on every delete at 50,000, and about 46 MB and at least a quarter of a second at 250,000. The panel warns you when you pick one, and lowering the limit asks before anything is dropped.</p>
+        <p class="tut-note"><b class="ui">Delete</b>, which also carries the count, removes the ticked rows from this list without touching YouTube; <b class="ui">Empty</b> clears the whole list. Either way the videos stay deleted on YouTube — this list is a record, not a holding pen.</p>
         <p class="tut-note">Two limits worth knowing. The record is kept <b>on this device</b>: it does not travel to your other browsers and it does not survive uninstalling. And it covers <b>deletions only</b> — removing a like is a different operation on YouTube’s side and is not logged.</p>
       </article>
 
@@ -551,13 +558,14 @@ faq:
 
       <article class="tut" id="announcements">
         <h2>Announcements, and the About panel</h2>
-        <p class="tut-where">Header → the bell, and the ⓘ button</p>
+        <p class="tut-where">Header → the bell, the <b class="ui">Help</b> button and the ⓘ button</p>
         <ul class="tut-list">
           <li>The <b>bell</b> carries a red count when there is something new. Open it to read the notices; the badge clears itself.</li>
           <li>Important notices appear as a banner above the grid instead, and stay dismissed once you close them.</li>
-          <li>The <b>ⓘ About</b> button shows your version, your <a href="#activate">licence card</a>, what Pro adds, and a row of links: the Chrome Web Store listing and <b class="ui">Rate us</b>, <b class="ui">Join us on Discord</b>, Ko-fi, and <b class="ui">Thoughts?</b> — which copies the support address to your clipboard.</li>
+          <li>The <b class="ui">Help</b> button, a question mark, opens this page in a new tab.</li>
+          <li>The <b>ⓘ About</b> button shows your version, your <a href="#activate">licence card</a>, what Pro adds, and a row of links: the Chrome Web Store listing and <b class="ui">Rate us</b>, which Firefox does not show because it has no store page; <b class="ui">Join us on Discord</b>; Ko-fi, hidden once you have Pro; and <b class="ui">Thoughts?</b>, which opens an email to the support address and copies the address to your clipboard as well.</li>
         </ul>
-        <p class="tut-note">Stuck on something not covered here? The <a href="https://discord.gg/natc623GhX" target="_blank" rel="noopener">Discord community</a> is the fastest place to ask, and <a href="mailto:support@tidywl.com">support@tidywl.com</a> reaches the developer directly.</p>
+        <p class="tut-note">Stuck on something not covered here? The <a href="https://discord.gg/natc623GhX" target="_blank" rel="noopener">Discord community</a> is the fastest place to ask, and <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--/email_off--> reaches the developer directly.</p>
       </article>
     </div>
   </section>
@@ -589,7 +597,7 @@ faq:
         </div>
         <div class="faq-item" id="q-privacy" aria-expanded="false">
           <button class="faq-q" type="button">Do the Pro features send my playlist anywhere?<span class="plus" aria-hidden="true">+</span></button>
-          <div class="faq-a"><p>No. Clean-up rules, pin, undo, saved views and the Lineup all run in your browser. The Lineup reads your YouTube watch history and subscriptions to rank suggestions and both stay on your device. What tidywl.com receives is your licence key and its activation record, plus anonymous usage counts — how many videos you have deleted, moved or unliked, and how many Lineups you have built — tied to a random install ID, never to you or your Google account. No titles, no video IDs, no channels. On Firefox those counts are behind a switch you control. The <a href="/privacy/">privacy policy</a> has the full list.</p></div>
+          <div class="faq-a"><p>No. Clean-up rules, pin, undo, saved views and the Lineup all run in your browser. The Lineup reads your YouTube watch history and subscriptions to rank suggestions and both stay on your device. What tidywl.com receives is your licence key and its activation record, plus anonymous usage counts — how many videos you have deleted, moved or unliked, and how many Lineups you have built — tied to a random install ID, never to you or your Google account. No titles, no video IDs, no channels. On Firefox those counts are behind a switch you control, and so is the licence check. The <a href="/privacy/">privacy policy</a> has the full list.</p></div>
         </div>
       </div>
     </div>
