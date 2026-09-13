@@ -485,6 +485,15 @@ faq:
       });
     });
 
+    // ?plan=monthly|yearly opens the page on that period. The extension's
+    // upsell card links here with the period it was showing, and the buy button
+    // reads data-billing at click time, so this is all the handoff needs.
+    const planParam = new URLSearchParams(location.search).get('plan');
+    if (planParam === 'monthly' || planParam === 'yearly') {
+      plans.setAttribute('data-billing', planParam);
+      opts.forEach(o => o.setAttribute('aria-pressed', o.getAttribute('data-billing-set') === planParam ? 'true' : 'false'));
+    }
+
     // --- the resolver, ported from src/utils/pricing.js ---
     const MIN_PRICE = 0.5, MAX_PRICE = 1000, MAX_LABEL = 120, MAX_BADGE = 24;
     const DEFAULTS = { monthly: 4.99, yearly: 47.88 };
@@ -499,6 +508,14 @@ faq:
     // Never understate the monthly figure, never overstate the saving.
     const perMonth = yearly => Math.ceil((yearly / 12) * 100 - 1e-9) / 100;
     const savingPct = (monthly, yearly) => Math.floor((1 - yearly / (12 * monthly)) * 100 + 1e-9);
+    const PERIODS = ['monthly', 'yearly'];
+    // Which periods a discount covers. Absent is both, the original shape;
+    // anything else must name at least one known period and nothing unknown.
+    const periodsOf = v => {
+      if (v === undefined) return PERIODS.slice();
+      if (!Array.isArray(v) || !v.length || !v.every(p => PERIODS.indexOf(p) !== -1)) return null;
+      return PERIODS.filter(p => v.indexOf(p) !== -1);
+    };
 
     function resolve(block) {
       block = block && typeof block === 'object' && !Array.isArray(block) ? block : {};
@@ -516,26 +533,46 @@ faq:
       const label = d ? cleanString(d.label) : null;
       const dPrices = d ? { monthly: cleanPrice(d.monthly), yearly: cleanPrice(d.yearly) } : null;
       const dCheckout = d && d.checkout && typeof d.checkout === 'object' ? d.checkout : {};
-      // A discount shows whole or not at all. The checkout links are part of
-      // that test even though this page has no buy button yet: if they are not
-      // ready, the promotion is not ready, and the card would not show it.
-      const whole = !!d && d.enabled === true && label != null
-        && dPrices.monthly != null && dPrices.monthly < regular.monthly
-        && dPrices.yearly != null && dPrices.yearly < regular.yearly
-        && cleanUrl(dCheckout.monthly) != null && cleanUrl(dCheckout.yearly) != null;
+      const periods = d ? periodsOf(d.periods) : null;
+      // A discount shows whole or not at all, across every period it covers.
+      // The checkout links are part of that test: if they are not ready, the
+      // promotion is not ready, and the card would not show it either.
+      const whole = !!d && d.enabled === true && label != null && periods != null
+        && periods.every(p => dPrices[p] != null && dPrices[p] < regular[p] && cleanUrl(dCheckout[p]) != null);
+      const covers = p => whole && periods.indexOf(p) !== -1;
 
-      const prices = whole ? dPrices : regular;
+      // A period the discount does not cover keeps its regular price and badge.
+      const prices = {
+        monthly: covers('monthly') ? dPrices.monthly : regular.monthly,
+        yearly: covers('yearly') ? dPrices.yearly : regular.yearly
+      };
+      // firstPeriodOnly: the discount is the first charge only, so the billed
+      // line states what it renews at, next to the number it qualifies.
+      const first = whole && d.firstPeriodOnly === true;
       const anchor = regular.monthly;
       const monthlyEq = perMonth(prices.yearly);
       const pct = savingPct(anchor, prices.yearly);
-      const badge = (whole ? cleanString(d.badge, MAX_BADGE) : regularBadge)
+      const badge = (covers('yearly') ? cleanString(d.badge, MAX_BADGE) : regularBadge)
         || (pct >= 1 ? 'Save ' + pct + '%' : null);
 
       return {
         discount: whole,
         promo: whole ? { label: label, note: cleanString(d.note) } : null,
-        monthly: { amount: usd(prices.monthly), was: prices.monthly < anchor ? usd(anchor) : null, billed: 'billed monthly' },
-        yearly:  { amount: usd(monthlyEq),      was: monthlyEq < anchor ? usd(anchor) : null,      billed: usd(prices.yearly) + ' billed annually', badge: badge }
+        monthly: {
+          amount: usd(prices.monthly),
+          was: prices.monthly < anchor ? usd(anchor) : null,
+          billed: first && covers('monthly')
+            ? usd(prices.monthly) + ' for your first month, then ' + usd(regular.monthly) + '/month'
+            : 'billed monthly'
+        },
+        yearly: {
+          amount: usd(monthlyEq),
+          was: monthlyEq < anchor ? usd(anchor) : null,
+          billed: first && covers('yearly')
+            ? usd(prices.yearly) + ' for your first year, then ' + usd(regular.yearly) + '/year'
+            : usd(prices.yearly) + ' billed annually',
+          badge: badge
+        }
       };
     }
 
