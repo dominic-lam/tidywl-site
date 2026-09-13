@@ -3,7 +3,7 @@
 # total comes from _data/usage.yml, rewritten daily by update-usage-total.yml.
 layout: null
 ---
-# TidyWL — YouTube Watch Later Tidy
+# TidyWL — Watch Later Tidy
 
 > Free browser extension for Chrome and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist, your Liked videos, and any playlist you created — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos, gives Liked videos no management tools at all, and the official API refuses to touch either. Free to install with no account; an optional subscription, TidyWL Pro, arrives with version 2.0 and adds automatic monthly clean-up, undo, and the Lineup.
 
