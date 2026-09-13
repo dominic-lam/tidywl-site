@@ -643,8 +643,16 @@ faq:
     Paddle.Initialize({
       token: {{ site.data.paddle.clientToken | jsonify }},
       eventCallback: function (data) {
-        // Paddle redirects to successUrl on completion, so this is only for
-        // the states the overlay stays open through.
+        // The key is claimed on /checkout/success/, which needs the transaction
+        // id in its link. An overlay checkout's successUrl redirect carries no
+        // parameters at all (the first live purchase, 2026-09-13, landed there
+        // with none and no key), so redirect from here with the id Paddle hands
+        // this event. Without an id the page still says to email support.
+        if (data && data.name === 'checkout.completed') {
+          var txn = data.data && data.data.transaction_id;
+          location.href = '/checkout/success/' + (txn ? '?_ptxn=' + encodeURIComponent(txn) : '');
+          return;
+        }
         if (data && data.name === 'checkout.error' && note) {
           note.textContent = 'The checkout could not open. Try again, or email support@tidywl.com.';
           note.hidden = false;
@@ -663,11 +671,9 @@ faq:
         items: [{ priceId: priceId, quantity: 1 }],
         settings: {
           displayMode: 'overlay',
-          theme: 'light',
-          // The key is claimed here. /checkout/success/ already reads the
-          // transaction id from _ptxn or transaction_id and polls
-          // /api/license/claim, so nothing new is needed on that end.
-          successUrl: 'https://tidywl.com/checkout/success/'
+          theme: 'light'
+          // No successUrl: its redirect arrives without the transaction id and
+          // could beat the checkout.completed redirect above.
         }
       });
     });

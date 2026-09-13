@@ -64,8 +64,9 @@ sitemap: false
 </style>
 
 <script>
-  // Paddle appends the transaction id to the success URL as `_ptxn`. The
-  // Worker learns about the transaction from Paddle's webhook, which usually
+  // The pricing page sends buyers here with the transaction id as `_ptxn`,
+  // taken from Paddle.js's checkout.completed event: an overlay checkout's own
+  // successUrl redirect carries no parameters (2026-09-13). The Worker learns about the transaction from Paddle's webhook, which usually
   // lands within seconds of the redirect but is not guaranteed to have landed
   // yet — so poll the claim endpoint for a while before giving up. Same
   // origin (/api/* is proxied to the Worker), no third-party request.
