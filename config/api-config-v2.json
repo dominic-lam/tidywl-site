@@ -137,7 +137,13 @@
     "descriptionPath":       ["videoDetails", "shortDescription"],
     "trackLanguageCodeKey":  "languageCode",
     "trackKindKey":          "kind",
-    "asrKindValue":          "asr"
+    "asrKindValue":          "asr",
+    "categoryPath": [
+      "microformat",
+      "playerMicroformatRenderer",
+      "category"
+    ],
+    "musicCategory": "Music"
   },
   "transcriptResponse": {
     "segmentsPath": [
@@ -178,8 +184,137 @@
     "deactivatePath": "/api/license/deactivate",
     "portalPath": "/api/license/portal",
     "checkout": {
-      "monthly": "https://sandbox-pay.paddle.io/hsc_01m1sq4n5fajtyfyt17hjfj1nf_se0hnce463gd6gc9xzbtmtj5ghydbh31?price_id=pri_01m1sp0fs4qse2jgsvnm3chh85",
-      "yearly": "https://sandbox-pay.paddle.io/hsc_01m1sq4n5fajtyfyt17hjfj1nf_se0hnce463gd6gc9xzbtmtj5ghydbh31?price_id=pri_01m1sp1ghk583bvzxw2sj4mwq5"
+      "monthly": "https://tidywl.com/pricing/?plan=monthly",
+      "yearly": "https://tidywl.com/pricing/?plan=yearly"
+    },
+    "pricing": {
+      "regular": {
+        "monthly": 4.99,
+        "yearly": 47.88
+      },
+      "discount": {
+        "enabled": false,
+        "label": "Founding member · $32 for the first year",
+        "note": "First 50 subscribers.",
+        "periods": [
+          "yearly"
+        ],
+        "yearly": 32,
+        "firstPeriodOnly": true,
+        "badge": null,
+        "checkout": {
+          "yearly": "https://tidywl.com/pricing/?plan=yearly&offer=founding"
+        }
+      }
     }
+  },
+  "historyFeed": {
+    "browseId": "FEhistory",
+    "maxPages": 2,
+    "sectionsPath": [
+      "contents",
+      "twoColumnBrowseResultsRenderer",
+      "tabs",
+      0,
+      "tabRenderer",
+      "content",
+      "sectionListRenderer",
+      "contents"
+    ],
+    "continuationSectionsPath": [
+      "onResponseReceivedActions",
+      0,
+      "appendContinuationItemsAction",
+      "continuationItems"
+    ],
+    "sectionWrapperKey": "itemSectionRenderer",
+    "sectionItemsPath": [
+      "contents"
+    ],
+    "shortsShelfKey": "reelShelfRenderer",
+    "shortsItemsPath": [
+      "items"
+    ],
+    "shortsVideoIdPath": [
+      "shortsLockupViewModel",
+      "onTap",
+      "innertubeCommand",
+      "reelWatchEndpoint",
+      "videoId"
+    ],
+    "metadataRowsPath": [
+      "metadata",
+      "lockupMetadataViewModel",
+      "metadata",
+      "contentMetadataViewModel",
+      "metadataRows"
+    ],
+    "bylineRowMarkerPath": [
+      "lockupContentMetadataRowExtension",
+      "contentType"
+    ],
+    "bylineRowContentType": "METADATA_ROW_CONTENT_TYPE_BYLINE",
+    "bylinePartTextPath": [
+      "metadataParts",
+      0,
+      "text",
+      "content"
+    ],
+    "avatarChannelIdPath": [
+      "metadata",
+      "lockupMetadataViewModel",
+      "image",
+      "decoratedAvatarViewModel",
+      "rendererContext",
+      "commandContext",
+      "onTap",
+      "innertubeCommand",
+      "browseEndpoint",
+      "browseId"
+    ],
+    "resumeSecondsPath": [
+      "rendererContext",
+      "commandContext",
+      "onTap",
+      "innertubeCommand",
+      "watchEndpoint",
+      "startTimeSeconds"
+    ]
+  },
+  "subscriptionsFeed": {
+    "browseId": "FEchannels",
+    "maxPages": 5,
+    "itemsPath": [
+      "contents",
+      "twoColumnBrowseResultsRenderer",
+      "tabs",
+      0,
+      "tabRenderer",
+      "content",
+      "sectionListRenderer",
+      "contents",
+      0,
+      "itemSectionRenderer",
+      "contents",
+      0,
+      "shelfRenderer",
+      "content",
+      "expandedShelfContentsRenderer",
+      "items"
+    ],
+    "continuationItemsPath": [
+      "onResponseReceivedActions",
+      0,
+      "appendContinuationItemsAction",
+      "continuationItems"
+    ],
+    "channelWrapperKey": "channelRenderer",
+    "channelIdPath": [
+      "channelId"
+    ],
+    "channelNamePath": [
+      "title",
+      "simpleText"
+    ]
   }
 }
