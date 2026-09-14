@@ -17,13 +17,14 @@
       "expires_at": "2026-12-14"
     },
     {
-      "id": "2026-09-14-v2.0.0-manual-update-nudge",
-      "title": "Watch Later Tidy v2.0.0 is live. Force-update if you don't have it yet",
+      "id": "2026-09-14-v2.0.0-update-pro-founding",
+      "title": "Watch Later Tidy v2.0.0 is out, with Pro. Force-update if you don't have it yet",
       "bullets": [
-        "Open a new tab and go to chrome://extensions",
-        "Top-right corner: turn on Developer mode",
-        "Top-left corner: click the \"Update\" button",
-        "Reload your YouTube tab. You should now be on v2.0.0 (the version is shown under the dashboard title)"
+        "Chrome: go to chrome://extensions, turn on Developer mode (top right), then click Update (top left)",
+        "Firefox: go to about:addons, click the gear icon, then Check for Updates",
+        "Reload your YouTube tab. This notice goes away once you're on v2.0.0",
+        "New in v2.0.0: TidyWL Pro, with clean-up rules, Pin, undo for deletions, saved views and the Lineup. Nothing that was free has moved behind it",
+        "Founding offer: the first 50 yearly subscribers pay $32 for their first year, then $47.88/year: https://tidywl.com/pricing/"
       ],
       "type": "warning",
       "show_below_version": "2.0.0",
