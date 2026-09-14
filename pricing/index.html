@@ -537,7 +537,14 @@ faq:
       // A discount shows whole or not at all, across every period it covers.
       // The checkout links are part of that test: if they are not ready, the
       // promotion is not ready, and the card would not show it either.
+      //
+      // Stricter than src/utils/pricing.js on one point: this page also needs
+      // `paddleDiscountId`, because its buy button is what hands the discount to
+      // Paddle. Without it the checkout charges the regular price, so the page
+      // shows the regular price. The extension's card cannot check this, so the
+      // config must never set `enabled: true` before the id is in place.
       const whole = !!d && d.enabled === true && label != null && periods != null
+        && typeof d.paddleDiscountId === 'string' && /^dsc_[a-z0-9]{26}$/.test(d.paddleDiscountId)
         && periods.every(p => dPrices[p] != null && dPrices[p] < regular[p] && cleanUrl(dCheckout[p]) != null);
       const covers = p => whole && periods.indexOf(p) !== -1;
 
@@ -558,6 +565,12 @@ faq:
       return {
         discount: whole,
         promo: whole ? { label: label, note: cleanString(d.note) } : null,
+        // Read by the buy button at click time: a period it covers opens
+        // Paddle's checkout with this discount applied.
+        discountIds: {
+          monthly: covers('monthly') ? d.paddleDiscountId : null,
+          yearly: covers('yearly') ? d.paddleDiscountId : null
+        },
         monthly: {
           amount: usd(prices.monthly),
           was: prices.monthly < anchor ? usd(anchor) : null,
@@ -602,6 +615,14 @@ faq:
           promo.hidden = true;
         }
       }
+
+      // The buy button reads these at click time. A period without one opens
+      // checkout at the price the card is showing, which is then the regular one.
+      ['monthly', 'yearly'].forEach(p => {
+        const id = model.discountIds[p];
+        if (id) plans.setAttribute('data-discount-' + p, id);
+        else plans.removeAttribute('data-discount-' + p);
+      });
     }
 
     fetch('/config/api-config-v2.json', { cache: 'no-cache' })
@@ -667,7 +688,7 @@ faq:
       var priceId = yearly ? btn.dataset.priceYearly : btn.dataset.priceMonthly;
       if (!priceId) return;
       if (note) note.hidden = true;
-      Paddle.Checkout.open({
+      var options = {
         items: [{ priceId: priceId, quantity: 1 }],
         settings: {
           displayMode: 'overlay',
@@ -675,7 +696,12 @@ faq:
           // No successUrl: its redirect arrives without the transaction id and
           // could beat the checkout.completed redirect above.
         }
-      });
+      };
+      // Set by the pricing resolver only while the card shows a discount for
+      // this period, so the checkout charges what the card says.
+      var discountId = plans.getAttribute(yearly ? 'data-discount-yearly' : 'data-discount-monthly');
+      if (discountId) options.discountId = discountId;
+      Paddle.Checkout.open(options);
     });
   })();
 </script>
