@@ -17,6 +17,19 @@
       "expires_at": "2026-12-14"
     },
     {
+      "id": "2026-09-14-founding-offer",
+      "title": "Founding offer: TidyWL Pro for $32 your first year",
+      "bullets": [
+        "The first 50 people to subscribe yearly pay $32 for their first year instead of $47.88, then $47.88/year after that",
+        "Pro adds clean-up rules, Pin, undo for deletions, saved views and the Lineup. Everything free stays free",
+        "Monthly stays $4.99. Every charge can be refunded in full within 14 days",
+        "See the plans: https://tidywl.com/pricing/"
+      ],
+      "type": "info",
+      "created_at": "2026-09-14",
+      "expires_at": "2026-12-14"
+    },
+    {
       "id": "2026-09-14-v2.0.0-update-pro-founding",
       "title": "Watch Later Tidy v2.0.0 is out, with Pro. Force-update if you don't have it yet",
       "bullets": [
