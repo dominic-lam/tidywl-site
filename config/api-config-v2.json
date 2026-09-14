@@ -196,14 +196,14 @@
       "discount": {
         "enabled": true,
         "paddleDiscountId": "dsc_01m2gq2r6yxzwn7j0g7sbe6qz2",
-        "label": "Founding member · $32 for the first year",
-        "note": "First 50 subscribers.",
+        "label": "Yearly founding offer · $32 first year",
+        "note": "First 50 yearly subscribers.",
         "periods": [
           "yearly"
         ],
         "yearly": 32,
         "firstPeriodOnly": true,
-        "badge": "Founding · Save 46%",
+        "badge": null,
         "checkout": {
           "yearly": "https://tidywl.com/pricing/?plan=yearly&offer=founding"
         }
