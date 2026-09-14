@@ -17,7 +17,7 @@ Two features go beyond playlist management. **Bulk transcript download** gives y
 
 ## TidyWL Pro
 
-Everything described above is free. **TidyWL Pro** is a paid subscription that ships with **version 2.0**. It is **on sale now** from the pricing page. Full detail at https://tidywl.com/pricing/.
+Everything described above is free. **TidyWL Pro** is a paid subscription that ships with **version 2.0**. It is **not on sale yet** — the pricing page is published, but nothing can be charged until 2.0 is released. Full detail at https://tidywl.com/pricing/.
 
 Price: **$4.99 USD per month**, or **$47.88 billed annually**, which is $3.99 a month and a 20% saving. Prices are before tax; checkout is handled by Paddle, which shows each visitor's own currency and the tax for their country. Every charge carries a **14-day full refund, no questions and no conditions**, and the subscription can be cancelled at any time.
 
