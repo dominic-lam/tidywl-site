@@ -25,10 +25,9 @@ prices:
 #           is not loaded at all, so the page ships no third-party script.
 # true   -> the button opens a real Paddle checkout and takes real money.
 #
-# Keep this false until v2.0.0 is live on the Chrome Web Store. The page and
-# llms.txt both still say "Not on sale yet", and /pricing/ promises "Nothing is
-# charged until version 2.0 ships" — flipping this without flipping those makes
-# the site contradict itself and sells a product nobody can install yet.
-# When it flips, so do: pricing/index.html's .pro-status line, the .plans-foot
-# sentence, and llms.txt. See OPEN-ITEMS B3.
+# On since 2026-09-14, the day v2.0.0 went live on the Chrome Web Store
+# (`1f6a3af`). The page and llms.txt say Pro is on sale. If this is ever switched
+# off again, flip these back in the same commit or the site contradicts itself:
+# pricing/index.html's .pro-status line, its .plans-foot sentence ("Nothing is
+# charged until…"), and llms.txt. `4ee2bcd` / `e684f5b` are a worked pair.
 onSale: true
