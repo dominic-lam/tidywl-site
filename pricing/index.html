@@ -578,7 +578,7 @@ faq:
 
       return {
         discount: whole,
-        promo: whole ? { label: label, note: cleanString(d.note) } : null,
+        promo: whole ? { label: label, note: cleanString(d.note), periods: periods } : null,
         // Read by the buy button at click time: a period it covers opens
         // Paddle's checkout with this discount applied.
         discountIds: {
@@ -624,6 +624,11 @@ faq:
         if (model.promo) {
           promo.querySelector('.plan-promo-label').textContent = model.promo.label;
           promo.querySelector('.plan-promo-note').textContent = model.promo.note || '';
+          // A one-period offer shows only on its own tab: the .is-monthly /
+          // .is-yearly rule that swaps the prices hides it on the other.
+          const only = model.promo.periods.length === 1 ? model.promo.periods[0] : null;
+          promo.classList.toggle('is-monthly', only === 'monthly');
+          promo.classList.toggle('is-yearly', only === 'yearly');
           promo.hidden = false;
         } else {
           promo.hidden = true;
