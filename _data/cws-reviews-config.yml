@@ -1,0 +1,56 @@
+# Settings for the "More from the community" marquee on the landing page.
+#
+# The marquee shows every written Chrome Web Store review in _data/cws-reviews.json, which
+# .github/workflows/update-cws-rating.yml refreshes every Sunday (scripts/fetch-cws-reviews.mjs). Never hand-edit
+# that file: the next run overwrites it. Adjust what it shows here instead.
+#
+# These settings are applied when the page is BUILT, so an edit here takes effect on the next push — you do not have
+# to wait for Sunday. That matters for `hide`.
+#
+# The featured carousel above the marquee still comes from _data/reviews.yml, hand-picked. A review featured there is
+# left out of the marquee automatically, so nothing appears twice.
+
+# Reviews with fewer stars than this are left out.
+min_stars: 4
+
+# At most this many store reviews, newest first. Once the marquee runs, every card is on the page twice (the loop
+# needs a second copy), so this keeps the page light as reviews pile up.
+max_shown: 60
+
+# Reviews never to show. Use it for anything offensive, spam, or a review that names a private person.
+# The id is the "id" field in cws-reviews.json — also the UUID at the end of the review's store link.
+hide: []
+#  - 00000000-0000-0000-0000-000000000000   # why
+
+# Where Google guessed a review's language wrong. Sets the card's lang attribute (screen-reader voice, fonts) and label.
+lang:
+  ccf462ee-f776-411e-aed9-7abcfc87c933: ru   # Nikita Yasnov, 2026-07-31: Russian slang, tagged Bulgarian
+
+# The label on a card written in another language. A code missing here shows as the code itself, upper-cased.
+labels:
+  ar: العربية
+  bg: Български
+  cs: Čeština
+  de: Deutsch
+  el: Ελληνικά
+  es: Español
+  fa: فارسی
+  fr: Français
+  he: עברית
+  hi: हिन्दी
+  hu: Magyar
+  id: Bahasa Indonesia
+  it: Italiano
+  ja: 日本語
+  ko: 한국어
+  nl: Nederlands
+  pl: Polski
+  pt: Português
+  ro: Română
+  ru: Русский
+  sv: Svenska
+  th: ไทย
+  tr: Türkçe
+  uk: Українська
+  vi: Tiếng Việt
+  zh: 中文

@@ -1,6 +1,14 @@
-# Reviews — single source of truth for BOTH the visible cards in index.html and
-# the JSON-LD `review` array in its <head>. Adding a review is an entry here,
-# never HTML surgery.
+# Hand-picked reviews for the landing page (index.html).
+#
+#   featured: true   → the "What users are saying" carousel. Only this file decides it.
+#   not featured     → a YouTube comment (or any non-store source) shown in the
+#                      "More from the community" marquee. Non-featured STORE reviews
+#                      here are no longer shown from this file: the marquee takes every
+#                      store review from _data/cws-reviews.json, fetched weekly.
+#
+# Since 2026-09-16 this file does NOT feed the JSON-LD `review` array or llms.txt;
+# both come from _data/cws-reviews.json, in full text. A featured review is left
+# out of the marquee automatically, so featuring one never shows it twice.
 #
 # THIS FILE MUST BE A BARE TOP-LEVEL SEQUENCE. Nest it under a `reviews:` key
 # and `site.data.reviews` becomes a Hash: every loop silently renders zero
@@ -135,7 +143,7 @@
   date: "2026-04-09"
 
 - quote: "We were all waiting for an extension like this. Keep up, great job!"
-  author: "Donato C."
+  author: "Donato Colasuonno"
   rating: 5
   source: "Chrome Web Store"
   url: "https://chromewebstore.google.com/reviews/b111feb6-b00d-40de-8739-72bc8eb968a3"

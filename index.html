@@ -86,35 +86,57 @@
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "{{ site.data.cws-rating.ratingValue }}",
-      "reviewCount": "{{ site.data.cws-rating.reviewCount }}",
+      {%- comment -%}
+        cws-rating.yml's key is named reviewCount but holds the store's RATING count ("67 ratings"). schema.org keeps
+        the two apart: ratingCount is every star rating, reviewCount only the ones with text, which is the size of
+        cws-reviews.json. "67 reviews" is exactly the kind of claim an AI assistant repeats as fact.
+      {%- endcomment %}
+      "ratingCount": "{{ site.data.cws-rating.reviewCount }}",
+      "reviewCount": "{{ site.data.cws-reviews | size }}",
       "bestRating": "5"
     },
     "publisher": { "@id": "https://tidywl.com/#organization" },
     "award": "Featured by Google on the Chrome Web Store",
     {%- comment -%}
-      Driven by _data/reviews.yml, same file as the visible cards below.
-      Filter BEFORE the loop so forloop.last lands on the real last element —
-      an "if" tag inside the loop emits a trailing comma and invalid JSON.
-      Use "r.rating" (Liquid truthiness), never "r.rating > 0": comparing
-      nil > 0 raises Liquid::ArgumentError and takes the whole page down.
-      Entries without a rating (YouTube comments) are excluded on purpose —
-      schema.org Review requires reviewRating.
+      Every written store review the page shows, from _data/cws-reviews.json, filtered by the same
+      _data/cws-reviews-config.yml as the marquee (star floor, hide list, cap), so nothing is marked up that a visitor
+      cannot see: each one is either featured in the carousel or among the marquee's newest. Full text, not the
+      elided quotes of reviews.yml, which now only drives the visible carousel and the YouTube cards.
+
+      THE JSON IS HTML-SAFE ON PURPOSE. jsonify escapes quotes and backslashes but not "<", so a review containing
+      "</script>" would close this block and run whatever followed it on tidywl.com. Every string from the file has
+      < > & rewritten as their \u escapes, which any JSON parser reads back as the same characters.
+
+      Commas lead rather than trail, gated on `first`: the loop filters inside itself, so forloop.last is not the last
+      review emitted, and a trailing comma would make the whole block invalid JSON.
     {%- endcomment -%}
-    {%- assign rated_reviews = site.data.reviews | where_exp: "r", "r.rating" -%}
+    {%- assign cfg = site.data.cws-reviews-config -%}
+    {%- assign hidden_ids = cfg.hide | join: " " -%}
+    {%- assign first = true -%}
+    {%- assign emitted = 0 %}
     "review": [
-    {%- for r in rated_reviews %}
+    {%- for r in site.data.cws-reviews -%}
+      {%- if emitted >= cfg.max_shown %}{% break %}{% endif -%}
+      {%- if r.stars < cfg.min_stars %}{% continue %}{% endif -%}
+      {%- if hidden_ids contains r.id %}{% continue %}{% endif -%}
+      {%- unless first %},{% endunless -%}
+      {%- assign first = false -%}
+      {%- assign emitted = emitted | plus: 1 -%}
+      {%- assign lang = cfg.lang[r.id] | default: r.lang -%}
+      {%- assign review_url = "https://chromewebstore.google.com/reviews/" | append: r.id %}
       {
         "@type": "Review",
-        "author": { "@type": "Person", "name": {{ r.author | jsonify }} },
-        "reviewRating": { "@type": "Rating", "ratingValue": "{{ r.rating }}", "bestRating": "5" },
-        "reviewBody": {{ r.quote | jsonify }}
-        {%- if r.url %},
-        "url": {{ r.url | jsonify }}
-        {%- endif -%}
+        "author": { "@type": "Person", "name": {{ r.author | jsonify | replace: "<", "\u003c" | replace: ">", "\u003e" | replace: "&", "\u0026" }} },
+        "reviewRating": { "@type": "Rating", "ratingValue": "{{ r.stars | plus: 0 }}", "bestRating": "5" },
+        "reviewBody": {{ r.text | jsonify | replace: "<", "\u003c" | replace: ">", "\u003e" | replace: "&", "\u0026" }},
+        "url": {{ review_url | jsonify | replace: "<", "\u003c" | replace: ">", "\u003e" | replace: "&", "\u0026" }}
         {%- if r.date %},
-        "datePublished": {{ r.date | jsonify }}
+        "datePublished": {{ r.date | jsonify | replace: "<", "\u003c" | replace: ">", "\u003e" | replace: "&", "\u0026" }}
+        {%- endif -%}
+        {%- if lang %},
+        "inLanguage": {{ lang | jsonify | replace: "<", "\u003c" | replace: ">", "\u003e" | replace: "&", "\u0026" }}
         {%- endif %}
-      }{% unless forloop.last %},{% endunless %}
+      }
     {%- endfor %}
     ]
   }
@@ -746,13 +768,13 @@
               <span aria-label="{{ r.rating }} out of 5 stars">{% for i in (1..r.rating) %}★{% endfor %}</span>
             </div>
             {%- endif %}
-            <blockquote>"{{ r.quote }}"</blockquote>
+            <blockquote>"{{ r.quote | escape }}"</blockquote>
             <div class="author">
-              <span><span class="name">— {{ r.author }}</span></span>
+              <span><span class="name">— {{ r.author | escape }}</span></span>
               {%- if r.url %}
-              <span class="source"><a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.source_long | default: r.source }}</a></span>
+              <span class="source"><a href="{{ r.url | escape }}" target="_blank" rel="noopener">{{ r.source_long | default: r.source | escape }}</a></span>
               {%- else %}
-              <span class="source">{{ r.source_long | default: r.source }}</span>
+              <span class="source">{{ r.source_long | default: r.source | escape }}</span>
               {%- endif %}
             </div>
           </article>
@@ -760,26 +782,79 @@
         </div>
       </div>
 
-      <!-- Tier 2: Wall of love -->
-      <p class="wall-of-love-label">More from the community</p>
-      <div class="wall-of-love-grid">
-        {%- for r in more_reviews %}
-        <article class="wall-blurb">
-          <blockquote>"{{ r.quote }}"</blockquote>
-          <div class="meta">
-            {%- if r.rating %}
-            <span class="stars" aria-label="{{ r.rating }} out of 5 stars">{% for i in (1..r.rating) %}★{% endfor %}</span>
-            {%- endif %}
-            <span><span class="author-name">{{ r.author }}</span></span>
-            <span aria-hidden="true">·</span>
-            {%- if r.url %}
-            <a href="{{ r.url }}" target="_blank" rel="noopener">{{ r.source }}</a>
-            {%- else %}
-            <span>{{ r.source }}</span>
-            {%- endif %}
+      <!-- Tier 2: every other written review, as a slow marquee -->
+      {%- comment -%}
+        The store reviews come from _data/cws-reviews.json, which the weekly workflow rewrites from the store itself
+        (scripts/fetch-cws-reviews.mjs). What it shows is tuned in _data/cws-reviews-config.yml, applied here at build
+        time: a star floor, a cap, a hide list and language fixes. Non-store entries in reviews.yml (YouTube comments)
+        still come from there. A review featured above is skipped here, so nothing shows twice.
+
+        EVERY FIELD FROM cws-reviews.json GOES THROUGH | escape. Those are strangers' words, published without anyone
+        reading them first; printed raw, a review containing markup becomes script on tidywl.com. The hand-typed
+        entries are escaped too, for the same reason and because none of them carries markup on purpose.
+
+        No microdata, as above (CLAUDE.md), and none of these reviews enter the JSON-LD.
+
+        Ships as a plain horizontal scroller that a keyboard can scroll. scripts-reviews.html starts the motion, adds
+        the copy the loop needs and a pause button, and only when motion is allowed.
+      {%- endcomment -%}
+      {%- assign cfg = site.data.cws-reviews-config -%}
+      {%- assign featured_links = featured_reviews | map: "url" | join: " " -%}
+      {%- assign hidden_ids = cfg.hide | join: " " -%}
+      {%- assign other_sources = more_reviews | where_exp: "r", "r.source != 'Chrome Web Store'" -%}
+      <p class="wall-of-love-label" id="community-reviews-label">More from the community</p>
+      <div class="marquee-wrap" data-reviews-marquee>
+        <div class="marquee" id="community-reviews" role="region" aria-labelledby="community-reviews-label" tabindex="0">
+          <div class="marquee-track">
+            {%- assign shown = 0 -%}
+            {%- for r in site.data.cws-reviews -%}
+              {%- if shown >= cfg.max_shown %}{% break %}{% endif -%}
+              {%- if r.stars < cfg.min_stars %}{% continue %}{% endif -%}
+              {%- if featured_links contains r.id %}{% continue %}{% endif -%}
+              {%- if hidden_ids contains r.id %}{% continue %}{% endif -%}
+              {%- assign shown = shown | plus: 1 -%}
+              {%- assign lang = cfg.lang[r.id] | default: r.lang %}
+            <article class="wall-blurb">
+              <blockquote cite="https://chromewebstore.google.com/reviews/{{ r.id | uri_escape }}"{% if lang and lang != "en" %} lang="{{ lang | escape }}"{% endif %}>"{{ r.text | escape }}"</blockquote>
+              <div class="meta">
+                <div class="meta-row">
+                  <span class="stars" role="img" aria-label="{{ r.stars }} out of 5 stars">{% for i in (1..r.stars) %}★{% endfor %}</span>
+                  <span class="author-name">{{ r.author | escape }}</span>
+                </div>
+                <div class="meta-row">
+                  <a href="https://chromewebstore.google.com/reviews/{{ r.id | uri_escape }}" target="_blank" rel="noopener">Chrome Web Store</a>
+                  {%- if lang and lang != "en" %}
+                  {%- assign code = lang | split: "-" | first -%}
+                  {%- assign label = cfg.labels[code] -%}
+                  {%- unless label %}{% assign label = code | upcase %}{% endunless %}
+                  <span class="lang-tag">{{ label | escape }}</span>
+                  {%- endif %}
+                </div>
+              </div>
+            </article>
+            {%- endfor %}
+            {%- for r in other_sources %}
+            <article class="wall-blurb">
+              <blockquote>"{{ r.quote | escape }}"</blockquote>
+              <div class="meta">
+                <div class="meta-row">
+                  {%- if r.rating %}
+                  <span class="stars" role="img" aria-label="{{ r.rating }} out of 5 stars">{% for i in (1..r.rating) %}★{% endfor %}</span>
+                  {%- endif %}
+                  <span class="author-name">{{ r.author | escape }}</span>
+                </div>
+                <div class="meta-row">
+                  {%- if r.url %}
+                  <a href="{{ r.url | escape }}" target="_blank" rel="noopener">{{ r.source | escape }}</a>
+                  {%- else %}
+                  <span>{{ r.source | escape }}</span>
+                  {%- endif %}
+                </div>
+              </div>
+            </article>
+            {%- endfor %}
           </div>
-        </article>
-        {%- endfor %}
+        </div>
       </div>
     </div>
   </section>

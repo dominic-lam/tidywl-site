@@ -214,3 +214,137 @@
   else if (mq.addListener) { mq.addListener(onMQ); }
 })();
 </script>
+
+<!-- Community marquee — index.html only. Its own <script> for the same reason
+     as the carousel above: a throw in here stops nothing else.
+     It only ever ADDS motion. Without it, the row is a plain sideways scroller,
+     which is what reduced-motion visitors and anything without JS get. -->
+<script>
+(function () {
+  var wrap = document.querySelector('[data-reviews-marquee]');
+  if (!wrap) return;                       // every page that isn't the landing page
+  var viewport = wrap.querySelector('.marquee');
+  var track = wrap.querySelector('.marquee-track');
+  if (!viewport || !track) return;
+  var originals = Array.prototype.slice.call(track.children);
+  if (originals.length < 2) return;
+
+  var SPEED = 30;   // px per second: slow enough to read a card as it passes
+  var ICON = {
+    play:  '<polygon points="6 3 20 12 6 21 6 3"/>',
+    pause: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>'
+  };
+  function svg(d) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ' +
+           'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
+  }
+
+  var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var clones = [], controls = null, button = null, ro = null;
+
+  // One lap is the distance from the first card to its copy: every card and
+  // every margin, measured rather than assumed, so the seam never jumps.
+  function lap() { return clones.length ? clones[0].offsetLeft - originals[0].offsetLeft : 0; }
+
+  function measure() {
+    var shift = lap();
+    if (shift <= 0) return;
+    track.style.setProperty('--marquee-shift', shift + 'px');
+    track.style.setProperty('--marquee-duration', (shift / SPEED).toFixed(1) + 's');
+  }
+
+  function drift() {
+    if (!track.getAnimations) return null;
+    return track.getAnimations().filter(function (a) { return a.animationName === 'marquee-drift'; })[0] || null;
+  }
+
+  // A keyboard user tabbing onto a card that has drifted out of view: the row
+  // is overflow:hidden while it moves, so bring the card back by moving the
+  // animation, not by scrolling. :focus-within then holds it still.
+  function reveal(card) {
+    var anim = drift(), shift = lap();
+    if (!anim || !shift) return;
+    var duration = Number(anim.effect.getTiming().duration);
+    if (!(duration > 0)) return;
+    var offset = Math.max(0, card.offsetLeft - originals[0].offsetLeft - 24);
+    anim.currentTime = (offset / shift) * duration;
+  }
+
+  function sync() {
+    var paused = wrap.classList.contains('is-paused');
+    button.setAttribute('aria-label', paused ? 'Start moving the reviews' : 'Stop moving the reviews');
+    button.innerHTML = svg(paused ? ICON.play : ICON.pause);
+  }
+
+  function start() {
+    if (controls) return;
+    originals.forEach(function (card) {
+      var copy = card.cloneNode(true);
+      copy.setAttribute('aria-hidden', 'true');
+      copy.setAttribute('inert', '');
+      Array.prototype.forEach.call(copy.querySelectorAll('a, button, [tabindex]'), function (el) {
+        el.setAttribute('tabindex', '-1');   // inert already does this; older browsers ignore inert
+      });
+      track.appendChild(copy);
+      clones.push(copy);
+    });
+
+    // Everything already fits on screen: drifting would only show each card twice.
+    if (lap() <= viewport.clientWidth) { stop(); return; }
+
+    controls = document.createElement('div');
+    controls.className = 'marquee-controls';
+    // Outside the moving row on purpose: inside it, focusing the button would
+    // pause the row through :focus-within, and pressing Start would seem to do nothing.
+    controls.innerHTML = '<button type="button" class="reviews-btn" aria-controls="' + viewport.id + '"></button>';
+    button = controls.firstChild;
+    button.addEventListener('click', function () {
+      wrap.classList.toggle('is-paused');
+      sync();
+    });
+    wrap.appendChild(controls);
+
+    viewport.scrollLeft = 0;
+    wrap.classList.add('is-moving');
+    measure();
+    sync();
+
+    // The card width changes at the phone breakpoint, and with it the lap.
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(measure);
+      ro.observe(originals[0]);
+    }
+  }
+
+  function stop() {
+    if (ro) { ro.disconnect(); ro = null; }
+    clones.forEach(function (c) { c.remove(); });
+    clones = [];
+    if (controls) { controls.remove(); controls = null; button = null; }
+    wrap.classList.remove('is-moving', 'is-paused');
+    track.style.removeProperty('--marquee-shift');
+    track.style.removeProperty('--marquee-duration');
+  }
+
+  // While the row moves, the animation is the only thing that positions it.
+  // Focusing a link still scrolls an overflow:hidden box — measured at 5,796px
+  // for the 21st card — and that scroll plus reveal() moved the card twice as
+  // far, out of view the other way. So the scroll is held at zero.
+  function pin() { if (controls && viewport.scrollLeft !== 0) viewport.scrollLeft = 0; }
+  viewport.addEventListener('scroll', pin, { passive: true });
+
+  viewport.addEventListener('focusin', function (e) {
+    if (!controls) return;
+    pin();
+    var card = e.target.closest && e.target.closest('.wall-blurb');
+    if (card && originals.indexOf(card) !== -1) reveal(card);
+  });
+
+  if (!mq.matches) start();
+
+  // Honour a live OS-level preference change, both directions.
+  var onMQ = function () { if (mq.matches) { stop(); } else { start(); } };
+  if (mq.addEventListener) { mq.addEventListener('change', onMQ); }
+  else if (mq.addListener) { mq.addListener(onMQ); }
+})();
+</script>

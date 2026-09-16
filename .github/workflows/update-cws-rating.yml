@@ -1,4 +1,4 @@
-name: Update CWS rating and user count
+name: Update CWS rating, user count and reviews
 
 on:
   schedule:
@@ -176,5 +176,67 @@ jobs:
         with:
           name: cws-scrape-${{ github.run_id }}
           path: .cws-scrape/
+          retention-days: 30
+          if-no-files-found: warn
+
+  # Every written review, for the landing page's marquee. Its own job so a broken review fetch shows as a red job
+  # without stopping the rating update above, and a broken rating update does not stop this one.
+  reviews:
+    needs: update
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    env:
+      DATA_FILE: _data/cws-reviews.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main   # the latest main, so the rating commit above is already in it
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # The fetcher's rules, and the templates' escaping of what it fetches. A red run here means a review could reach
+      # the page unescaped, so it stops before anything new is written.
+      - name: Test the fetcher and the templates
+        run: node --test scripts/fetch-cws-reviews.test.mjs scripts/templates.test.mjs
+
+      # The script sweeps every store language — the store filters reviews by language — and refuses to write a
+      # file it cannot vouch for: an empty list, or fewer than half the committed reviews. On refusal it exits
+      # non-zero and the committed file stays as it was.
+      # pipefail matters: without it this step reports tee's success, so a refused write would pass as
+      # "no new reviews" and the failure would never show. The default run shell does not set it.
+      - name: Fetch every written review
+        run: |
+          set -euo pipefail
+          node scripts/fetch-cws-reviews.mjs "$DATA_FILE" 2>&1 | tee fetch.log
+
+      - name: Commit and push
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- "$DATA_FILE"; then
+            echo "No new or changed reviews. Skipping commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$DATA_FILE"
+          git commit -m "chore: update CWS reviews (auto)"
+          # The rating job may have pushed while this one ran; replay on top rather than fail.
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push && exit 0
+            sleep 5
+          done
+          echo "::error::Could not push the review update after three attempts."
+          exit 1
+
+      - name: Upload the fetch log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cws-reviews-${{ github.run_id }}
+          path: fetch.log
           retention-days: 30
           if-no-files-found: warn

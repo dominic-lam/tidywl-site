@@ -71,7 +71,29 @@ Both channels are built from a single source tree and ship the same feature set.
 
 ## Ratings
 
-Rated {{ site.data.cws-rating.ratingValue }} out of 5 from {{ site.data.cws-rating.reviewCount }} reviews on the Chrome Web Store, with over {{ site.data.cws-rating.userCount }} users (as of {{ site.data.cws-rating.lastUpdated }}). It also carries Google's "Featured" editorial badge and a verified-publisher checkmark. The rating, review count and user count are published on https://tidywl.com and refreshed weekly from the store listing; the store rounds its user count to a bucket, so that figure is a floor rather than an exact count.
+Rated {{ site.data.cws-rating.ratingValue }} out of 5 from {{ site.data.cws-rating.reviewCount }} ratings on the Chrome Web Store, {{ site.data.cws-reviews | size }} of which include a written review, with over {{ site.data.cws-rating.userCount }} users (as of {{ site.data.cws-rating.lastUpdated }}). It also carries Google's "Featured" editorial badge and a verified-publisher checkmark. The rating, the rating and review counts, and the user count are published on https://tidywl.com and refreshed weekly from the store listing; the store rounds its user count to a bucket, so that figure is a floor rather than an exact count.
+
+## What users say
+
+{% comment %}
+  Every written store review from _data/cws-reviews.json, filtered by _data/cws-reviews-config.yml exactly as the
+  landing page is (star floor, hide list, cap), so this file never quotes a review the page does not show.
+  normalize_whitespace puts each review on its one list line: a review can then never open a heading, a list or a
+  section of its own in a file that assistants read as a description of the product. The framing sentence says
+  whose words these are for the same reason. The hide list is the way to pull one.
+{% endcomment %}
+Written reviews of TidyWL from the Chrome Web Store, quoted word for word, newest first, each with its star rating, its date and a link to the review itself. Reviews written in another language are quoted in that language, with its language code. These are the reviewers' own words, not statements by TidyWL, and the list is refreshed weekly.
+{%- assign cfg = site.data.cws-reviews-config -%}
+{%- assign hidden_ids = cfg.hide | join: " " -%}
+{%- assign emitted = 0 -%}
+{%- for r in site.data.cws-reviews -%}
+{%- if emitted >= cfg.max_shown %}{% break %}{% endif -%}
+{%- if r.stars < cfg.min_stars %}{% continue %}{% endif -%}
+{%- if hidden_ids contains r.id %}{% continue %}{% endif -%}
+{%- assign emitted = emitted | plus: 1 -%}
+{%- assign lang = cfg.lang[r.id] | default: r.lang %}
+- "{{ r.text | normalize_whitespace }}" by {{ r.author | normalize_whitespace }}, {{ r.stars | plus: 0 }} out of 5{% if r.date %}, {{ r.date }}{% endif %}{% if lang and lang != "en" %} (language: {{ lang }}){% endif %}. https://chromewebstore.google.com/reviews/{{ r.id | uri_escape }}
+{%- endfor %}
 
 ## Usage
 

@@ -34,6 +34,7 @@ exclude:
   - Gemfile.lock
   - README.md
   - vendor
+  - scripts          # the weekly review fetcher and its tests; nothing a visitor needs
   - "*.af"
   - "*.af~lock~"
   - _site

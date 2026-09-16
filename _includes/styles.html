@@ -568,11 +568,6 @@
       text-transform: uppercase; color: var(--text-subtle);
       margin-top: 56px; margin-bottom: 16px;
     }
-    .wall-of-love-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 12px;
-    }
     .wall-blurb {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
@@ -615,6 +610,80 @@
     .wall-blurb .meta a:hover {
       color: var(--text-secondary);
       text-decoration-color: var(--ghost-hover-border);
+    }
+
+    /* ── COMMUNITY MARQUEE ──
+       Without .is-moving this is a plain row that scrolls sideways, keyboard
+       included, which is what no-JS visitors, reduced-motion visitors and
+       crawlers get. scripts-reviews.html adds .is-moving only when motion is
+       allowed: the row then drifts on its own, and a copy of every card
+       follows the originals so the loop has no seam. The copy is aria-hidden
+       and inert, so nothing is read or focused twice. */
+    .marquee {
+      overflow-x: auto;
+      overscroll-behavior-x: contain;   /* else h-overscroll fires browser Back */
+      scrollbar-width: thin;
+      padding: 2px 2px 10px;            /* room for focus rings and the scrollbar */
+      border-radius: 12px;
+    }
+    .marquee:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .marquee-track {
+      display: flex;
+      align-items: stretch;
+      width: max-content;
+    }
+    /* A margin, not flex gap: the loop shifts by exactly one set of cards, and
+       with gap the last card of a set would carry no trailing space — the
+       seam would jump by half a gap every lap. */
+    .marquee-track > .wall-blurb { flex: 0 0 300px; margin-right: 12px; }
+    .marquee-track > .wall-blurb blockquote {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 7;
+      overflow: hidden;
+    }
+    /* Two fixed lines — stars and name, then source and language — so every
+       card's byline sits the same way however long the name is. */
+    .marquee-track > .wall-blurb .meta {
+      margin-top: auto;
+      flex-direction: column; align-items: flex-start; gap: 4px;
+    }
+    /* min-height: the language pill is a touch taller than plain text, and
+       without a floor it lifts that one card's byline out of line. */
+    .marquee-track .meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; min-height: 22px; }
+    .marquee-track .author-name { overflow-wrap: anywhere; }
+    .lang-tag {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.02em;
+      padding: 1px 7px; border-radius: 999px;
+      border: 1px solid var(--border); color: var(--text-muted);
+    }
+    .marquee-wrap.is-moving .marquee {
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+              mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
+    }
+    .marquee-wrap.is-moving .marquee-track {
+      animation: marquee-drift var(--marquee-duration, 240s) linear infinite;
+      will-change: transform;
+    }
+    /* Hover and keyboard focus pause it; so does the button, and that one
+       stays paused until pressed again. */
+    .marquee-wrap.is-paused .marquee-track,
+    .marquee-wrap.is-moving .marquee:hover .marquee-track,
+    .marquee-wrap.is-moving .marquee:focus-within .marquee-track { animation-play-state: paused; }
+    @keyframes marquee-drift {
+      from { transform: translateX(0); }
+      to   { transform: translateX(calc(-1 * var(--marquee-shift, 50%))); }
+    }
+    .marquee-controls { display: flex; justify-content: center; margin-top: 14px; }
+    @media (max-width: 600px) {
+      .marquee-track > .wall-blurb { flex-basis: 260px; }
+    }
+    /* The script never starts motion under this preference, and stops it if
+       the preference is switched on; this holds even if the script is wrong. */
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-wrap.is-moving .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+      .marquee-wrap.is-moving .marquee-track { animation: none; }
     }
 
     /* ── REVIEWS CAROUSEL ──
