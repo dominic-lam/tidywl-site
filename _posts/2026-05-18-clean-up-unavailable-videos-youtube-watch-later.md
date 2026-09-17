@@ -2,6 +2,7 @@
 title: "How to Clean Up Unavailable and Deleted Videos in YouTube Watch Later"
 description: "YouTube leaves deleted, private, and region-blocked videos sitting in your Watch Later as unplayable placeholders. Here's why they're there, why YouTube won't remove them, and three ways to clear them out."
 date: 2026-05-18
+last_modified_at: 2026-09-16
 faq:
   - q: "Will YouTube ever remove deleted videos from my playlists automatically?"
     a: "YouTube has not publicly committed to automatic cleanup, and the behavior has been unchanged for years. Deleted, private, and region-locked videos stay in your playlists as placeholders until you remove them yourself."
@@ -65,7 +66,7 @@ The first is a hidden-video explainer. YouTube's own API skips some unavailable 
 
 The second is bulk removal. Once the Unavailable filter is active, Select All covers every matching video and the delete action removes them in a single pass. The same keyboard shortcuts and confirmation dialog used for regular deletes apply. A small number of entries, typically the most deeply broken placeholder rows, occasionally fail to delete on the first pass and are reported back so you can retry or skip them.
 
-The architectural tradeoff is the one I keep coming back to in these posts. TidyWL runs entirely in your browser against your existing YouTube session, with no OAuth, no server backend, and no data leaving your machine. You do not get cross-device sync in exchange. If that balance suits you, the extension is free on the [Chrome Web Store](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo).
+The architectural tradeoff is the one I keep coming back to in these posts. TidyWL runs in your browser against your existing YouTube session, with no OAuth, and it never mirrors your playlist to a server. The only things it sends its own server are anonymous usage counts and, for Pro subscribers, a licence check. You do not get cross-device sync in exchange. If that balance suits you, the extension is free on the [Chrome Web Store](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo).
 
 ## How to prevent ghost videos from piling up
 

@@ -2,7 +2,7 @@
 title: "YouTube Watch Later Is Capped at 5,000 Videos. Here's Why and What to Do."
 description: "The 5,000 video cap on YouTube Watch Later isn't a bug. It's by design. Here's what causes it, why YouTube hasn't removed it, and four ways to get your playlist under control."
 date: 2026-04-20
-last_modified_at: 2026-08-29
+last_modified_at: 2026-09-16
 faq:
   - q: "Can I increase the 5,000 video limit?"
     a: "No. The cap is server-side and applies to every YouTube account. Premium does not change it."
@@ -73,7 +73,7 @@ The tradeoff is the architecture itself. You are granting a third party OAuth ac
 
 **Option 4: A dedicated browser extension like TidyWL.**
 
-I built [TidyWL](https://tidywl.com) as a free Chrome extension that gives Watch Later a full-screen dashboard, bulk selection, filtering by channel, sorting by date or duration, and multi-account isolation. It runs entirely in your browser against your existing YouTube session, with no OAuth, no server backend, and no data leaving your machine.
+I built [TidyWL](https://tidywl.com) as a free Chrome extension that gives Watch Later a full-screen dashboard, bulk selection, filtering by channel, sorting by date or duration, and multi-account isolation. It runs in your browser against your existing YouTube session, with no OAuth, and it never mirrors your playlist to a server. The only things it sends its own server are anonymous usage counts and, for Pro subscribers, a licence check.
 
 The architectural tradeoff is the mirror image of Option 3: you get local privacy and zero account setup, but no cross-device sync. Under the hood TidyWL talks to the same internal endpoints userscripts target, with two differences: it parses the structured JSON response (more stable than the DOM selectors userscripts rely on), and it ships a remote config layer so small breakages can be patched without forcing an extension update. You can [install it from the Chrome Web Store](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo).
 

@@ -1294,6 +1294,12 @@
       white-space: nowrap; border: 0;
     }
 
+    /* ── Marker digits ──
+       The numbered pins and badges draw their digit from data-n, so it is not text: a crawler or an AI assistant
+       reading the page got "1On YouTube: Loads…" and "12345678" while the digits were in the markup (2026-09-16).
+       Every marker is display:grid with centred items, so the pseudo-element sits exactly where the text did. */
+    [data-n]::before { content: attr(data-n); }
+
     /* ── REDUCED MOTION ──
        The carousel is torn down in JS, since CSS cannot stop a setInterval.
        This covers everything else — including html{scroll-behavior:smooth}

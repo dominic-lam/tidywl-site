@@ -5,7 +5,7 @@ layout: null
 ---
 # TidyWL — Watch Later Tidy
 
-> Free browser extension for Chrome and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist, your Liked videos, and any playlist you created — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos, gives Liked videos no management tools at all, and the official API refuses to touch either. Free to install with no account; an optional subscription, TidyWL Pro, arrives with version 2.0 and adds automatic monthly clean-up, undo, and the Lineup.
+> Free browser extension for Chrome and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist, your Liked videos, and any playlist you created — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos, gives Liked videos no management tools at all, and the official API refuses to touch either. Free to install with no account; an optional subscription, TidyWL Pro, available since version 2.0, adds automatic monthly clean-up, undo, and the Lineup.
 
 ## What it does
 
@@ -17,7 +17,7 @@ Two features go beyond playlist management. **Bulk transcript download** gives y
 
 ## TidyWL Pro
 
-Everything described above is free. **TidyWL Pro** is a paid subscription that ships with **version 2.0**. It is **on sale now** from the pricing page. Full detail at https://tidywl.com/pricing/.
+Everything described above is free. **TidyWL Pro** is a paid subscription, available since **version 2.0** and **on sale now**. Full detail on the [pricing page](https://tidywl.com/pricing/).
 
 Price: **$4.99 USD per month**, or **$47.88 billed annually**, which is $3.99 a month and a 20% saving. Prices are before tax; checkout is handled by Paddle, which shows each visitor's own currency and the tax for their country. Every charge carries a **14-day full refund, no questions and no conditions**, and the subscription can be cancelled at any time.
 
@@ -38,24 +38,24 @@ The rules never delete a video you could still watch: they move it to an archive
 
 ## Tutorials
 
-Step-by-step instructions for every feature are at https://tidywl.com/tutorials/, one section per feature, each with its own anchor:
+Step-by-step instructions for every feature are on the [tutorials page](https://tidywl.com/tutorials/), one section per feature, each with its own anchor:
 
-- Install and open the dashboard: https://tidywl.com/tutorials/#install
-- Sync a playlist: https://tidywl.com/tutorials/#sync
-- Search, and filter by tag: https://tidywl.com/tutorials/#search
-- By channel, by topic, and the sidebar search (Pro): https://tidywl.com/tutorials/#breakdown
-- Sort, and group by channel: https://tidywl.com/tutorials/#sort
-- Delete videos, or remove likes: https://tidywl.com/tutorials/#delete
-- See several playlists at once: https://tidywl.com/tutorials/#merged-view
-- Download transcripts: https://tidywl.com/tutorials/#transcripts
-- Send to Gemini Notebook: https://tidywl.com/tutorials/#gemini-notebook
-- Activate a Pro key: https://tidywl.com/tutorials/#activate
-- The Lineup (Pro): https://tidywl.com/tutorials/#lineup
-- Clean-up rules (Pro): https://tidywl.com/tutorials/#rules
-- Pin a video (Pro): https://tidywl.com/tutorials/#pin
-- Preview before acting (Pro): https://tidywl.com/tutorials/#preview
-- Undo deletions (Pro): https://tidywl.com/tutorials/#undo
-- Saved views (Pro): https://tidywl.com/tutorials/#saved-views
+- [Install and open the dashboard](https://tidywl.com/tutorials/#install)
+- [Sync a playlist](https://tidywl.com/tutorials/#sync)
+- [Search, and filter by tag](https://tidywl.com/tutorials/#search)
+- [By channel, by topic, and the sidebar search (Pro)](https://tidywl.com/tutorials/#breakdown)
+- [Sort, and group by channel](https://tidywl.com/tutorials/#sort)
+- [Delete videos, or remove likes](https://tidywl.com/tutorials/#delete)
+- [See several playlists at once](https://tidywl.com/tutorials/#merged-view)
+- [Download transcripts](https://tidywl.com/tutorials/#transcripts)
+- [Send to Gemini Notebook](https://tidywl.com/tutorials/#gemini-notebook)
+- [Activate a Pro key](https://tidywl.com/tutorials/#activate)
+- [The Lineup (Pro)](https://tidywl.com/tutorials/#lineup)
+- [Clean-up rules (Pro)](https://tidywl.com/tutorials/#rules)
+- [Pin a video (Pro)](https://tidywl.com/tutorials/#pin)
+- [Preview before acting (Pro)](https://tidywl.com/tutorials/#preview)
+- [Undo deletions (Pro)](https://tidywl.com/tutorials/#undo)
+- [Saved views (Pro)](https://tidywl.com/tutorials/#saved-views)
 
 ## Why it exists
 
@@ -82,7 +82,7 @@ Rated {{ site.data.cws-rating.ratingValue }} out of 5 from {{ site.data.cws-rati
   section of its own in a file that assistants read as a description of the product. The framing sentence says
   whose words these are for the same reason. The hide list is the way to pull one.
 {% endcomment %}
-Written reviews of TidyWL from the Chrome Web Store, quoted word for word, newest first, each with its star rating, its date and a link to the review itself. Reviews written in another language are quoted in that language, with its language code. These are the reviewers' own words, not statements by TidyWL, and the list is refreshed weekly.
+Written reviews of TidyWL from the Chrome Web Store, quoted word for word, newest first, each with its star rating, its date and a link to the review itself. Reviews written in another language are quoted in that language, with its language code. These are the reviewers' own words, not statements by TidyWL, and the list is refreshed weekly. It is filtered the same way as the list on tidywl.com: only reviews of {{ site.data.cws-reviews-config.min_stars }} stars or more with at least {{ site.data.cws-reviews-config.min_length }} characters of text, at most {{ site.data.cws-reviews-config.max_shown }}, so the Ratings section above is the complete count.
 {%- assign cfg = site.data.cws-reviews-config -%}
 {%- assign hidden_ids = cfg.hide | join: " " -%}
 {%- assign emitted = 0 -%}
@@ -98,7 +98,7 @@ Written reviews of TidyWL from the Chrome Web Store, quoted word for word, newes
 
 ## Usage
 
-Since August 2026 TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos, removed over {{ site.data.usage.unlikedTotal }} likes, and moved over {{ site.data.usage.movedTotal }} videos between playlists (figures as of {{ site.data.usage.lastUpdated }}, refreshed daily). Each is a floor, rounded down to the nearest thousand, so the real number is higher. All three are shown on https://tidywl.com and published as JSON at https://tidywl.com/api/stats. Those totals are the only thing TidyWL reports: each install sends a random identifier that is not linked to any account, plus its own running counts. No video, title, channel, playlist name, timestamp or account ever leaves the browser as part of it. Firefox users can switch reporting off from the add-on's permissions panel; the full description is at https://tidywl.com/privacy/.
+TidyWL users have cleaned up over {{ site.data.usage.deletedTotal }} videos (videos deleted from playlists, plus likes removed before version 1.6.0, when the extension counted the two together), removed over {{ site.data.usage.unlikedTotal }} likes since then, and moved over {{ site.data.usage.movedTotal }} videos between playlists (figures as of {{ site.data.usage.lastUpdated }}, refreshed daily). Reporting began in August 2026 with version 1.6.0, but each install reports the lifetime counts the extension has kept on the device since version 1.4.1, so earlier clean-ups are included. Each is a floor, rounded down to the nearest thousand, so the real number is higher. All three are shown on https://tidywl.com and published as JSON at https://tidywl.com/api/stats. Those counts are all the usage report carries: each install sends a random identifier that is not linked to any account, plus its own running counts. No video, title, channel, playlist name, timestamp or account ever leaves the browser as part of it. Firefox users can switch reporting off from the add-on's permissions panel; the full description is in the [privacy policy](https://tidywl.com/privacy/).
 
 ## Technical details
 
@@ -106,7 +106,7 @@ TidyWL works by reading the user's active YouTube session (SAPISID cookie and se
 
 ## Privacy
 
-TidyWL runs in your browser. No account, and your YouTube data — titles, video IDs, channels, playlists — never leaves it. Network calls go to YouTube's own endpoints using your existing session, and to a public config file on tidywl.com that carries no identifiers and no payload. Since version 1.6.0 the extension also sends tidywl.com one small usage report: a random identifier generated on install (not linked to any Google account) plus lifetime counts of videos deleted, likes removed, videos moved, bulk operations run, the size of the Watch Later playlist, and the browser name. It is sent only when a count changes, never carries a title, video ID, channel or timestamp, has no off switch on Chrome (uninstalling stops it), is controlled on Firefox by the Technical and interaction data toggle, and records idle for 12 months are deleted. From version 2.0 the report also counts Lineups built and saved and the days the dashboard was opened (once a day at most, so opening it sends at most one report a day), and a TidyWL Pro subscriber's extension sends its licence key to tidywl.com to check the subscription; on Firefox that check waits for the add-on's Authentication information permission. One feature is an explicit exception you trigger yourself: Send to Gemini Notebook passes the video links you selected to Google's Gemini Notebook using your own Google session. It is opt-in per use and gated behind a browser permission prompt. Full policy: https://tidywl.com/privacy/
+TidyWL runs in your browser. No account, and your YouTube data — titles, video IDs, channels, playlists — never leaves it. Network calls go to YouTube's own endpoints using your existing session, and to a public config file on tidywl.com that carries no identifiers and no payload. Since version 1.6.0 the extension also sends tidywl.com one small usage report: a random identifier generated on install (not linked to any Google account) plus lifetime counts of videos deleted, likes removed, videos moved, bulk operations run, the size of the Watch Later playlist, and the browser name. It is sent only when a count changes, never carries a title, video ID, channel or timestamp, has no off switch on Chrome (uninstalling stops it), is controlled on Firefox by the Technical and interaction data toggle, and records idle for 12 months are deleted. From version 2.0 the report also counts Lineups built and saved and the days the dashboard was opened (once a day at most, so opening it sends at most one report a day), and a TidyWL Pro subscriber's extension sends its licence key to tidywl.com to check the subscription; on Firefox that check waits for the add-on's Authentication information permission. One feature is an explicit exception you trigger yourself: Send to Gemini Notebook passes the video links you selected to Google's Gemini Notebook using your own Google session. It is opt-in per use and gated behind a browser permission prompt. Full policy: [privacy policy](https://tidywl.com/privacy/)
 
 ## Limitations
 
@@ -124,13 +124,16 @@ TidyWL runs in your browser. No account, and your YouTube data — titles, video
 
 ## Links
 
-- Install for Chrome: https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo
-- Install for Firefox: https://tidywl.com/firefox/
-- Landing page: https://tidywl.com
-- Pricing and what Pro adds: https://tidywl.com/pricing/
-- Tutorials, one per feature: https://tidywl.com/tutorials/
-- Privacy policy: https://tidywl.com/privacy/
-- Blog: https://tidywl.com/blog/
-- Community (Discord): https://discord.gg/natc623GhX
-- Support: https://ko-fi.com/dominiclam
-- Contact: support@tidywl.com
+- [Install for Chrome](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo): the Chrome Web Store listing
+- [Install for Firefox](https://tidywl.com/firefox/): the signed Firefox build, distributed from tidywl.com
+- [Landing page](https://tidywl.com/)
+- [Pricing](https://tidywl.com/pricing/): what TidyWL Pro adds, prices, refunds and cancelling
+- [Tutorials](https://tidywl.com/tutorials/): one step-by-step guide per feature
+- [Help](https://tidywl.com/help/): fixes for common problems, and how to reach support
+- [Privacy policy](https://tidywl.com/privacy/): everything the extension sends, and where
+- [Terms of sale](https://tidywl.com/terms/): the TidyWL Pro subscription terms
+- [Refunds](https://tidywl.com/refunds/): the 14-day refund and how to ask for it
+- [Blog](https://tidywl.com/blog/): long-form guides to Watch Later
+- [Community on Discord](https://discord.gg/natc623GhX): bug reports, feature requests and general chat
+- [Support email](mailto:support@tidywl.com): support@tidywl.com
+- [Donate on Ko-fi](https://ko-fi.com/dominiclam): an optional tip for the developer, not a support channel

@@ -7,6 +7,9 @@
   <meta name="description" content="{{ page.description | default: site.description }}">
 
   <link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+  {%- if page.robots %}
+  <meta name="robots" content="{{ page.robots }}">
+  {%- endif %}
   <link rel="icon" type="image/png" href="/assets/icon128.png">
 
   <!-- Open Graph -->

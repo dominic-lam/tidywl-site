@@ -1,8 +1,9 @@
 ---
 layout: default
 title: TidyWL Pro
-description: TidyWL Pro keeps your YouTube Watch Later under control automatically and makes every cleanup reversible. $4.99 a month or $47.88 a year. Ships with version 2.0.
+description: TidyWL Pro keeps your YouTube Watch Later under control automatically and makes every cleanup reversible. $4.99 a month or $47.88 a year. Available since version 2.0.
 permalink: /pricing/
+last_modified_at: 2026-09-16
 faq:
   - q: "Is the free version changing?"
     a: "No. Everything the extension does today stays in the free version: search, filters, sorting, bulk delete, reorder, move, every playlist you own, tags, transcripts, export. Pro adds to it."
@@ -29,7 +30,7 @@ faq:
     <p class="section-label">TidyWL Pro</p>
     <h1>Keep your Watch Later under control. <span class="em">Automatically.</span></h1>
     <p class="tagline">The free extension cleans a playlist up in an afternoon. Pro keeps it clean every month, and makes every cleanup reversible.</p>
-    <p class="pro-status"><span class="dot" aria-hidden="true"></span>Ships with version 2.0. On sale now.</p>
+    <p class="pro-status"><span class="dot" aria-hidden="true"></span>Available since version 2.0. On sale now.</p>
     <div class="cta-row">
       <a class="btn-ghost" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome, free</a>
       <a class="btn-ghost" href="/firefox/">Get for Firefox</a>
@@ -73,8 +74,8 @@ faq:
             </div>
           </div>
           <p class="plan-sub">Keeps it clean by itself every month, and makes every cleanup reversible.</p>
-          <p class="plan-price"><s class="price-was is-yearly"></s><s class="price-was is-monthly"></s><span class="price-amount is-yearly">$3.99</span><span class="price-amount is-monthly">$4.99</span><small>USD / month</small></p>
-          <p class="plan-billed"><span class="is-yearly">$47.88 billed annually</span><span class="is-monthly">billed monthly</span></p>
+          <p class="plan-price"><s class="price-was is-yearly"></s><s class="price-was is-monthly"></s><span class="is-yearly"><span class="sr-only">Yearly plan: </span><span class="price-amount is-yearly">$3.99</span></span><span class="is-monthly"><span class="sr-only">, monthly plan: </span><span class="price-amount is-monthly">$4.99</span></span> <small>USD / month</small></p>
+          <p class="plan-billed"><span class="is-yearly">$47.88 billed annually</span><span class="sr-only">; </span><span class="is-monthly">billed monthly</span></p>
           <p class="plan-promo" hidden><span class="plan-promo-label"></span><span class="plan-promo-note"></span></p>
           {%- if site.data.paddle.onSale and site.data.paddle.clientToken and site.data.paddle.prices.monthly and site.data.paddle.prices.yearly %}
           <button type="button" class="plan-cta plan-cta-buy" id="pro-buy"
@@ -94,6 +95,7 @@ faq:
             <li>Preview the exact list before any bulk action</li>
             <li>Undo deletions for 90 days</li>
             <li>Saved views</li>
+            <li>Sidebar search across every channel and topic</li>
             <li>Feature requests and support answered first</li>
           </ul>
         </div>
@@ -110,7 +112,7 @@ faq:
   <section class="features pro-features">
     <div class="section-inner">
       <p class="section-label">What Pro adds</p>
-      <h2 class="section-heading">Nine things Pro gives you that free does not</h2>
+      <h2 class="section-heading">Ten things Pro gives you that free does not</h2>
 
       <div class="pro-group">
         <div class="pro-group-head">
@@ -177,13 +179,18 @@ faq:
       <div class="pro-group">
         <div class="pro-group-head">
           <h3>Power</h3>
-          <p>Get back to a view in one click, and be heard first.</p>
+          <p>Get back to a view in one click, find any channel fast, and be heard first.</p>
         </div>
         <div class="features-grid">
           <div class="feature-card">
             <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
             <h3>Saved views</h3>
             <p>Name a filter combination, say unwatched, over 20 minutes, from three channels, and open it in one click.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.34-4.34"/></svg></div>
+            <h3>Sidebar search</h3>
+            <p>A search box above the By Channel and By Topic lists narrows them as you type, across every row, not only the first ten.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/></svg></div>
@@ -216,6 +223,7 @@ faq:
             <tr><td>Preview the exact list before any bulk action</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
             <tr><td>Undo deletions for 90 days</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
             <tr><td>Saved views</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
+            <tr><td>Sidebar search across every channel and topic</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
             <tr><td>Feature requests and support answered first</td><td class="no" aria-label="Not included">—</td><td class="yes"><span aria-hidden="true">✔</span><span class="sr-only">Yes</span></td></tr>
           </tbody>
         </table>

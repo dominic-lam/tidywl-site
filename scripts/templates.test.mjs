@@ -1,43 +1,48 @@
 // node --test scripts/templates.test.mjs
 // Reads the real templates. The review fields are strangers' text, published weekly without anyone reading them, so
-// every place a template prints one must escape it: | escape in HTML, and in the JSON-LD a jsonify whose < > & are
-// rewritten as their \u escapes, because jsonify alone lets "</script>" close the block.
+// every place a template prints one must escape it: | escape in HTML, normalize_whitespace in llms.txt.
 //
-// The escape check compares bytes built with String.fromCharCode(92), never a typed backslash sequence: on
-// 2026-09-16 the tool that wrote this file's neighbour turned the typed sequence into the character itself, and the
-// JSON-LD shipped a replace that replaced "<" with "<" before a byte count caught it.
+// The landing page's JSON-LD carried the store rating and every review until 2026-09-16, with its own escaping and a
+// test for it. Both came out that day: Google's review-snippet rules forbid aggregating ratings or reviews from
+// another website. The first test below keeps them out; if they ever come back, bring back the escaping and its
+// test with them (git history, 2026-09-16), because jsonify alone lets "</script>" close the block.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
 const read = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
-const B = String.fromCharCode(92);
-const SAFE_JSON = `| jsonify | replace: "<", "${B}u003c" | replace: ">", "${B}u003e" | replace: "&", "${B}u0026"`;
-const REVIEW_FIELDS = /\br\.(text|author|quote|url|source|source_long|date)\b|\breview_url\b|\blang\b/;
-
 const outputs = (src) => [...src.matchAll(/\{\{-?([\s\S]*?)-?\}\}/g)].map((m) => m[1].trim());
 
-test('the JSON-LD escapes every review field it prints', () => {
+test('the JSON-LD carries no store rating and no store reviews', () => {
   const html = read('index.html');
-  const start = html.indexOf('"review": [');
-  const end = html.indexOf('{%- endfor %}', start);
-  assert.ok(start > 0 && end > start, 'the review array is where it was');
-  const printed = outputs(html.slice(start, end)).filter((o) => REVIEW_FIELDS.test(o));
-  assert.ok(printed.length >= 5, `found ${printed.length} printed fields`);
-  for (const o of printed) {
-    // r.stars | plus: 0 is a number and cannot carry markup; everything else must take the full chain.
-    if (/^r\.stars \| plus: 0$/.test(o)) continue;
-    assert.ok(o.endsWith(SAFE_JSON), `unsafe in JSON-LD: {{ ${o} }}`);
+  const head = html.slice(0, html.indexOf('</head>'));
+  assert.ok(!head.includes('"aggregateRating"'), 'aggregateRating is back in the JSON-LD');
+  assert.ok(!head.includes('"review"'), 'a review array is back in the JSON-LD');
+  assert.ok(!head.includes('"reviewCount"') && !head.includes('"ratingCount"'));
+});
+
+test('no page claims nothing leaves the browser, or calls the cleaned-up total "deleted"', () => {
+  // The extension has sent usage counts since 1.6.0 and a Pro licence check since 2.0.0. An AI assistant repeated
+  // the old "no telemetry" line in September 2026, so these phrasings stay out of everything it reads.
+  const files = ['index.html', 'llms.txt', 'tutorials/index.html', 'pricing/index.html',
+    '_posts/2026-04-20-youtube-watch-later-5000-limit.md',
+    '_posts/2026-05-11-how-to-organize-youtube-watch-later.md',
+    '_posts/2026-05-18-clean-up-unavailable-videos-youtube-watch-later.md'];
+  const banned = [/runs locally/i, /no data leaving/i, /no server backend/i, /sends anything (off|out of)/i,
+    /two things do leave/i, /deleted over \{\{ site\.data\.usage\.deletedTotal/, /ships with version 2/i,
+    /arrives with version 2/i];
+  for (const f of files) {
+    const src = read(f);
+    for (const re of banned) assert.ok(!re.test(src), `${f} matches ${re}`);
   }
 });
 
-test('the escape sequences are real backslash sequences, not the characters they stand for', () => {
+test('marker digits are drawn from data-n, not written into the text', () => {
   const html = read('index.html');
-  assert.equal(html.split(`${B}u003c`).length - 1, 5, 'five fields carry the < rewrite');
-  assert.ok(!html.includes('replace: "<", "<"'), 'a replace of < with < is a silent no-op');
-  assert.ok(!html.includes('replace: ">", ">"'));
-  assert.ok(!html.includes('replace: "&", "&"'));
+  assert.ok(!/class="(pin[^"]*|n|num|step)"[^>]*>\d<\/span>/.test(html), 'a marker holds its digit as text');
+  assert.equal(html.split(' data-n="').length - 1, 43, '16 pins, 8 row numbers, 16 label numbers, 3 steps');
+  assert.ok(read('_includes/styles.html').includes('[data-n]::before { content: attr(data-n); }'));
 });
 
 test('every review field printed as HTML is escaped', () => {
@@ -59,7 +64,7 @@ test('llms.txt keeps each review on its own line', () => {
   for (const o of printed) assert.ok(o.endsWith('| normalize_whitespace'), `a review could open its own section: {{ ${o} }}`);
 });
 
-test('the page, the JSON-LD and llms.txt apply the same filters, so none quotes a review the others hide', () => {
+test('the page and llms.txt apply the same filters, so neither quotes a review the other hides', () => {
   const html = read('index.html');
   const txt = read('llms.txt');
   for (const [name, src] of [['index.html', html], ['llms.txt', txt]]) {
@@ -68,7 +73,7 @@ test('the page, the JSON-LD and llms.txt apply the same filters, so none quotes 
     assert.ok(src.includes('r.text.size < cfg.min_length'), `${name}: length floor`);
     assert.ok(src.includes('emitted >= cfg.max_shown') || src.includes('shown >= cfg.max_shown'), `${name}: cap`);
   }
-  // index.html applies them twice: the JSON-LD and the marquee.
-  assert.equal(html.split('hidden_ids contains r.id').length - 1, 2);
-  assert.equal(html.split('r.text.size < cfg.min_length').length - 1, 2);
+  // index.html applies them once, in the marquee.
+  assert.equal(html.split('hidden_ids contains r.id').length - 1, 1);
+  assert.equal(html.split('r.text.size < cfg.min_length').length - 1, 1);
 });

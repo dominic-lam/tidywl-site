@@ -1,20 +1,21 @@
 ---
+last_modified_at: 2026-09-16
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TidyWL — Clean Up Your YouTube Watch Later &amp; Beat the 5,000-Video Limit</title>
-  <meta name="description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts, no 5,000-video wall. Runs locally. Chrome and Firefox.">
+  <title>TidyWL — Clean Up Your YouTube Watch Later &amp; Stay Under the 5,000-Video Limit</title>
+  <meta name="description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts. Stay under the 5,000-video cap. Your playlist stays in your browser. Chrome and Firefox.">
 
   <link rel="canonical" href="https://tidywl.com/">
   <link rel="icon" type="image/png" href="assets/icon128.png">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="TidyWL — Clean Up Your YouTube Watch Later &amp; Beat the 5,000-Video Limit">
-  <meta property="og:description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts, no 5,000-video wall. Runs locally. Chrome and Firefox.">
+  <meta property="og:title" content="TidyWL — Clean Up Your YouTube Watch Later &amp; Stay Under the 5,000-Video Limit">
+  <meta property="og:description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts. Stay under the 5,000-video cap. Your playlist stays in your browser. Chrome and Firefox.">
   <meta property="og:image" content="https://tidywl.com/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -24,7 +25,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="TidyWL — Clean Up Your YouTube Watch Later">
-  <meta name="twitter:description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts, no 5,000-video wall. Runs locally. Chrome and Firefox.">
+  <meta name="twitter:description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts. Stay under the 5,000-video cap. Your playlist stays in your browser. Chrome and Firefox.">
   <meta name="twitter:image" content="https://tidywl.com/assets/og-image.png">
 
 {% include fonts.html %}
@@ -51,8 +52,21 @@
     "applicationCategory": "BrowserApplication",
     "operatingSystem": "Chrome, Firefox",
     "softwareRequirements": "Google Chrome, or Firefox 153 or newer",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "description": "Free browser extension for Chrome and Firefox that cleans up YouTube Watch Later and Liked videos. Search across thousands of saved videos, bulk-delete, remove likes in bulk, filter and sort, download transcripts in bulk, send videos to Gemini Notebook, and stay under YouTube's hidden 5,000-video cap. Runs with your existing YouTube session; no account, no API key.",
+    "softwareVersion": "{{ site.data.versions.chrome }}",
+    "offers": [
+      { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD" },
+      {
+        "@type": "Offer", "name": "TidyWL Pro, monthly", "price": "4.99", "priceCurrency": "USD",
+        "url": "https://tidywl.com/pricing/",
+        "priceSpecification": { "@type": "UnitPriceSpecification", "price": "4.99", "priceCurrency": "USD", "billingDuration": "P1M", "unitCode": "MON" }
+      },
+      {
+        "@type": "Offer", "name": "TidyWL Pro, yearly", "price": "47.88", "priceCurrency": "USD",
+        "url": "https://tidywl.com/pricing/",
+        "priceSpecification": { "@type": "UnitPriceSpecification", "price": "47.88", "priceCurrency": "USD", "billingDuration": "P1Y", "unitCode": "ANN" }
+      }
+    ],
+    "description": "Free browser extension for Chrome and Firefox that cleans up YouTube Watch Later and Liked videos. Search across thousands of saved videos, bulk-delete, remove likes in bulk, filter and sort, download transcripts in bulk, send videos to Gemini Notebook, and stay under YouTube's hidden 5,000-video cap. Runs with your existing YouTube session; no account, no API key. An optional subscription, TidyWL Pro, adds cleanup rules, 90-day undo, pinning, the Lineup and saved views.",
     "url": "https://tidywl.com",
     "downloadUrl": "https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo",
     "author": {
@@ -83,63 +97,15 @@
       "Export playlist data to JSON or CSV",
       "Works in Chrome and Firefox"
     ],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "{{ site.data.cws-rating.ratingValue }}",
-      {%- comment -%}
-        cws-rating.yml's key is named reviewCount but holds the store's RATING count ("67 ratings"). schema.org keeps
-        the two apart: ratingCount is every star rating, reviewCount only the ones with text, which is the size of
-        cws-reviews.json. "67 reviews" is exactly the kind of claim an AI assistant repeats as fact.
-      {%- endcomment %}
-      "ratingCount": "{{ site.data.cws-rating.reviewCount }}",
-      "reviewCount": "{{ site.data.cws-reviews | size }}",
-      "bestRating": "5"
-    },
     "publisher": { "@id": "https://tidywl.com/#organization" },
-    "award": "Featured by Google on the Chrome Web Store",
+    "award": "Featured by Google on the Chrome Web Store"
     {%- comment -%}
-      Every written store review the page shows, from _data/cws-reviews.json, filtered by the same
-      _data/cws-reviews-config.yml as the marquee (star floor, hide list, cap), so nothing is marked up that a visitor
-      cannot see: each one is either featured in the carousel or among the marquee's newest. Full text, not the
-      elided quotes of reviews.yml, which now only drives the visible carousel and the YouTube cards.
-
-      THE JSON IS HTML-SAFE ON PURPOSE. jsonify escapes quotes and backslashes but not "<", so a review containing
-      "</script>" would close this block and run whatever followed it on tidywl.com. Every string from the file has
-      < > & rewritten as their \u escapes, which any JSON parser reads back as the same characters.
-
-      Commas lead rather than trail, gated on `first`: the loop filters inside itself, so forloop.last is not the last
-      review emitted, and a trailing comma would make the whole block invalid JSON.
-    {%- endcomment -%}
-    {%- assign cfg = site.data.cws-reviews-config -%}
-    {%- assign hidden_ids = cfg.hide | join: " " -%}
-    {%- assign first = true -%}
-    {%- assign emitted = 0 %}
-    "review": [
-    {%- for r in site.data.cws-reviews -%}
-      {%- if emitted >= cfg.max_shown %}{% break %}{% endif -%}
-      {%- if r.stars < cfg.min_stars %}{% continue %}{% endif -%}
-      {%- if r.text.size < cfg.min_length %}{% continue %}{% endif -%}
-      {%- if hidden_ids contains r.id %}{% continue %}{% endif -%}
-      {%- unless first %},{% endunless -%}
-      {%- assign first = false -%}
-      {%- assign emitted = emitted | plus: 1 -%}
-      {%- assign lang = cfg.lang[r.id] | default: r.lang -%}
-      {%- assign review_url = "https://chromewebstore.google.com/reviews/" | append: r.id %}
-      {
-        "@type": "Review",
-        "author": { "@type": "Person", "name": {{ r.author | jsonify | replace: "<", "\u003c" | replace: ">", "\u003e" | replace: "&", "\u0026" }} },
-        "reviewRating": { "@type": "Rating", "ratingValue": "{{ r.stars | plus: 0 }}", "bestRating": "5" },
-        "reviewBody": {{ r.text | jsonify | replace: "<", "\u003c" | replace: ">", "\u003e" | replace: "&", "\u0026" }},
-        "url": {{ review_url | jsonify | replace: "<", "\u003c" | replace: ">", "\u003e" | replace: "&", "\u0026" }}
-        {%- if r.date %},
-        "datePublished": {{ r.date | jsonify | replace: "<", "\u003c" | replace: ">", "\u003e" | replace: "&", "\u0026" }}
-        {%- endif -%}
-        {%- if lang %},
-        "inLanguage": {{ lang | jsonify | replace: "<", "\u003c" | replace: ">", "\u003e" | replace: "&", "\u0026" }}
-        {%- endif %}
-      }
-    {%- endfor %}
-    ]
+      No aggregateRating and no review here, on purpose (removed 2026-09-16). Both came from the Chrome Web Store, and
+      Google's review-snippet guidelines say "Don't aggregate reviews or ratings from other websites" and "Ratings must be
+      sourced directly from users." The rating and the reviews stay on the page itself and in llms.txt,
+      which is where AI assistants read them. Without either, Google shows no software-app rich result for this page,
+      which it was not entitled to anyway.
+    {%- endcomment %}
   }
   </script>
 
@@ -212,7 +178,7 @@
         "name": "Is my data sent anywhere?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Your YouTube data — titles, video IDs, channels, your playlists, your account — never leaves your browser. What does leave: each install carries a random identifier that is not linked to you or your Google account, and after you delete, unlike or move videos, or sync, the extension sends that identifier and your lifetime counts — videos deleted, likes removed, videos moved, bulk operations run, the size of your Watch Later, and your browser — to tidywl.com. The counts also include Lineups built and saved and the days you opened the dashboard, so opening it sends at most one report a day. Never which videos, never your playlist. There is no setting in the extension to turn this off on Chrome; uninstalling stops it. On Firefox it is the Technical and interaction data toggle under Permissions and data. Records not updated for 12 months are deleted, and counts include deletions made before this version. The extension also fetches a public config file from tidywl.com with no identifiers and no payload. The one flow you trigger yourself: Send to Gemini Notebook sends the video links you selected to Google's Gemini Notebook using your own Google session, because that is the entire point of the feature. Full policy at tidywl.com/privacy/"
+          "text": "Your YouTube data — titles, video IDs, channels, your playlists, your account — never leaves your browser. What does leave: each install carries a random identifier that is not linked to you or your Google account, and after you delete, unlike or move videos, or sync, the extension sends that identifier and your lifetime counts — videos deleted, likes removed, videos moved, bulk operations run, the size of your Watch Later, and your browser — to tidywl.com. The counts also include Lineups built and saved and the days you opened the dashboard, so opening it sends at most one report a day. Never which videos, never your playlist. There is no setting in the extension to turn this off on Chrome; uninstalling stops it. On Firefox it is the Technical and interaction data toggle under Permissions and data. Records not updated for 12 months are deleted, and counts include deletions made before this version. The extension also fetches a public config file from tidywl.com with no identifiers and no payload. If you subscribe to Pro, it also sends your licence key to tidywl.com to check that the subscription is live. The one flow you trigger yourself: Send to Gemini Notebook sends the video links you selected to Google's Gemini Notebook using your own Google session, because that is the entire point of the feature. Full policy at tidywl.com/privacy/"
         }
       },
       {
@@ -225,10 +191,10 @@
       },
       {
         "@type": "Question",
-        "name": "How many videos have TidyWL users actually deleted?",
+        "name": "How many videos have TidyWL users actually cleaned up?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos, as of {{ site.data.usage.lastUpdated }}. They have also removed over {{ site.data.usage.unlikedTotal }} likes and moved over {{ site.data.usage.movedTotal }} videos between playlists. Each install reports a running count of all three, and the live totals are published as JSON at https://tidywl.com/api/stats. Every figure here is a floor, rounded down, and refreshed daily. The deletions count reaches back to August 2026 and includes deletions made before the counter shipped, because the extension has tracked them locally since v1.4.1. No video, title, channel, playlist or account is ever part of that report."
+          "text": "TidyWL users have cleaned up over {{ site.data.usage.deletedTotal }} videos, as of {{ site.data.usage.lastUpdated }}: videos deleted from their playlists, plus likes removed before version 1.6.0, when the extension counted the two together. Since then they have also removed over {{ site.data.usage.unlikedTotal }} likes, and they have moved over {{ site.data.usage.movedTotal }} videos between playlists. Each install reports a running count of all three, and the live totals are published as JSON at https://tidywl.com/api/stats. Every figure here is a floor, rounded down, and refreshed daily. Reporting began in August 2026, with version 1.6.0, but each install sends the lifetime count the extension has kept on the device since version 1.4.1, so earlier clean-ups are included. No video, title, channel, playlist or account is ever part of that report."
         }
       },
       {
@@ -244,7 +210,7 @@
         "name": "What does Send to Gemini Notebook do?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "It pushes the videos you selected into a Gemini Notebook (formerly NotebookLM) as sources, either a brand-new notebook or one you already have, without leaving the dashboard. This is the one feature that sends anything off your machine: the links you picked go to Google under your own Google login. Free Gemini Notebook accounts cap a notebook at 50 sources and batches larger than that have not been tested, so keep them under 50 for now. Videos Gemini Notebook cannot ingest, such as ones with no captions, private ones, or ones uploaded in the last few days, come back reported as skipped."
+          "text": "It pushes the videos you selected into a Gemini Notebook (formerly NotebookLM) as sources, either a brand-new notebook or one you already have, without leaving the dashboard. This is the one feature that sends any of your YouTube data off your machine: the links you picked go to Google under your own Google login. Free Gemini Notebook accounts cap a notebook at 50 sources and batches larger than that have not been tested, so keep them under 50 for now. Videos Gemini Notebook cannot ingest, such as ones with no captions, private ones, or ones uploaded in the last few days, come back reported as skipped."
         }
       },
       {
@@ -296,7 +262,7 @@
   <!-- ── HERO ── -->
   <section class="hg" aria-labelledby="hero-title">
   <div class="hg-inner">
-    <p class="stake"><span class="dot" aria-hidden="true"></span><span class="long">At 5,000 videos, YouTube quietly stops saving to Watch Later</span><span class="short">YouTube stops saving at 5,000 videos</span></p>
+    <p class="stake"><span class="dot" aria-hidden="true"></span><span class="long">At 5,000 videos, YouTube quietly stops saving to Watch Later</span><span class="sr-only">. </span><span class="short">YouTube stops saving at 5,000 videos</span></p>
     <h1 id="hero-title">Clear your <span class="em">YouTube Watch&nbsp;Later</span> in minutes</h1>
     <div class="phone-demo">
       <div class="video-wrapper">
@@ -309,28 +275,28 @@
     </div>
     <div class="vs">
       <figure class="figA"><figcaption>YouTube</figcaption>
-        <div class="shot"><img src="/assets/youtube-watch-later-remove-menu-dark.webp" alt="YouTube's own Watch Later page with 3,748 videos: a sort menu set to Date added, a search bar that searches all of YouTube, and a video's menu open on Remove from Watch later — the only way to delete, one video at a time." width="1400" height="1139" loading="lazy"><span class="pin yt" style="left:37.0%;top:87.5%" aria-hidden="true">1</span><span class="pin yt" style="left:53.8%;top:11.2%" aria-hidden="true">2</span><span class="pin yt" style="left:41.0%;top:2.8%" aria-hidden="true">3</span><span class="pin yt" style="left:79.0%;top:32.0%" aria-hidden="true">4</span></div></figure>
+        <div class="shot"><img src="/assets/youtube-watch-later-remove-menu-dark.webp" alt="YouTube's own Watch Later page with 3,748 videos: a sort menu set to Date added, a search bar that searches all of YouTube, and a video's menu open on Remove from Watch later — the only way to delete, one video at a time." width="1400" height="1139" loading="lazy"><span class="pin yt" style="left:37.0%;top:87.5%" aria-hidden="true" data-n="1"></span><span class="pin yt" style="left:53.8%;top:11.2%" aria-hidden="true" data-n="2"></span><span class="pin yt" style="left:41.0%;top:2.8%" aria-hidden="true" data-n="3"></span><span class="pin yt" style="left:79.0%;top:32.0%" aria-hidden="true" data-n="4"></span></div></figure>
       <span class="badge" aria-hidden="true">vs</span>
       <figure class="figB"><figcaption>Watch Later Tidy</figcaption>
-        <div class="shot"><img src="/assets/dashboard-free-watch-later-by-channel-dark.webp" alt="The same 3,748 videos in Watch Later Tidy: synced, broken down by channel, with a toolbar to find, select, move and delete them." width="1600" height="906" fetchpriority="high"><span class="pin tw" style="left:21.8%;top:32.0%" aria-hidden="true">1</span><span class="pin tw" style="left:27.7%;top:11.5%" aria-hidden="true">2</span><span class="pin tw" style="left:34.0%;top:11.5%" aria-hidden="true">3</span><span class="pin tw" style="left:57.1%;top:11.5%" aria-hidden="true">4</span></div></figure>
+        <div class="shot"><img src="/assets/dashboard-free-watch-later-by-channel-dark.webp" alt="The same 3,748 videos in Watch Later Tidy: synced, broken down by channel, with a toolbar to find, select, move and delete them." width="1600" height="906" fetchpriority="high"><span class="pin tw" style="left:21.8%;top:32.0%" aria-hidden="true" data-n="1"></span><span class="pin tw" style="left:27.7%;top:11.5%" aria-hidden="true" data-n="2"></span><span class="pin tw" style="left:34.0%;top:11.5%" aria-hidden="true" data-n="3"></span><span class="pin tw" style="left:57.1%;top:11.5%" aria-hidden="true" data-n="4"></span></div></figure>
     </div>
     <div class="rows" role="list" aria-label="YouTube compared with Watch Later Tidy">
       <div class="row" role="listitem">
-        <p class="pain"><span class="n" aria-hidden="true">1</span><span class="t"><span class="sr-only">On YouTube: </span>Loads 100 videos at a time. Scroll, wait, scroll again.</span></p>
+        <p class="pain"><span class="n" aria-hidden="true" data-n="1"></span><span class="t"><span class="sr-only">On YouTube: </span>Loads 100 videos at a time. Scroll, wait, scroll again.</span></p>
         <span class="to" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-        <p class="fix"><span class="n" aria-hidden="true">1</span><span class="t"><span class="sr-only">With Watch Later Tidy: </span>Syncs your whole list in seconds</span></p>
+        <p class="fix"><span class="n" aria-hidden="true" data-n="1"></span><span class="t"><span class="sr-only">With Watch Later Tidy: </span>Syncs your whole list in seconds</span></p>
       </div><div class="row" role="listitem">
-        <p class="pain"><span class="n" aria-hidden="true">2</span><span class="t"><span class="sr-only">On YouTube: </span>No filters. Just a sort menu.</span></p>
+        <p class="pain"><span class="n" aria-hidden="true" data-n="2"></span><span class="t"><span class="sr-only">On YouTube: </span>No filters. Just a sort menu.</span></p>
         <span class="to" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-        <p class="fix"><span class="n" aria-hidden="true">2</span><span class="t"><span class="sr-only">With Watch Later Tidy: </span>Filter by <span class="chip">Channel</span><span class="sr-only">, </span><span class="chip">Topic</span><span class="sr-only">, </span><span class="chip">Tag</span><span class="sr-only">, </span><span class="chip">Length</span><span class="sr-only">, </span><span class="chip">Shorts</span><span class="sr-only">, </span><span class="chip">Watched</span><span class="sr-only">, </span><span class="chip">Unavailable</span></span></p>
+        <p class="fix"><span class="n" aria-hidden="true" data-n="2"></span><span class="t"><span class="sr-only">With Watch Later Tidy: </span>Filter by <span class="chip">Channel</span><span class="sr-only">, </span><span class="chip">Topic</span><span class="sr-only">, </span><span class="chip">Tag</span><span class="sr-only">, </span><span class="chip">Length</span><span class="sr-only">, </span><span class="chip">Shorts</span><span class="sr-only">, </span><span class="chip">Watched</span><span class="sr-only">, </span><span class="chip">Unavailable</span></span></p>
       </div><div class="row" role="listitem">
-        <p class="pain"><span class="n" aria-hidden="true">3</span><span class="t"><span class="sr-only">On YouTube: </span>No search. The bar up top searches all of YouTube.</span></p>
+        <p class="pain"><span class="n" aria-hidden="true" data-n="3"></span><span class="t"><span class="sr-only">On YouTube: </span>No search. The bar up top searches all of YouTube.</span></p>
         <span class="to" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-        <p class="fix"><span class="n" aria-hidden="true">3</span><span class="t"><span class="sr-only">With Watch Later Tidy: </span>Search your own list by title, channel or tag</span></p>
+        <p class="fix"><span class="n" aria-hidden="true" data-n="3"></span><span class="t"><span class="sr-only">With Watch Later Tidy: </span>Search your own list by title, channel or tag</span></p>
       </div><div class="row" role="listitem">
-        <p class="pain"><span class="n" aria-hidden="true">4</span><span class="t"><span class="sr-only">On YouTube: </span>One video at a time: <b>⋮</b> → Remove, again and again.</span></p>
+        <p class="pain"><span class="n" aria-hidden="true" data-n="4"></span><span class="t"><span class="sr-only">On YouTube: </span>One video at a time: <b>⋮</b> → Remove, again and again.</span></p>
         <span class="to" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
-        <p class="fix"><span class="n" aria-hidden="true">4</span><span class="t"><span class="sr-only">With Watch Later Tidy: </span>Tick hundreds and bulk-delete them in minutes<a class="proof" href="https://chromewebstore.google.com/reviews/93523ccf-e101-409c-8318-03136e5d9aaa" target="_blank" rel="noopener"><span class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</span><q>580+ videos deleted in just 6 minutes</q><span class="who">Matheus Link, Chrome Web Store</span></a></span></p>
+        <p class="fix"><span class="n" aria-hidden="true" data-n="4"></span><span class="t"><span class="sr-only">With Watch Later Tidy: </span>Tick hundreds and bulk-delete them in minutes<span class="sr-only">. </span><a class="proof" href="https://chromewebstore.google.com/reviews/93523ccf-e101-409c-8318-03136e5d9aaa" target="_blank" rel="noopener"><span class="stars" role="img" aria-label="5 out of 5 stars">★★★★★</span><q>580+ videos deleted in just 6 minutes</q><span class="sr-only"> — </span><span class="who">Matheus Link, Chrome Web Store</span></a></span></p>
       </div>
     </div>
     <div class="close">
@@ -393,17 +359,17 @@
       <p class="section-label">Inside the dashboard</p>
       <h2>Everything your Watch Later was missing</h2>
       <div class="stage">
-        <figure class="shot"><img src="/assets/dashboard-watch-later-300-selected-dark.webp" alt="Watch Later Tidy's dashboard with 300 videos ticked across 211 channels: the channel list on the left, a toolbar with filter, search and a red delete button, and a grid of ticked video cards." width="1600" height="1023" loading="lazy"><span class="pin" style="left:27.9%;top:16.8%" aria-hidden="true">1</span><span class="pin" style="left:14.8%;top:28.5%" aria-hidden="true">2</span><span class="pin" style="left:3.2%;top:36.1%" aria-hidden="true">3</span><span class="pin" style="left:6.0%;top:72.7%" aria-hidden="true">4</span><span class="pin" style="left:59.9%;top:5.0%" aria-hidden="true">5</span><span class="pin" style="left:96.9%;top:16.8%" aria-hidden="true">6</span><span class="pin" style="left:93.3%;top:55.9%" aria-hidden="true">7</span><span class="pin" style="left:46.6%;top:95.7%" aria-hidden="true">8</span></figure>
+        <figure class="shot"><img src="/assets/dashboard-watch-later-300-selected-dark.webp" alt="Watch Later Tidy's dashboard with 300 videos ticked across 211 channels: the channel list on the left, a toolbar with filter, search and a red delete button, and a grid of ticked video cards." width="1600" height="1023" loading="lazy"><span class="pin" style="left:27.9%;top:16.8%" aria-hidden="true" data-n="1"></span><span class="pin" style="left:14.8%;top:28.5%" aria-hidden="true" data-n="2"></span><span class="pin" style="left:3.2%;top:36.1%" aria-hidden="true" data-n="3"></span><span class="pin" style="left:6.0%;top:72.7%" aria-hidden="true" data-n="4"></span><span class="pin" style="left:59.9%;top:5.0%" aria-hidden="true" data-n="5"></span><span class="pin" style="left:96.9%;top:16.8%" aria-hidden="true" data-n="6"></span><span class="pin" style="left:93.3%;top:55.9%" aria-hidden="true" data-n="7"></span><span class="pin" style="left:46.6%;top:95.7%" aria-hidden="true" data-n="8"></span></figure>
         <svg class="leaders" viewBox="0 0 1220 460" aria-hidden="true"><line x1="240" y1="58" x2="450.9" y2="77.3"/><circle cx="450.9" cy="77.3" r="8"/><line x1="240" y1="172" x2="356.6" y2="131.1"/><circle cx="356.6" cy="131.1" r="8"/><line x1="240" y1="287" x2="273.0" y2="166.1"/><circle cx="273.0" cy="166.1" r="8"/><line x1="240" y1="402" x2="293.2" y2="334.4"/><circle cx="293.2" cy="334.4" r="8"/><line x1="980" y1="58" x2="681.3" y2="23.0"/><circle cx="681.3" cy="23.0" r="8"/><line x1="980" y1="172" x2="947.7" y2="77.3"/><circle cx="947.7" cy="77.3" r="8"/><line x1="980" y1="287" x2="921.8" y2="257.1"/><circle cx="921.8" cy="257.1" r="8"/><line x1="980" y1="402" x2="585.5" y2="440.2"/><circle cx="585.5" cy="440.2" r="8"/></svg>
-        <div class="lab l" style="top:58px"><span class="num">1</span><span class="txt"><b>Search &amp; filter</b><span>By title, channel, tag, length or watched</span></span></div><div class="lab l" style="top:172px"><span class="num">2</span><span class="txt"><b>Sync in seconds</b><span>Your whole list, no scrolling</span></span></div><div class="lab l" style="top:287px"><span class="num">3</span><span class="txt"><b>Channel &amp; topic breakdown</b><span>See who fills your list, biggest first</span></span></div><div class="lab l" style="top:402px"><span class="num">4</span><span class="txt"><b>Tap a channel</b><span>Its videos only, ready to clear</span></span></div><div class="lab r" style="top:58px"><span class="num">5</span><span class="txt"><b>Watch Later, Liked &amp; playlists</b><span>Every list you own, same tools</span></span></div><div class="lab r" style="top:172px"><span class="num">6</span><span class="txt"><b>Bulk delete</b><span>Hundreds at once, one confirm</span></span></div><div class="lab r" style="top:287px"><span class="num">7</span><span class="txt"><b>Tags YouTube hides</b><span>Click one to filter by it</span></span></div><div class="lab r" style="top:402px"><span class="num">8</span><span class="txt"><b>Tick, shift-click, select all</b><span>300 picked here, across 211 channels</span></span></div>
+        <div class="lab l" style="top:58px"><span class="num" aria-hidden="true" data-n="1"></span><span class="txt"><b>Search &amp; filter</b><span class="sr-only"> — </span><span>By title, channel, tag, length or watched</span></span></div><div class="lab l" style="top:172px"><span class="num" aria-hidden="true" data-n="2"></span><span class="txt"><b>Sync in seconds</b><span class="sr-only"> — </span><span>Your whole list, no scrolling</span></span></div><div class="lab l" style="top:287px"><span class="num" aria-hidden="true" data-n="3"></span><span class="txt"><b>Channel &amp; topic breakdown</b><span class="sr-only"> — </span><span>See who fills your list, biggest first</span></span></div><div class="lab l" style="top:402px"><span class="num" aria-hidden="true" data-n="4"></span><span class="txt"><b>Tap a channel</b><span class="sr-only"> — </span><span>Its videos only, ready to clear</span></span></div><div class="lab r" style="top:58px"><span class="num" aria-hidden="true" data-n="5"></span><span class="txt"><b>Watch Later, Liked &amp; playlists</b><span class="sr-only"> — </span><span>Every list you own, same tools</span></span></div><div class="lab r" style="top:172px"><span class="num" aria-hidden="true" data-n="6"></span><span class="txt"><b>Bulk delete</b><span class="sr-only"> — </span><span>Hundreds at once, one confirm</span></span></div><div class="lab r" style="top:287px"><span class="num" aria-hidden="true" data-n="7"></span><span class="txt"><b>Tags YouTube hides</b><span class="sr-only"> — </span><span>Click one to filter by it</span></span></div><div class="lab r" style="top:402px"><span class="num" aria-hidden="true" data-n="8"></span><span class="txt"><b>Tick, shift-click, select all</b><span class="sr-only"> — </span><span>300 picked here, across 211 channels</span></span></div>
       </div>
-      <ol class="features-list" aria-label="What the dashboard does"><li><span class="num" aria-hidden="true">1</span><span><b>Search &amp; filter</b> — By title, channel, tag, length or watched</span></li><li><span class="num" aria-hidden="true">2</span><span><b>Sync in seconds</b> — Your whole list, no scrolling</span></li><li><span class="num" aria-hidden="true">3</span><span><b>Channel &amp; topic breakdown</b> — See who fills your list, biggest first</span></li><li><span class="num" aria-hidden="true">4</span><span><b>Tap a channel</b> — Its videos only, ready to clear</span></li><li><span class="num" aria-hidden="true">5</span><span><b>Watch Later, Liked &amp; playlists</b> — Every list you own, same tools</span></li><li><span class="num" aria-hidden="true">6</span><span><b>Bulk delete</b> — Hundreds at once, one confirm</span></li><li><span class="num" aria-hidden="true">7</span><span><b>Tags YouTube hides</b> — Click one to filter by it</span></li><li><span class="num" aria-hidden="true">8</span><span><b>Tick, shift-click, select all</b> — 300 picked here, across 211 channels</span></li></ol>
+      <ol class="features-list" aria-label="What the dashboard does"><li><span class="num" aria-hidden="true" data-n="1"></span><span><b>Search &amp; filter</b> — By title, channel, tag, length or watched</span></li><li><span class="num" aria-hidden="true" data-n="2"></span><span><b>Sync in seconds</b> — Your whole list, no scrolling</span></li><li><span class="num" aria-hidden="true" data-n="3"></span><span><b>Channel &amp; topic breakdown</b> — See who fills your list, biggest first</span></li><li><span class="num" aria-hidden="true" data-n="4"></span><span><b>Tap a channel</b> — Its videos only, ready to clear</span></li><li><span class="num" aria-hidden="true" data-n="5"></span><span><b>Watch Later, Liked &amp; playlists</b> — Every list you own, same tools</span></li><li><span class="num" aria-hidden="true" data-n="6"></span><span><b>Bulk delete</b> — Hundreds at once, one confirm</span></li><li><span class="num" aria-hidden="true" data-n="7"></span><span><b>Tags YouTube hides</b> — Click one to filter by it</span></li><li><span class="num" aria-hidden="true" data-n="8"></span><span><b>Tick, shift-click, select all</b> — 300 picked here, across 211 channels</span></li></ol>
       <p class="also"><b>Also:</b> export to CSV or JSON, download transcripts in bulk, and send videos to Gemini Notebook.</p>
       <h3 class="how-title">Getting started takes a minute</h3>
       <ol class="how">
-        <li><span class="step" aria-hidden="true">1</span><b>Add it to Chrome or Firefox</b><span class="d">Free, no account to make.</span></li>
-        <li><span class="step" aria-hidden="true">2</span><b>Open your Watch Later</b><span class="d">Press Open Dashboard, then Sync.</span></li>
-        <li><span class="step" aria-hidden="true">3</span><b>Tick, filter, delete</b><span class="d">Hundreds at a time.</span></li>
+        <li><span class="step" aria-hidden="true" data-n="1"></span><b>Add it to Chrome or Firefox</b><span class="sr-only">: </span><span class="d">Free, no account to make.</span></li>
+        <li><span class="step" aria-hidden="true" data-n="2"></span><b>Open your Watch Later</b><span class="sr-only">: </span><span class="d">Press Open Dashboard, then Sync.</span></li>
+        <li><span class="step" aria-hidden="true" data-n="3"></span><b>Tick, filter, delete</b><span class="sr-only">: </span><span class="d">Hundreds at a time.</span></li>
       </ol>
     </div>
   </section>
@@ -689,9 +655,8 @@
               <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>
             </svg>
           </div>
-          <h3>Beat the 5,000 Limit</h3>
+          <h3>Stay Under the 5,000 Limit</h3>
           <p>YouTube silently stops saving videos past 5,000. TidyWL helps you clean out old videos so you can keep adding new ones.</p>
-          <span class="pill">Unique to TidyWL</span>
         </div>
 
         <div class="feature-card">
@@ -953,7 +918,7 @@
               <span class="plus" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-5">
-              Your YouTube data — titles, video IDs, channels, your playlists, your account — never leaves your browser. What does leave: each install carries a random identifier that is not linked to you or your Google account, and after you delete, unlike or move videos, or sync, the extension sends that identifier and your lifetime counts — videos deleted, likes removed, videos moved, bulk operations run, the size of your Watch Later, and your browser — to tidywl.com. The counts also include Lineups built and saved and the days you opened the dashboard, so opening it sends at most one report a day. Never which videos, never your playlist. There is no setting in the extension to turn this off on Chrome; uninstalling stops it. On Firefox it is the Technical and interaction data toggle under Permissions and data. Records not updated for 12 months are deleted, and counts include deletions made before this version. The extension also fetches a public config file from tidywl.com with no identifiers and no payload. The one flow you trigger yourself: Send to Gemini Notebook sends the video links you selected to Google's Gemini Notebook using your own Google session, because that is the entire point of the feature. Full policy at <a href="/privacy/">tidywl.com/privacy/</a>
+              Your YouTube data — titles, video IDs, channels, your playlists, your account — never leaves your browser. What does leave: each install carries a random identifier that is not linked to you or your Google account, and after you delete, unlike or move videos, or sync, the extension sends that identifier and your lifetime counts — videos deleted, likes removed, videos moved, bulk operations run, the size of your Watch Later, and your browser — to tidywl.com. The counts also include Lineups built and saved and the days you opened the dashboard, so opening it sends at most one report a day. Never which videos, never your playlist. There is no setting in the extension to turn this off on Chrome; uninstalling stops it. On Firefox it is the Technical and interaction data toggle under Permissions and data. Records not updated for 12 months are deleted, and counts include deletions made before this version. The extension also fetches a public config file from tidywl.com with no identifiers and no payload. If you subscribe to Pro, it also sends your licence key to tidywl.com to check that the subscription is live. The one flow you trigger yourself: Send to Gemini Notebook sends the video links you selected to Google's Gemini Notebook using your own Google session, because that is the entire point of the feature. Full policy at <a href="/privacy/">tidywl.com/privacy/</a>
             </div>
           </div>
 
@@ -969,11 +934,11 @@
 
           <div class="faq-item" aria-expanded="false">
             <button class="faq-q" aria-controls="faq-scale">
-              <span>How many videos have TidyWL users actually deleted?</span>
+              <span>How many videos have TidyWL users actually cleaned up?</span>
               <span class="plus" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-scale">
-              TidyWL users have deleted over {{ site.data.usage.deletedTotal }} videos, as of {{ site.data.usage.lastUpdated }}. They have also removed over {{ site.data.usage.unlikedTotal }} likes and moved over {{ site.data.usage.movedTotal }} videos between playlists. Each install reports a running count of all three, and the live totals are published as JSON at <a href="/api/stats">https://tidywl.com/api/stats</a>. Every figure here is a floor, rounded down, and refreshed daily. The deletions count reaches back to August 2026 and includes deletions made before the counter shipped, because the extension has tracked them locally since v1.4.1. No video, title, channel, playlist or account is ever part of that report — see the <a href="/privacy/">privacy policy</a>.
+              TidyWL users have cleaned up over {{ site.data.usage.deletedTotal }} videos, as of {{ site.data.usage.lastUpdated }}: videos deleted from their playlists, plus likes removed before version 1.6.0, when the extension counted the two together. Since then they have also removed over {{ site.data.usage.unlikedTotal }} likes, and they have moved over {{ site.data.usage.movedTotal }} videos between playlists. Each install reports a running count of all three, and the live totals are published as JSON at <a href="/api/stats">https://tidywl.com/api/stats</a>. Every figure here is a floor, rounded down, and refreshed daily. Reporting began in August 2026, with version 1.6.0, but each install sends the lifetime count the extension has kept on the device since version 1.4.1, so earlier clean-ups are included. No video, title, channel, playlist or account is ever part of that report — see the <a href="/privacy/">privacy policy</a>.
             </div>
           </div>
 
@@ -993,7 +958,7 @@
               <span class="plus" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-notebook">
-              It pushes the videos you selected into a Gemini Notebook (formerly NotebookLM) as sources, either a brand-new notebook or one you already have, without leaving the dashboard. This is the one feature that sends anything off your machine: the links you picked go to Google under your own Google login. Free Gemini Notebook accounts cap a notebook at 50 sources and batches larger than that have not been tested, so keep them under 50 for now. Videos Gemini Notebook cannot ingest, such as ones with no captions, private ones, or ones uploaded in the last few days, come back reported as skipped.
+              It pushes the videos you selected into a Gemini Notebook (formerly NotebookLM) as sources, either a brand-new notebook or one you already have, without leaving the dashboard. This is the one feature that sends any of your YouTube data off your machine: the links you picked go to Google under your own Google login. Free Gemini Notebook accounts cap a notebook at 50 sources and batches larger than that have not been tested, so keep them under 50 for now. Videos Gemini Notebook cannot ingest, such as ones with no captions, private ones, or ones uploaded in the last few days, come back reported as skipped.
             </div>
           </div>
 
@@ -1048,7 +1013,7 @@
       <p class="section-label">Privacy</p>
       <h2 class="section-heading">Your videos stay yours</h2>
       <p>No accounts. No server holding your playlist. TidyWL works in your browser with the YouTube session you already have, and your playlist stays on your computer.</p>
-      <p class="note"><b>Two things do leave.</b> To publish the totals at the top of this page, the extension sends tidywl.com usage counts, such as videos deleted, likes removed and videos moved, with a random install ID. Never which videos, never your playlist, never your Google account. It is always on in Chrome, where uninstalling stops it, and Firefox has a toggle for it. And Send to Gemini Notebook, which you start yourself, hands the links you picked to Google under your own login. <a href="/privacy/">Every detail is in the privacy policy.</a></p>
+      <p class="note"><b>Three things do leave.</b> To publish the totals at the top of this page, the extension sends tidywl.com usage counts, such as videos deleted, likes removed and videos moved, with a random install ID. Never which videos, never your playlist, never your Google account. It is always on in Chrome, where uninstalling stops it, and Firefox has a toggle for it. If you subscribe to Pro, your licence key goes to tidywl.com to check that the subscription is live. And Send to Gemini Notebook, which you start yourself, hands the links you picked to Google under your own login. <a href="/privacy/">Every detail is in the privacy policy.</a></p>
       <div class="chips">
         <span class="chip">Playlist Stays Local</span>
         <span class="chip">Counts, Not Content</span>
