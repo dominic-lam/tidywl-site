@@ -1066,6 +1066,34 @@
       .hg .close .install-extra { order: -1; margin: 0 0 18px; }
       .hg .close .hero-stats { order: 1; margin-top: 22px; }
     }
+    /* Tall screens: the spacing above was cut to fit a 900px-tall screen, so
+       with room to spare it opens up again. */
+    @media (min-width: 1100px) and (min-height: 1040px) {
+      .hg { padding-top: 28px; padding-bottom: 72px; }
+      .hg .stake { margin-bottom: 14px; }
+      .hg h1 { margin-bottom: 22px; }
+      .hg .vs, .hg .vs figure { row-gap: 10px; }
+      .hg .rows { margin-top: 20px; }
+      .hg .row { padding: 10px 0; }
+      .hg .close { margin-top: 32px; }
+      .hg .close .cta-row { margin-bottom: 16px; }
+      .hg .install-extra { margin-bottom: 26px; }
+    }
+    /* Large screens: the hero scales up in steps, each taken only when the
+       scaled hero still ends on the first screen (checked from 1366x768 to
+       3000x1600 on 2026-09-16). zoom scales type, images and spacing together,
+       so the proportions stay as designed. The dashboard tour below takes the
+       same step, so the two sections stay the same size as each other; its
+       fixed 1220px stage still fits the narrowest width of each step. */
+    @media (min-width: 1500px) and (min-height: 1160px) {
+      .hg-inner, .inside-inner { zoom: 1.12; }
+    }
+    @media (min-width: 1700px) and (min-height: 1290px) {
+      .hg-inner, .inside-inner { zoom: 1.25; }
+    }
+    @media (min-width: 1900px) and (min-height: 1440px) {
+      .hg-inner, .inside-inner { zoom: 1.4; }
+    }
     @media (max-width: 640px) {
       .hg .stake .long { display: none; }
       .hg .stake .short { display: inline; }
