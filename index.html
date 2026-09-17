@@ -55,16 +55,12 @@ last_modified_at: 2026-09-16
     "softwareVersion": "{{ site.data.versions.chrome }}",
     "offers": [
       { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD" },
-      {
-        "@type": "Offer", "name": "TidyWL Pro, monthly", "price": "4.99", "priceCurrency": "USD",
-        "url": "https://tidywl.com/pricing/",
-        "priceSpecification": { "@type": "UnitPriceSpecification", "price": "4.99", "priceCurrency": "USD", "billingDuration": "P1M", "unitCode": "MON" }
-      },
-      {
-        "@type": "Offer", "name": "TidyWL Pro, yearly", "price": "47.88", "priceCurrency": "USD",
-        "url": "https://tidywl.com/pricing/",
-        "priceSpecification": { "@type": "UnitPriceSpecification", "price": "47.88", "priceCurrency": "USD", "billingDuration": "P1Y", "unitCode": "ANN" }
-      }
+      {%- comment -%}
+        The billing period lives in each name, not in a UnitPriceSpecification: Google's Rich Results Test flags that
+        type as invalid for priceSpecification on a SoftwareApplication offer (read 2026-09-16).
+      {%- endcomment %}
+      { "@type": "Offer", "name": "TidyWL Pro, billed monthly", "price": "4.99", "priceCurrency": "USD", "url": "https://tidywl.com/pricing/" },
+      { "@type": "Offer", "name": "TidyWL Pro, billed yearly", "price": "47.88", "priceCurrency": "USD", "url": "https://tidywl.com/pricing/" }
     ],
     "description": "Free browser extension for Chrome and Firefox that cleans up YouTube Watch Later and Liked videos. Search across thousands of saved videos, bulk-delete, remove likes in bulk, filter and sort, download transcripts in bulk, send videos to Gemini Notebook, and stay under YouTube's hidden 5,000-video cap. Runs with your existing YouTube session; no account, no API key. An optional subscription, TidyWL Pro, adds cleanup rules, 90-day undo, pinning, the Lineup and saved views.",
     "url": "https://tidywl.com",
@@ -103,8 +99,8 @@ last_modified_at: 2026-09-16
       No aggregateRating and no review here, on purpose (removed 2026-09-16). Both came from the Chrome Web Store, and
       Google's review-snippet guidelines say "Don't aggregate reviews or ratings from other websites" and "Ratings must be
       sourced directly from users." The rating and the reviews stay on the page itself and in llms.txt,
-      which is where AI assistants read them. Without either, Google shows no software-app rich result for this page,
-      which it was not entitled to anyway.
+      which is where AI assistants read them. Google's Rich Results Test still reads the item as valid without them,
+      listing aggregateRating only as a missing optional field (read 2026-09-16).
     {%- endcomment %}
   }
   </script>
