@@ -35,6 +35,8 @@ exclude:
   - README.md
   - vendor
   - scripts          # the weekly review fetcher and its tests; nothing a visitor needs
+  - docs             # internal notes. Jekyll serves a .md here BOTH raw and rendered, so without this a
+                     # debrief or plan would be live on tidywl.com (found 2026-09-17)
   - "*.af"
   - "*.af~lock~"
   - _site

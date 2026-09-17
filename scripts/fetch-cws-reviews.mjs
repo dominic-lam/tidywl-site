@@ -26,6 +26,12 @@
  * WHAT IT KEEPS
  * id, author, stars, text, date, version, lang — enough to draw a card and link to the review. Not the avatar URL,
  * not the developer's reply. No fetch timestamp either, so a week with no new review commits nothing.
+ *
+ * WHAT IT REFUSES TO KEEP
+ * The reviews EXCLUDE_IDS names, by id. tidywl-site is a PUBLIC repo, so every review this script stores enters
+ * public git history permanently — outliving whatever the store later does to the review. Build-time filtering
+ * (_data/cws-reviews-config.yml) cannot undo that, which is why the exclusion lives here as well. It is not a star
+ * filter: see the comment on EXCLUDE_IDS.
  */
 
 import { readFile, writeFile } from 'node:fs/promises';
@@ -94,6 +100,37 @@ export function toReview(r) {
 /** Newest first, then by id, so the same reviews always serialise to the same bytes. */
 export function sortReviews(list) {
   return [...list].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? '') || a.id.localeCompare(b.id));
+}
+
+/**
+ * Reviews never to store, by id, each with the reason it is here and the date it was added.
+ *
+ * THIS IS NOT A STAR FILTER, and must never become one. Genuine criticism is fetched, stored, and published
+ * wherever it clears the star floor in _data/cws-reviews-config.yml; a bad rating is not grounds for exclusion.
+ * What belongs here is a review the listing itself should not be carrying — a coordinated attack, spam, or text
+ * naming a private person. Hiding an attack is defensible; quietly suppressing a real complaint is not, and the
+ * two must not share a mechanism.
+ *
+ * Each entry carries its reason so a later reader can judge the call instead of trusting it. Delete a line and the
+ * next run restores that review from the store, since nothing here is remembered anywhere else.
+ *
+ * An id listed here should also be in cws-reviews-config.yml's `hide` list. Belt and braces: this keeps the text
+ * out of the repo, `hide` keeps it off the page if it ever arrives by some other route.
+ */
+export const EXCLUDE_IDS = new Map([
+  ['b1ac1959-3678-4a98-8990-da0b25079a88',
+    'Added 2026-09-17. One of five 1-star ratings left on the listing within hours, three of them 22 seconds apart, '
+    + 'one from the Google account that posts the developer replies on a competing extension. The only one of the five '
+    + 'carrying text. Reported to Google the same day, ticket 9-9562000041973. Evidence and how to re-verify it: '
+    + 'tidywl/docs/outreach/2026-09-17-review-bombing/EVIDENCE.md, section 2 row 2.'],
+]);
+
+/**
+ * Drops the reviews EXCLUDE_IDS names, and only those. Pure, so a test can prove it goes by id and ignores stars.
+ * Applied before assertWritable, so the floor below compares a post-exclusion count against a post-exclusion file.
+ */
+export function applyExclusions(list) {
+  return list.filter((r) => !EXCLUDE_IDS.has(r.id));
 }
 
 /** Throw unless `next` is safe to write over `previous`. */
@@ -181,7 +218,11 @@ async function main() {
   } catch {
     // No committed file yet: the first run has nothing to compare against.
   }
-  const reviews = sortReviews([...byId.values()]);
+  const fetched = sortReviews([...byId.values()]);
+  const reviews = applyExclusions(fetched);
+  // Ids only, never the text: a failing run uploads this log as a workflow artifact on a public repo.
+  const dropped = fetched.filter((r) => EXCLUDE_IDS.has(r.id)).map((r) => r.id);
+  if (dropped.length > 0) console.log(`Excluded ${dropped.length} by id: ${dropped.join(', ')}`);
   assertWritable(reviews, previous);
 
   await writeFile(outFile, `${JSON.stringify(reviews, null, 2)}\n`);
