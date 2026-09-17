@@ -89,6 +89,7 @@ Written reviews of TidyWL from the Chrome Web Store, quoted word for word, newes
 {%- for r in site.data.cws-reviews -%}
 {%- if emitted >= cfg.max_shown %}{% break %}{% endif -%}
 {%- if r.stars < cfg.min_stars %}{% continue %}{% endif -%}
+{%- if r.text.size < cfg.min_length %}{% continue %}{% endif -%}
 {%- if hidden_ids contains r.id %}{% continue %}{% endif -%}
 {%- assign emitted = emitted | plus: 1 -%}
 {%- assign lang = cfg.lang[r.id] | default: r.lang %}

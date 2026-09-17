@@ -65,8 +65,10 @@ test('the page, the JSON-LD and llms.txt apply the same filters, so none quotes 
   for (const [name, src] of [['index.html', html], ['llms.txt', txt]]) {
     assert.ok(src.includes('r.stars < cfg.min_stars'), `${name}: star floor`);
     assert.ok(src.includes('hidden_ids contains r.id'), `${name}: hide list`);
+    assert.ok(src.includes('r.text.size < cfg.min_length'), `${name}: length floor`);
     assert.ok(src.includes('emitted >= cfg.max_shown') || src.includes('shown >= cfg.max_shown'), `${name}: cap`);
   }
   // index.html applies them twice: the JSON-LD and the marquee.
   assert.equal(html.split('hidden_ids contains r.id').length - 1, 2);
+  assert.equal(html.split('r.text.size < cfg.min_length').length - 1, 2);
 });

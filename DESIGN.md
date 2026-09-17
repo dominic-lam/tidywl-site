@@ -11,14 +11,16 @@ The rebuilt landing page for [tidywl.com](https://tidywl.com), implementing the 
 
 ## Sections, in order
 
-1. **Hero** — brand mark, H1 ("Your YouTube Watch Later is out of control"), tagline, primary + ghost CTAs, 5-star social proof line
-2. **Demo video** — 16:9 YouTube embed
-3. **Features** — 5 cards (2×3 grid collapsing to 1 col); "Past 5,000" card is visually highlighted
-4. **How it works** — 3 numbered steps with icon wells
-5. **Testimonials** — 3 review cards with Schema.org Review microdata
-6. **FAQ** — 4-question click-to-expand accordion
-7. **Privacy** — copy + 4 "no X" chips
-8. **Footer** — CTA, Ko-fi, bug report (pointed at the `tidywl` extension repo, not this one)
+The list below describes the page as of 2026-09-16; the rest of this file is the original kit's notes, some now stale (see CLAUDE.md).
+
+1. **Hero** — the 5,000-video pill, H1 ("Clear your YouTube Watch Later in minutes"), YouTube's Watch Later page against the dashboard with numbered pins, four pain → fix rows with a review line, the Chrome and Firefox logo buttons (trust chips inside the Chrome one), the price, three stats. Phones: the demo video and a send-to-computer hand-off instead.
+2. **Inside the dashboard** — the 300-selected capture with eight labels and leader lines (pins and a list below 1300px), then *Getting started* in three steps
+3. **Reviews** — featured carousel, then the community marquee
+4. **Why I built this** — one paragraph, then the install buttons again
+5. **Features** — six cards, the other fifteen behind *All features*, a line on what Pro adds
+6. **FAQ** — accordion; "Is it free?", "Does it work on my phone?" and undo come first
+7. **Privacy** — what leaves and why, plus chips
+8. **Footer** — CTA, links (including Help), Ko-fi
 
 ## SEO
 

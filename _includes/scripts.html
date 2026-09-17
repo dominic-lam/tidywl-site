@@ -82,6 +82,25 @@
       });
     });
 
+    // Phone hand-off (landing page). A phone or tablet cannot install either
+    // extension, so these buttons send the link on to the visitor's computer:
+    // the share sheet where there is one, an email draft where there is not.
+    const handoffUrl = 'https://tidywl.com/';
+    document.querySelectorAll('[data-share]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (navigator.share) {
+          try { await navigator.share({ title: 'TidyWL', text: 'Clear my YouTube Watch Later on my computer', url: handoffUrl }); } catch (e) { /* dismissed */ }
+          return;
+        }
+        location.href = 'mailto:?subject=' + encodeURIComponent('TidyWL: open this on my computer') + '&body=' + encodeURIComponent(handoffUrl);
+      });
+    });
+    document.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(handoffUrl); btn.textContent = 'Link copied'; } catch (e) { btn.textContent = handoffUrl; }
+      });
+    });
+
     // Live usage counters. /api/stats is the same origin as this page — the
     // apex is proxied, /api/* routes to the Worker — so this is a plain
     // relative fetch with no CORS involved.

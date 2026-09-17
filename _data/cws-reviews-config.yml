@@ -13,13 +13,17 @@
 # Reviews with fewer stars than this are left out.
 min_stars: 4
 
+# Reviews shorter than this many characters are left out. One-word reviews ("Great") dilute the rest (2026-09-16).
+min_length: 25
+
 # At most this many store reviews, newest first. Once the marquee runs, every card is on the page twice (the loop
 # needs a second copy), so this keeps the page light as reviews pile up.
 max_shown: 60
 
 # Reviews never to show. Use it for anything offensive, spam, or a review that names a private person.
 # The id is the "id" field in cws-reviews.json — also the UUID at the end of the review's store link.
-hide: []
+hide:
+  - b2a44f4d-3ca3-459b-9269-c09462e7971e   # Juan David Reyes Lopez: points at a demo video the desktop page no longer has (2026-09-16); restore with the video
 #  - 00000000-0000-0000-0000-000000000000   # why
 
 # Where Google guessed a review's language wrong. Sets the card's lang attribute (screen-reader voice, fonts) and label.

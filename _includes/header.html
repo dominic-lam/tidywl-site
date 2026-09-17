@@ -1,7 +1,8 @@
   <!-- ── SITE HEADER ──
-       Wide: wordmark, the content pages, the theme toggle, one CTA. The toggle
-       sits BEFORE the CTA on purpose — the install button is where the eye
-       stops, and a utility icon past it competes with the primary action.
+       Wide: wordmark, the content pages, one CTA, then the theme toggle. Until
+       2026-09-16 the toggle sat before the CTA, so the eye stopped on install;
+       the owner swapped them with the screenshot hero, so the CTA now sits with
+       the page links and the toggle closes the bar as a utility.
 
        Phone (<=640px): the links collapse into a drawer. The menu button leads
        on the left and the toggle holds the right, so changing theme stays one
@@ -51,6 +52,7 @@
         <a href="/privacy/"{% if page.url == '/privacy/' %} aria-current="page"{% endif %}>Privacy</a>
         <a href="/terms/"{% if page.url == '/terms/' %} aria-current="page"{% endif %}>Terms</a>
         <a href="/refunds/"{% if page.url == '/refunds/' %} aria-current="page"{% endif %}>Refunds</a>
+        <a href="/help/"{% if page.url == '/help/' %} aria-current="page"{% endif %}>Help</a>
         <a href="https://discord.gg/natc623GhX" target="_blank" rel="noopener">Discord</a>
         <a href="https://github.com/dominic-lam/tidywl-site/issues" target="_blank" rel="noopener">Report a bug</a>
       </div>
@@ -58,7 +60,7 @@
       <a class="site-nav-cta site-nav-cta--drawer" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
     </nav>
 
-    {% include theme-toggle.html %}
-
     <a class="site-nav-cta site-nav-cta--bar" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener"><span class="cta-long">Add to Chrome</span><span class="cta-short">Install</span></a>
+
+    {% include theme-toggle.html %}
   </header>

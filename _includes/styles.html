@@ -21,6 +21,28 @@
       --ghost-hover-border: #8a7863;
       --feature-icon-bg: rgba(230, 57, 53, 0.08);
       --shadow-accent: 0 24px 80px -32px rgba(230, 57, 53, 0.18);
+      /* Reds that carry text. --accent stays the brand red for large type and
+         marks; white text on it is 4.20:1, under the 4.5 minimum, so anything
+         white-on-red fills with --accent-fill (4.98:1), and small red text on a
+         page ground uses --accent-text (5.14:1 light, 6.83:1 dark). */
+      --accent-fill: #d32f2f;
+      --accent-fill-hover: #b71c1c;
+      --accent-text: #c62828;
+      /* The landing page's top stage (header + hero) and the dashboard tour.
+         Light keeps the page's own values; dark lifts both off the page,
+         because the screenshots are YouTube's #0f0f0f and sank into #1c1a18.
+         Inside the stage, cards, borders and pale text follow the lighter
+         ground (see .stage-top below). */
+      --stage-bg: transparent;
+      --stage-card: #ffffff;
+      --stage-border: #d9cdbd;
+      --stage-rule: #ece1cf;
+      --stage-subtle: #766759;
+      --tour-bg: transparent;
+      /* The Get for Firefox button, in Firefox violet. */
+      --ff-fill: #321c64;
+      --ff-fill-hover: #45278d;
+      --ff-edge: transparent;
     }
 
     /* Follow OS dark mode unless user forced light */
@@ -42,6 +64,15 @@
         --highlight-border: #4a2a27;
         --ghost-hover-bg: #24211e;
         --ghost-hover-border: #6d655f;
+        --accent-text: #ff7a70;
+        --stage-bg: #302c29;
+        --stage-card: #3c3733;
+        --stage-border: #4f4843;
+        --stage-rule: #3f3a36;
+        --stage-subtle: #a39a93;
+        --tour-bg: #302c29;
+        /* The violet is 1.02:1 against the dark stage; a hairline carries its edge. */
+        --ff-edge: rgba(255, 255, 255, 0.16);
       }
     }
 
@@ -63,6 +94,15 @@
       --highlight-border: #4a2a27;
       --ghost-hover-bg: #24211e;
       --ghost-hover-border: #6d655f;
+      --accent-text: #ff7a70;
+      --stage-bg: #302c29;
+      --stage-card: #3c3733;
+      --stage-border: #4f4843;
+      --stage-rule: #3f3a36;
+      --stage-subtle: #a39a93;
+      --tour-bg: #302c29;
+      /* The violet is 1.02:1 against the dark stage; a hairline carries its edge. */
+      --ff-edge: rgba(255, 255, 255, 0.16);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -109,49 +149,22 @@
     :root[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
     :root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
 
-    /* ── HERO ── */
-    .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 96px 24px 72px;
-    }
-    .hero-icon {
-      width: 88px; height: 88px; border-radius: 20px; margin-bottom: 28px;
-    }
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.25rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.12;
-      max-width: 740px;
-      margin-bottom: 20px;
-      text-wrap: balance;
-    }
-    .hero h1 .em { color: var(--accent); }
-    .hero .tagline {
-      font-size: clamp(1.05rem, 2.2vw, 1.2rem);
-      color: var(--text-secondary);
-      max-width: 600px;
-      margin-bottom: 36px;
-      line-height: 1.55;
-      text-wrap: pretty;
-    }
+    /* ── BUTTONS ── */
     .cta-row {
       display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
       margin-bottom: 22px;
     }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 10px;
-      background: var(--accent); color: #fff;
+      background: var(--accent-fill); color: #fff;
       font-size: 1rem; font-weight: 600;
       padding: 14px 28px; border-radius: 8px; border: 0;
       transition: background 0.2s;
       text-align: left; line-height: 1.25;
     }
-    .btn-primary:hover { background: var(--accent-hover); }
-    .btn-primary .btn-sub { display: block; font-size: 0.8125rem; font-weight: 500; opacity: 0.85; margin-top: 2px; }
+    .btn-primary:hover { background: var(--accent-fill-hover); }
+    /* Full opacity: at 0.85 the sub-label fell to 3.39:1 on the red. */
+    .btn-primary .btn-sub { display: block; font-size: 0.8125rem; font-weight: 500; margin-top: 2px; }
     .btn-ghost {
       display: inline-flex; align-items: center; gap: 8px;
       background: transparent; color: var(--text);
@@ -190,22 +203,6 @@
     .hero-stat-label {
       display: block; margin-top: 3px;
       font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;
-    }
-    /* The other two first-party counters, as a footnote to the tiles rather
-       than a fourth and fifth tile. Smaller and muted on purpose: it should be
-       readable at a glance but never pull the eye off the deletions number.
-       The 22px that used to close out .hero-stats moved down here, so the gap
-       to .hero-trust-row is unchanged and this line sits close to the tiles it
-       belongs to. --text-muted is defined on bare :root and redefined in both
-       dark blocks, so this needs no colour of its own and no media query. */
-    .hero-stats-more {
-      /* Wide enough that the sentence sits on ONE line at desktop width — at
-         44ch it broke after "videos" and left "moved between playlists." as a
-         short orphan under the tiles. Still narrow enough to wrap sensibly on
-         a phone, where the hero gives it 327px regardless. */
-      max-width: 62ch; margin: 0 auto 22px;
-      font-size: 0.85rem; line-height: 1.5; color: var(--text-muted);
-      font-variant-numeric: tabular-nums; text-wrap: pretty;
     }
     .hero-trust-row {
       display: inline-flex; flex-wrap: wrap; align-items: center;
@@ -246,50 +243,11 @@
       padding: 10px 6px 8px; text-wrap: pretty;
     }
 
-    /* ── BEFORE / AFTER ──
-       No connecting arrow between the columns on purpose: it would still point
-       sideways once they stack, and this codebase has no width media queries to
-       reorient it with. The two states are distinguished by styling instead. */
-    .beforeafter { background: var(--bg-alt); }
-    .ba-grid {
-      display: grid; gap: 16px;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      align-items: stretch;
-    }
-    .ba-col {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 22px;
-    }
-    .ba-col.ba-after { background: var(--highlight-bg); border-color: var(--highlight-border); }
-    .ba-head {
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--text-subtle); margin-bottom: 14px;
-    }
-    .ba-after .ba-head { color: var(--accent); }
-    .ba-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .ba-col li {
-      display: flex; gap: 10px; align-items: flex-start;
-      font-size: 0.95rem; line-height: 1.5; text-wrap: pretty;
-    }
-    .ba-col li::before {
-      flex-shrink: 0; font-weight: 700; line-height: 1.45;
-    }
-    .ba-before li { color: var(--text-muted); }
-    .ba-before li::before { content: "\00d7"; color: var(--text-subtle); }
-    .ba-after li { color: var(--text); }
-    .ba-after li::before { content: "\2713"; color: var(--accent); }
-
     /* ── SECTION SHARED ── */
     section { padding: 88px 24px; }
     /* ── SITE HEADER ──
        1040px matches .section-inner, the widest container on the site, so the
-       header lines up with the landing page rather than the narrower blog.
-       Padding stays symmetric here: the theme toggle is position:fixed at
-       top:16px/right:16px, so it only reaches the CTA once the centred 1040px
-       container gets close to the viewport edge. That happens below
-       1040 + 2*56 = 1152px, and the media query further down reserves the
-       space there and only there — padding it at every width would leave the
-       header visibly lopsided on a desktop screen for no reason. */
+       header lines up with the landing page rather than the narrower blog. */
     .site-header {
       max-width: 1040px; margin: 0 auto;
       padding: 20px 24px 0;
@@ -297,7 +255,7 @@
       gap: 12px;
       position: relative;
     }
-    /* The wordmark takes the slack, so the toggle and CTA stay together on the
+    /* The wordmark takes the slack, so the CTA and toggle stay together on the
        right. Replaces `justify-content: space-between`, which cannot keep three
        right-hand items grouped once the nav sits between them. */
     .site-header-home { margin-right: auto; }
@@ -341,11 +299,12 @@
 
        Install leaves the bar because it cannot work on a phone at all (see
        header.html). The wordmark comes back below 400px as a result: the row
-       now spends 40px on the menu and 40px on the toggle and still leaves
-       about 262px, where before it was 4px short. */
+       spends 44px each on the menu and the toggle, the recommended touch size,
+       and still leaves about 254px. */
     @media (max-width: 640px) {
       .site-header { padding: 16px; gap: 10px; }
-      .site-menu-btn { display: inline-flex; }
+      .site-menu-btn { display: inline-flex; width: 44px; height: 44px; }
+      .theme-toggle { width: 44px; height: 44px; }
 
       /* Scoped to .site-header on purpose: the base `.site-nav { display:flex }`
          rule is declared LATER in this file, and at equal specificity the later
@@ -394,7 +353,7 @@
       color: var(--text); font-weight: 600; font-size: 0.95rem;
       letter-spacing: -0.01em; text-decoration: none;
     }
-    .site-header-home:hover { color: var(--accent); }
+    .site-header-home:hover { color: var(--accent-text); }
     .site-header-icon {
       width: 28px; height: 28px;
       border-radius: 6px; display: block;
@@ -407,17 +366,25 @@
       transition: color 0.2s, background 0.2s;
     }
     .site-nav a:hover { color: var(--text); background: var(--ghost-hover-bg); }
-    .site-nav a[aria-current="page"] { color: var(--accent); }
-    .site-nav .site-nav-cta {
-      background: var(--accent); color: #fff; font-weight: 600;
+    .site-nav a[aria-current="page"] { color: var(--accent-text); }
+    /* The bar CTA sits outside .site-nav since the 2026-09-07 drawer, so it is
+       named here on its own; with only the nav selector it rendered as plain
+       text on every page until 2026-09-16. */
+    .site-nav .site-nav-cta,
+    .site-nav-cta--bar {
+      background: var(--accent-fill); color: #fff; font-weight: 600;
       margin-left: 4px; padding: 8px 16px;
     }
-    .site-nav .site-nav-cta:hover { background: var(--accent-hover); color: #fff; }
+    .site-nav-cta--bar {
+      font-size: 0.9rem; border-radius: 6px; transition: background 0.2s;
+    }
+    .site-nav .site-nav-cta:hover,
+    .site-nav-cta--bar:hover { background: var(--accent-fill-hover); color: #fff; }
 
     .section-inner { max-width: 1040px; margin: 0 auto; }
     .section-label {
       font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+      text-transform: uppercase; color: var(--accent-text); margin-bottom: 12px;
     }
     .section-heading {
       font-size: clamp(1.6rem, 3.5vw, 2.25rem);
@@ -452,7 +419,7 @@
     .feature-card .pill {
       display: inline-block; margin-top: 10px;
       font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--accent);
+      text-transform: uppercase; color: var(--accent-text);
     }
 
     /* ── FEATURES: MINI TIER ── */
@@ -509,23 +476,6 @@
       line-height: 1.6;
       text-wrap: pretty;
     }
-
-    /* ── HOW IT WORKS ── */
-    .steps {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 32px;
-    }
-    .step { display: flex; align-items: flex-start; gap: 14px; }
-    .step-icon {
-      flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center; color: var(--accent);
-    }
-    .step-num {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--text-subtle); margin-bottom: 4px;
-    }
-    .step h3 { font-size: 0.95rem; font-weight: 600; }
 
     /* ── TESTIMONIALS ── */
     .testimonials { background: var(--bg-alt); }
@@ -758,7 +708,7 @@
       padding: 20px 0; display: flex; justify-content: space-between;
       align-items: center; gap: 20px;
     }
-    .faq-q:hover { color: var(--accent); }
+    .faq-q:hover { color: var(--accent-text); }
     .faq-q .plus {
       color: var(--accent); font-size: 1.3rem; line-height: 1; font-weight: 300;
       transition: transform 0.2s;
@@ -775,8 +725,8 @@
       max-height: 1200px; padding: 0 0 20px;
     }
 
-    /* ── SUPPORT ── */
-    #support .section-heading { margin-bottom: 12px; }
+    /* ── SUPPORT ── (the /help/ page; on the landing page until 2026-09-16) */
+    .support .section-heading { margin-bottom: 12px; }
     .support-sub {
       text-align: center;
       color: var(--text-secondary);
@@ -814,13 +764,13 @@
     }
     .support-cta {
       display: inline-flex; align-items: center; gap: 8px;
-      background: var(--accent); color: #fff;
+      background: var(--accent-fill); color: #fff;
       font-size: 0.95rem; font-weight: 600;
       padding: 11px 20px; border-radius: 8px;
       margin-top: 16px; align-self: center;
       transition: background 0.2s;
     }
-    .support-cta:hover { background: var(--accent-hover); color: #fff; }
+    .support-cta:hover { background: var(--accent-fill-hover); color: #fff; }
 
     /* ── PRIVACY ── */
     .privacy { background: var(--bg-alt); text-align: center; }
@@ -850,10 +800,10 @@
     .footer-links a { font-size: 0.9rem; color: var(--text-muted); transition: color 0.2s; }
     .footer-links a:hover { color: var(--text); }
     .footer-links .btn-footer {
-      background: var(--accent); color: #fff; font-weight: 600;
+      background: var(--accent-fill); color: #fff; font-weight: 600;
       padding: 8px 18px; border-radius: 6px; transition: background 0.2s;
     }
-    .footer-links .btn-footer:hover { background: var(--accent-hover); color: #fff; }
+    .footer-links .btn-footer:hover { background: var(--accent-fill-hover); color: #fff; }
     /* Ko-fi badge sits on its own row below the link list — dropping a 150px
        image into that flex row of 0.9rem text links reads as a misplaced ad.
        line-height: 0 kills the inline-image descender gap. */
@@ -878,6 +828,8 @@
       box-shadow: var(--shadow-accent);
     }
     .video-wrapper iframe { width: 100%; height: 100%; display: block; border: 0; }
+    /* The desktop demo section is commented out in index.html until the new
+       recording exists; these two rules come back with it. */
     .demo-section { padding-top: 16px; padding-bottom: 24px; }
     .demo-label {
       display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -901,7 +853,7 @@
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
       display: flex; align-items: center; justify-content: center;
       width: 84px; height: 84px; border-radius: 50%;
-      background: var(--accent); color: #fff;
+      background: var(--accent-fill); color: #fff;
       box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
       transition: background 0.2s ease, transform 0.2s ease;
     }
@@ -911,7 +863,7 @@
       font-size: 0.82rem; color: var(--text-subtle);
     }
     .video-facade:hover img, .video-facade:focus-visible img { transform: scale(1.02); filter: brightness(0.82); }
-    .video-facade:hover .video-play { background: var(--accent-hover); transform: translate(-50%, -50%) scale(1.07); }
+    .video-facade:hover .video-play { background: var(--accent-fill-hover); transform: translate(-50%, -50%) scale(1.07); }
     .video-facade:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
     @media (prefers-reduced-motion: reduce) {
       .video-facade img, .video-play { transition: none; }
@@ -945,6 +897,367 @@
       font-style: italic;
       color: var(--text-subtle);
     }
+
+    /* ── LANDING: STAGE ──
+       The header and hero share one ground, and the dashboard tour joins it, so
+       dark mode steps down once, into the reviews. The token remap makes every
+       card, border and pale caption inside follow that ground. In light mode
+       each remapped token equals the page's own, so nothing changes there. */
+    .stage-top, .hg, .inside {
+      --bg-card: var(--stage-card);
+      --border: var(--stage-border);
+      --border-subtle: var(--stage-rule);
+      --text-subtle: var(--stage-subtle);
+    }
+    .stage-top, .hg { background: var(--stage-bg); }
+    .skip-link {
+      position: absolute; left: 12px; top: -80px; z-index: 20;
+      padding: 10px 14px; border-radius: 8px;
+      background: var(--accent-fill); color: #fff; font-weight: 600;
+    }
+    .skip-link:focus { top: 12px; }
+
+    /* ── LANDING: HERO ──
+       YouTube's own Watch Later page against the dashboard, four numbered
+       pains against their fixes, then install. Built 2026-09-16 from the review
+       of two designers and two users; the reasoning is in the commit.
+       The screenshots and the rows share one column template, so row n lines
+       up under both pictures. */
+    .hg { padding: 10px 24px 48px; }
+    .hg-inner {
+      max-width: 1120px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .hg .stake {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin: 0 0 8px; padding: 5px 12px; border-radius: 999px;
+      font-size: 0.85rem; font-weight: 600; color: var(--text);
+      background: var(--bg-card); border: 1px solid var(--border);
+    }
+    .hg .stake .dot {
+      flex: none; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent-fill); box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.18);
+    }
+    .hg .stake .short { display: none; }
+    .hg h1 {
+      font-size: clamp(2rem, 3.3vw, 2.7rem); font-weight: 800;
+      letter-spacing: -0.02em; line-height: 1.08; text-wrap: balance;
+      margin: 0 0 10px;
+    }
+    .hg h1 .em { color: var(--accent); }
+
+    /* Captions share the first grid row and pictures the second, so both
+       captions sit level whatever the two screenshots' heights. */
+    .hg .vs {
+      width: 100%; max-width: 1060px; text-align: left;
+      display: grid; grid-template-columns: minmax(0, 5fr) 56px minmax(0, 7fr);
+      grid-template-rows: auto auto; row-gap: 8px; align-items: end;
+    }
+    .hg .vs figure {
+      margin: 0; min-width: 0;
+      display: grid; grid-row: 1 / span 2; grid-template-rows: subgrid; row-gap: 8px;
+    }
+    .hg .vs .figA { grid-column: 1; }
+    .hg .vs .figB { grid-column: 3; }
+    .hg .vs figcaption {
+      align-self: end;
+      font-size: 0.8rem; font-weight: 800; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-subtle);
+    }
+    .hg .vs .figB figcaption { color: var(--text); }
+    .hg .shot {
+      position: relative; align-self: end;
+      border-radius: 12px; border: 1px solid var(--border); background: #0f0f0f;
+    }
+    .hg .shot img { display: block; width: 100%; height: auto; border-radius: 11px; }
+    .hg .figA img { filter: saturate(0.6) brightness(0.82); }
+    .hg .figA .shot { box-shadow: 0 14px 34px -24px rgba(0, 0, 0, 0.5); }
+    .hg .figB .shot { box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.55), var(--shadow-accent); }
+    .hg .badge {
+      grid-row: 2; grid-column: 2; align-self: center; justify-self: center;
+      width: 42px; height: 42px; border-radius: 50%;
+      display: grid; place-items: center;
+      font-weight: 800; font-size: 0.85rem; letter-spacing: 0.02em; color: var(--text);
+      background: var(--bg-card); border: 1px solid var(--border);
+      box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.35);
+    }
+    /* Pin n marks where row n happens. Pins are aria-hidden; the rows carry
+       the meaning. .yt / .tw, not .pain / .fix: those name the row text, and a
+       shared class once rendered the pin digits at 16px. */
+    .hg .pin {
+      position: absolute; z-index: 1; transform: translate(-50%, -50%);
+      width: 24px; height: 24px; border-radius: 50%;
+      display: grid; place-items: center; font-weight: 800; font-size: 0.75rem;
+    }
+    .hg .pin.yt {
+      background: #f5efe7; color: #2a231d;
+      box-shadow: 0 0 0 3px rgba(245, 239, 231, 0.3), 0 3px 10px rgba(0, 0, 0, 0.55);
+    }
+    .hg .pin.tw {
+      background: var(--accent-fill); color: #fff;
+      box-shadow: 0 0 0 4px rgba(230, 57, 53, 0.32), 0 4px 12px rgba(0, 0, 0, 0.45);
+    }
+
+    .hg .rows { width: 100%; max-width: 1060px; margin: 10px 0 0; display: grid; text-align: left; }
+    .hg .row {
+      display: grid; grid-template-columns: minmax(0, 5fr) 56px minmax(0, 7fr);
+      align-items: center; padding: 5px 0;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .hg .row:last-child { border-bottom: 1px solid var(--border-subtle); }
+    .hg .row p { margin: 0; display: flex; align-items: flex-start; gap: 10px; line-height: 1.35; }
+    .hg .row .n {
+      flex: none; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%;
+      display: grid; place-items: center; font-size: 0.72rem; font-weight: 800;
+    }
+    .hg .pain { font-size: 0.97rem; color: var(--text-secondary); }
+    .hg .pain .n { border: 1.5px solid var(--border-strong); color: var(--text-muted); }
+    .hg .pain b { font-weight: 800; color: var(--text); }
+    .hg .fix { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .hg .fix .n { background: var(--accent-fill); color: #fff; }
+    .hg .fix .t { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 5px; }
+    .hg .to { justify-self: center; display: grid; color: var(--border-strong); }
+    /* Flat tints, not outlined pills: these are labels, and outlines read as buttons. */
+    .hg .chip {
+      display: inline-block; padding: 2px 7px; border-radius: 999px;
+      font-size: 0.76rem; font-weight: 600; color: var(--text-secondary);
+      background: color-mix(in srgb, var(--text) 8%, transparent);
+    }
+    /* The review sits under the claim it backs, as an annotation. */
+    .hg .proof {
+      flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: baseline;
+      gap: 2px 7px; margin-top: 1px;
+      font-size: 0.8rem; font-weight: 500; color: var(--text-muted);
+    }
+    .hg .proof .stars { color: var(--star); letter-spacing: 1px; font-size: 0.72rem; }
+    .hg .proof q { color: var(--text-secondary); font-style: italic; }
+    .hg .proof .who::before { content: "— "; }
+    .hg .proof:hover .who { text-decoration: underline; text-underline-offset: 3px; }
+
+    .hg .close {
+      width: 100%; max-width: 1060px; margin-top: 14px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .hg .close .cta-row { justify-content: center; margin-bottom: 14px; }
+    .hg .close .hero-stats { justify-content: center; }
+
+    /* Phones: the comparison stacked into one column read as a puzzle, so a
+       phone gets the demo instead. Its poster is lazy, and a display:none lazy
+       image is never fetched, so a desktop never downloads it; the YouTube
+       screenshot is lazy for the same reason the other way round. */
+    .hg .phone-demo { display: none; width: 100%; max-width: 560px; margin: 2px 0 0; }
+    /* Off-centre: the poster's own headline runs through the middle. */
+    .hg .phone-demo .video-play { width: 62px; height: 62px; left: 80%; top: 66%; }
+    .hg .phone-demo .video-play svg { margin-left: 4px; }
+    .hg .phone-demo .video-note { margin-top: 8px; }
+    @media (max-width: 860px) {
+      .hg .vs, .hg .rows { display: none; }
+      .hg .phone-demo { display: block; }
+    }
+    /* Short laptop screens (1366x768, 1440x780, 1280x800): the install row
+       moves above the comparison so it is on the first screen, and the stats
+       go to the end. At 900px tall and more, the order is as designed. */
+    @media (min-width: 861px) and (max-height: 820px) {
+      .hg .vs, .hg .rows, .hg .close { max-width: 940px; }
+      .hg .stake { order: -3; }
+      .hg h1 { order: -2; margin-bottom: 14px; }
+      .hg .close { display: contents; }
+      .hg .close .cta-row { order: -1; margin: 0 0 10px; }
+      .hg .close .install-extra { order: -1; margin: 0 0 18px; }
+      .hg .close .hero-stats { order: 1; margin-top: 22px; }
+    }
+    @media (max-width: 640px) {
+      .hg .stake .long { display: none; }
+      .hg .stake .short { display: inline; }
+      .hg .close { margin-top: 22px; }
+    }
+    @media (max-width: 400px) {
+      .hg h1 { font-size: 1.85rem; }
+    }
+
+    /* ── LANDING: INSTALL BUTTONS ──
+       Each browser's own logo, unmodified: Chrome's from the browser-logos
+       project, Firefox's from Mozilla's Protocol design system. The trust chips
+       ride inside the Chrome button; the price sits under both buttons. */
+    .hg .cta-row, .closer .cta-row { align-items: stretch; }
+    .btn-chrome { padding-block: 10px; }
+    /* The white disc keeps the logo's red segment off the red button. */
+    .logo-disc {
+      flex: none; width: 28px; height: 28px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    .logo-disc img { display: block; width: 26px; height: 26px; }
+    .btn-chips { display: flex; gap: 5px; margin-top: 6px; }
+    /* A dark tint on the red keeps the white text at 7.0:1. */
+    .btn-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 7px 2px 6px; border-radius: 999px;
+      font-size: 0.66rem; font-weight: 600; line-height: 1.35; letter-spacing: 0.01em;
+      color: #fff; background: rgba(0, 0, 0, 0.2); white-space: nowrap;
+    }
+    .btn-chip svg { flex: none; }
+    .btn-firefox {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--ff-fill); color: #fff;
+      font-size: 1rem; font-weight: 600;
+      padding: 13px 24px; border-radius: 8px; border: 1px solid var(--ff-edge);
+      transition: background 0.2s;
+    }
+    .btn-firefox:hover { background: var(--ff-fill-hover); color: #fff; }
+    .ff-logo { flex: none; display: block; width: 26px; height: 26px; }
+    .install-extra {
+      display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+      gap: 8px 16px; margin: 0 0 11px;
+    }
+    .install-extra .hero-trust-row { gap: 8px; }
+    .price-line { font-size: 0.82rem; color: var(--text-muted); }
+    .price-line b { color: var(--text); }
+
+    /* A phone or tablet cannot install either extension, so it gets a way to
+       send the link to a computer instead (scripts.html), and the trust chips
+       move out of the button it no longer shows. Tablets are caught by touch,
+       not width. */
+    .handoff { display: none; justify-items: center; gap: 10px; width: 100%; margin: 0 0 20px; }
+    .handoff-note {
+      max-width: 34ch; margin: 0 0 4px;
+      font-size: 0.92rem; line-height: 1.45; color: var(--text-secondary); text-wrap: balance;
+    }
+    .handoff-note b { color: var(--text); }
+    .handoff .handoff-btn { width: 100%; max-width: 320px; justify-content: center; }
+    .handoff .btn-ghost.handoff-btn { padding: 11px 20px; }
+    .install-extra .touch-only { display: none; }
+    @media (max-width: 640px), (hover: none) and (pointer: coarse) {
+      .hg .cta-row, .closer .cta-row { display: none; }
+      .handoff { display: grid; }
+      .install-extra .touch-only { display: inline-flex; }
+    }
+
+    /* ── LANDING: DASHBOARD TOUR ──
+       At 1300px and wider, a fixed 1220x460 stage: labels in both margins,
+       joined by dashed leader lines to rings beside what they name. Below that
+       the labels become numbered pins and a list; 1299, not 1267, so a 17px
+       Windows scrollbar cannot push the fixed stage into a sideways scroll. */
+    .inside { padding: 64px 24px 72px; background: var(--tour-bg); }
+    .inside-inner { max-width: 1220px; margin: 0 auto; text-align: center; }
+    .inside .section-label { margin-bottom: 8px; }
+    .inside h2 {
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem); font-weight: 800;
+      letter-spacing: -0.02em; line-height: 1.15; text-wrap: balance; margin: 0 0 30px;
+    }
+    .inside .stage { position: relative; width: 1220px; height: 460px; margin: 0 auto; }
+    .inside .shot {
+      position: absolute; left: 250px; top: 0; width: 720px; margin: 0;
+      border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
+      box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.5), var(--shadow-accent);
+      background: #0f0f0f;
+    }
+    .inside .shot img { display: block; width: 100%; height: auto; }
+    .inside svg.leaders {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      overflow: visible; pointer-events: none; z-index: 1;
+    }
+    .inside svg.leaders line { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 4 4; opacity: 0.85; }
+    .inside svg.leaders circle { fill: rgba(211, 47, 47, 0.14); stroke: var(--accent-fill); stroke-width: 2.5; }
+    .inside .lab {
+      position: absolute; width: 226px; transform: translateY(-50%);
+      display: flex; align-items: flex-start; gap: 9px; text-align: left;
+    }
+    .inside .lab.l { left: 0; flex-direction: row-reverse; text-align: right; }
+    .inside .lab.r { right: 0; }
+    .inside .num {
+      flex: none; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--accent-fill); color: #fff; font-size: 0.72rem; font-weight: 800;
+    }
+    .inside .txt { display: flex; flex-direction: column; gap: 1px; line-height: 1.3; }
+    .inside .txt b { font-size: 0.95rem; color: var(--text); }
+    .inside .txt span { font-size: 0.82rem; color: var(--text-muted); text-wrap: balance; }
+    .inside .pin {
+      display: none; position: absolute; transform: translate(-50%, -50%);
+      width: 22px; height: 22px; border-radius: 50%; place-items: center;
+      background: var(--accent-fill); color: #fff; font-size: 0.7rem; font-weight: 800;
+      box-shadow: 0 0 0 3px rgba(230, 57, 53, 0.3);
+    }
+    .inside ol.features-list {
+      display: none; list-style: none; margin: 22px auto 0; padding: 0;
+      max-width: 760px; text-align: left;
+      grid-template-columns: 1fr 1fr; gap: 10px 28px;
+    }
+    .inside ol.features-list li {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 0.95rem; line-height: 1.4; color: var(--text-secondary);
+    }
+    .inside ol.features-list b { color: var(--text); }
+    .inside .also { margin: 26px auto 0; font-size: 0.92rem; color: var(--text-muted); }
+    .inside .also b { color: var(--text-secondary); font-weight: 600; }
+    .inside .how-title {
+      margin: 44px 0 16px;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-muted);
+    }
+    .inside .how {
+      list-style: none; margin: 0 auto; padding: 0; max-width: 900px; text-align: left;
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 28px;
+    }
+    .inside .how li {
+      display: grid; grid-template-columns: auto 1fr;
+      column-gap: 12px; row-gap: 2px; align-items: start;
+      font-size: 0.95rem; line-height: 1.4; color: var(--text-secondary);
+    }
+    .inside .how .step {
+      grid-row: span 2; width: 30px; height: 30px; border-radius: 8px;
+      display: grid; place-items: center;
+      border: 1.5px solid var(--border-strong); color: var(--text);
+      font-weight: 800; font-size: 0.85rem;
+    }
+    .inside .how b { font-size: 0.98rem; color: var(--text); }
+    .inside .how .d { font-size: 0.88rem; color: var(--text-muted); }
+    @media (max-width: 1299px) {
+      .inside .stage { width: 100%; max-width: 760px; height: auto; }
+      .inside .shot { position: relative; left: 0; width: 100%; overflow: visible; }
+      .inside .shot img { border-radius: 11px; }
+      .inside svg.leaders, .inside .lab { display: none; }
+      .inside .pin { display: grid; }
+      .inside ol.features-list { display: grid; }
+    }
+    @media (max-width: 640px) {
+      .inside { padding: 48px 20px 56px; }
+      .inside ol.features-list, .inside .how { grid-template-columns: 1fr; }
+    }
+
+    /* ── LANDING: WHY I BUILT THIS, THEN INSTALL ── */
+    .closer .cta-row { justify-content: flex-start; margin: 28px 0 0; }
+    .closer .install-extra { justify-content: flex-start; margin: 14px 0 0; }
+    .closer .handoff { justify-items: start; margin-top: 24px; }
+
+    /* ── LANDING: FEATURES, SIX UP FRONT ── */
+    .features .section-inner > .features-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 760px) {
+      .features .section-inner > .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 480px) {
+      .features .section-inner > .features-grid { grid-template-columns: 1fr; }
+    }
+    .more-features { margin-top: 24px; }
+    .more-features > summary {
+      cursor: pointer; list-style: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 18px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--bg-card);
+      font-weight: 600; color: var(--text);
+    }
+    .more-features > summary::-webkit-details-marker { display: none; }
+    .more-features > summary span { color: var(--text-muted); font-weight: 500; }
+    .more-features > summary::after {
+      content: "+"; margin-left: 2px;
+      color: var(--text-muted); font-weight: 400; font-size: 1.1rem; line-height: 1;
+    }
+    .more-features[open] > summary::after { content: "\2212"; }
+    .more-features > summary:focus-visible { outline: 2px solid var(--accent-fill); outline-offset: 3px; }
+    .more-features > .features-grid { margin-top: 22px; }
+    .features .pro-line { margin-top: 26px; font-size: 0.95rem; color: var(--text-secondary); }
+    .features .pro-line a { color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 
     /* ── Screen-reader only ── */
     .sr-only {
