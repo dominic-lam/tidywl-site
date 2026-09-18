@@ -55,6 +55,14 @@
         "tabRenderer", "content", "sectionListRenderer", "contents", 0,
         "itemSectionRenderer", "contents", 0, "playlistVideoListRenderer", "sortFilterMenu"
       ]
+    ],
+    "editableFlagPaths": [
+      [
+        "contents", "twoColumnBrowseResultsRenderer", "tabs", 0,
+        "tabRenderer", "content", "sectionListRenderer", "contents", 0,
+        "itemSectionRenderer", "contents", 0, "playlistVideoListRenderer", "isEditable"
+      ],
+      ["header", "playlistHeaderRenderer", "isEditable"]
     ]
   },
   "videoFields": {
