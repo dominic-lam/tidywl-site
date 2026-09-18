@@ -5,7 +5,7 @@ layout: null
 ---
 # TidyWL — Watch Later Tidy
 
-> Free browser extension for Chrome and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist, your Liked videos, and any playlist you created — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos, gives Liked videos no management tools at all, and the official API refuses to touch either. Free to install with no account; an optional subscription, TidyWL Pro, available since version 2.0, adds automatic monthly clean-up, undo, and the Lineup.
+> Free browser extension for Chrome, Microsoft Edge and Firefox that lets you bulk delete, filter, sort, and actually manage your YouTube Watch Later playlist, your Liked videos, and any playlist you created — and download every video's transcript in one go. Built because YouTube caps Watch Later at 5,000 videos, gives Liked videos no management tools at all, and the official API refuses to touch either. Free to install with no account; an optional subscription, TidyWL Pro, available since version 2.0, adds automatic monthly clean-up, undo, and the Lineup.
 
 ## What it does
 
@@ -63,11 +63,12 @@ YouTube's Watch Later playlist has a hard 5,000 video cap. Once you hit it, YouT
 
 ## Browser support
 
-- **Chrome** — published on the Chrome Web Store. Also works on Chromium-based browsers such as Edge and Brave.
+- **Chrome** — published on the Chrome Web Store. Also works on other Chromium-based browsers such as Brave.
+- **Microsoft Edge** — published on Microsoft Edge Add-ons since September 2026. Edge installs and updates it from its own store. A new version can reach Edge a few days before or after Chrome, because each store reviews it separately.
 - **Firefox 153 or newer** — signed by Mozilla but submitted as unlisted, so it is distributed from https://tidywl.com/firefox/ rather than published in the addons.mozilla.org directory. There is no public AMO listing page. It updates automatically from tidywl.com.
 - **Firefox for Android** — not supported. YouTube's mobile site is a different page structure and it has not been tested.
 
-Both channels are built from a single source tree and ship the same feature set.
+All three are built from a single source tree and ship the same feature set.
 
 ## Ratings
 
@@ -125,6 +126,7 @@ TidyWL runs in your browser. No account, and your YouTube data — titles, video
 ## Links
 
 - [Install for Chrome](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo): the Chrome Web Store listing
+- [Install for Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf): the Microsoft Edge Add-ons listing
 - [Install for Firefox](https://tidywl.com/firefox/): the signed Firefox build, distributed from tidywl.com
 - [Landing page](https://tidywl.com/)
 - [Pricing](https://tidywl.com/pricing/): what TidyWL Pro adds, prices, refunds and cancelling

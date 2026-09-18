@@ -43,6 +43,9 @@
       --ff-fill: #321c64;
       --ff-fill-hover: #45278d;
       --ff-edge: transparent;
+      /* The Get for Edge button: a navy under the logo's own blues, so the mark stays readable. */
+      --edge-fill: #0b2545;
+      --edge-fill-hover: #12366a;
     }
 
     /* Follow OS dark mode unless user forced light */
@@ -1134,6 +1137,19 @@
     }
     .btn-firefox:hover { background: var(--ff-fill-hover); color: #fff; }
     .ff-logo { flex: none; display: block; width: 26px; height: 26px; }
+    /* Edge's logo from the browser-logos project, like Chrome's. The navy is as
+       close to the dark stage as the violet is, so it borrows the same hairline. */
+    .btn-edge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--edge-fill); color: #fff;
+      font-size: 1rem; font-weight: 600;
+      padding: 13px 24px; border-radius: 8px; border: 1px solid var(--ff-edge);
+      transition: background 0.2s;
+    }
+    .btn-edge:hover { background: var(--edge-fill-hover); color: #fff; }
+    .edge-logo { flex: none; display: block; width: 26px; height: 26px; }
+    /* One flex item holding both, so they wrap together and keep one height. */
+    .cta-others { display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch; }
     .install-extra {
       display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
       gap: 8px 16px; margin: 0 0 11px;
@@ -1256,6 +1272,9 @@
 
     /* ── LANDING: WHY I BUILT THIS, THEN INSTALL ── */
     .closer .cta-row { justify-content: flex-start; margin: 28px 0 0; }
+    /* Three buttons come to 749px in a 720px column; this much off the two smaller ones keeps them on one line. */
+    .closer .cta-row, .closer .cta-others { gap: 10px; }
+    .closer .btn-edge, .closer .btn-firefox { padding-inline: 16px; }
     .closer .install-extra { justify-content: flex-start; margin: 14px 0 0; }
     .closer .handoff { justify-items: start; margin-top: 24px; }
 
