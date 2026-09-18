@@ -22,8 +22,17 @@ max_shown: 60
 
 # Reviews never to show. Use it for anything offensive, spam, or a review that names a private person.
 # The id is the "id" field in cws-reviews.json — also the UUID at the end of the review's store link.
+#
+# This list is applied at BUILD time, so it stops a review reaching the page and llms.txt, but the text still sits
+# in cws-reviews.json, which is committed to a PUBLIC repo. When the point is that the text must not be published
+# at all, add the id to EXCLUDE_IDS in scripts/fetch-cws-reviews.mjs as well, so it never enters the file. Keep it
+# here too: the two nets catch different things, and this is where a human looks for the decision.
+#
+# Neither list is a star filter. A low rating is not grounds for hiding a review; the min_stars floor above is what
+# decides which ratings the marquee quotes.
 hide:
   - b2a44f4d-3ca3-459b-9269-c09462e7971e   # Juan David Reyes Lopez: points at a demo video the desktop page no longer has (2026-09-16); restore with the video
+  - b1ac1959-3678-4a98-8990-da0b25079a88   # 1 star, 2026-09-17: the only one of five coordinated ratings that carried text; reported to Google, ticket 9-9562000041973. Also in EXCLUDE_IDS, so it should not reach the file at all. This repo is public, so neither list records the account or the text — the private evidence does.
 #  - 00000000-0000-0000-0000-000000000000   # why
 
 # Where Google guessed a review's language wrong. Sets the card's lang attribute (screen-reader voice, fonts) and label.
