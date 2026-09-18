@@ -63,6 +63,12 @@
         "itemSectionRenderer", "contents", 0, "playlistVideoListRenderer", "isEditable"
       ],
       ["header", "playlistHeaderRenderer", "isEditable"]
+    ],
+    "ownerChannelIdPaths": [
+      ["header", "playlistHeaderRenderer", "ownerText", "runs", 0, "navigationEndpoint", "browseEndpoint", "browseId"]
+    ],
+    "ownerNamePaths": [
+      ["header", "playlistHeaderRenderer", "ownerText", "runs", 0, "text"]
     ]
   },
   "videoFields": {
@@ -106,6 +112,7 @@
       "partTextPath":          ["text", "content"],
       "channelMarkerPath":     ["text", "commandRuns"],
       "channelIdPath":         ["text", "commandRuns", 0, "onTap", "innertubeCommand", "browseEndpoint", "browseId"],
+      "avatarChannelIdPath": ["metadata", "lockupMetadataViewModel", "image", "decoratedAvatarViewModel", "rendererContext", "commandContext", "onTap", "innertubeCommand", "browseEndpoint", "browseId"],
       "overlaysPath":          ["contentImage", "thumbnailViewModel", "overlays"],
       "bottomOverlayKey":      "thumbnailBottomOverlayViewModel",
       "durationBadgesPath":    ["badges"],
@@ -325,6 +332,62 @@
     "channelNamePath": [
       "title",
       "simpleText"
+    ]
+  },
+  "libraryFeed": {
+    "browseId": "FEplaylist_aggregation",
+    "maxPages": 5,
+    "itemsPath": [
+      "contents",
+      "twoColumnBrowseResultsRenderer",
+      "tabs",
+      0,
+      "tabRenderer",
+      "content",
+      "richGridRenderer",
+      "contents"
+    ],
+    "continuationItemsPath": [
+      "onResponseReceivedActions",
+      0,
+      "appendContinuationItemsAction",
+      "continuationItems"
+    ],
+    "lockupPath": [
+      "richItemRenderer",
+      "content",
+      "lockupViewModel"
+    ],
+    "playlistIdPath": [
+      "contentId"
+    ],
+    "titlePath": [
+      "metadata",
+      "lockupMetadataViewModel",
+      "title",
+      "content"
+    ],
+    "ownerPath": [
+      "metadata",
+      "lockupMetadataViewModel",
+      "metadata",
+      "contentMetadataViewModel",
+      "metadataRows",
+      0,
+      "metadataParts",
+      0,
+      "text",
+      "content"
+    ],
+    "thumbnailPath": [
+      "contentImage",
+      "collectionThumbnailViewModel",
+      "primaryThumbnail",
+      "thumbnailViewModel",
+      "image",
+      "sources",
+      0,
+      "url"
     ]
   }
 }
