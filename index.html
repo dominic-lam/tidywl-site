@@ -1,5 +1,5 @@
 ---
-last_modified_at: 2026-09-16
+last_modified_at: 2026-09-18
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +7,7 @@ last_modified_at: 2026-09-16
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TidyWL — Clean Up Your YouTube Watch Later &amp; Stay Under the 5,000-Video Limit</title>
-  <meta name="description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts. Stay under the 5,000-video cap. Your playlist stays in your browser. Chrome and Firefox.">
+  <meta name="description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts. Stay under the 5,000-video cap. Your playlist stays in your browser. Chrome, Edge and Firefox.">
 
   <link rel="canonical" href="https://tidywl.com/">
   <link rel="icon" type="image/png" href="assets/icon128.png">
@@ -15,7 +15,7 @@ last_modified_at: 2026-09-16
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="TidyWL — Clean Up Your YouTube Watch Later &amp; Stay Under the 5,000-Video Limit">
-  <meta property="og:description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts. Stay under the 5,000-video cap. Your playlist stays in your browser. Chrome and Firefox.">
+  <meta property="og:description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts. Stay under the 5,000-video cap. Your playlist stays in your browser. Chrome, Edge and Firefox.">
   <meta property="og:image" content="https://tidywl.com/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -25,7 +25,7 @@ last_modified_at: 2026-09-16
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="TidyWL — Clean Up Your YouTube Watch Later">
-  <meta name="twitter:description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts. Stay under the 5,000-video cap. Your playlist stays in your browser. Chrome and Firefox.">
+  <meta name="twitter:description" content="Search, bulk delete, filter and sort your YouTube Watch Later and Liked videos. Bulk transcripts. Stay under the 5,000-video cap. Your playlist stays in your browser. Chrome, Edge and Firefox.">
   <meta name="twitter:image" content="https://tidywl.com/assets/og-image.png">
 
 {% include fonts.html %}
@@ -50,8 +50,8 @@ last_modified_at: 2026-09-16
     "name": "TidyWL — Watch Later Tidy",
     "alternateName": "Watch Later Tidy",
     "applicationCategory": "BrowserApplication",
-    "operatingSystem": "Chrome, Firefox",
-    "softwareRequirements": "Google Chrome, or Firefox 153 or newer",
+    "operatingSystem": "Chrome, Microsoft Edge, Firefox",
+    "softwareRequirements": "Google Chrome, Microsoft Edge, or Firefox 153 or newer",
     "softwareVersion": "{{ site.data.versions.chrome }}",
     "offers": [
       { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD" },
@@ -62,7 +62,7 @@ last_modified_at: 2026-09-16
       { "@type": "Offer", "name": "TidyWL Pro, billed monthly", "price": "4.99", "priceCurrency": "USD", "url": "https://tidywl.com/pricing/" },
       { "@type": "Offer", "name": "TidyWL Pro, billed yearly", "price": "47.88", "priceCurrency": "USD", "url": "https://tidywl.com/pricing/" }
     ],
-    "description": "Free browser extension for Chrome and Firefox that cleans up YouTube Watch Later and Liked videos. Search across thousands of saved videos, bulk-delete, remove likes in bulk, filter and sort, download transcripts in bulk, send videos to Gemini Notebook, and stay under YouTube's hidden 5,000-video cap. Runs with your existing YouTube session; no account, no API key. An optional subscription, TidyWL Pro, adds cleanup rules, 90-day undo, pinning, the Lineup and saved views.",
+    "description": "Free browser extension for Chrome, Microsoft Edge and Firefox that cleans up YouTube Watch Later and Liked videos. Search across thousands of saved videos, bulk-delete, remove likes in bulk, filter and sort, download transcripts in bulk, send videos to Gemini Notebook, and stay under YouTube's hidden 5,000-video cap. Runs with your existing YouTube session; no account, no API key. An optional subscription, TidyWL Pro, adds cleanup rules, 90-day undo, pinning, the Lineup and saved views.",
     "url": "https://tidywl.com",
     "downloadUrl": "https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo",
     "author": {
@@ -91,7 +91,7 @@ last_modified_at: 2026-09-16
       "Brand-channel (Page account) support",
       "Multi-account support with isolated storage",
       "Export playlist data to JSON or CSV",
-      "Works in Chrome and Firefox"
+      "Works in Chrome, Microsoft Edge and Firefox"
     ],
     "publisher": { "@id": "https://tidywl.com/#organization" },
     "award": "Featured by Google on the Chrome Web Store"
@@ -126,7 +126,7 @@ last_modified_at: 2026-09-16
         "name": "Does it work on my phone?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Not yet. It runs in Chrome or Firefox on a computer: Windows, Mac, Linux or ChromeOS. Your Watch Later is the same list everywhere, so whatever you clear on the computer is gone from the YouTube app on your phone too."
+          "text": "Not yet. It runs in Chrome, Edge or Firefox on a computer: Windows, Mac, Linux or ChromeOS. Your Watch Later is the same list everywhere, so whatever you clear on the computer is gone from the YouTube app on your phone too."
         }
       },
       {
@@ -175,6 +175,14 @@ last_modified_at: 2026-09-16
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "Your YouTube data — titles, video IDs, channels, your playlists, your account — never leaves your browser. What does leave: each install carries a random identifier that is not linked to you or your Google account, and after you delete, unlike or move videos, or sync, the extension sends that identifier and your lifetime counts — videos deleted, likes removed, videos moved, bulk operations run, the size of your Watch Later, and your browser — to tidywl.com. The counts also include Lineups built and saved and the days you opened the dashboard, so opening it sends at most one report a day. Never which videos, never your playlist. There is no setting in the extension to turn this off on Chrome; uninstalling stops it. On Firefox it is the Technical and interaction data toggle under Permissions and data. Records not updated for 12 months are deleted, and counts include deletions made before this version. The extension also fetches a public config file from tidywl.com with no identifiers and no payload. If you subscribe to Pro, it also sends your licence key to tidywl.com to check that the subscription is live. The one flow you trigger yourself: Send to Gemini Notebook sends the video links you selected to Google's Gemini Notebook using your own Google session, because that is the entire point of the feature. Full policy at tidywl.com/privacy/"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does TidyWL work in Microsoft Edge?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Watch Later Tidy is on Microsoft Edge Add-ons, so you install it from Edge's own store and Edge keeps it up to date. It is the same extension as the Chrome one. Each store reviews a new version separately, so it can reach Edge a few days before or after Chrome."
         }
       },
       {
@@ -306,15 +314,25 @@ last_modified_at: 2026-09-16
            it false. See FEATURES.md § Tier decisions. -->
         <span>Add to Chrome<span class="btn-sub">Free to install — no account</span><span class="btn-chips"><span class="btn-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>Featured by Google</span><span class="btn-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>Verified publisher</span></span></span>
       </a>
+      <!-- Edge and Firefox travel as one group, so a narrow row breaks after the Chrome button and never
+           leaves one of them alone on a line of its own. -->
+      <div class="cta-others">
+      <!-- Edge since 2026-09-18, the day Edge Add-ons approved it. Straight to the store listing, like Chrome:
+           Edge installs and updates from there, so there is no page of ours in between. -->
+      <a class="btn-edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
+        <img class="edge-logo" src="/assets/edge-logo.svg" width="24" height="24" alt="">
+        <span>Get for Edge</span>
+      </a>
       <!-- Firefox's own full-colour logo on Firefox violet (owner, 2026-09-16), matching the Chrome button. It
            replaced a neutral download glyph kept for the monoline icon set. -->
       <a class="btn-firefox" href="/firefox/">
         <img class="ff-logo" src="/assets/firefox-logo.svg" width="24" height="24" alt="">
         <span>Get for Firefox</span>
       </a>
+      </div>
     </div>
     <div class="handoff">
-      <p class="handoff-note"><b>Runs on a computer,</b> in Chrome or Firefox. Anything you clear there is gone from the YouTube app on your phone too.</p>
+      <p class="handoff-note"><b>Runs on a computer,</b> in Chrome, Edge or Firefox. Anything you clear there is gone from the YouTube app on your phone too.</p>
       <button type="button" class="btn-primary handoff-btn" data-share><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Send the link to my computer<span class="btn-sub">Email or message it to yourself</span></span></button>
       <button type="button" class="btn-ghost handoff-btn" data-copy>Copy link</button>
     </div>
@@ -363,7 +381,7 @@ last_modified_at: 2026-09-16
       <p class="also"><b>Also:</b> export to CSV or JSON, download transcripts in bulk, and send videos to Gemini Notebook.</p>
       <h3 class="how-title">Getting started takes a minute</h3>
       <ol class="how">
-        <li><span class="step" aria-hidden="true" data-n="1"></span><b>Add it to Chrome or Firefox</b><span class="sr-only">: </span><span class="d">Free, no account to make.</span></li>
+        <li><span class="step" aria-hidden="true" data-n="1"></span><b>Add it to Chrome, Edge or Firefox</b><span class="sr-only">: </span><span class="d">Free, no account to make.</span></li>
         <li><span class="step" aria-hidden="true" data-n="2"></span><b>Open your Watch Later</b><span class="sr-only">: </span><span class="d">Press Open Dashboard, then Sync.</span></li>
         <li><span class="step" aria-hidden="true" data-n="3"></span><b>Tick, filter, delete</b><span class="sr-only">: </span><span class="d">Hundreds at a time.</span></li>
       </ol>
@@ -539,13 +557,19 @@ last_modified_at: 2026-09-16
         <span class="logo-disc"><img src="/assets/chrome-logo.svg" width="24" height="24" alt=""></span>
         <span>Add to Chrome<span class="btn-sub">Free to install — no account</span><span class="btn-chips"><span class="btn-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>Featured by Google</span><span class="btn-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>Verified publisher</span></span></span>
       </a>
+      <div class="cta-others">
+      <a class="btn-edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
+        <img class="edge-logo" src="/assets/edge-logo.svg" width="24" height="24" alt="">
+        <span>Get for Edge</span>
+      </a>
       <a class="btn-firefox" href="/firefox/">
         <img class="ff-logo" src="/assets/firefox-logo.svg" width="24" height="24" alt="">
         <span>Get for Firefox</span>
       </a>
+      </div>
     </div>
     <div class="handoff">
-      <p class="handoff-note"><b>Runs on a computer,</b> in Chrome or Firefox. Anything you clear there is gone from the YouTube app on your phone too.</p>
+      <p class="handoff-note"><b>Runs on a computer,</b> in Chrome, Edge or Firefox. Anything you clear there is gone from the YouTube app on your phone too.</p>
       <button type="button" class="btn-primary handoff-btn" data-share><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Send the link to my computer<span class="btn-sub">Email or message it to yourself</span></span></button>
       <button type="button" class="btn-ghost handoff-btn" data-copy>Copy link</button>
     </div>
@@ -823,7 +847,7 @@ last_modified_at: 2026-09-16
 
       </div>
 
-      <p class="features-tail">Plus a toolbar that stays put while you scroll, keyboard shortcuts, shift-click selection and filter chips. Works in Chrome and Firefox on a computer.</p>
+      <p class="features-tail">Plus a toolbar that stays put while you scroll, keyboard shortcuts, shift-click selection and filter chips. Works in Chrome, Edge and Firefox on a computer.</p>
       </details>
       <p class="pro-line">Everything above is free. <a href="/pricing/">Pro</a> adds cleanup rules that run for you, 90-day undo, pinning and saved views, from $3.99 a month.</p>
     </div>
@@ -854,7 +878,7 @@ last_modified_at: 2026-09-16
               <span class="plus" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-phone">
-              Not yet. It runs in Chrome or Firefox on a computer: Windows, Mac, Linux or ChromeOS. Your Watch Later is the same list everywhere, so whatever you clear on the computer is gone from the YouTube app on your phone too.
+              Not yet. It runs in Chrome, Edge or Firefox on a computer: Windows, Mac, Linux or ChromeOS. Your Watch Later is the same list everywhere, so whatever you clear on the computer is gone from the YouTube app on your phone too.
             </div>
           </div>
 
@@ -915,6 +939,16 @@ last_modified_at: 2026-09-16
             </button>
             <div class="faq-a" id="faq-5">
               Your YouTube data — titles, video IDs, channels, your playlists, your account — never leaves your browser. What does leave: each install carries a random identifier that is not linked to you or your Google account, and after you delete, unlike or move videos, or sync, the extension sends that identifier and your lifetime counts — videos deleted, likes removed, videos moved, bulk operations run, the size of your Watch Later, and your browser — to tidywl.com. The counts also include Lineups built and saved and the days you opened the dashboard, so opening it sends at most one report a day. Never which videos, never your playlist. There is no setting in the extension to turn this off on Chrome; uninstalling stops it. On Firefox it is the Technical and interaction data toggle under Permissions and data. Records not updated for 12 months are deleted, and counts include deletions made before this version. The extension also fetches a public config file from tidywl.com with no identifiers and no payload. If you subscribe to Pro, it also sends your licence key to tidywl.com to check that the subscription is live. The one flow you trigger yourself: Send to Gemini Notebook sends the video links you selected to Google's Gemini Notebook using your own Google session, because that is the entire point of the feature. Full policy at <a href="/privacy/">tidywl.com/privacy/</a>
+            </div>
+          </div>
+
+          <div class="faq-item" aria-expanded="false">
+            <button class="faq-q" aria-controls="faq-edge">
+              <span>Does TidyWL work in Microsoft Edge?</span>
+              <span class="plus" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-edge">
+              Yes. Watch Later Tidy is on Microsoft Edge Add-ons, so you install it from Edge's own store and Edge keeps it up to date. It is the same extension as the Chrome one. Each store reviews a new version separately, so it can reach Edge a few days before or after Chrome.
             </div>
           </div>
 
