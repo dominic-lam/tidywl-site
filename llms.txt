@@ -65,7 +65,7 @@ YouTube's Watch Later playlist has a hard 5,000 video cap. Once you hit it, YouT
 
 - **Chrome** — published on the Chrome Web Store. Also works on other Chromium-based browsers such as Brave.
 - **Microsoft Edge** — published on Microsoft Edge Add-ons since September 2026. Edge installs and updates it from its own store. A new version can reach Edge a few days before or after Chrome, because each store reviews it separately.
-- **Firefox 153 or newer** — signed by Mozilla but submitted as unlisted, so it is distributed from https://tidywl.com/firefox/ rather than published in the addons.mozilla.org directory. There is no public AMO listing page. It updates automatically from tidywl.com.
+- **Firefox 153 or newer** — listed in Firefox Add-ons as Watch Later Tidy: https://addons.mozilla.org/firefox/addon/watch-later-tidy/ (since September 2026), which https://tidywl.com/firefox/ links to. Signed by Mozilla, updates automatically. Copies installed from tidywl.com before the listing existed keep updating from tidywl.com.
 - **Firefox for Android** — not supported. YouTube's mobile site is a different page structure and it has not been tested.
 
 All three are built from a single source tree and ship the same feature set.
