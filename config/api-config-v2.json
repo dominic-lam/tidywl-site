@@ -158,7 +158,9 @@
       "playerMicroformatRenderer",
       "category"
     ],
-    "musicCategory": "Music"
+    "musicCategory": "Music",
+    "channelIdPath":         ["videoDetails", "channelId"],
+    "channelNamePath":       ["microformat", "playerMicroformatRenderer", "ownerChannelName"]
   },
   "transcriptResponse": {
     "segmentsPath": [
