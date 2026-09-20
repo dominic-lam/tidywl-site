@@ -1,6 +1,21 @@
 {
   "announcements": [
     {
+      "id": "v2.1.0-release",
+      "title": "What's New in v2.1.0",
+      "bullets": [
+        "Clearing out a lot of videos is far quicker. Deleting, and adding to a playlist, used to send one request per video; they now go in groups. Measured on a real account: 126 videos deleted in 31 seconds, where that took about nine minutes before.",
+        "Searching the sidebar is free. The box above the By Channel and By Topic lists, which brings a channel or topic straight up as you type, was part of Pro in 2.0. It now works for everyone.",
+        "List view and Full page: show each video as one row instead of a card, and make the dashboard fill the whole browser window. The dashboard remembers both.",
+        "Playlists you saved from other people now appear in the Playlists menu from any YouTube page, marked Saved with the owner's name. Search them, sort them, or copy their videos into a playlist of your own.",
+        "The delete confirmation says exactly what will happen and puts the count on the red button, and the dialog afterwards shows how many videos you cleared and how many hours of video that was.",
+        "Confirmations work from the keyboard: the keyboard lands on the safe button, Tab stays inside, and Escape closes."
+      ],
+      "type": "info",
+      "created_at": "2026-09-20",
+      "expires_at": "2026-12-20"
+    },
+    {
       "id": "v2.0.0-release",
       "title": "What's New in v2.0.0",
       "bullets": [
