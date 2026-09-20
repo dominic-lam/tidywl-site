@@ -8,8 +8,14 @@
 # update exists — firefox/updates.json does that, and it has to be bumped
 # separately. Nothing errors when the two drift; Firefox installs just quietly
 # stop updating.
+#
+# Since 2.1.0 (2026-09-19) the self-hosted channel is a bridge to the AMO
+# listing: updates.json points at AMO's own signed file, which carries no
+# update_url, so an install that takes it asks AMO from then on. Nothing is
+# served from tidywl.com/firefox/ for 2.1.0 — the 2.0.1 and earlier files stay
+# up for anyone who has not updated yet.
 chrome: "2.0.1"
-firefox: "2.0.1"
+firefox: "2.1.0"
 # Microsoft Edge Add-ons, live since 2026-09-18. Edge has its own build
 # (tidywl/scripts/build-edge-zip.sh) and its own review queue, so it can sit a
 # version ahead of or behind Chrome.

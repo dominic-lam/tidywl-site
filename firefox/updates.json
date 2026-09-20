@@ -3,8 +3,9 @@
     "tidywl@tidywl.com": {
       "updates": [
         {
-          "version": "2.0.1",
-          "update_link": "https://tidywl.com/firefox/tidywl-2.0.1.xpi"
+          "version": "2.1.0",
+          "update_link": "https://addons.mozilla.org/firefox/downloads/file/5042822/watch_later_tidy-2.1.0.xpi",
+          "update_hash": "sha256:92e40f179a4029793dd906e616fb599ccf981da9e2894d0b96d5802196436c7b"
         }
       ]
     }
