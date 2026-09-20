@@ -43,7 +43,7 @@ Step-by-step instructions for every feature are on the [tutorials page](https://
 - [Install and open the dashboard](https://tidywl.com/tutorials/#install)
 - [Sync a playlist](https://tidywl.com/tutorials/#sync)
 - [Search, and filter by tag](https://tidywl.com/tutorials/#search)
-- [By channel, by topic, and the sidebar search (Pro)](https://tidywl.com/tutorials/#breakdown)
+- [By channel, by topic, and the sidebar search](https://tidywl.com/tutorials/#breakdown)
 - [Sort, and group by channel](https://tidywl.com/tutorials/#sort)
 - [Delete videos, or remove likes](https://tidywl.com/tutorials/#delete)
 - [See several playlists at once](https://tidywl.com/tutorials/#merged-view)

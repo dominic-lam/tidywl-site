@@ -14,7 +14,7 @@
 # update_url, so an install that takes it asks AMO from then on. Nothing is
 # served from tidywl.com/firefox/ for 2.1.0 — the 2.0.1 and earlier files stay
 # up for anyone who has not updated yet.
-chrome: "2.0.1"
+chrome: "2.1.0"
 firefox: "2.1.0"
 # Microsoft Edge Add-ons, live since 2026-09-18. Edge has its own build
 # (tidywl/scripts/build-edge-zip.sh) and its own review queue, so it can sit a
