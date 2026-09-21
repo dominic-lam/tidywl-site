@@ -1,0 +1,12 @@
+{
+  "_comment": "Served at https://tidywl.com/config/netflix-config-v1.json. This checked-in copy is the source of truth for what gets uploaded — edit here, then upload, so the repo always shows what is live. Its shape and fallbacks are documented in src/content-scripts/remote-config.js.",
+  "_store_note": "The store address is NOT here. It moved into src/utils/install-store.js on 2026-09-19, because it is fixed for the life of the listing and does not belong behind a file that has to be uploaded first.",
+
+  "version": 1,
+
+  "links": {
+    "discord": "https://discord.gg/natc623GhX",
+    "kofi": "https://ko-fi.com/dominiclam",
+    "email": "support@tidywl.com"
+  }
+}

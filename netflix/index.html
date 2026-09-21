@@ -1,0 +1,305 @@
+---
+layout: netflix
+permalink: /netflix/
+title: "TidyWL for Netflix — custom playlists and a real dashboard for My List"
+description: "A free Chrome extension that opens a full dashboard over Netflix My List: IMDb ratings, runtime and genre on every card, filters, custom playlists, and bulk remove."
+og_image: /assets/netflix-og-image.jpg
+json_ld_app: true
+last_modified_at: 2026-09-20
+
+# One source for the FAQ: the visible list below loops over this, and the
+# layout emits the same items as FAQPage JSON-LD. Editing one edits both.
+# Keep answers self-contained — an assistant quoting one will not have the
+# question's context, let alone the page's.
+#
+# `id` lands on the .faq-item, which is what scripts.html opens when a URL
+# carries a matching hash — so /netflix/#privacy from the extension's About
+# dialog arrives on an open answer rather than a closed row.
+faq:
+  - id: allowed
+    q: "Is this allowed? Does it break Netflix's terms?"
+    a: "TidyWL for Netflix reads and changes your own list through the same endpoints netflix.com itself calls, using the session you are already signed in with. It is doing what you could do by hand in the Netflix web app, faster. It is not a downloader: it never touches video, and Netflix's playback DRM is not involved anywhere. That said, it is an independent extension and Netflix has not reviewed or endorsed it, so use it on your own account and your own judgement."
+  - id: account
+    q: "Do I need an account, a sign-in, or a subscription to TidyWL?"
+    a: "No. There is no TidyWL account, no sign-in, no API key and no payment. You need a Netflix subscription and to be signed in to netflix.com in Chrome — that is the whole requirement. The extension reads nothing when you are not signed in."
+  - id: privacy
+    q: "Does my Netflix data get sent anywhere?"
+    a: "Your list, your titles, your watch state and your playlists stay in your browser. Three requests do leave it, and none of them says anything about you: a public settings file from tidywl.com that everyone receives identically, IMDb's public daily ratings file, and Netflix's numeric title ids sent to Wikidata to find the matching IMDb id. There is no server on our side, no account, and no usage tracking of any kind. The privacy policy at tidywl.com/netflix/privacy/ lists all three request by request."
+  - id: playlists
+    q: "Where do custom playlists live, and what happens if I uninstall?"
+    a: "A playlist is a name and a list of Netflix title ids, stored in Chrome's own sync storage. That means Chrome replicates it to your other signed-in Chrome browsers for free, through Google, not through us — we have no copy. Playlists live inside the extension and are never written to your Netflix account, so nothing you do in TidyWL changes what another person on the account sees. Uninstalling removes everything the extension stored in that browser."
+  - id: phone
+    q: "Does it work on my phone?"
+    a: "No, and no Chrome extension can: Chrome for Android has no extension support at all. TidyWL for Netflix runs on a desktop or laptop in Chrome. Anything you remove from My List there is gone from the Netflix app on your phone too, because it is the same list on Netflix's side."
+  - id: profiles
+    q: "My account has several profiles. Which one does it use?"
+    a: "Whichever profile is active in that tab. Every cached list, every watch state and every custom playlist is stored under that profile's own id, so the kids profile never shows the adult profile's playlists and neither can overwrite the other. Opened on Netflix's 'Who's watching?' screen, before a profile is chosen, the dashboard refuses to open rather than guess."
+---
+
+<!-- ── HERO ──
+     The heading names the feeling, not the feature. The pain this product is
+     actually for is decision paralysis — a list of three hundred saved things
+     and nothing to watch — and the positioning note in the extension repo's
+     CLAUDE.md is explicit that leading with cleanup undersells it and collides
+     with the YouTube product. Bulk remove is real and it is further down. -->
+<section class="nf-hero">
+  <div class="nf-hero-inner">
+    <p class="section-label">Free Chrome extension</p>
+    <h1>Your Netflix My List, <em>finally worth opening</em></h1>
+    <p class="nf-hero-sub">
+      A full dashboard on top of Netflix. IMDb ratings, runtime and genre on every card,
+      filters that cut hundreds of saved titles down to the three you would actually watch
+      tonight — and the custom playlists Netflix has never offered.
+    </p>
+
+    {%- if site.data.netflix.published %}
+    <div class="cta-row">
+      <a class="btn-primary" href="{{ site.data.netflix.store_url }}" target="_blank" rel="noopener">
+        <img src="/assets/chrome-logo.svg" alt="" width="20" height="20">
+        Add to Chrome
+      </a>
+    </div>
+    <p class="nf-install-note">Free, no account. Works in Chrome on a computer.</p>
+    {%- else %}
+    <!-- The listing is uploaded and waiting on review. Saying so is better than
+         a button that lands on Chrome's empty-item shell, and better than a
+         page with no call to action, which reads as abandoned. One value in
+         _data/netflix.yml turns the real button back on. -->
+    <div class="nf-status">
+      <strong>In review at the Chrome Web Store</strong>
+      <span>Version {{ site.data.netflix.version }} is uploaded and waiting on Google. This page will carry the install button the day it is approved.</span>
+    </div>
+    <p class="nf-install-note">Free, no account. Will work in Chrome on a computer.</p>
+    {%- endif %}
+
+    <figure class="nf-shot">
+      <img src="/assets/netflix-dashboard-my-list-dark.webp"
+           alt="The TidyWL dashboard open over Netflix, showing 44 titles as cards with IMDb ratings, runtime and genre tags, a genre breakdown down the left, and a toolbar of sort and filter controls."
+           width="1204" height="984" loading="eager" decoding="async">
+    </figure>
+    <p class="nf-shot-caption">The dashboard, opened over Netflix with Alt+L. Titles are from a test profile.</p>
+  </div>
+</section>
+
+<!-- ── WHAT NETFLIX GIVES YOU, AND WHAT THIS ADDS ──
+     Five rows, Netflix's behaviour against this extension's. Each left-hand
+     line is a thing the Netflix web app genuinely does not do, not a straw
+     man — the whole section stops being persuasive the moment one is wrong. -->
+<section id="what">
+  <div class="section-inner">
+    <p class="section-label">The difference</p>
+    <h2 class="section-heading">Netflix gives you one list. That is the whole feature.</h2>
+
+    <div class="nf-rows">
+      <div class="nf-row">
+        <p class="nf-row-from"><strong>On Netflix:</strong> one flat list, in an order you did not choose and cannot change.</p>
+        <span class="nf-row-arrow" aria-hidden="true">→</span>
+        <p class="nf-row-to"><strong>With TidyWL:</strong> sort by <strong>IMDb rating, runtime, year, title or type</strong> — and see what you have already watched.</p>
+      </div>
+
+      <div class="nf-row">
+        <p class="nf-row-from"><strong>On Netflix:</strong> no folders. Everything you ever saved sits in the same place.</p>
+        <span class="nf-row-arrow" aria-hidden="true">→</span>
+        <p class="nf-row-to"><strong>With TidyWL:</strong> <strong>custom playlists</strong> — Tonight, Under 90 minutes, With the kids — as many as you want.</p>
+      </div>
+
+      <div class="nf-row">
+        <p class="nf-row-from"><strong>On Netflix:</strong> no search inside My List. The bar at the top searches all of Netflix.</p>
+        <span class="nf-row-arrow" aria-hidden="true">→</span>
+        <p class="nf-row-to"><strong>With TidyWL:</strong> <strong>search your own list</strong>, then narrow it by genre, type, maturity or runtime.</p>
+      </div>
+
+      <div class="nf-row">
+        <p class="nf-row-from"><strong>On Netflix:</strong> you cannot tell what is in your list without scrolling all of it.</p>
+        <span class="nf-row-arrow" aria-hidden="true">→</span>
+        <p class="nf-row-to"><strong>With TidyWL:</strong> a <strong>breakdown by genre</strong>, biggest first. Click one to see only those.</p>
+      </div>
+
+      <div class="nf-row">
+        <p class="nf-row-from"><strong>On Netflix:</strong> removing a title is a hover, a menu and a click. One title at a time.</p>
+        <span class="nf-row-arrow" aria-hidden="true">→</span>
+        <p class="nf-row-to"><strong>With TidyWL:</strong> tick as many as you like and <strong>remove them in one run</strong>, with a confirm that names the count.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE THREE TABS ── -->
+<section class="features">
+  <div class="section-inner">
+    <p class="section-label">Inside the dashboard</p>
+    <h2 class="section-heading">Three tabs</h2>
+
+    <div class="nf-tab">
+      <div class="nf-tab-head">
+        <span class="nf-tab-num">Tab one</span>
+        <h3>My List</h3>
+      </div>
+      <p>
+        Your saved titles as a grid you can actually work with. Press Sync once and the whole list
+        is read — including which shows you have finished and which films you left partway —
+        and kept. Opening the dashboard after that makes no requests at all.
+      </p>
+      <ul class="nf-tab-list">
+        <li><strong>IMDb rating on every card</strong>, with runtime, year, seasons and maturity</li>
+        <li><strong>Genre breakdown</strong> down the side, biggest first, click to filter</li>
+        <li><strong>Watched, started, never watched</strong> — as a filter, for films and shows</li>
+        <li><strong>Bulk remove</strong>, with a confirm naming the count and a receipt afterwards</li>
+        <li><strong>Pin</strong> the titles you actually mean to watch, so nothing removes them by accident</li>
+        <li><strong>Export</strong> the list, or just what you filtered to, as CSV or JSON</li>
+      </ul>
+      <figure class="nf-shot">
+        <img src="/assets/netflix-dashboard-bulk-select-dark.webp"
+             alt="The dashboard with several titles ticked and a bulk actions bar showing the number selected."
+             width="1204" height="984" loading="lazy" decoding="async">
+      </figure>
+    </div>
+
+    <!-- No screenshot for Tab 2 on purpose. The only ones that exist were taken
+         before the hover preview panel and the My List bookmark landed, so they
+         show a control that is no longer in the build. A stale screenshot is a
+         promise you cannot keep; the paragraph is honest. Retake and add. -->
+    <div class="nf-tab">
+      <div class="nf-tab-head">
+        <span class="nf-tab-num">Tab two</span>
+        <h3>Search and browse</h3>
+      </div>
+      <p>
+        Netflix's catalogue, searchable and browsable without leaving the dashboard — and with
+        the categories Netflix keeps out of its own genre picker. Around 220 of them,
+        from Mockumentaries to Korean Crime Dramas, sitting behind one menu.
+        Rest the pointer on any result and a panel opens beside it with the synopsis,
+        the cast, the director and the genres.
+      </p>
+      <ul class="nf-tab-list">
+        <li><strong>Search Netflix</strong> by title, and by actor or director</li>
+        <li><strong>Browse by genre</strong>, including the hidden categories</li>
+        <li><strong>IMDb ratings here too</strong>, on search results and genre pages</li>
+        <li><strong>Add to My List</strong> from any card, one title or a whole page of them</li>
+        <li><strong>Or straight into a playlist</strong>, without adding to Netflix at all</li>
+        <li><strong>An honest answer</strong> when Netflix did not recognise what you typed</li>
+      </ul>
+    </div>
+
+    <div class="nf-tab">
+      <div class="nf-tab-head">
+        <span class="nf-tab-num">Tab three</span>
+        <h3>Playlists</h3>
+      </div>
+      <p>
+        The folders Netflix has never given you. Make as many as you like, move or copy titles in
+        from My List or from search, and reorder them. They belong to the Netflix profile you made
+        them on, so the kids profile never sees yours.
+      </p>
+      <ul class="nf-tab-list">
+        <li><strong>Copy</strong> leaves the title in My List; <strong>Move</strong> takes it out</li>
+        <li><strong>Up to 50 playlists</strong> per profile, 500 titles in each</li>
+        <li><strong>Carried between your own Chrome browsers</strong> by Chrome's own sync</li>
+        <li><strong>Nothing is written to your Netflix account</strong> — playlists are yours alone</li>
+      </ul>
+      <figure class="nf-shot">
+        <img src="/assets/netflix-dashboard-playlists-dark.webp"
+             alt="The Playlists tab, showing several custom playlists and the titles inside one of them."
+             width="1204" height="984" loading="lazy" decoding="async">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ── GETTING STARTED ── -->
+<section>
+  <div class="section-inner">
+    <p class="section-label">Getting started</p>
+    <h2 class="section-heading">Three steps, about a minute</h2>
+
+    <div class="nf-steps">
+      <div class="nf-step">
+        <span class="nf-step-n" data-n="1" aria-hidden="true"></span>
+        <h3>Add it to Chrome</h3>
+        <p>Free, and there is no account to make. It only ever runs on netflix.com.</p>
+      </div>
+      <div class="nf-step">
+        <span class="nf-step-n" data-n="2" aria-hidden="true"></span>
+        <h3>Open Netflix and press Alt+L</h3>
+        <p>From any browse page, on any profile. The toolbar button does the same thing if you would rather click.</p>
+      </div>
+      <div class="nf-step">
+        <span class="nf-step-n" data-n="3" aria-hidden="true"></span>
+        <h3>Press Sync, once</h3>
+        <p>It reads your list and your watch state and keeps them. Every time you open it after that, it opens instantly and asks Netflix for nothing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRIVACY ──
+     A summary, and the policy is one link away. Every claim here is one the
+     policy states in full and the code actually does; if one changes, change
+     both. The wording is deliberately specific — "your Netflix data", not
+     "nothing", because three requests do leave the browser and the policy
+     names all three. -->
+<section class="privacy">
+  <div class="section-inner">
+    <p class="section-label">Privacy</p>
+    <h2 class="section-heading">Your Netflix data stays in your browser</h2>
+    <p>
+      There is no TidyWL server, no account and no usage tracking. Your list, your watch state
+      and your playlists are never sent to us, because there is nowhere for them to be sent.
+    </p>
+
+    <ul class="nf-privacy-points">
+      <li><strong>No sign-in, no account, no API key.</strong> It reads Netflix through the session you are already signed in with.</li>
+      <li><strong>No analytics, no usage report, no identifier.</strong> Nothing counts what you do.</li>
+      <li><strong>Three requests leave your browser, none about you:</strong> a public settings file, IMDb's public ratings file, and numeric title ids sent to Wikidata to look up IMDb ids.</li>
+      <li><strong>Everything is stored per Netflix profile</strong>, and uninstalling removes it.</li>
+    </ul>
+
+    <p class="note"><a href="/netflix/privacy/">Read the full privacy policy</a> — it lists every request, every stored key, and why each permission is asked for.</p>
+  </div>
+</section>
+
+<!-- ── FAQ ──
+     Rendered from page.faq, which the layout also emits as FAQPage JSON-LD.
+     One source, so the answer Google quotes is the answer on the page. -->
+<section>
+  <div class="faq">
+    <p class="section-label">Questions</p>
+    <h2 class="section-heading">Before you install</h2>
+    <div class="faq-list">
+      {%- for item in page.faq %}
+      <div class="faq-item" id="{{ item.id }}" aria-expanded="false">
+        <button class="faq-q" type="button" aria-controls="faq-{{ item.id }}">
+          <span>{{ item.q }}</span>
+          <span class="plus" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a" id="faq-{{ item.id }}">{{ item.a }}</div>
+      </div>
+      {%- endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── CLOSER ──
+     Not .privacy, although it looks like it: that class paints --bg-alt, and
+     two of them in a row would merge the privacy panel and this into one long
+     band with a heading floating in the middle of it. -->
+<section class="nf-closer">
+  <div class="section-inner">
+    <h2 class="section-heading">Built because My List was where things went to be forgotten</h2>
+    <p>
+      TidyWL started as an extension for YouTube's Watch Later, for the same reason: a list you
+      keep adding to and never take anything out of. Netflix's version of the problem is worse,
+      because there is not even a search box.
+      <a href="/">The Watch Later one is here</a> if that is the list that is out of hand.
+    </p>
+
+    {%- if site.data.netflix.published %}
+    <div class="cta-row nf-cta-tail">
+      <a class="btn-primary" href="{{ site.data.netflix.store_url }}" target="_blank" rel="noopener">
+        <img src="/assets/chrome-logo.svg" alt="" width="20" height="20">
+        Add to Chrome
+      </a>
+    </div>
+    {%- endif %}
+  </div>
+</section>

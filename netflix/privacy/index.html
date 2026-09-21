@@ -1,0 +1,247 @@
+---
+layout: netflix
+permalink: /netflix/privacy/
+title: "Privacy policy — TidyWL for Netflix"
+description: "What TidyWL for Netflix reads, what it keeps in your browser, the three public requests that leave it, and why each permission is asked for. Plain language, no hedging."
+last_modified_at: 2026-09-20
+---
+
+<!-- ── PRIVACY POLICY ──
+     This is the page the Chrome Web Store listing points at, so every sentence
+     in it has to be true of the shipped build, not of the plan.
+
+     EVERY CLAIM HERE WAS READ OUT OF THE CODE, not remembered:
+       - the three outbound requests are the only `fetch()` calls in
+         src/background/service-worker.js, and the content scripts make none
+         except to Netflix's own endpoints
+       - the storage keys are the ones in src/content-scripts/storage.js and
+         src/content-scripts/playlist-storage.js
+       - the permissions are manifest.json's
+     If any of those files change, this page changes with them. A privacy
+     policy that has drifted from the build is worse than none: it is a
+     statement the store holds you to. -->
+
+<section class="blog-wrap">
+  <h1 class="blog-title">Privacy policy</h1>
+  <p class="blog-subtitle">What stays in your browser, the three things that leave it, and why.</p>
+
+  <div class="post-body">
+    <p class="nf-policy-meta">
+      Applies to <strong>TidyWL for Netflix</strong> version {{ site.data.netflix.version }} and later, on Google Chrome.
+      Published {{ site.data.netflix.privacy_updated | date: "%-d %B %Y" }}.
+      This is a different extension from <a href="/privacy/">TidyWL for YouTube</a>, which has its own policy and behaves differently —
+      that one sends a usage report and supports a paid tier. This one does neither.
+    </p>
+
+    <h2>The short version</h2>
+    <ul>
+      <li><strong>Your Netflix data stays in your browser.</strong> Your My List, the titles in it, what you have watched, your searches and your custom playlists are never sent to us. There is no TidyWL server for them to be sent to.</li>
+      <li><strong>There is no account, no sign-in and no identifier.</strong> Nothing marks your copy of the extension as yours. Nothing counts what you do with it. There is no analytics of any kind.</li>
+      <li><strong>Three requests leave your browser, and none of them is about you.</strong> A public settings file from tidywl.com, IMDb's public ratings file, and Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id. Each one is described in full below.</li>
+      <li><strong>Custom playlists use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. We never see them.</li>
+      <li><strong>Everything is stored per Netflix profile</strong>, and uninstalling the extension removes it from that browser.</li>
+      <li><strong>Nothing is sold, shared or used for advertising.</strong> There is nothing to sell and nobody to share it with.</li>
+    </ul>
+
+    <h2>What it reads on Netflix</h2>
+    <p>
+      TidyWL for Netflix works by calling netflix.com's own endpoints with the session you are already signed in
+      with, exactly as the Netflix web app does when you use it by hand. It cannot read anything when you are not
+      signed in to Netflix in that browser, and it never asks you for your Netflix password — it never sees one.
+    </p>
+    <p>It reads, and only when you ask it to:</p>
+    <ul>
+      <li><strong>Your My List</strong> — each title's id, name, type, year, runtime, maturity rating, genres and box-art address. Read when you press <em>Sync</em>.</li>
+      <li><strong>Your watch state</strong> — for each film, how far into it you are; for each show, whether Netflix records it as never watched, started or completed. Read as part of the same Sync.</li>
+      <li><strong>Which profile is active</strong> — its id, name and language, so everything can be filed under the right profile.</li>
+      <li><strong>Search results and genre catalogues</strong> — only for a search you typed or a genre you opened.</li>
+      <li><strong>A title's details on hover</strong> — its synopsis, cast, director or creators, genres, runtime and a still image, asked for once per title when you rest the pointer on a card, and kept for the rest of that page's life so a second look costs nothing.</li>
+    </ul>
+    <p>
+      Your search terms go to Netflix, on your own signed-in session, in the same way that typing them into
+      Netflix's own search box would. They do not go anywhere else.
+    </p>
+    <p>
+      <strong>It writes two things to Netflix, and only on your instruction:</strong> adding a title to My List, and
+      removing one. Both are the same operations the Netflix web app performs; both are confirmed before a batch runs.
+      Custom playlists are <em>not</em> written to Netflix — see below.
+    </p>
+
+    <h2>What stays in your browser</h2>
+    <p>
+      Everything above is cached in the extension's own storage so that the dashboard can sort, filter and search
+      hundreds of titles without asking Netflix again. <strong>Opening the dashboard makes no network requests at
+      all</strong> — reading Netflix is what the Sync button is for. This is a privacy property as much as a speed
+      one, and it is also why the extension does not quietly re-read your account in the background.
+    </p>
+    <p>Held in <code>chrome.storage.local</code>, which never leaves the machine:</p>
+
+    <div class="nf-policy-table-wrap">
+      <table class="nf-policy-table">
+        <thead>
+          <tr><th>Key</th><th>What is in it</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>tidywl_titles_&lt;profile&gt;</code></td><td>Your My List: id, title, type, year, runtime, maturity, genres, box-art address.</td></tr>
+          <tr><td><code>tidywl_last_synced_&lt;profile&gt;</code></td><td>When you last pressed Sync.</td></tr>
+          <tr><td><code>tidywl_show_states_&lt;profile&gt;</code></td><td>Per show: never watched, started, or completed.</td></tr>
+          <tr><td><code>tidywl_first_seen_&lt;profile&gt;</code></td><td>The first date this extension saw each title in your list. Netflix does not record when you added something, so this is the extension's own note, and it only starts from your first Sync.</td></tr>
+          <tr><td><code>tidywl_imdb</code></td><td>The IMDb id and rating found for each Netflix title, so the lookup is not repeated. This one is not filed per profile, because a title's IMDb rating is the same whoever is watching, and the key holds no indication of whose list a title came from.</td></tr>
+          <tr><td><code>tidywl_remote_config</code></td><td>A copy of the public settings file described below.</td></tr>
+          <tr><td><code>tidywl_dashboard_view</code></td><td>Which tab you last had open.</td></tr>
+          <tr><td><code>tidywl_mobile_interest_clicks</code></td><td>A count of how many times you pressed the <em>Sync to mobile</em> button, which does not exist yet. <strong>It is never sent anywhere.</strong> It is a note to the developer, readable only by you, in the extension's popup.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      <strong>Every key that holds something about your account carries your Netflix profile's id.</strong> There is
+      deliberately no shared fallback key: an adult profile's list cannot appear under the kids profile on the same
+      account, because there is no place for the two to meet. If the extension cannot tell which profile is active,
+      it stores nothing. The three keys without a profile in their name — the settings copy, the tab you last used,
+      and the IMDb ratings — hold nothing that belongs to a profile.
+    </p>
+
+    <h2>Custom playlists, and Chrome's sync</h2>
+    <p>
+      A custom playlist is a name you typed and a list of Netflix title ids. Nothing else — no titles, no images, no
+      descriptions. Those are looked up again each time the playlist is shown.
+    </p>
+    <p>
+      Playlists are held in <code>chrome.storage.sync</code> rather than local storage, under
+      <code>tidywl_playlists_&lt;profile&gt;</code> and <code>tidywl_playlist_&lt;profile&gt;_&lt;id&gt;</code>.
+      <strong>That is Chrome's own sync, which means Google replicates them between the Chrome browsers you are
+      signed in to</strong>, under Google's terms and Google's encryption, exactly as it does your bookmarks. It is a
+      feature — your playlists follow you to your other computer for free — but it is also the one place data about
+      your use of this extension leaves the machine, so it is worth stating plainly:
+    </p>
+    <ul>
+      <li><strong>It goes to Google, not to us.</strong> We have no copy, no key and no way to read it.</li>
+      <li><strong>It is playlist names and numeric title ids.</strong> Name them whatever you like — a playlist name is text you wrote, and it travels with the ids.</li>
+      <li><strong>You can turn it off</strong> in Chrome's own settings, under <em>You and Google → Sync and Google services</em>, by excluding extensions from sync. Playlists then stay on that machine.</li>
+    </ul>
+    <p>
+      Playlists are never written to your Netflix account. Nobody else on the account sees them, and Netflix is not
+      told they exist.
+    </p>
+
+    <h2>The three requests that leave your browser</h2>
+    <p>
+      These are every outbound request the extension makes other than to netflix.com. There are no others; they are
+      the only three <code>fetch</code> calls in the extension's background worker. None carries an identifier, a
+      cookie, an account, or anything that distinguishes your copy from anyone else's.
+    </p>
+
+    <h3>1. A public settings file, from tidywl.com</h3>
+    <p>
+      The extension fetches <code>https://tidywl.com/config/netflix-config-v1.json</code>, at most once every six
+      hours and only when you press Sync — never when the dashboard opens. It holds a handful of values, such as the
+      support links shown in the About dialog, so that small things can be corrected without shipping a new version.
+    </p>
+    <p>
+      The request carries no identifier and no payload; every install receives the same bytes. Nothing in the file is
+      executed as code, and the extension works normally with the file deleted, unreachable or malformed — every
+      value in it has a built-in default. Like any web request it reaches our host with your IP address, which is
+      not recorded against anything and is not retained.
+    </p>
+
+    <h3>2. IMDb's public ratings file</h3>
+    <p>
+      To show an IMDb rating on a card, the extension downloads
+      <code>https://datasets.imdbws.com/title.ratings.tsv.gz</code> — IMDb's own daily public dataset, about 8.6MB,
+      covering every title IMDb rates. It is downloaded at most once every twelve hours, kept in the browser, and
+      searched <em>in your browser</em> for the ids you need.
+    </p>
+    <p>
+      The important consequence: <strong>IMDb is never told which titles you have.</strong> The extension asks for
+      the whole file, exactly as anyone else does, and does the matching itself. IMDb sees a download, not a request
+      about you.
+    </p>
+
+    <h3>3. Netflix title ids, to Wikidata</h3>
+    <p>
+      IMDb's file is keyed by IMDb id, and Netflix's titles are not. To bridge the two the extension queries
+      <code>https://query.wikidata.org/sparql</code>, Wikidata's public query service, with a list of
+      <strong>Netflix's numeric title ids</strong> — up to 250 at a time — and asks which IMDb id each corresponds to.
+    </p>
+    <p>
+      What Wikidata receives is a list of numbers and the extension's name. Not your profile, not your account, not
+      the titles' names, not an identifier of any kind, and nothing that says the list is a personal one rather than
+      any other set of ids. Wikidata's own privacy policy governs what Wikimedia does with the request.
+    </p>
+    <p>
+      <strong>When requests 2 and 3 happen:</strong> when you press Sync, for the titles in your list, and when a
+      page of search or genre results is drawn, for the titles on it. Both are answered from the browser's own copy
+      once a title has been looked up, so the same title is never asked about twice. There is no switch to turn
+      ratings off in this version; if that matters to you, say so and it will be added.
+    </p>
+
+    <h2>What the extension does not do</h2>
+    <ul>
+      <li><strong>No usage report.</strong> Nothing counts your syncs, your removals, your searches or your sessions. The TidyWL extension for YouTube does send counts like these; this one has no such code and no endpoint to send them to.</li>
+      <li><strong>No identifier.</strong> Your install is not given a random id, or any other id.</li>
+      <li><strong>No account, no licence, no payment.</strong> There is no paid tier in this extension, so there is nothing to check and nobody to check it with.</li>
+      <li><strong>No third-party analytics, tag manager, advertising pixel or session recorder.</strong> None, anywhere, including on this page.</li>
+      <li><strong>No reading of other sites.</strong> It runs on netflix.com and nowhere else.</li>
+      <li><strong>No video.</strong> It does not download, record, decrypt or touch Netflix video in any way.</li>
+    </ul>
+
+    <h2>The permissions it asks for, and why</h2>
+    <div class="nf-policy-table-wrap">
+      <table class="nf-policy-table">
+        <thead>
+          <tr><th>Permission</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>storage</code></td><td>The cache and the playlists described above. Nothing else uses it.</td></tr>
+          <tr><td><code>https://*.netflix.com/*</code></td><td>The product. The dashboard is injected into Netflix pages and reads your list through Netflix's own endpoints.</td></tr>
+          <tr><td><code>https://datasets.imdbws.com/*</code></td><td>The IMDb ratings file. It has to be a host permission because IMDb's server sends no cross-origin headers, so an ordinary page request for it is refused.</td></tr>
+          <tr><td><code>https://tidywl.com/*</code></td><td>The public settings file.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Wikidata does not appear in that list because it does not need to: its server permits cross-origin requests,
+      so no host permission is required to reach it. It is described above all the same, because what a request
+      carries matters more than whether Chrome made us ask for it.
+    </p>
+
+    <h2>How long anything is kept, and how to remove it</h2>
+    <ul>
+      <li><strong>The cache</strong> stays until you Sync again, which replaces it, or until you uninstall.</li>
+      <li><strong>The IMDb ratings file</strong> is replaced when it is more than twelve hours old.</li>
+      <li><strong>Playlists</strong> stay until you delete them.</li>
+      <li><strong>Uninstalling</strong> removes everything the extension stored in that browser. If you want to be certain your playlists are gone from your <em>other</em> signed-in Chrome browsers as well, delete them in the dashboard before you uninstall, so the deletion is what syncs.</li>
+    </ul>
+    <p>
+      We hold nothing, so there is nothing for you to ask us to delete, correct or export — and no request you could
+      make that we could act on. That is a consequence of the design rather than a policy: there is no database.
+    </p>
+
+    <h2>Children</h2>
+    <p>
+      The extension is not directed at children and collects nothing from anyone. A Netflix account may have a kids
+      profile, and the dashboard works on one; everything it reads there stays on the machine under that profile's
+      own id, exactly as for any other profile.
+    </p>
+
+    <h2>Changes to this policy</h2>
+    <p>
+      If the extension's behaviour changes, this page changes with it before the new version ships, and the date at
+      the top is updated. Past versions are in this site's public git history.
+    </p>
+
+    <h2>Who to ask</h2>
+    <p>
+      Email <a href="mailto:support@tidywl.com">support@tidywl.com</a>, or ask in the
+      <a href="https://discord.gg/natc623GhX" target="_blank" rel="noopener">Discord</a>. TidyWL is made by one
+      person, Dominic Lam, and is not a company.
+    </p>
+    <p>
+      TidyWL for Netflix is an independent extension. It is not affiliated with, endorsed by or sponsored by
+      Netflix, IMDb, Wikimedia or Google.
+    </p>
+
+    <p><a href="/netflix/">← Back to TidyWL for Netflix</a></p>
+  </div>
+</section>

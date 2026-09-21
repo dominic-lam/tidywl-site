@@ -1,0 +1,55 @@
+  <!-- ── SITE HEADER, /netflix/ ──
+       A copy of header.html with three things changed, and they are the reason
+       it is a copy rather than a parameter:
+
+       1. The wordmark goes to /netflix/, not /. The site root is the YouTube
+          product's sales page; sending someone who arrived here from the
+          Netflix listing there on a logo click is the single easiest way to
+          lose them.
+       2. The nav is this product's, plus one link back to the YouTube one.
+          Pricing, Firefox, Blog and Tutorials are all about Watch Later.
+       3. The CTA renders only when site.data.netflix.published is true. Until
+          the listing is approved its URL serves Chrome's empty shell, and a
+          primary button that lands on a blank page is worse than no button.
+
+       Everything else — the drawer, the breakpoint, the toggle's position — is
+       header.html's, deliberately, so the two products feel like one site. -->
+  <header class="site-header">
+    <button class="site-menu-btn" type="button" id="siteMenuBtn"
+            aria-expanded="false" aria-controls="siteMenu" aria-label="Menu">
+      <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <a class="site-header-home" href="/netflix/" aria-label="TidyWL for Netflix home">
+      <img src="/assets/netflix-icon128.png" alt="" class="site-header-icon" width="28" height="28">
+      <span class="site-header-wordmark">TidyWL<span class="nf-wordmark-sub"> for Netflix</span></span>
+    </a>
+
+    <nav class="site-nav" id="siteMenu" aria-label="Main">
+      <a href="/netflix/#what"{% if page.url == '/netflix/' %} aria-current="page"{% endif %}>What it does</a>
+      <a href="/netflix/privacy/"{% if page.url == '/netflix/privacy/' %} aria-current="page"{% endif %}>Privacy</a>
+      <a href="/">For YouTube</a>
+
+      <!-- Drawer only, hidden above 640px — the footer's links, within reach on
+           a phone without scrolling a whole page to find them. -->
+      <div class="site-nav-more">
+        <a href="https://discord.gg/natc623GhX" target="_blank" rel="noopener">Discord</a>
+        <a href="mailto:support@tidywl.com">Email support</a>
+      </div>
+
+      {%- if site.data.netflix.published %}
+      <a class="site-nav-cta site-nav-cta--drawer" href="{{ site.data.netflix.store_url }}" target="_blank" rel="noopener">Add to Chrome</a>
+      {%- endif %}
+    </nav>
+
+    {%- if site.data.netflix.published %}
+    <a class="site-nav-cta site-nav-cta--bar" href="{{ site.data.netflix.store_url }}" target="_blank" rel="noopener"><span class="cta-long">Add to Chrome</span><span class="sr-only"> </span><span class="cta-short">Install</span></a>
+    {%- endif %}
+
+    {% include theme-toggle.html %}
+  </header>

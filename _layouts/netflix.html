@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description }}">
+
+  <link rel="canonical" href="{{ site.url }}{{ page.url | replace:'index.html','' }}">
+  {%- if page.robots %}
+  <meta name="robots" content="{{ page.robots }}">
+  {%- endif %}
+  <link rel="icon" type="image/png" href="/assets/netflix-icon128.png">
+
+  <!-- Open Graph. The image is this product's, not the Watch Later one: a
+       shared card would put a YouTube screenshot under a Netflix link. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page.title }}">
+  <meta property="og:description" content="{{ page.description }}">
+  <meta property="og:image" content="{{ site.url }}{{ page.og_image | default: '/assets/netflix-og-image.jpg' }}">
+  <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page.title }}">
+  <meta name="twitter:description" content="{{ page.description }}">
+  <meta name="twitter:image" content="{{ site.url }}{{ page.og_image | default: '/assets/netflix-og-image.jpg' }}">
+
+  {% include fonts.html %}
+  {% include theme-init.html %}
+
+  {%- comment -%}
+    SoftwareApplication for the landing page, opted into with `json_ld_app: true`.
+
+    Deliberately carries NO aggregateRating and NO review, per the site-wide
+    rule in CLAUDE.md: every rating this site could quote comes from the Chrome
+    Web Store, and Google's review-snippet guidelines forbid aggregating
+    another site's ratings. There is nothing to quote here yet in any case.
+
+    It is its own entity, not a variant of the Watch Later app's — a different
+    product, a different URL, a different operating requirement. Only the
+    publisher is shared, by @id, so the two never drift into two Organizations.
+  {%- endcomment -%}
+  {%- if page.json_ld_app %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TidyWL for Netflix",
+    "url": "{{ site.url }}/netflix/",
+    "applicationCategory": "BrowserApplication",
+    "applicationSubCategory": "Chrome Extension",
+    "operatingSystem": "Chrome",
+    "softwareVersion": "{{ site.data.netflix.version }}",
+    "description": {{ page.description | jsonify }},
+    "inLanguage": "en",
+    "screenshot": "{{ site.url }}/assets/netflix-dashboard-my-list-dark.webp",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Dominic Lam",
+      "url": "https://github.com/dominic-lam"
+    },
+    "publisher": { "@id": "{{ site.url }}/#organization" }
+  }
+  </script>
+  {%- endif %}
+
+  {%- if page.faq %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {% for item in page.faq %}
+      {
+        "@type": "Question",
+        "name": {{ item.q | jsonify }},
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": {{ item.a | jsonify }}
+        }
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  }
+  </script>
+  {%- endif %}
+
+{% include schema-organization.html %}
+
+  {% include styles.html %}
+  {% include styles-blog.html %}
+  {% include styles-netflix.html %}
+</head>
+<body class="nf">
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  {% include header-netflix.html %}
+
+  <main id="main">
+    {{ content }}
+  </main>
+
+  {% include footer-netflix.html %}
+
+  {% include scripts.html %}
+
+</body>
+</html>

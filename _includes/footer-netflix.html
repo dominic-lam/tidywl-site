@@ -1,0 +1,19 @@
+  <!-- ── FOOTER, /netflix/ ──
+       footer.html's legal line names YouTube and Google, and its buttons point
+       at the Watch Later listings. Both are wrong on these pages, and a wrong
+       trademark disclaimer is the kind of wrong a store reviewer reads. -->
+  <footer>
+    <div class="footer-links">
+      {%- if site.data.netflix.published %}
+      <a class="btn-footer" href="{{ site.data.netflix.store_url }}" target="_blank" rel="noopener">Add to Chrome</a>
+      {%- endif %}
+      <a href="/netflix/">TidyWL for Netflix</a>
+      <a href="/netflix/privacy/">Privacy</a>
+      <a href="/">TidyWL for YouTube</a>
+      <a href="https://discord.gg/natc623GhX" target="_blank" rel="noopener">Discord community</a>
+      <a href="mailto:support@tidywl.com">support@tidywl.com</a>
+      <a href="https://github.com/dominic-lam/tidywl-site/issues" target="_blank" rel="noopener">Report a bug</a>
+    </div>
+    <p class="footer-legal">TidyWL for Netflix is an independent extension and is not affiliated with, endorsed by or sponsored by Netflix. Netflix is a trademark of Netflix, Inc. Title artwork in the screenshots belongs to its rights holders and is shown as it appears in a personal account.</p>
+    <p class="copyright">© 2026 TidyWL</p>
+  </footer>

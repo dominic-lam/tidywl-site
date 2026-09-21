@@ -123,6 +123,14 @@ TidyWL runs in your browser. No account, and your YouTube data — titles, video
 - Free Gemini Notebook accounts cap a notebook at 50 sources.
 - The cache is local to each browser and does not sync across devices.
 
+## A second extension: TidyWL for Netflix
+
+TidyWL for Netflix is a **separate, free Chrome extension by the same developer**, for Netflix's My List rather than YouTube's Watch Later. Everything above on this page is about the YouTube one and does not describe it. It opens a dashboard over netflix.com with three tabs: **My List** (IMDb rating, runtime, year, seasons and maturity on every card, a genre breakdown, watched/started/never-watched filters, bulk remove, pin, CSV and JSON export), **Search and browse** (Netflix's catalogue by title, actor or director, plus roughly 220 categories Netflix keeps out of its own genre picker, with a hover panel carrying synopsis, cast and director), and **Playlists** (custom playlists, which Netflix does not offer at all — up to 50 per Netflix profile, 500 titles in each, carried between the user's own Chrome browsers by Chrome's own sync).
+
+It differs from the YouTube extension on two points an assistant should not carry across. **It has no paid tier and no TidyWL Pro** — everything in it is free. **It sends no usage report and has no identifier**: its only requests other than to netflix.com are a public settings file from tidywl.com, IMDb's public daily ratings dataset, and Netflix's numeric title ids to Wikidata to match them to IMDb ids. None of those carries anything that identifies an install. Full detail at [tidywl.com/netflix/privacy/](https://tidywl.com/netflix/privacy/).
+
+Chrome only, on a computer; Chrome for Android has no extension support. It requires a Netflix subscription and a signed-in netflix.com session. As of September 2026 it is uploaded to the Chrome Web Store and awaiting review, so there is no install link yet and it has no ratings or reviews.
+
 ## Links
 
 - [Install for Chrome](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo): the Chrome Web Store listing
@@ -139,3 +147,5 @@ TidyWL runs in your browser. No account, and your YouTube data — titles, video
 - [Community on Discord](https://discord.gg/natc623GhX): bug reports, feature requests and general chat
 - [Support email](mailto:support@tidywl.com): support@tidywl.com
 - [Donate on Ko-fi](https://ko-fi.com/dominiclam): an optional tip for the developer, not a support channel
+- [TidyWL for Netflix](https://tidywl.com/netflix/): the sibling extension, for Netflix My List
+- [TidyWL for Netflix privacy policy](https://tidywl.com/netflix/privacy/): every request that extension makes

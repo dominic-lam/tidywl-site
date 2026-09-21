@@ -1,0 +1,250 @@
+  <style>
+    /* ── /netflix/ ──
+       Loaded after styles.html, so everything here either overrides a token or
+       adds a component the Watch Later pages do not have. No layout, type
+       scale or dark-mode machinery is redefined: the two products are one
+       site, and the only thing that should feel different is the red.
+
+       WHY THE TOKENS SIT ON body.nf AND NOT :root
+       styles.html defines the palette three times — once on :root, once under
+       prefers-color-scheme: dark, once under :root[data-theme="dark"]. A
+       Netflix override on :root would have to beat all three and would leak
+       into the Watch Later pages the moment someone reused a partial. On body
+       it cannot: custom properties declared on body win over the ones body
+       inherits from :root, for body and everything inside it, which is the
+       whole page. The two dark rules below mirror styles.html's structure
+       exactly so the manual toggle still beats the OS preference. */
+
+    body.nf {
+      /* Netflix red. Kept as the accent by decision (ARCHITECTURE → Naming in
+         the extension repo) — the product sits on top of Netflix and any other
+         colour reads as a third party's chrome.
+
+         The three-red split is styles.html's, re-measured for this hue:
+           --accent       #e50914  large type and marks only
+           --accent-fill  #e50914  white on it is 4.79:1, over the 4.5 minimum,
+                                   so the brand red can carry a button here
+                                   where YouTube's #e63935 (4.20:1) could not
+           --accent-text  #b00710  small red text on the cream ground, 6.66:1 */
+      --accent: #e50914;
+      --accent-hover: #c00812;
+      --accent-fill: #e50914;
+      --accent-fill-hover: #b00710;
+      --accent-text: #b00710;
+      --feature-icon-bg: rgba(229, 9, 20, 0.08);
+      --shadow-accent: 0 24px 80px -32px rgba(229, 9, 20, 0.22);
+      --highlight-bg: linear-gradient(180deg, #fff2f2 0%, #ffffff 100%);
+      --highlight-border: #e8a3a6;
+      /* The screenshots are the dashboard's near-black on a dark blue ground.
+         On cream they need a frame; in dark they need a ground lighter than
+         the page or they sink into it, the same problem styles.html solves for
+         the Watch Later tour. */
+      --nf-shot-bg: #ffffff;
+      --nf-shot-border: #d9cdbd;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) body.nf {
+        --accent-text: #ff7a70;
+        --highlight-bg: linear-gradient(180deg, #2c1a1b 0%, #24211e 100%);
+        --highlight-border: #4d2427;
+        --nf-shot-bg: #302c29;
+        --nf-shot-border: #4f4843;
+      }
+    }
+
+    :root[data-theme="dark"] body.nf {
+      --accent-text: #ff7a70;
+      --highlight-bg: linear-gradient(180deg, #2c1a1b 0%, #24211e 100%);
+      --highlight-border: #4d2427;
+      --nf-shot-bg: #302c29;
+      --nf-shot-border: #4f4843;
+    }
+
+    /* The wordmark carries the product. Two words of 0.78rem next to a 1.05rem
+       "TidyWL" rather than a second line, because the header is a flex row and
+       a second line would move the icon off centre. */
+    .nf-wordmark-sub {
+      font-size: 0.78rem; font-weight: 500; color: var(--text-muted);
+      letter-spacing: 0;
+    }
+
+    /* ── HERO ── */
+    .nf-hero { padding: 56px 24px 72px; text-align: center; }
+    .nf-hero-inner { max-width: 760px; margin: 0 auto; }
+    .nf-hero h1 {
+      font-size: clamp(2rem, 5.5vw, 3.15rem);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1.08;
+      margin-bottom: 18px; text-wrap: balance;
+    }
+    .nf-hero h1 em { font-style: normal; color: var(--accent); }
+    .nf-hero-sub {
+      font-size: clamp(1rem, 2.2vw, 1.15rem);
+      color: var(--text-secondary); line-height: 1.6;
+      max-width: 580px; margin: 0 auto 30px; text-wrap: pretty;
+    }
+
+    /* ── INSTALL STATE ──
+       While the listing is a draft this is what stands where the button goes.
+       It says the true thing rather than nothing, because a landing page with
+       no call to action at all reads as abandoned. */
+    .nf-status {
+      display: inline-flex; flex-direction: column; align-items: center; gap: 6px;
+      border: 1px dashed var(--border-strong); border-radius: 12px;
+      padding: 18px 26px; background: var(--bg-card);
+      max-width: 460px;
+    }
+    .nf-status strong { font-size: 1rem; font-weight: 700; }
+    .nf-status span { font-size: 0.9rem; color: var(--text-muted); line-height: 1.55; text-wrap: pretty; }
+
+    .nf-install-note {
+      font-size: 0.85rem; color: var(--text-subtle);
+      margin-top: 16px; line-height: 1.6;
+    }
+
+    /* ── SCREENSHOT FRAME ── */
+    .nf-shot {
+      margin: 40px auto 0; max-width: 1000px;
+      background: var(--nf-shot-bg);
+      border: 1px solid var(--nf-shot-border);
+      border-radius: 14px; padding: 10px;
+      box-shadow: var(--shadow-accent);
+    }
+    .nf-shot img { display: block; width: 100%; height: auto; border-radius: 8px; }
+    .nf-shot-caption {
+      font-size: 0.82rem; color: var(--text-subtle);
+      text-align: center; margin-top: 12px; line-height: 1.55;
+    }
+
+    /* ── PAIN → FIX ROWS ──
+       Netflix's behaviour on the left, this extension's on the right. Each row
+       is a grid so the two halves line up down the column; under 720px they
+       stack and the arrow rotates, because a right-pointing arrow above a
+       block that sits below it is a lie about direction. */
+    .nf-rows { display: grid; gap: 14px; }
+    .nf-row {
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px;
+      align-items: center;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px 22px;
+    }
+    .nf-row-from { color: var(--text-muted); font-size: 0.95rem; line-height: 1.55; }
+    .nf-row-to { font-size: 0.95rem; line-height: 1.55; color: var(--text); }
+    .nf-row-to strong { font-weight: 700; }
+    .nf-row-arrow { color: var(--accent); font-size: 1.2rem; line-height: 1; flex: none; }
+
+    @media (max-width: 720px) {
+      .nf-row { grid-template-columns: 1fr; gap: 10px; text-align: left; }
+      /* justify-self is not decoration, it is the fix for a real bug. A grid
+         item stretches to its column by default, so in one column the arrow
+         was a 406px-wide box with the glyph at its left edge. rotate() turns
+         about the centre, which threw the glyph ~200px UP, out of the card and
+         over the section heading. Shrunk to its content, it rotates in place. */
+      .nf-row-arrow { transform: rotate(90deg); justify-self: start; }
+    }
+
+    /* ── THE THREE TABS ──
+       One block per tab: heading, what it is for, and a shot where one exists.
+       Tab 2 has no shot on purpose — the only screenshots of it predate the
+       hover panel and the My List bookmark, and a picture of a control that
+       is no longer there is worse than a paragraph. */
+    /* Full width of .section-inner, so the tab headings line up with the
+       section heading above them; the prose inside caps itself instead. A
+       centred 900px block under a 1040px heading reads as a mistake. */
+    .nf-tab + .nf-tab { margin-top: 64px; }
+    .nf-tab-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+    .nf-tab-num {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent-text);
+    }
+    .nf-tab h3 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; }
+    .nf-tab > p { color: var(--text-secondary); font-size: 1rem; line-height: 1.65; text-wrap: pretty; max-width: 720px; }
+    .nf-tab-list {
+      list-style: none; margin: 18px 0 0; padding: 0;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px 32px;
+    }
+    .nf-tab-list li {
+      font-size: 0.93rem; color: var(--text-muted); line-height: 1.55;
+      padding-left: 20px; position: relative;
+    }
+    .nf-tab-list li::before {
+      content: ""; position: absolute; left: 0; top: 0.55em;
+      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    }
+    .nf-tab-list strong { color: var(--text); font-weight: 600; }
+
+    /* ── GETTING STARTED ── */
+    .nf-steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .nf-step {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px 22px;
+    }
+    .nf-step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .nf-step p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; }
+    /* The digit is drawn, never written — styles.html's rule, so a text
+       extractor reads "Add it to Chrome" and not "1Add it to Chrome". */
+    .nf-step-n {
+      display: grid; place-items: center;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--accent-fill); color: #fff;
+      font-size: 0.8rem; font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    /* ── PRIVACY PANEL ── */
+    /* .privacy .note paints its text --text-muted, which the link inherited:
+       the one link out of this section did not look like one. */
+    .privacy .note a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+
+    .nf-privacy-points {
+      list-style: none; margin: 22px 0 0; padding: 0;
+      text-align: left; display: grid; gap: 12px;
+    }
+    .nf-privacy-points li {
+      font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;
+      padding-left: 26px; position: relative;
+    }
+    .nf-privacy-points li::before {
+      content: ""; position: absolute; left: 1px; top: 0.35em;
+      width: 11px; height: 6px;
+      border-left: 2px solid var(--accent);
+      border-bottom: 2px solid var(--accent);
+      transform: rotate(-45deg);
+    }
+
+    /* ── CLOSER ──
+       .privacy's centring without its --bg-alt ground, so it does not merge
+       into the privacy panel directly above it. */
+    .nf-closer { text-align: center; }
+    .nf-closer .section-inner { max-width: 640px; }
+    .nf-closer .section-heading { margin-bottom: 16px; text-wrap: balance; }
+    .nf-closer p { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; text-wrap: pretty; }
+    .nf-closer p a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+    .nf-cta-tail { margin-top: 26px; margin-bottom: 0; }
+
+    /* ── PRIVACY POLICY PAGE ──
+       It reuses .blog-wrap / .post-body from styles-blog.html. Only the two
+       things that page needs and a post does not are here. */
+    .nf-policy-meta {
+      font-size: 0.85rem; color: var(--text-subtle); line-height: 1.6;
+      padding-bottom: 20px; margin-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nf-policy-table-wrap { overflow-x: auto; }
+    .nf-policy-table {
+      width: 100%; border-collapse: collapse; font-size: 0.9rem;
+      margin-top: 4px;
+    }
+    .nf-policy-table th, .nf-policy-table td {
+      text-align: left; vertical-align: top;
+      padding: 10px 14px 10px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      line-height: 1.5;
+    }
+    .nf-policy-table th { font-weight: 700; color: var(--text); white-space: nowrap; }
+    .nf-policy-table td { color: var(--text-muted); }
+    .nf-policy-table code { white-space: nowrap; }
+  </style>
