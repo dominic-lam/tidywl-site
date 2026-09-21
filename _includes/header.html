@@ -43,6 +43,14 @@
       <a href="/blog/"{% if page.url contains '/blog/' %} aria-current="page"{% endif %}>Blog</a>
       <a href="/tutorials/"{% if page.url == '/tutorials/' %} aria-current="page"{% endif %}>Tutorials</a>
 
+      <!-- The other product. It is a separate extension with its own listing,
+           so it reads "For Netflix" rather than joining the content pages
+           unlabelled. The aria-current test never fires today — /netflix/ has
+           its own header, because this one's CTA points at the YouTube listing
+           and its footer names Google in the legal line — but it is here so the
+           link behaves like its siblings if that ever changes. -->
+      <a href="/netflix/"{% if page.url contains '/netflix/' %} aria-current="page"{% endif %}>For Netflix</a>
+
       <!-- Drawer only, hidden above 640px. These are the footer's links, put
            here so a phone visitor does not have to scroll a long page to its
            bottom to reach Privacy or the Discord. They stay OUT of the desktop

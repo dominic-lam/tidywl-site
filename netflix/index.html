@@ -5,7 +5,7 @@ title: "TidyWL for Netflix — custom playlists and a real dashboard for My List
 description: "A free Chrome extension that opens a full dashboard over Netflix My List: IMDb ratings, runtime and genre on every card, filters, custom playlists, and bulk remove."
 og_image: /assets/netflix-og-image.jpg
 json_ld_app: true
-last_modified_at: 2026-09-20
+last_modified_at: 2026-09-21
 
 # One source for the FAQ: the visible list below loops over this, and the
 # layout emits the same items as FAQPage JSON-LD. Editing one edits both.
@@ -24,7 +24,7 @@ faq:
     a: "No. There is no TidyWL account, no sign-in, no API key and no payment. You need a Netflix subscription and to be signed in to netflix.com in Chrome — that is the whole requirement. The extension reads nothing when you are not signed in."
   - id: privacy
     q: "Does my Netflix data get sent anywhere?"
-    a: "Your list, your titles, your watch state and your playlists stay in your browser. Three requests do leave it, and none of them says anything about you: a public settings file from tidywl.com that everyone receives identically, IMDb's public daily ratings file, and Netflix's numeric title ids sent to Wikidata to find the matching IMDb id. There is no server on our side, no account, and no usage tracking of any kind. The privacy policy at tidywl.com/netflix/privacy/ lists all three request by request."
+    a: "Your list, your titles, your watch state and your playlists stay in your browser. Three requests do leave it, and none of them says anything about you: a public settings file from tidywl.com that everyone receives identically, IMDb's public daily ratings file, and Netflix's numeric title ids sent to Wikidata to find the matching IMDb id. There is no server on our side, no account, and no usage tracking of any kind. The privacy policy at tidywl.com/netflix/privacy/ lists all three, request by request."
   - id: playlists
     q: "Where do custom playlists live, and what happens if I uninstall?"
     a: "A playlist is a name and a list of Netflix title ids, stored in Chrome's own sync storage. That means Chrome replicates it to your other signed-in Chrome browsers for free, through Google, not through us — we have no copy. Playlists live inside the extension and are never written to your Netflix account, so nothing you do in TidyWL changes what another person on the account sees. Uninstalling removes everything the extension stored in that browser."
@@ -100,13 +100,13 @@ faq:
       <div class="nf-row">
         <p class="nf-row-from"><strong>On Netflix:</strong> no folders. Everything you ever saved sits in the same place.</p>
         <span class="nf-row-arrow" aria-hidden="true">→</span>
-        <p class="nf-row-to"><strong>With TidyWL:</strong> <strong>custom playlists</strong> — Tonight, Under 90 minutes, With the kids — as many as you want.</p>
+        <p class="nf-row-to"><strong>With TidyWL:</strong> <strong>custom playlists</strong> — Tonight, Under 90 minutes, With the kids — up to 50 of them.</p>
       </div>
 
       <div class="nf-row">
         <p class="nf-row-from"><strong>On Netflix:</strong> no search inside My List. The bar at the top searches all of Netflix.</p>
         <span class="nf-row-arrow" aria-hidden="true">→</span>
-        <p class="nf-row-to"><strong>With TidyWL:</strong> <strong>search your own list</strong>, then narrow it by genre, type, maturity or runtime.</p>
+        <p class="nf-row-to"><strong>With TidyWL:</strong> <strong>search your own list</strong>, then narrow it by genre, type, IMDb rating, runtime or watch state.</p>
       </div>
 
       <div class="nf-row">
@@ -206,7 +206,7 @@ faq:
         <h3>Playlists</h3>
       </div>
       <p>
-        The folders Netflix has never given you. Make as many as you like, move or copy titles in
+        The folders Netflix has never given you. Make up to fifty of them, move or copy titles in
         from My List or from search, and reorder them. They belong to the Netflix profile you made
         them on, so the kids profile never sees yours.
       </p>
@@ -268,9 +268,9 @@ faq:
 
     <ul class="nf-privacy-points">
       <li><strong>No sign-in, no account, no API key.</strong> It reads Netflix through the session you are already signed in with.</li>
-      <li><strong>No analytics, no usage report, no identifier.</strong> Nothing counts what you do.</li>
+      <li><strong>No analytics, no usage report, no identifier.</strong> Nothing about your use is sent anywhere.</li>
       <li><strong>Three requests leave your browser, none about you:</strong> a public settings file, IMDb's public ratings file, and numeric title ids sent to Wikidata to look up IMDb ids.</li>
-      <li><strong>Everything is stored per Netflix profile</strong>, and uninstalling removes it.</li>
+      <li><strong>Your list, watch state, pins and playlists are stored per Netflix profile</strong>, and uninstalling removes everything.</li>
     </ul>
 
     <p class="note"><a href="/netflix/privacy/">Read the full privacy policy</a> — it lists every request, every stored key, and why each permission is asked for.</p>

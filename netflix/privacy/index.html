@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, the three public requests that leave it, and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-09-20
+last_modified_at: 2026-09-21
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -36,10 +36,10 @@ last_modified_at: 2026-09-20
     <h2>The short version</h2>
     <ul>
       <li><strong>Your Netflix data stays in your browser.</strong> Your My List, the titles in it, what you have watched, your searches and your custom playlists are never sent to us. There is no TidyWL server for them to be sent to.</li>
-      <li><strong>There is no account, no sign-in and no identifier.</strong> Nothing marks your copy of the extension as yours. Nothing counts what you do with it. There is no analytics of any kind.</li>
+      <li><strong>There is no account, no sign-in and no identifier.</strong> Nothing marks your copy of the extension as yours. Nothing about your use is sent anywhere. There is no analytics of any kind.</li>
       <li><strong>Three requests leave your browser, and none of them is about you.</strong> A public settings file from tidywl.com, IMDb's public ratings file, and Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id. Each one is described in full below.</li>
-      <li><strong>Custom playlists use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. We never see them.</li>
-      <li><strong>Everything is stored per Netflix profile</strong>, and uninstalling the extension removes it from that browser.</li>
+      <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. We never see them.</li>
+      <li><strong>Everything about your account is stored per Netflix profile</strong>, and uninstalling the extension removes everything it stored in that browser.</li>
       <li><strong>Nothing is sold, shared or used for advertising.</strong> There is nothing to sell and nobody to share it with.</li>
     </ul>
 
@@ -89,20 +89,28 @@ last_modified_at: 2026-09-20
           <tr><td><code>tidywl_imdb</code></td><td>The IMDb id and rating found for each Netflix title, so the lookup is not repeated. This one is not filed per profile, because a title's IMDb rating is the same whoever is watching, and the key holds no indication of whose list a title came from.</td></tr>
           <tr><td><code>tidywl_remote_config</code></td><td>A copy of the public settings file described below.</td></tr>
           <tr><td><code>tidywl_dashboard_view</code></td><td>Which tab you last had open.</td></tr>
+          <tr><td><code>tidywl_imdb_dump_fetched_at</code></td><td>When IMDb's ratings file was last downloaded, so it is not downloaded again for twelve hours. A timestamp and nothing else.</td></tr>
           <tr><td><code>tidywl_mobile_interest_clicks</code></td><td>A count of how many times you pressed the <em>Sync to mobile</em> button, which does not exist yet. <strong>It is never sent anywhere.</strong> It is a note to the developer, readable only by you, in the extension's popup.</td></tr>
         </tbody>
       </table>
     </div>
 
     <p>
+      One more thing is held locally and is not a key: the browser's own Cache Storage keeps a copy of
+      IMDb's ratings file under <code>tidywl-imdb-dump</code> for twelve hours, so that a page of results does not
+      pull 8.6MB again. It is IMDb's public file, identical for everyone, and it says nothing about you.
+    </p>
+
+    <p>
       <strong>Every key that holds something about your account carries your Netflix profile's id.</strong> There is
       deliberately no shared fallback key: an adult profile's list cannot appear under the kids profile on the same
       account, because there is no place for the two to meet. If the extension cannot tell which profile is active,
-      it stores nothing. The three keys without a profile in their name — the settings copy, the tab you last used,
-      and the IMDb ratings — hold nothing that belongs to a profile.
+      it stores nothing. The keys without a profile in their name — the settings copy, the tab you last used, the IMDb
+      ratings, that file's download time, and the count of Sync-to-mobile presses — hold nothing that belongs to a
+      profile.
     </p>
 
-    <h2>Custom playlists, and Chrome's sync</h2>
+    <h2>Custom playlists, pins, and Chrome's sync</h2>
     <p>
       A custom playlist is a name you typed and a list of Netflix title ids. Nothing else — no titles, no images, no
       descriptions. Those are looked up again each time the playlist is shown.
@@ -110,15 +118,18 @@ last_modified_at: 2026-09-20
     <p>
       Playlists are held in <code>chrome.storage.sync</code> rather than local storage, under
       <code>tidywl_playlists_&lt;profile&gt;</code> and <code>tidywl_playlist_&lt;profile&gt;_&lt;id&gt;</code>.
+      Two smaller things sit there with them, for the same reason — so that they follow you to your other computer:
+      <code>tidywl_pinned_&lt;profile&gt;</code>, the title ids you have pinned so that a bulk remove cannot take them,
+      and <code>tidywl_archive_playlist_&lt;profile&gt;</code>, which playlist you chose as the archive — a single id.
       <strong>That is Chrome's own sync, which means Google replicates them between the Chrome browsers you are
       signed in to</strong>, under Google's terms and Google's encryption, exactly as it does your bookmarks. It is a
-      feature — your playlists follow you to your other computer for free — but it is also the one place data about
+      feature — your playlists follow you to your other computer for free — but it is also the only place data about
       your use of this extension leaves the machine, so it is worth stating plainly:
     </p>
     <ul>
       <li><strong>It goes to Google, not to us.</strong> We have no copy, no key and no way to read it.</li>
-      <li><strong>It is playlist names and numeric title ids.</strong> Name them whatever you like — a playlist name is text you wrote, and it travels with the ids.</li>
-      <li><strong>You can turn it off</strong> in Chrome's own settings, under <em>You and Google → Sync and Google services</em>, by excluding extensions from sync. Playlists then stay on that machine.</li>
+      <li><strong>It is playlist names and numeric title ids.</strong> Name them whatever you like — a playlist name is text you wrote, and it travels with the ids. A pin is an id alone.</li>
+      <li><strong>You can turn it off</strong> in Chrome's own settings, under <em>You and Google → Sync and Google services</em>, by excluding extensions from sync. Playlists and pins then stay on that machine.</li>
     </ul>
     <p>
       Playlists are never written to your Netflix account. Nobody else on the account sees them, and Netflix is not
@@ -210,7 +221,7 @@ last_modified_at: 2026-09-20
     <ul>
       <li><strong>The cache</strong> stays until you Sync again, which replaces it, or until you uninstall.</li>
       <li><strong>The IMDb ratings file</strong> is replaced when it is more than twelve hours old.</li>
-      <li><strong>Playlists</strong> stay until you delete them.</li>
+      <li><strong>Playlists</strong> stay until you delete them, and <strong>pins</strong> until you unpin them.</li>
       <li><strong>Uninstalling</strong> removes everything the extension stored in that browser. If you want to be certain your playlists are gone from your <em>other</em> signed-in Chrome browsers as well, delete them in the dashboard before you uninstall, so the deletion is what syncs.</li>
     </ul>
     <p>
