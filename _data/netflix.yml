@@ -1,19 +1,19 @@
 # TidyWL for Netflix — the few facts the /netflix/ pages read.
 #
-# `published` is the switch. While it is false the install buttons do not
-# render anywhere: the store item exists as a draft, its public URL answers
-# 200 but serves Chrome's empty shell (/detail/empty-title/<id>), so a button
-# pointing at it would be a dead button on the primary call to action.
+# `published` is the switch — the header CTA, the hero buttons and the footer
+# link all come back from this one value. It was flipped on 2026-09-21, the day
+# Google approved the listing.
 #
-# On the day the listing goes live, set `published: true` and nothing else —
-# the header CTA, the hero buttons and the footer link all come back from this
-# one value.
+# It exists because a draft item's public URL answers 200 while serving Chrome's
+# empty shell (/detail/empty-title/<id>), so before approval an install button
+# would have been a dead button on the primary call to action. Set it back to
+# false if the listing is ever pulled.
 #
 # Everything else on those pages that could go stale (version, policy date) is
 # here for the same reason: one place to change, not five.
 
-published: false
-store_url: https://chromewebstore.google.com/detail/gbgdgeamachehbegdghnhpkiebahmafm
+published: true
+store_url: https://chromewebstore.google.com/detail/tidywl-for-netflix/gbgdgeamachehbegdghnhpkiebahmafm
 version: 0.1.0
 
 # The date the privacy policy last changed, rendered on the page and used as
