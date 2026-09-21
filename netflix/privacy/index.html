@@ -232,8 +232,16 @@ last_modified_at: 2026-09-20
     </p>
 
     <h2>Who to ask</h2>
+    <!-- email_off / email_on are Cloudflare's own opt-out from Email Address
+         Obfuscation, which is on for this zone and rewrites every mailto on
+         the site. Read back live on 2026-09-20: it had replaced the address
+         here with "[email protected]" and a script that decodes it, so the
+         ONE contact route on a privacy policy was unreadable to anything
+         without JavaScript — which includes a reviewer fetching the page and
+         most crawlers. Everywhere else on the site the obfuscation is a fair
+         trade; on this page it is not. Do not remove these comments. -->
     <p>
-      Email <a href="mailto:support@tidywl.com">support@tidywl.com</a>, or ask in the
+      Email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on-->, or ask in the
       <a href="https://discord.gg/natc623GhX" target="_blank" rel="noopener">Discord</a>. TidyWL is made by one
       person, Dominic Lam, and is not a company.
     </p>
