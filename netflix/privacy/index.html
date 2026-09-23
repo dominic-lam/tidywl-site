@@ -2,8 +2,8 @@
 layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
-description: "What TidyWL for Netflix reads, what it keeps in your browser, the four public requests that leave it, and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-09-22
+description: "What TidyWL for Netflix reads, what it keeps in your browser, the four public requests and the one usage report that leave it, and why each permission is asked for. Plain language, no hedging."
+last_modified_at: 2026-09-23
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -11,9 +11,13 @@ last_modified_at: 2026-09-22
      in it has to be true of the shipped build, not of the plan.
 
      EVERY CLAIM HERE WAS READ OUT OF THE CODE, not remembered:
-       - the four outbound requests are the only `fetch()` calls in
+       - the five outbound requests are the only `fetch()` calls in
          src/background/service-worker.js, and the content scripts make none
          except to Netflix's own endpoints
+       - the usage report's fields, caps and rules are
+         src/utils/usage-utils.js, and what the server keeps is the
+         tidywl-api Worker's netflix_* tables — the contract for both is
+         docs/claude/PLAN-data-collection.md in the extension repo
        - the storage keys are the ones in src/content-scripts/storage.js and
          src/content-scripts/playlist-storage.js
        - the permissions are manifest.json's
@@ -23,21 +27,25 @@ last_modified_at: 2026-09-22
 
 <section class="blog-wrap">
   <h1 class="blog-title">Privacy policy</h1>
-  <p class="blog-subtitle">What stays in your browser, the four things that leave it, and why.</p>
+  <p class="blog-subtitle">What stays in your browser, the five things that leave it, and why.</p>
 
   <div class="post-body">
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version {{ site.data.netflix.version }} and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_updated | date: "%-d %B %Y" }}.
+      Updated 23 September 2026 for version 0.2.0, which adds a usage report: versions before 0.2.0 sent nothing
+      about your use anywhere, and from 0.2.0 on the extension sends the counts described below.
       This is a different extension from <a href="/privacy/">TidyWL for YouTube</a>, which has its own policy and behaves differently —
-      that one sends a usage report and supports a paid tier. This one does neither.
+      that one also supports a paid tier. This one does not.
     </p>
 
     <h2>The short version</h2>
     <ul>
-      <li><strong>Your Netflix data stays in your browser.</strong> Your My List, the titles in it, what you have watched, your searches and your custom playlists are never sent to us. There is no TidyWL server for them to be sent to.</li>
-      <li><strong>There is no account, no sign-in and no identifier.</strong> Nothing marks your copy of the extension as yours. Nothing about your use is sent anywhere. There is no analytics of any kind.</li>
-      <li><strong>Four requests leave your browser, and none of them is about you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id, with a title's name when its id finds nothing; and, for a title Wikidata cannot match at all, its name sent to IMDb's search. Each one is described in full below.</li>
+      <li><strong>Your Netflix data stays in your browser.</strong> Your My List, the titles in it, what you have watched, your searches and your custom playlists are never sent to us.</li>
+      <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist, or open the dashboard for the first time in a day, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
+      <li><strong>There is no switch in the extension to turn this off.</strong> Uninstalling stops it, and records not updated for 12 months are deleted.</li>
+      <li><strong>There is no account and no sign-in.</strong> The identifier is random, made in your browser, and linked to nothing — not your Netflix account, not a profile, not your email.</li>
+      <li><strong>Four other requests leave your browser, and none of them is about you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id, with a title's name when its id finds nothing; and, for a title Wikidata cannot match at all, its name sent to IMDb's search. Each one is described in full below.</li>
       <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. We never see them.</li>
       <li><strong>Everything about your account is stored per Netflix profile</strong>, and uninstalling the extension removes everything it stored in that browser.</li>
       <li><strong>Nothing is sold, shared or used for advertising.</strong> There is nothing to sell and nobody to share it with.</li>
@@ -70,9 +78,11 @@ last_modified_at: 2026-09-22
     <h2>What stays in your browser</h2>
     <p>
       Everything above is cached in the extension's own storage so that the dashboard can sort, filter and search
-      hundreds of titles without asking Netflix again. <strong>Opening the dashboard makes no network requests at
-      all</strong> — reading Netflix is what the Sync button is for. This is a privacy property as much as a speed
-      one, and it is also why the extension does not quietly re-read your account in the background.
+      hundreds of titles without asking Netflix again. <strong>Opening the dashboard never asks Netflix for
+      anything</strong> — reading Netflix is what the Sync button is for. This is a privacy property as much as a speed
+      one, and it is also why the extension does not quietly re-read your account in the background. The one request
+      that opening it can make is the usage report, to tidywl.com, at most once a day and only when a count has
+      changed; it carries no title and nothing from your account.
     </p>
     <p>Held in <code>chrome.storage.local</code>, which never leaves the machine:</p>
 
@@ -88,9 +98,13 @@ last_modified_at: 2026-09-22
           <tr><td><code>tidywl_first_seen_&lt;profile&gt;</code></td><td>The first date this extension saw each title in your list. Netflix does not record when you added something, so this is the extension's own note, and it only starts from your first Sync.</td></tr>
           <tr><td><code>tidywl_imdb</code></td><td>The IMDb id and rating found for each Netflix title, so the lookup is not repeated. This one is not filed per profile, because a title's IMDb rating is the same whoever is watching, and the key holds no indication of whose list a title came from.</td></tr>
           <tr><td><code>tidywl_remote_config</code></td><td>A copy of the public settings file described below.</td></tr>
-          <tr><td><code>tidywl_dashboard_view</code></td><td>Which tab you last had open.</td></tr>
+          <tr><td><code>tidywl_dashboard_view</code></td><td>Whether you last had the dashboard full-page or as a panel.</td></tr>
           <tr><td><code>tidywl_imdb_dump_fetched_at</code></td><td>When IMDb's ratings file was last downloaded, so it is not downloaded again for twelve hours. A timestamp and nothing else.</td></tr>
-          <tr><td><code>tidywl_mobile_interest_clicks</code></td><td>A count of how many times you pressed the <em>Sync to mobile</em> button, which does not exist yet. <strong>It is never sent anywhere.</strong> It is a note to the developer, readable only by you, in the extension's popup.</td></tr>
+          <tr><td><code>tidywl_mobile_interest_clicks</code></td><td>A count of how many times you pressed the <em>Sync to mobile</em> button, which does not exist yet. You can read it in the extension's popup. <strong>Since version 0.2.0 it is sent</strong>, as one of the usage report's counts — it is how the developer learns whether mobile sync is wanted.</td></tr>
+          <tr><td><code>tidywl_install_id</code></td><td>The random identifier the usage report carries. Made once, in your browser; linked to nothing.</td></tr>
+          <tr><td><code>tidywl_usage</code></td><td>The usage report's other counts, listed field by field below.</td></tr>
+          <tr><td><code>tidywl_usage_open_day</code></td><td>The last day the dashboard was counted as opened, so it is counted at most once a day. Never sent.</td></tr>
+          <tr><td><code>tidywl_usage_sent</code></td><td>The counts as they stood at the last report that arrived, so an unchanged report is not sent again. Never sent.</td></tr>
         </tbody>
       </table>
     </div>
@@ -105,9 +119,10 @@ last_modified_at: 2026-09-22
       <strong>Every key that holds something about your account carries your Netflix profile's id.</strong> There is
       deliberately no shared fallback key: an adult profile's list cannot appear under the kids profile on the same
       account, because there is no place for the two to meet. If the extension cannot tell which profile is active,
-      it stores nothing. The keys without a profile in their name — the settings copy, the tab you last used, the IMDb
-      ratings, that file's download time, and the count of Sync-to-mobile presses — hold nothing that belongs to a
-      profile.
+      it stores nothing. The keys without a profile in their name — the settings copy, the dashboard's size, the IMDb
+      ratings, that file's download time, the count of Sync-to-mobile presses and the four usage-report keys — hold
+      nothing that belongs to a profile. The usage counts are added up across every profile that used the extension
+      in that browser, and never say which.
     </p>
 
     <h2>Custom playlists, pins, and Chrome's sync</h2>
@@ -123,8 +138,8 @@ last_modified_at: 2026-09-22
       and <code>tidywl_archive_playlist_&lt;profile&gt;</code>, which playlist you chose as the archive — a single id.
       <strong>That is Chrome's own sync, which means Google replicates them between the Chrome browsers you are
       signed in to</strong>, under Google's terms and Google's encryption, exactly as it does your bookmarks. It is a
-      feature — your playlists follow you to your other computer for free — but it is also the only place data about
-      your use of this extension leaves the machine, so it is worth stating plainly:
+      feature — your playlists follow you to your other computer for free — but it is also the one place anything
+      you made in this extension leaves the machine, so it is worth stating plainly:
     </p>
     <ul>
       <li><strong>It goes to Google, not to us.</strong> We have no copy, no key and no way to read it.</li>
@@ -136,11 +151,12 @@ last_modified_at: 2026-09-22
       told they exist.
     </p>
 
-    <h2>The four requests that leave your browser</h2>
+    <h2>The five requests that leave your browser</h2>
     <p>
       These are every outbound request the extension makes other than to netflix.com. There are no others; they are
-      the only four <code>fetch</code> calls in the extension's background worker. None carries an identifier, a
-      cookie, an account, or anything that distinguishes your copy from anyone else's.
+      the only five <code>fetch</code> calls in the extension's background worker. The first four carry no
+      identifier, no cookie, no account, and nothing that distinguishes your copy from anyone else's. The fifth, the
+      usage report, carries the random identifier described with it — and nothing else about you.
     </p>
 
     <h3>1. A public settings file, from tidywl.com</h3>
@@ -216,10 +232,71 @@ last_modified_at: 2026-09-22
       and it will be added.
     </p>
 
+    <h3>5. A usage report, to tidywl.com</h3>
+    <p>
+      From version 0.2.0, each install carries a random identifier, made in your browser the first time a report is
+      sent. It is not derived from, linked to, or stored alongside your Netflix account, a profile, your email or
+      anything else about you, and it is not shown anywhere in the extension. Reinstalling makes a new one.
+    </p>
+    <p>
+      Whenever one of your lifetime counts has changed, the extension sends that identifier and the counts to
+      <code>https://tidywl.com/api/netflix/installs</code>. It checks on each Netflix page load, after a Sync, after a
+      removal, and the first time you open the dashboard on a given day. The report is exactly this, and nothing else:
+    </p>
+
+    <div class="nf-policy-table-wrap">
+      <table class="nf-policy-table">
+        <thead>
+          <tr><th>Field</th><th>What it is</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>identifier</td><td>The random install ID described above.</td></tr>
+          <tr><td>open_days</td><td>On how many days you have opened the dashboard, ever. It goes up by one at most once a day, however many times you open it that day.</td></tr>
+          <tr><td>syncs</td><td>How many times you have pressed Sync and it completed.</td></tr>
+          <tr><td>list_size</td><td>How many titles were in your My List the last time it was read — the latest number, not a total, and not which profile's list.</td></tr>
+          <tr><td>removed</td><td>How many titles you have removed from My List with the extension, ever — one by one, in bulk, or by moving them to a playlist.</td></tr>
+          <tr><td>removal_runs</td><td>How many removals you have run — one per batch, whatever its size.</td></tr>
+          <tr><td>added</td><td>How many titles you have added to My List with the extension, ever, from search, a category, or an imported file.</td></tr>
+          <tr><td>searches</td><td>How many searches you have run in the Search tab. Not what you searched for.</td></tr>
+          <tr><td>genres_opened</td><td>How many categories you have opened in the Search tab. Not which ones.</td></tr>
+          <tr><td>playlists_made</td><td>How many playlists you have created by hand.</td></tr>
+          <tr><td>playlist_adds</td><td>How many titles you have copied or moved into a playlist.</td></tr>
+          <tr><td>pins</td><td>How many titles you have pinned.</td></tr>
+          <tr><td>imports</td><td>How many files you have imported into My List or Playlists.</td></tr>
+          <tr><td>exports</td><td>How many files you have exported.</td></tr>
+          <tr><td>mobile_clicks</td><td>How many times you have pressed <em>Sync to mobile</em>, the same number the popup shows you. It includes presses from before version 0.2.0.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      <strong>Never sent:</strong> a title, a Netflix or IMDb id, what you searched for, a category's name or id, a
+      playlist's name or contents, a profile's name, id or how many profiles there are, a rating, your watch state,
+      the time you did anything, the extension's settings, or an IP address the extension has read. The report has no
+      field that could hold any of these, and the server refuses a report carrying anything it does not expect, so
+      none can be sent by mistake.
+    </p>
+    <p>
+      <strong>Days opened is a number, not a diary.</strong> The report carries how many days, never which days, what
+      time or for how long. The server does note the date each report arrives; see
+      <em>How long anything is kept</em>.
+    </p>
+    <p>
+      <strong>There is no timer and no install beacon.</strong> A report is sent only when a count has changed. An
+      install that has never done anything counted above sends nothing at all, and an install that is idle sends
+      nothing while it is idle. If a report cannot be delivered it is not retried or stored; the same counts simply go
+      the next time one of the moments above comes round.
+    </p>
+    <p>
+      <strong>Why:</strong> to know how the extension is actually used — how many people open it in a week, which of
+      its three tabs they use, how large a My List gets, and whether anyone wants mobile sync enough to press a button
+      for it — which decides what gets built next. Store reviews come from a self-selected few; this is the only other
+      signal. The numbers are not sold, not shared with anyone, and not used for advertising.
+    </p>
+
     <h2>What the extension does not do</h2>
     <ul>
-      <li><strong>No usage report.</strong> Nothing counts your syncs, your removals, your searches or your sessions. The TidyWL extension for YouTube does send counts like these; this one has no such code and no endpoint to send them to.</li>
-      <li><strong>No identifier.</strong> Your install is not given a random id, or any other id.</li>
+      <li><strong>No record of what you watch, list or search for.</strong> The usage report above counts how often you did things, never what they were done to.</li>
       <li><strong>No account, no licence, no payment.</strong> There is no paid tier in this extension, so there is nothing to check and nobody to check it with.</li>
       <li><strong>No third-party analytics, tag manager, advertising pixel or session recorder.</strong> None, anywhere, including on this page.</li>
       <li><strong>No reading of other sites.</strong> It runs on netflix.com and nowhere else.</li>
@@ -237,7 +314,7 @@ last_modified_at: 2026-09-22
           <tr><td><code>https://*.netflix.com/*</code></td><td>The product. The dashboard is injected into Netflix pages and reads your list through Netflix's own endpoints.</td></tr>
           <tr><td><code>https://datasets.imdbws.com/*</code></td><td>The IMDb ratings file. It has to be a host permission because IMDb's server sends no cross-origin headers, so an ordinary page request for it is refused.</td></tr>
           <tr><td><code>https://v3.sg.media-imdb.com/*</code></td><td>IMDb's title search, request 4 above. A host permission for the same reason as the ratings file: IMDb's server sends no cross-origin headers.</td></tr>
-          <tr><td><code>https://tidywl.com/*</code></td><td>The public settings file.</td></tr>
+          <tr><td><code>https://tidywl.com/*</code></td><td>The public settings file, and the usage report.</td></tr>
         </tbody>
       </table>
     </div>
@@ -252,16 +329,42 @@ last_modified_at: 2026-09-22
       <li><strong>The cache</strong> stays until you Sync again, which replaces it, or until you uninstall.</li>
       <li><strong>The IMDb ratings file</strong> is replaced when it is more than twelve hours old.</li>
       <li><strong>Playlists</strong> stay until you delete them, and <strong>pins</strong> until you unpin them.</li>
-      <li><strong>Uninstalling</strong> removes everything the extension stored in that browser. If you want to be certain your playlists are gone from your <em>other</em> signed-in Chrome browsers as well, delete them in the dashboard before you uninstall, so the deletion is what syncs.</li>
+      <li><strong>The usage report's record</strong> is kept on our server as described below, and deleted after 12 months without a report.</li>
+      <li><strong>Uninstalling</strong> removes everything the extension stored in that browser, and stops the usage report. If you want to be certain your playlists are gone from your <em>other</em> signed-in Chrome browsers as well, delete them in the dashboard before you uninstall, so the deletion is what syncs.</li>
     </ul>
     <p>
-      We hold nothing, so there is nothing for you to ask us to delete, correct or export — and no request you could
-      make that we could act on. That is a consequence of the design rather than a policy: there is no database.
+      <strong>What our server keeps.</strong> One record per install, on a server we run at tidywl.com — a Cloudflare
+      Worker with a Cloudflare D1 database, the same one that serves TidyWL for YouTube, in separate tables. It keeps
+      the highest value it has seen for each count and the latest My List size, and three dates — the day only, never a
+      time: the day your install's first report arrived, the day its latest one did, and the latest day one of the
+      counts for something you did (a sync, a removal, an addition, a search, a category, a playlist, a pin, an import
+      or an export) went up. Once a day the server also adds every install's figures up into daily totals — how many
+      installs reported in the last week, how many were new, how many did something — kept in tables that name no
+      install, and so kept after the records they were added up from expire. <strong>A record that has not been updated
+      for 12 months is deleted</strong>; before deletion its install, removal and addition counts are added to a single
+      running total, and after deletion nothing about that install remains.
+    </p>
+    <p>
+      The server does not keep request logs, does not read or store the IP address your report arrives from, and has
+      no error-tracking service attached. Cloudflare, which fronts the site, rate-limits the endpoint per address at
+      its edge; that happens in Cloudflare's infrastructure under Cloudflare's own policies, and nothing about the
+      address reaches the server or its database.
+    </p>
+    <p>
+      <strong>How to stop it.</strong> There is no setting in the extension to turn the report off; uninstalling stops
+      it, and the record then expires after 12 months. We chose not to add a switch rather than add one and design
+      around people flipping it; that trade-off is ours, and this page says so plainly.
+    </p>
+    <p>
+      Because the record is linked to nothing that identifies you, there is no way for us to find yours if you ask —
+      so we cannot look it up, export it or delete it on request. Expiry is how it is deleted. Everything else the
+      extension holds is in your browser, where uninstalling removes it.
     </p>
 
     <h2>Children</h2>
     <p>
-      The extension is not directed at children and collects nothing from anyone. A Netflix account may have a kids
+      The extension is not directed at children and collects no personal information from anyone — the usage report
+      is counts and a random identifier, the same for a kids profile as for any other. A Netflix account may have a kids
       profile, and the dashboard works on one; everything it reads there stays on the machine under that profile's
       own id, exactly as for any other profile.
     </p>

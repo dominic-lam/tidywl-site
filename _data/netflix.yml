@@ -19,4 +19,4 @@ version: 0.1.0
 # The date the privacy policy last changed, rendered on the page and used as
 # its `last_modified_at`. Bump it when the policy's substance changes — not
 # for a typo, per the freshness rule in CLAUDE.md.
-privacy_updated: 2026-09-22
+privacy_updated: 2026-09-23
