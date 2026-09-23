@@ -2,7 +2,7 @@
 layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
-description: "What TidyWL for Netflix reads, what it keeps in your browser, the three public requests that leave it, and why each permission is asked for. Plain language, no hedging."
+description: "What TidyWL for Netflix reads, what it keeps in your browser, the four public requests that leave it, and why each permission is asked for. Plain language, no hedging."
 last_modified_at: 2026-09-22
 ---
 
@@ -11,7 +11,7 @@ last_modified_at: 2026-09-22
      in it has to be true of the shipped build, not of the plan.
 
      EVERY CLAIM HERE WAS READ OUT OF THE CODE, not remembered:
-       - the three outbound requests are the only `fetch()` calls in
+       - the four outbound requests are the only `fetch()` calls in
          src/background/service-worker.js, and the content scripts make none
          except to Netflix's own endpoints
        - the storage keys are the ones in src/content-scripts/storage.js and
@@ -23,7 +23,7 @@ last_modified_at: 2026-09-22
 
 <section class="blog-wrap">
   <h1 class="blog-title">Privacy policy</h1>
-  <p class="blog-subtitle">What stays in your browser, the three things that leave it, and why.</p>
+  <p class="blog-subtitle">What stays in your browser, the four things that leave it, and why.</p>
 
   <div class="post-body">
     <p class="nf-policy-meta">
@@ -37,7 +37,7 @@ last_modified_at: 2026-09-22
     <ul>
       <li><strong>Your Netflix data stays in your browser.</strong> Your My List, the titles in it, what you have watched, your searches and your custom playlists are never sent to us. There is no TidyWL server for them to be sent to.</li>
       <li><strong>There is no account, no sign-in and no identifier.</strong> Nothing marks your copy of the extension as yours. Nothing about your use is sent anywhere. There is no analytics of any kind.</li>
-      <li><strong>Three requests leave your browser, and none of them is about you.</strong> A public settings file from tidywl.com, IMDb's public ratings file, and Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id — with a title's name and year when its id finds nothing. Each one is described in full below.</li>
+      <li><strong>Four requests leave your browser, and none of them is about you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id, with a title's name when its id finds nothing; and, for a title Wikidata cannot match at all, its name sent to IMDb's search. Each one is described in full below.</li>
       <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. We never see them.</li>
       <li><strong>Everything about your account is stored per Netflix profile</strong>, and uninstalling the extension removes everything it stored in that browser.</li>
       <li><strong>Nothing is sold, shared or used for advertising.</strong> There is nothing to sell and nobody to share it with.</li>
@@ -136,10 +136,10 @@ last_modified_at: 2026-09-22
       told they exist.
     </p>
 
-    <h2>The three requests that leave your browser</h2>
+    <h2>The four requests that leave your browser</h2>
     <p>
       These are every outbound request the extension makes other than to netflix.com. There are no others; they are
-      the only three <code>fetch</code> calls in the extension's background worker. None carries an identifier, a
+      the only four <code>fetch</code> calls in the extension's background worker. None carries an identifier, a
       cookie, an account, or anything that distinguishes your copy from anyone else's.
     </p>
 
@@ -164,9 +164,10 @@ last_modified_at: 2026-09-22
       searched <em>in your browser</em> for the ids you need.
     </p>
     <p>
-      The important consequence: <strong>IMDb is never told which titles you have.</strong> The extension asks for
-      the whole file, exactly as anyone else does, and does the matching itself. IMDb sees a download, not a request
-      about you.
+      The important consequence: <strong>this download tells IMDb nothing about which titles you have.</strong> The
+      extension asks for the whole file, exactly as anyone else does, and does the matching itself. IMDb sees a
+      download, not a request about you. The one request that does name a title to IMDb is the fourth, below, and it
+      is made only for a title Wikidata cannot match.
     </p>
 
     <h3>3. Netflix title ids — and sometimes a title's name — to Wikidata</h3>
@@ -177,24 +178,42 @@ last_modified_at: 2026-09-22
     </p>
     <p>
       Some titles are on Wikidata without their Netflix id recorded, so an id finds nothing. For those, and only
-      those, the extension <strong>searches Wikidata by the title's name and year</strong>, as Netflix shows them,
-      one title per request, with the language to search in taken from your Netflix profile (for example
-      <code>en</code>). It accepts an answer only when exactly one film or series has that name, that kind and that
-      year; otherwise the title simply has no rating. Titles found through a search have no year to go on, so they
-      are never searched by name.
+      those, the extension <strong>searches Wikidata by the title's name</strong>, as Netflix shows it, one title
+      per request, with the language to search in taken from your Netflix profile (for example <code>en</code>). It
+      accepts an answer only when exactly one film or series has that name, that kind and a matching year; otherwise
+      the title simply has no rating. The year is compared in your browser, against what Wikidata sends back — it is
+      not sent. Titles found through a search have no year to go on, so they are never searched by name.
     </p>
     <p>
-      What Wikidata receives is numbers, or a title's name, its year and a language code, plus the extension's name.
+      What Wikidata receives is numbers, or a title's name and a language code, plus the extension's name.
       A name says nothing its id did not — the id already names the title. Not your profile, not your account, not an
       identifier of any kind, and nothing that says the titles are a personal list rather than any other set. Wikidata's
       own privacy policy governs what Wikimedia does with the request.
     </p>
+
+    <h3>4. A title's name — to IMDb's search, when Wikidata cannot match it</h3>
     <p>
-      <strong>When requests 2 and 3 happen:</strong> when you press Sync, for the titles in your list, and when a
-      page of search or genre results is drawn, for the titles on it. Both are answered from the browser's own copy
-      once a title has been matched, so a matched title is never asked about again; a title Wikidata could not match
-      is asked about again after a week, by id and then by name, at most 40 names at a time. There is no switch to turn
-      ratings off in this version; if that matters to you, say so and it will be added.
+      Some titles are not on Wikidata at all yet — most often ones released in the last few months. For a title that
+      both Wikidata requests above have tried and failed to match, and only for those, the extension sends its
+      <strong>name</strong>, as Netflix shows it, to <code>https://v3.sg.media-imdb.com/suggestion/</code>, the
+      address behind the search box on imdb.com, one title per request. It accepts an answer only when exactly one film
+      or series comes back with that name, that kind and a matching year; otherwise the title simply has no rating. As
+      with Wikidata, the year is compared in your browser and not sent, and titles found through a search are never
+      searched by name.
+    </p>
+    <p>
+      What IMDb receives is the title's name, in the address of the request, and nothing else. The request is made
+      with cookies switched off, so even if you are signed in to IMDb in this browser it is not tied to your IMDb
+      account. Not your profile, not your Netflix account, not an identifier of any kind. Like any web request it
+      reaches IMDb with your IP address. IMDb's own privacy notice governs what IMDb does with the request.
+    </p>
+    <p>
+      <strong>When requests 2, 3 and 4 happen:</strong> when you press Sync, for the titles in your list, and when a
+      page of search or genre results is drawn, for the titles on it. All three are answered from the browser's own
+      copy once a title has been matched, so a matched title is never asked about again; a title that could not be
+      matched is asked about again after a week — by id, then by name on Wikidata, then by name on IMDb — at most 40
+      names at a time for each. There is no switch to turn ratings off in this version; if that matters to you, say so
+      and it will be added.
     </p>
 
     <h2>What the extension does not do</h2>
@@ -217,6 +236,7 @@ last_modified_at: 2026-09-22
           <tr><td><code>storage</code></td><td>The cache and the playlists described above. Nothing else uses it.</td></tr>
           <tr><td><code>https://*.netflix.com/*</code></td><td>The product. The dashboard is injected into Netflix pages and reads your list through Netflix's own endpoints.</td></tr>
           <tr><td><code>https://datasets.imdbws.com/*</code></td><td>The IMDb ratings file. It has to be a host permission because IMDb's server sends no cross-origin headers, so an ordinary page request for it is refused.</td></tr>
+          <tr><td><code>https://v3.sg.media-imdb.com/*</code></td><td>IMDb's title search, request 4 above. A host permission for the same reason as the ratings file: IMDb's server sends no cross-origin headers.</td></tr>
           <tr><td><code>https://tidywl.com/*</code></td><td>The public settings file.</td></tr>
         </tbody>
       </table>
