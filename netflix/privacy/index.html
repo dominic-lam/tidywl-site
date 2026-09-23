@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, the three public requests that leave it, and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-09-21
+last_modified_at: 2026-09-22
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -37,7 +37,7 @@ last_modified_at: 2026-09-21
     <ul>
       <li><strong>Your Netflix data stays in your browser.</strong> Your My List, the titles in it, what you have watched, your searches and your custom playlists are never sent to us. There is no TidyWL server for them to be sent to.</li>
       <li><strong>There is no account, no sign-in and no identifier.</strong> Nothing marks your copy of the extension as yours. Nothing about your use is sent anywhere. There is no analytics of any kind.</li>
-      <li><strong>Three requests leave your browser, and none of them is about you.</strong> A public settings file from tidywl.com, IMDb's public ratings file, and Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id. Each one is described in full below.</li>
+      <li><strong>Three requests leave your browser, and none of them is about you.</strong> A public settings file from tidywl.com, IMDb's public ratings file, and Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id — with a title's name and year when its id finds nothing. Each one is described in full below.</li>
       <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. We never see them.</li>
       <li><strong>Everything about your account is stored per Netflix profile</strong>, and uninstalling the extension removes everything it stored in that browser.</li>
       <li><strong>Nothing is sold, shared or used for advertising.</strong> There is nothing to sell and nobody to share it with.</li>
@@ -169,21 +169,31 @@ last_modified_at: 2026-09-21
       about you.
     </p>
 
-    <h3>3. Netflix title ids, to Wikidata</h3>
+    <h3>3. Netflix title ids — and sometimes a title's name — to Wikidata</h3>
     <p>
       IMDb's file is keyed by IMDb id, and Netflix's titles are not. To bridge the two the extension queries
       <code>https://query.wikidata.org/sparql</code>, Wikidata's public query service, with a list of
       <strong>Netflix's numeric title ids</strong> — up to 250 at a time — and asks which IMDb id each corresponds to.
     </p>
     <p>
-      What Wikidata receives is a list of numbers and the extension's name. Not your profile, not your account, not
-      the titles' names, not an identifier of any kind, and nothing that says the list is a personal one rather than
-      any other set of ids. Wikidata's own privacy policy governs what Wikimedia does with the request.
+      Some titles are on Wikidata without their Netflix id recorded, so an id finds nothing. For those, and only
+      those, the extension <strong>searches Wikidata by the title's name and year</strong>, as Netflix shows them,
+      one title per request, with the language to search in taken from your Netflix profile (for example
+      <code>en</code>). It accepts an answer only when exactly one film or series has that name, that kind and that
+      year; otherwise the title simply has no rating. Titles found through a search have no year to go on, so they
+      are never searched by name.
+    </p>
+    <p>
+      What Wikidata receives is numbers, or a title's name, its year and a language code, plus the extension's name.
+      A name says nothing its id did not — the id already names the title. Not your profile, not your account, not an
+      identifier of any kind, and nothing that says the titles are a personal list rather than any other set. Wikidata's
+      own privacy policy governs what Wikimedia does with the request.
     </p>
     <p>
       <strong>When requests 2 and 3 happen:</strong> when you press Sync, for the titles in your list, and when a
       page of search or genre results is drawn, for the titles on it. Both are answered from the browser's own copy
-      once a title has been looked up, so the same title is never asked about twice. There is no switch to turn
+      once a title has been matched, so a matched title is never asked about again; a title Wikidata could not match
+      is asked about again after a week, by id and then by name, at most 40 names at a time. There is no switch to turn
       ratings off in this version; if that matters to you, say so and it will be added.
     </p>
 
