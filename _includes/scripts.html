@@ -77,8 +77,9 @@
         frame.title = 'TidyWL demo';
         frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
         frame.allowFullscreen = true;
+        const holder = facade.closest('.video-wrapper')?.parentElement;
         facade.replaceWith(frame);
-        document.getElementById('video-note')?.remove();
+        holder?.querySelector('.video-note')?.remove();
       });
     });
 

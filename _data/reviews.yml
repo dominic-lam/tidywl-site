@@ -113,9 +113,7 @@
   source_long: "Chrome Web Store review"
   url: "https://chromewebstore.google.com/reviews/b2a44f4d-3ca3-459b-9269-c09462e7971e"
   date: "2026-07-29"
-  # Off 2026-09-16: it says "look the video in this page", and the desktop page has no video until the new
-  # recording. Set back to true, and drop its id from cws-reviews-config.yml's hide list, when the video returns.
-  featured: false
+  featured: true
 
 - quote: "this is life saving for an adhd brain like mine. manually categorizing my WL was super tedious."
   author: "Prateek"

@@ -31,7 +31,6 @@ max_shown: 60
 # Neither list is a star filter. A low rating is not grounds for hiding a review; the min_stars floor above is what
 # decides which ratings the marquee quotes.
 hide:
-  - b2a44f4d-3ca3-459b-9269-c09462e7971e   # Juan David Reyes Lopez: points at a demo video the desktop page no longer has (2026-09-16); restore with the video
   - b1ac1959-3678-4a98-8990-da0b25079a88   # 1 star, 2026-09-17: the only one of five coordinated ratings that carried text; reported to Google, ticket 9-9562000041973. Also in EXCLUDE_IDS, so it should not reach the file at all. This repo is public, so neither list records the account or the text — the private evidence does.
 #  - 00000000-0000-0000-0000-000000000000   # why
 
