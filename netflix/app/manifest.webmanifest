@@ -1,0 +1,13 @@
+{
+  "name": "TidyWL for Netflix — Playlists",
+  "short_name": "Playlists",
+  "description": "Your TidyWL for Netflix playlists on your phone, read-only.",
+  "start_url": "/netflix/app/",
+  "scope": "/netflix/app/",
+  "display": "standalone",
+  "background_color": "#141414",
+  "theme_color": "#141414",
+  "icons": [
+    { "src": "/assets/netflix-icon128.png", "sizes": "128x128", "type": "image/png" }
+  ]
+}
