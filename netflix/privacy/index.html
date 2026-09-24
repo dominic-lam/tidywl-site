@@ -2,18 +2,29 @@
 layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
-description: "What TidyWL for Netflix reads, what it keeps in your browser, the four public requests and the one usage report that leave it, and why each permission is asked for. Plain language, no hedging."
+description: "What TidyWL for Netflix reads, what it keeps in your browser, what leaves it — four public requests, a usage report, and for Pro a licence check and playlist sync — and why each permission is asked for. Plain language, no hedging."
 last_modified_at: 2026-09-23
 ---
 
 <!-- ── PRIVACY POLICY ──
+     DRAFT (2026-09-24, branch draft/netflix-pro-privacy) — for the release that
+     adds Pro. Do not merge before that release is approved to ship: every
+     sentence below has to be true of the shipped build. Placeholders: [VERSION],
+     [DATE]. Sentences marked NOT BUILT describe server behaviour that does not
+     exist yet and must be built, or cut, before merging.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
      EVERY CLAIM HERE WAS READ OUT OF THE CODE, not remembered:
-       - the five outbound requests are the only `fetch()` calls in
+       - the seven outbound requests are the only `fetch()` calls in
          src/background/service-worker.js, and the content scripts make none
          except to Netflix's own endpoints
+       - what Pro sends is src/utils/license-utils.js and sync-utils.js, and
+         what the server keeps is tidywl-api's src/netflix-license.js,
+         netflix-sync.js and netflix-phone.js — contract:
+         docs/claude/PLAN-mobile-sync.md in the extension repo
+       - the phone page is this site's netflix/app/
        - the usage report's fields, caps and rules are
          src/utils/usage-utils.js, and what the server keeps is the
          tidywl-api Worker's netflix_* tables — the contract for both is
@@ -27,26 +38,32 @@ last_modified_at: 2026-09-23
 
 <section class="blog-wrap">
   <h1 class="blog-title">Privacy policy</h1>
-  <p class="blog-subtitle">What stays in your browser, the five things that leave it, and why.</p>
+  <p class="blog-subtitle">What stays in your browser, what leaves it, and why.</p>
 
   <div class="post-body">
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version {{ site.data.netflix.version }} and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_updated | date: "%-d %B %Y" }}.
-      Updated 23 September 2026 for version 0.2.0, which adds a usage report: versions before 0.2.0 sent nothing
-      about your use anywhere, and from 0.2.0 on the extension sends the counts described below.
-      This is a different extension from <a href="/privacy/">TidyWL for YouTube</a>, which has its own policy and behaves differently —
-      that one also supports a paid tier. This one does not.
+      Updated [DATE] for version [VERSION], which adds <strong>TidyWL Pro</strong>: playlist sync between your
+      browsers and onto your phone. Pro sends things nothing else in this extension does — your playlists and your
+      profile's name — and only when you have a Pro key and switch sync on; every one is listed under
+      <em>Pro: your playlists on our server</em>.
+      Updated 23 September 2026 for version 0.2.0, which added a usage report: versions before 0.2.0 sent nothing
+      about your use anywhere.
+      This is a different extension from <a href="/privacy/">TidyWL for YouTube</a>, which has its own policy and behaves differently.
+      Both have a paid tier called Pro, with separate keys: a key for one does not work in the other.
     </p>
 
     <h2>The short version</h2>
     <ul>
-      <li><strong>Your Netflix data stays in your browser.</strong> Your My List, the titles in it, what you have watched, your searches and your custom playlists are never sent to us.</li>
+      <li><strong>Your Netflix data stays in your browser.</strong> Your My List, what you have watched and your searches are never sent to us.</li>
+      <li><strong>Your playlists stay in your browser too — unless you have Pro and switch sync on.</strong> Then this profile's playlists, with each title's name, year and picture link, and the profile's name, go to our server, so your other browsers and your phone can show them. Only from browsers where you switched it on. Never for a free install.</li>
+      <li><strong>If you buy Pro, your licence key goes to tidywl.com.</strong> It switches Pro on and is checked again when you open the dashboard, at most once every 15 minutes. Paddle takes the payment; your card details and your email never reach us.</li>
       <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist, or open the dashboard for the first time in a day, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
       <li><strong>There is no switch in the extension to turn this off.</strong> Uninstalling stops it, and records not updated for 12 months are deleted.</li>
-      <li><strong>There is no account and no sign-in.</strong> The identifier is random, made in your browser, and linked to nothing — not your Netflix account, not a profile, not your email.</li>
+      <li><strong>There is no account and no sign-in.</strong> A Pro key is not an account: there is no password, and we never learn your email. The usage report's identifier is random, made in your browser, and linked to nothing — not your Netflix account, not a profile, not your email, not a Pro key.</li>
       <li><strong>Four other requests leave your browser, and none of them is about you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id, with a title's name when its id finds nothing; and, for a title Wikidata cannot match at all, its name sent to IMDb's search. Each one is described in full below.</li>
-      <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. We never see them.</li>
+      <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. Without Pro sync we never see them.</li>
       <li><strong>Everything about your account is stored per Netflix profile</strong>, and uninstalling the extension removes everything it stored in that browser.</li>
       <li><strong>Nothing is sold, shared or used for advertising.</strong> There is nothing to sell and nobody to share it with.</li>
     </ul>
@@ -105,6 +122,9 @@ last_modified_at: 2026-09-23
           <tr><td><code>tidywl_usage</code></td><td>The usage report's other counts, listed field by field below.</td></tr>
           <tr><td><code>tidywl_usage_open_day</code></td><td>The last day the dashboard was counted as opened, so it is counted at most once a day. Never sent.</td></tr>
           <tr><td><code>tidywl_usage_sent</code></td><td>The counts as they stood at the last report that arrived, so an unchanged report is not sent again. Never sent.</td></tr>
+          <tr><td><code>tidywl_license_token</code></td><td>Pro only. A sign-in our server gave this browser, good for 24 hours, so a sync does not send your key every time. Never shared between browsers.</td></tr>
+          <tr><td><code>tidywl_cloud_sync</code></td><td>Pro only. Whether you switched sync on in this browser — it is off until you do — and when the last sync ran and whether it worked.</td></tr>
+          <tr><td><code>tidywl_sync_deleted_&lt;profile&gt;</code></td><td>Pro only. The ids of playlists you deleted in this browser, with when, so the deletion reaches your other browsers instead of the playlist coming back from one of them. An id and two times each, no name; kept 90 days, at most 200.</td></tr>
         </tbody>
       </table>
     </div>
@@ -120,7 +140,8 @@ last_modified_at: 2026-09-23
       deliberately no shared fallback key: an adult profile's list cannot appear under the kids profile on the same
       account, because there is no place for the two to meet. If the extension cannot tell which profile is active,
       it stores nothing. The keys without a profile in their name — the settings copy, the dashboard's size, the IMDb
-      ratings, that file's download time, the count of Sync-to-mobile presses and the four usage-report keys — hold
+      ratings, that file's download time, the count of Sync-to-mobile presses, the four usage-report keys and the three
+      Pro keys without one — hold
       nothing that belongs to a profile. The usage counts are added up across every profile that used the extension
       in that browser, and never say which.
     </p>
@@ -142,7 +163,7 @@ last_modified_at: 2026-09-23
       you made in this extension leaves the machine, so it is worth stating plainly:
     </p>
     <ul>
-      <li><strong>It goes to Google, not to us.</strong> We have no copy, no key and no way to read it.</li>
+      <li><strong>It goes to Google, not to us.</strong> Chrome's sync gives us no copy, no key and no way to read it. Pro sync is a separate, second copy, described in the next section, and only exists if you switch it on.</li>
       <li><strong>It is playlist names and numeric title ids.</strong> Name them whatever you like — a playlist name is text you wrote, and it travels with the ids. A pin is an id alone.</li>
       <li><strong>You can turn it off</strong> in Chrome's own settings, under <em>You and Google → Sync and Google services</em>, by excluding extensions from sync. Playlists and pins then stay on that machine.</li>
     </ul>
@@ -150,13 +171,57 @@ last_modified_at: 2026-09-23
       Playlists are never written to your Netflix account. Nobody else on the account sees them, and Netflix is not
       told they exist.
     </p>
+    <p>
+      <strong>A Pro key is kept here too</strong>, under <code>tidywl_license</code>: the key itself, whether the
+      subscription is active, this browser's seat number and the name you gave it, and the names of the other
+      browsers using the key — so the key follows your Chrome profile to your other computers, as a bookmark would.
+    </p>
 
-    <h2>The five requests that leave your browser</h2>
+    <h2>Pro: your playlists on our server</h2>
+    <p>
+      TidyWL Pro keeps your playlists in step between browsers that Chrome's own sync does not reach — Brave, another
+      Google account, another computer — and shows them on your phone. To do that it has to send them to a server, and
+      the server is ours. Everything in this section happens <strong>only with a Pro key, and only in a browser where
+      you switched on <em>Sync playlists across browsers</em></strong> under About → Pro. It is off until you do.
+    </p>
+    <p><strong>What a sync sends</strong>, for the Netflix profile open in that tab and no other:</p>
+    <ul>
+      <li>the profile's id and its name, as Netflix shows it — so your phone can say whose playlists they are;</li>
+      <li>each playlist's id, name, and when it was made and last changed — the newest change wins when two browsers disagree;</li>
+      <li>each title in it: Netflix's id, and, where this browser knows them, its name, whether it is a film or a series, its year, and the address of its picture on Netflix's image servers. The picture itself is never copied to us;</li>
+      <li>for a playlist you deleted, its id and two times, and nothing else — so it does not come back from a browser that still has it.</li>
+    </ul>
+    <p>
+      <strong>When:</strong> when you open the dashboard, a few seconds after you change a playlist, and when you press
+      <em>Sync now</em>. Each sync first asks the server for its copy, then sends what is newer here.
+    </p>
+    <p>
+      <strong>Not sent, even with sync on:</strong> your My List, your watch state, your searches, your pins, your IMDb
+      ratings, or another profile's playlists. Your Netflix password is never seen by the extension at all.
+    </p>
+
+    <h3>Your phone</h3>
+    <p>
+      Under About → Pro → Phones, <em>Pair a phone</em> shows a six-character code and a QR code. The code works once,
+      for ten minutes. Your phone opens <code>tidywl.com/netflix/app/</code> — scanning the QR code carries the code
+      in the part of the address after <code>#</code>, which is never sent to any server — and swaps the code for a
+      pass of its own. <strong>Your licence key never reaches the phone.</strong>
+    </p>
+    <ul>
+      <li>A pass reads one profile's synced playlists and nothing else. It cannot change anything, and it cannot be used to sync.</li>
+      <li>The phone tells our server what kind of device it is — "iPhone", "Android phone" — so you can tell your phones apart in the list. Nothing more specific.</li>
+      <li>The phone keeps its pass and the last copy of the playlists in that page's own storage, so the page opens straight away. <em>Forget on this phone</em> removes both.</li>
+      <li>Titles' pictures load on the phone straight from Netflix's image servers, which see the request as they would from the Netflix app.</li>
+      <li><em>Remove</em>, beside a phone in the extension, stops that pass for good. The next time the phone opens the page, it deletes what it kept.</li>
+    </ul>
+
+    <h2>The requests that leave your browser</h2>
     <p>
       These are every outbound request the extension makes other than to netflix.com. There are no others; they are
-      the only five <code>fetch</code> calls in the extension's background worker. The first four carry no
+      the only seven <code>fetch</code> calls in the extension's background worker. The first four carry no
       identifier, no cookie, no account, and nothing that distinguishes your copy from anyone else's. The fifth, the
-      usage report, carries the random identifier described with it — and nothing else about you.
+      usage report, carries the random identifier described with it — and nothing else about you. The sixth and
+      seventh are Pro's, and a free install never makes them.
     </p>
 
     <h3>1. A public settings file, from tidywl.com</h3>
@@ -294,10 +359,27 @@ last_modified_at: 2026-09-23
       signal. The numbers are not sold, not shared with anyone, and not used for advertising.
     </p>
 
+    <h3>6. A licence check, to tidywl.com — Pro only</h3>
+    <p>
+      When you enter a key, the extension sends it to <code>https://tidywl.com/api/netflix/license/activate</code> with
+      the name for this browser, pre-filled as something like "Chrome on Mac" and changeable. The server answers with
+      the subscription's status, the browsers using the key, and a 24-hour sign-in for this browser. Later checks, when
+      you open the dashboard at most once every 15 minutes, send the key and this browser's seat number. <em>Deactivate
+      this browser</em>, and <em>Remove</em> beside another browser, send the key and that seat's number.
+    </p>
+
+    <h3>7. Playlist sync and phones, to tidywl.com — Pro only</h3>
+    <p>
+      Syncs go to <code>https://tidywl.com/api/netflix/sync</code> and carry exactly what <em>Pro: your playlists on
+      our server</em> lists. Pairing a phone sends the profile's id to <code>/api/netflix/pair</code>; the phone list
+      and <em>Remove</em> use <code>/api/netflix/phones</code>. All of them carry this browser's 24-hour sign-in, never
+      the key.
+    </p>
+
     <h2>What the extension does not do</h2>
     <ul>
-      <li><strong>No record of what you watch, list or search for.</strong> The usage report above counts how often you did things, never what they were done to.</li>
-      <li><strong>No account, no licence, no payment.</strong> There is no paid tier in this extension, so there is nothing to check and nobody to check it with.</li>
+      <li><strong>No record of what you watch or search for.</strong> The usage report above counts how often you did things, never what they were done to. The only titles that ever reach us are the ones in playlists you chose to sync with Pro.</li>
+      <li><strong>No account.</strong> Pro is a key, not an account: no password, no email, no profile with us.</li>
       <li><strong>No third-party analytics, tag manager, advertising pixel or session recorder.</strong> None, anywhere, including on this page.</li>
       <li><strong>No reading of other sites.</strong> It runs on netflix.com and nowhere else.</li>
       <li><strong>No video.</strong> It does not download, record, decrypt or touch Netflix video in any way.</li>
@@ -314,7 +396,7 @@ last_modified_at: 2026-09-23
           <tr><td><code>https://*.netflix.com/*</code></td><td>The product. The dashboard is injected into Netflix pages and reads your list through Netflix's own endpoints.</td></tr>
           <tr><td><code>https://datasets.imdbws.com/*</code></td><td>The IMDb ratings file. It has to be a host permission because IMDb's server sends no cross-origin headers, so an ordinary page request for it is refused.</td></tr>
           <tr><td><code>https://v3.sg.media-imdb.com/*</code></td><td>IMDb's title search, request 4 above. A host permission for the same reason as the ratings file: IMDb's server sends no cross-origin headers.</td></tr>
-          <tr><td><code>https://tidywl.com/*</code></td><td>The public settings file, and the usage report.</td></tr>
+          <tr><td><code>https://tidywl.com/*</code></td><td>The public settings file and the usage report; for Pro, the licence check and playlist sync.</td></tr>
         </tbody>
       </table>
     </div>
@@ -330,7 +412,9 @@ last_modified_at: 2026-09-23
       <li><strong>The IMDb ratings file</strong> is replaced when it is more than twelve hours old.</li>
       <li><strong>Playlists</strong> stay until you delete them, and <strong>pins</strong> until you unpin them.</li>
       <li><strong>The usage report's record</strong> is kept on our server as described below, and deleted after 12 months without a report.</li>
-      <li><strong>Uninstalling</strong> removes everything the extension stored in that browser, and stops the usage report. If you want to be certain your playlists are gone from your <em>other</em> signed-in Chrome browsers as well, delete them in the dashboard before you uninstall, so the deletion is what syncs.</li>
+      <li><strong>Pro's copy of your playlists</strong> stays on our server while your subscription is active, updated by each sync. Turning sync off stops that browser sending; it does not delete the copy, because your other browsers and your phone still use it. A deleted playlist leaves only its id and two times. <!-- NOT BUILT: the 90-day deletion below --> <strong>When a subscription ends, the copy — every profile, playlist and phone under the key — is deleted 90 days later</strong>, so it is still there if you come back within that time.</li>
+      <li><strong>A paired phone</strong> stays until you remove it in the extension. An unused pairing code is deleted when the next one is made, and cannot be used after ten minutes in any case.</li>
+      <li><strong>Uninstalling</strong> removes everything the extension stored in that browser, and stops the usage report. It does not delete Pro's copy on our server — see <em>Requests about your data</em>. If you want to be certain your playlists are gone from your <em>other</em> signed-in Chrome browsers as well, delete them in the dashboard before you uninstall, so the deletion is what syncs.</li>
     </ul>
     <p>
       <strong>What our server keeps.</strong> One record per install, on a server we run at tidywl.com — a Cloudflare
@@ -356,17 +440,48 @@ last_modified_at: 2026-09-23
       around people flipping it; that trade-off is ours, and this page says so plainly.
     </p>
     <p>
-      Because the record is linked to nothing that identifies you, there is no way for us to find yours if you ask —
-      so we cannot look it up, export it or delete it on request. Expiry is how it is deleted. Everything else the
+      <strong>What Pro keeps on our server,</strong> in the same database and its own tables, never joined with the usage
+      report's: a fingerprint of your key (the key itself is not stored in readable form), the plan, whether the
+      subscription is active, how many browsers it allows, and Paddle's own identifiers for the subscription and for
+      you as their customer; one row per browser using it — its name, and when it was activated and last seen; one row
+      per synced profile — its id and name, and which browser last wrote to it; one row per playlist, holding what a
+      sync sends; and one row per phone — the profile it reads, what kind of device it is, a fingerprint of its pass,
+      and when it was paired and last opened. Not your email, your name, your address or one digit of your card.
+    </p>
+
+    <h2>Paddle, who takes the money</h2>
+    <!-- DRAFT: PLAN-mobile-sync step 4. Mirror the YouTube policy's Paddle section once the Netflix product, its claim
+         page and its customer portal exist — lost-key lookup and Manage subscription are described there. -->
+    <p>
+      TidyWL Pro is sold through <strong>Paddle</strong>, which is the merchant of record — legally the seller, and the
+      one that charges you, files the sales tax and handles refunds. <strong>Your card details, billing address and
+      email go to Paddle, and never to us.</strong> What Paddle tells us is: this subscription exists, this is its plan,
+      this is whether it is paid, and here are Paddle's own reference numbers for it. What Paddle does with what you gave
+      them is covered by <a href="https://www.paddle.com/legal/privacy" target="_blank" rel="noopener">Paddle's privacy
+      policy</a>, not this one.
+    </p>
+
+    <h2>Requests about your data</h2>
+    <p>
+      The usage record is linked to nothing that identifies you, so there is no way for us to find yours if you ask —
+      we cannot look it up, export it or delete it on request. Expiry is how it is deleted. Everything else the
       extension holds is in your browser, where uninstalling removes it.
+    </p>
+    <p>
+      <strong>Pro is different, because the key identifies it.</strong> Write to
+      <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from any address and quote
+      your key, and we can tell you exactly what is stored under it, or delete it — the licence, every browser and phone
+      on it, and every synced profile and playlist. Deleting it is permanent: the key stops working and cannot be
+      restored, so cancel your subscription with Paddle first. The playlists in your browsers are not touched.
     </p>
 
     <h2>Children</h2>
     <p>
-      The extension is not directed at children and collects no personal information from anyone — the usage report
-      is counts and a random identifier, the same for a kids profile as for any other. A Netflix account may have a kids
-      profile, and the dashboard works on one; everything it reads there stays on the machine under that profile's
-      own id, exactly as for any other profile.
+      The extension is not directed at children. The usage report is counts and a random identifier, the same for a
+      kids profile as for any other. A Netflix account may have a kids profile, and the dashboard works on one;
+      everything it reads there stays on the machine under that profile's own id, exactly as for any other profile —
+      unless the account holder has Pro and switches sync on while that profile is open, in which case its playlists
+      and its profile name are synced like any other profile's.
     </p>
 
     <h2>Changes to this policy</h2>
