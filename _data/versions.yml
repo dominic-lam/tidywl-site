@@ -19,4 +19,4 @@ firefox: "2.1.0"
 # Microsoft Edge Add-ons, live since 2026-09-18. Edge has its own build
 # (tidywl/scripts/build-edge-zip.sh) and its own review queue, so it can sit a
 # version ahead of or behind Chrome.
-edge: "2.0.2"
+edge: "2.1.0"
