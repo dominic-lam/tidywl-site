@@ -79,7 +79,7 @@ last_modified_at: 2026-09-23
       <li><strong>Your My List</strong> — each title's id, name, type, year, runtime, maturity rating, genres and box-art address. Read when you press <em>Sync</em>.</li>
       <li><strong>Your watch state</strong> — for each film, how far into it you are; for each show, whether Netflix records it as never watched, started or completed. Read as part of the same Sync.</li>
       <li><strong>Which profile is active</strong> — its id, name and language, so everything can be filed under the right profile.</li>
-      <li><strong>Search results and genre catalogues</strong> — only for a search you typed or a genre you opened.</li>
+      <li><strong>Search results and genre catalogues</strong> — only for a search you typed or a genre you opened. For each search result, and each film in a genre, details such as its year, runtime and number of seasons are then asked for once, and kept for the rest of that page's life.</li>
       <li><strong>A title's details on hover</strong> — its synopsis, cast, director or creators, genres, runtime and a still image, asked for once per title when you rest the pointer on a card, and kept for the rest of that page's life so a second look costs nothing.</li>
     </ul>
     <p>
@@ -263,7 +263,7 @@ last_modified_at: 2026-09-23
       per request, with the language to search in taken from your Netflix profile (for example <code>en</code>). It
       accepts an answer only when exactly one film or series has that name, that kind and a matching year; otherwise
       the title simply has no rating. The year is compared in your browser, against what Wikidata sends back — it is
-      not sent. Titles found through a search have no year to go on, so they are never searched by name.
+      not sent. A title with no year to go on is never searched by name.
     </p>
     <p>
       What Wikidata receives is numbers, or a title's name and a language code, plus the extension's name.
@@ -279,8 +279,8 @@ last_modified_at: 2026-09-23
       <strong>name</strong>, as Netflix shows it, to <code>https://v3.sg.media-imdb.com/suggestion/</code>, the
       address behind the search box on imdb.com, one title per request. It accepts an answer only when exactly one film
       or series comes back with that name, that kind and a matching year; otherwise the title simply has no rating. As
-      with Wikidata, the year is compared in your browser and not sent, and titles found through a search are never
-      searched by name.
+      with Wikidata, the year is compared in your browser and not sent, and a title with no year is never searched
+      by name.
     </p>
     <p>
       What IMDb receives is the title's name, in the address of the request, and nothing else. The request is made
