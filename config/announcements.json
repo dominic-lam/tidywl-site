@@ -1,6 +1,24 @@
 {
   "announcements": [
     {
+      "id": "2026-09-netflix",
+      "display": "modal",
+      "size": "small",
+      "title": "Watch Later Tidy, now for Netflix",
+      "message": "TidyWL for Netflix: a free dashboard for your Netflix My List, from the maker of Watch Later Tidy. https://tidywl.com/netflix/",
+      "body": [
+        { "text": "Same idea, different queue: a dashboard over your Netflix **My List**, with IMDb ratings on every card and bulk remove." },
+        { "text": "Free, no account. Chrome on a computer.", "tone": "muted" }
+      ],
+      "button": {
+        "label": "Add to Chrome",
+        "url": "https://chromewebstore.google.com/detail/tidywl-for-netflix/gbgdgeamachehbegdghnhpkiebahmafm?utm_source=watch-later-tidy&utm_medium=announcement"
+      },
+      "type": "info",
+      "created_at": "2026-09-25",
+      "expires_at": "2026-10-25"
+    },
+    {
       "id": "v2.1.0-release",
       "title": "What's New in v2.1.0",
       "bullets": [
