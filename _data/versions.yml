@@ -1,6 +1,12 @@
 # Shipped version per channel. Hand-maintained — bump alongside the extension's
 # manifest.json when a release actually goes live on that channel.
 #
+# Only `chrome` is rendered anywhere: index.html's JSON-LD softwareVersion, the
+# single consumer of this file (checked 2026-09-24). `firefox` and `edge` are a
+# record, not a switch — bumping them changes nothing a visitor sees, and
+# forgetting to bumps them breaks nothing either. Keep them accurate anyway;
+# they are where a session looks to answer "what is live where".
+#
 # The two can legitimately differ: a Chrome Web Store release waits on review,
 # while the Firefox build is self-distributed and lands immediately.
 #
@@ -15,7 +21,7 @@
 # served from tidywl.com/firefox/ for 2.1.0 — the 2.0.1 and earlier files stay
 # up for anyone who has not updated yet.
 chrome: "2.1.0"
-firefox: "2.1.0"
+firefox: "2.1.1"
 # Microsoft Edge Add-ons, live since 2026-09-18. Edge has its own build
 # (tidywl/scripts/build-edge-zip.sh) and its own review queue, so it can sit a
 # version ahead of or behind Chrome.

@@ -144,7 +144,7 @@ Chrome only, on a computer; Chrome for Android has no extension support. It requ
 - [Terms of sale](https://tidywl.com/terms/): the TidyWL Pro subscription terms
 - [Refunds](https://tidywl.com/refunds/): the 14-day refund and how to ask for it
 - [Blog](https://tidywl.com/blog/): long-form guides to Watch Later
-- [Community on Discord](https://discord.gg/natc623GhX): bug reports, feature requests and general chat
+- [Community on Discord](https://discord.gg/sTvjfp4sCk): bug reports, feature requests and general chat
 - [Support email](mailto:support@tidywl.com): support@tidywl.com
 - [Donate on Ko-fi](https://ko-fi.com/dominiclam): an optional tip for the developer, not a support channel
 - [TidyWL for Netflix](https://tidywl.com/netflix/): the sibling extension, for Netflix My List
