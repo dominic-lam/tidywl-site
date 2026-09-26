@@ -8,5 +8,25 @@
     "discord": "https://discord.gg/4j5u9xd35P",
     "kofi": "https://ko-fi.com/dominiclam",
     "email": "support@tidywl.com"
+  },
+
+  "_pro_note": "Read by 1.0.0's upsell card (src/utils/pricing.js) and by tidywl.com/netflix/pricing/, which must quote the same prices. Versions before 1.0.0 ignore it. The founding offer is off until the user sets its end date: turning it on is enabled: true plus an until day. paddleDiscountId is the Paddle discount the pricing page hands to checkout; without it the page shows regular prices.",
+  "pro": {
+    "pricing": {
+      "regular": { "monthly": 3.99, "yearly": 29.99 },
+      "discount": {
+        "enabled": false,
+        "label": "Founding offer",
+        "periods": ["yearly"],
+        "yearly": 19.99,
+        "firstPeriodOnly": true,
+        "paddleDiscountId": "dsc_01m3fnznzegxjd6kavhpkh4639",
+        "checkout": { "yearly": "https://tidywl.com/netflix/pricing/?plan=yearly" }
+      }
+    },
+    "checkout": {
+      "monthly": "https://tidywl.com/netflix/pricing/?plan=monthly",
+      "yearly": "https://tidywl.com/netflix/pricing/?plan=yearly"
+    }
   }
 }

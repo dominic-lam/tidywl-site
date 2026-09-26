@@ -1,0 +1,263 @@
+---
+layout: netflix
+permalink: /netflix/checkout/success/
+title: "Your TidyWL for Netflix Pro key"
+description: "The page Paddle sends you to after checkout. It shows your licence key and how to activate it, and finds the key again from any Paddle receipt."
+sitemap: false
+robots: noindex
+---
+
+<!-- ── CHECKOUT SUCCESS, TidyWL for Netflix Pro ──
+     /checkout/success/ for this product, 2026-09-26: the same page, polling
+     /api/netflix/license/claim instead, so a Netflix receipt finds a TWN key
+     and a YouTube receipt finds nothing here. -->
+
+<section class="blog-wrap">
+  <h1 class="blog-title" id="key-heading">One more step to turn Pro on</h1>
+  <p class="blog-subtitle" id="key-subtitle">Thank you for buying TidyWL for Netflix Pro. It stays off until you paste this key into the extension.</p>
+
+  <div class="post-body">
+    <div class="key-box" id="key-box" aria-live="polite">
+      <div class="key-status" id="key-status">Fetching your key…</div>
+      <div class="key-value" id="key-value" hidden></div>
+      <button type="button" class="key-copy" id="key-copy" aria-label="Copy key" title="Copy key" hidden>
+        <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+      </button>
+      <form class="key-find" id="key-find" hidden>
+        <label class="key-find-label" for="key-find-txn">Transaction ID from your Paddle receipt</label>
+        <div class="key-find-row">
+          <input class="key-find-input" id="key-find-txn" type="text" placeholder="txn_…" autocomplete="off" spellcheck="false">
+          <button class="key-find-button" type="submit">Find my key</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="activate-box">
+      <h2 class="activate-title">Turn Pro on in the extension</h2>
+      <ol>
+        <li>Copy the key above.</li>
+        <li>Open Netflix and open the TidyWL dashboard — the extension's toolbar button, or <strong>Alt+L</strong>.</li>
+        <li>Click the <strong>ⓘ About</strong> button in the top right and open the <strong>Pro</strong> tab.</li>
+        <li>Click <strong>Have a key?</strong>, paste the key and click <strong>Activate</strong>.</li>
+      </ol>
+      <p class="activate-done">You are done when the badge in the dashboard's top bar reads <strong>Pro</strong>.</p>
+    </div>
+
+    <h2>This key is not emailed</h2>
+    <p>Copy it somewhere safe or bookmark this page.</p>
+    <p>One key works in up to three browsers at once. Deactivate a browser from the same tab to free a seat. Phones you pair to see your playlists do not use a seat.</p>
+
+    <h2>Lost your key?</h2>
+    <p>Every Paddle receipt, the first and each renewal, shows a <strong>Transaction ID</strong> that starts with <code>txn_</code>. Paste it into <strong>Find my key</strong> on <a href="/netflix/checkout/success/">this page</a> to see the key again.</p>
+    <p>Anyone holding a Transaction ID can see the key, so keep your receipts to yourself. Still stuck? Email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from the address you paid with.</p>
+
+    <p class="nf-policy-meta">Fourteen-day full refund on every charge, no questions — <a href="/netflix/refunds/">refund policy</a>. Cancel any time from <strong>Manage subscription</strong> in the dashboard's About → Pro tab.</p>
+  </div>
+</section>
+
+<style>
+  .key-box {
+    position: relative;
+    margin: 8px 0 32px;
+    padding: 20px 22px;
+    border: 1px solid var(--border, #e5e7eb);
+    border-radius: 12px;
+    background: var(--surface, rgba(127, 127, 127, 0.06));
+  }
+  /* Room for the copy icon, only while a key is showing. */
+  .key-box.has-key { padding-right: 60px; }
+  .key-status { font-size: 0.95rem; color: var(--muted, #6b7280); }
+  .key-status[data-tone="error"] { color: #b42318; }
+  .key-value {
+    margin-top: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 1.45rem;
+    letter-spacing: 0.06em;
+    word-break: break-all;
+    user-select: all;
+  }
+  .key-copy {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid var(--border, #d1d5db);
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+  .key-copy svg { width: 18px; height: 18px; }
+  .key-copy .icon-check { display: none; }
+  .key-copy.copied .icon-copy { display: none; }
+  .key-copy.copied .icon-check { display: block; }
+  .key-copy:hover { background: rgba(127, 127, 127, 0.12); }
+  .key-copy:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .key-find { margin-top: 14px; }
+  .key-find-label { display: block; margin-bottom: 6px; font-size: 0.9rem; color: var(--muted, #6b7280); }
+  .key-find-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .key-find-input {
+    flex: 1 1 220px;
+    min-width: 0;
+    padding: 9px 12px;
+    border: 1px solid var(--border, #d1d5db);
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.95rem;
+  }
+  .key-find-button {
+    padding: 9px 16px;
+    border: 1px solid var(--border, #d1d5db);
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  .key-find-button:hover { background: rgba(127, 127, 127, 0.12); }
+  .key-box [hidden] { display: none !important; }
+  /* The steps sit right under the key, set apart, so the page reads as a step still to do. */
+  .activate-box {
+    margin: 0 0 36px;
+    padding: 20px 24px 18px;
+    border: 1.5px solid var(--highlight-border, #e9a8a6);
+    border-radius: 12px;
+    background: var(--highlight-bg, transparent);
+  }
+  .activate-box .activate-title { margin: 0 0 8px; font-size: 1.1rem; font-weight: 700; }
+  .activate-box ol { margin: 0 0 10px; padding-left: 1.4em; }
+  .activate-box li { margin: 6px 0; }
+  .activate-box li::marker { color: var(--accent-text, #c62828); font-weight: 700; }
+  .activate-done { margin: 0; color: var(--text-secondary, inherit); }
+</style>
+
+<script>
+  // /netflix/pricing/ sends buyers here with the transaction id as `_ptxn`,
+  // taken from Paddle.js's checkout.completed event: an overlay checkout's own
+  // successUrl redirect carries no parameters (2026-09-13). The Worker learns
+  // about the transaction from Paddle's webhook, which usually lands within
+  // seconds of the redirect but is not guaranteed to have landed yet, so poll
+  // the claim endpoint for a while before giving up. Same origin (/api/* is
+  // proxied to the Worker), no third-party request.
+  //
+  // Opened without an id, the page asks for one instead (2026-09-13): every
+  // Paddle receipt, the first and each renewal, carries a Transaction ID the
+  // Worker has recorded against the licence.
+  (function () {
+    var box = document.getElementById('key-box');
+    var status = document.getElementById('key-status');
+    var value = document.getElementById('key-value');
+    var copy = document.getElementById('key-copy');
+    var find = document.getElementById('key-find');
+    var findInput = document.getElementById('key-find-txn');
+    var subtitle = document.getElementById('key-subtitle');
+    var copyWired = false;
+
+    // A hosted checkout redirects here with (observed 2026-09-05):
+    //   ?price_id=pri_…&transaction_id=txn_…&customer_email=…&paddle_customer_id=ctm_…
+    // Only the transaction id is used; the email is never read or sent
+    // anywhere. `_ptxn` is what the pricing page and a Paddle.js payment link
+    // carry, and `txn` is ours, for support-issued links and Find my key.
+    var params = new URLSearchParams(location.search);
+    var fromLink = ['transaction_id', '_ptxn', 'txn', 'transactionId']
+      .map(function (k) { return params.get(k); })
+      .filter(Boolean)[0] || null;
+
+    find.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var txn = findInput.value.trim().toLowerCase();
+      if (!/^txn_[a-z0-9]{1,64}$/.test(txn)) {
+        ask('That does not look like a Transaction ID. It starts with txn_ and is on your Paddle receipt.', true);
+        return;
+      }
+      find.hidden = true;
+      status.removeAttribute('data-tone');
+      // The address now carries the id, so bookmarking this page keeps the key.
+      history.replaceState(null, '', location.pathname + '?txn=' + encodeURIComponent(txn));
+      lookup(txn, 2, 'Looking up your key…',
+        'No purchase matches that Transaction ID. Copy it exactly from your Paddle receipt and try again.');
+    });
+
+    if (!fromLink || !/^txn_[A-Za-z0-9]{1,64}$/.test(fromLink)) {
+      // Nobody just paid: someone looking for a key they already have.
+      document.getElementById('key-heading').textContent = 'Find your key';
+      subtitle.textContent = 'Lost your TidyWL for Netflix Pro key? Any of your Paddle receipts brings it back.';
+      ask('Paste the Transaction ID from your Paddle receipt. It starts with txn_.', false);
+      return;
+    }
+    lookup(fromLink, 30, 'Fetching your key…',
+      'We could not find a key for this payment yet. Wait a minute and reload this page. If it still does not appear, email support@tidywl.com with your Paddle receipt and we will send it.');
+
+    function lookup(txn, maxAttempts, lookingText, notFound) {
+      var attempts = 0;
+      status.textContent = lookingText;
+      poll();
+
+      function poll() {
+        attempts += 1;
+        fetch('/api/netflix/license/claim?txn=' + encodeURIComponent(txn), { cache: 'no-store', credentials: 'omit' })
+          .then(function (res) {
+            if (res.status === 200) return res.json().then(show);
+            if (res.status === 404 && attempts < maxAttempts) {
+              if (maxAttempts > 2) status.textContent = 'Waiting for Paddle to confirm the payment… (' + attempts + ')';
+              setTimeout(poll, 3000);
+              return;
+            }
+            if (res.status === 429 && attempts < maxAttempts) { setTimeout(poll, 10000); return; }
+            if (res.status === 429) { ask('Too many lookups from this connection. Wait a minute and try again.', true); return; }
+            ask(notFound, true);
+          })
+          .catch(function () {
+            if (attempts < maxAttempts) { setTimeout(poll, 5000); return; }
+            ask('Could not reach tidywl.com. Check your connection and try again.', true);
+          });
+      }
+    }
+
+    function show(data) {
+      find.hidden = true;
+      status.removeAttribute('data-tone');
+      status.textContent = data.status === 'active' ? 'Your key' : 'Your key (subscription ' + data.status + ')';
+      value.textContent = data.key;
+      value.hidden = false;
+      copy.hidden = false;
+      box.classList.add('has-key');
+      if (copyWired) return;
+      copyWired = true;
+      copy.addEventListener('click', function () {
+        navigator.clipboard.writeText(value.textContent).then(function () {
+          // Icon-only, so the tick and the accessible name carry "Copied".
+          copy.classList.add('copied');
+          copy.setAttribute('aria-label', 'Copied');
+          copy.title = 'Copied';
+          setTimeout(function () {
+            copy.classList.remove('copied');
+            copy.setAttribute('aria-label', 'Copy key');
+            copy.title = 'Copy key';
+          }, 1500);
+        }, function () {
+          var range = document.createRange(); range.selectNodeContents(value);
+          var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        });
+      });
+    }
+
+    // The receipt form, with a prompt or an error above it.
+    function ask(message, isError) {
+      status.textContent = message;
+      if (isError) status.setAttribute('data-tone', 'error'); else status.removeAttribute('data-tone');
+      value.hidden = true;
+      copy.hidden = true;
+      box.classList.remove('has-key');
+      find.hidden = false;
+    }
+  })();
+</script>

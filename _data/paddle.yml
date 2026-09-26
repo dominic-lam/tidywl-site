@@ -31,3 +31,19 @@ prices:
 # pricing/index.html's .pro-status line, its .plans-foot sentence ("Nothing is
 # charged until…"), and llms.txt. `4ee2bcd` / `e684f5b` are a worked pair.
 onSale: true
+
+# TidyWL for Netflix Pro — a separate product in the same Paddle account, read by
+# /netflix/pricing/. Product pro_01m3fntam7mwsf1nvh2c8tjshj, created 2026-09-26;
+# mirrored from tidywl-api/wrangler.toml [vars] PADDLE_NETFLIX_PRICE_*, which must
+# be deployed before this switch is on — a Netflix price the Worker does not know
+# would mint a YouTube key. The founding discount lives in
+# /config/netflix-config-v1.json (pro.pricing.discount.paddleDiscountId).
+#
+# onSale is on while /netflix/pricing/ is unlinked and noindex, for the owner's
+# test purchase (the user's yes, 2026-09-26). Link the page, and say "on sale"
+# on it, only once 1.0.0 is on the Chrome Web Store.
+netflix:
+  onSale: true
+  prices:
+    monthly: "pri_01m3fnv4jzzk0w4fmpc7yqxk63"
+    yearly: "pri_01m3fnvpemk4ar64s7zdrvk3nz"

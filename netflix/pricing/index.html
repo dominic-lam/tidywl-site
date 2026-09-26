@@ -1,0 +1,534 @@
+---
+layout: netflix
+permalink: /netflix/pricing/
+title: "TidyWL for Netflix Pro — pricing"
+description: "TidyWL for Netflix Pro undoes a removal for 90 days, pins what you want to keep, archives what you have watched, and puts your playlists on your phone. $3.99 a month or $29.99 a year."
+sitemap: false
+robots: noindex
+faq:
+  - id: free
+    q: "Is the free version changing?"
+    a: "No. Everything the free version does stays free: search, filter and sort My List, bulk remove with the exact list shown first, custom playlists and Move from My List, search Netflix and browse by genre, export and import. Pro adds to it."
+  - id: breaks
+    q: "What happens if Netflix breaks a Pro feature?"
+    a: "TidyWL for Netflix works with Netflix's web endpoints rather than an official API, and Netflix can change them. Many changes are fixed within hours through a remote configuration; some need an extension update. If a Pro feature is not restored within 30 days, yearly subscribers can ask for the unused part back, and monthly subscribers can cancel. The full rule is in the terms of sale at tidywl.com/netflix/terms/."
+  - id: charges
+    q: "Who charges my card?"
+    a: "Paddle, our merchant of record. Paddle takes the payment in your currency, adds any tax that applies where you live, sends the receipt and processes refunds. We never see your card number."
+  - id: cancel
+    q: "Can I cancel?"
+    a: "Any time, from Manage subscription in the dashboard's About → Pro tab, or by emailing support@tidywl.com. Pro keeps working until the end of the period you paid for, then the extension goes back to free. Nothing in your browser is deleted."
+  - id: refunds
+    q: "What is the refund policy?"
+    a: "Every charge, first payment or renewal, can be refunded in full within 14 days — no questions, no conditions, no exceptions. One email to support@tidywl.com. After that, cancel any time and Pro runs to the end of the period you paid for."
+  - id: devices
+    q: "How many browsers and phones can I use Pro on?"
+    a: "Up to three browsers at a time, and you can deactivate one you no longer use. Phones you pair to see your playlists do not count toward the three, and you can remove one at any time."
+  - id: data
+    q: "Does Pro send my playlists anywhere?"
+    a: "Only if you turn sync on. Pins, clean-up rules, undo and stats run in your browser, like the rest of the extension. Sync is off until you switch it on in a browser; then it sends that profile's playlist names and the titles in them, and the profile's name, to tidywl.com, so your other browsers and your paired phone can show them. Your licence key and its activation record are kept so the subscription can be checked. The privacy policy lists exactly what is stored."
+  - id: requests
+    q: "Do Pro subscribers get a say in what gets built?"
+    a: "Yes. Feature requests and bug reports from Pro subscribers are read first and weigh most when deciding what to build next, and support emails from subscribers are answered first. It is a promise to listen first, not to build everything. Email support@tidywl.com from the address you used at checkout so we can tell."
+  - id: affiliated
+    q: "Is TidyWL for Netflix affiliated with Netflix?"
+    a: "No. TidyWL for Netflix is an independent extension and is not affiliated with, endorsed by or sponsored by Netflix. Netflix is a trademark of Netflix, Inc."
+---
+
+<!-- ── PRICING, TidyWL for Netflix Pro ──
+     /pricing/ for this product, 2026-09-26. The Free and Pro lists are the
+     extension's upsell card's (src/dashboard/dashboard-pro.js), word for word:
+     the two are quoted side by side, so edit both or neither.
+     noindex and unlinked until 1.0.0 is on the Chrome Web Store: the version
+     the store serves has no Pro. The buy button is live for the owner's test
+     purchase (the user's yes, 2026-09-26) — _data/paddle.yml netflix.onSale. -->
+
+<div class="pro-page">
+
+  <section class="pro-hero">
+    <p class="section-label">TidyWL for Netflix Pro</p>
+    <h1>Does it for you, <span class="em">and undoes it.</span></h1>
+    <p class="tagline">The free extension does everything by hand. Pro keeps what you pin, clears what you have watched, undoes a removal for 90 days, and puts your playlists on your phone.</p>
+    <p class="pro-status"><span class="dot" aria-hidden="true"></span>Arrives with version 1.0.0.</p>
+  </section>
+
+  <section class="pro-plans">
+    <div class="section-inner">
+      <!-- Every price below is also the no-JS floor. The script at the foot of
+           this page re-reads them from /config/netflix-config-v1.json — the
+           same `pro.pricing` block the extension's upsell card resolves — so a
+           promotion shows in both places or in neither. Keep them equal to
+           the config's `regular` set. -->
+      <div class="plans" id="plans" data-billing="monthly">
+        <div class="plan">
+          <div class="plan-head">
+            <h2 class="plan-name">Free</h2>
+          </div>
+          <p class="plan-sub">What you have today</p>
+          <p class="plan-price"><span class="price-amount">$0</span><small>USD / month</small></p>
+          <p class="plan-billed">Free to install — no account</p>
+          {%- if site.data.netflix.published %}
+          <a class="btn-ghost plan-cta" href="{{ site.data.netflix.store_url }}" target="_blank" rel="noopener">Add to Chrome</a>
+          {%- endif %}
+          <p class="plan-list-head">What free does</p>
+          <ul class="plan-list">
+            <li>Search, filter and sort My List</li>
+            <li>Bulk remove, and review the exact list first</li>
+            <li>Custom playlists, and Move from My List</li>
+            <li>Search Netflix and browse by genre</li>
+            <li>Export, import, and no account or sign-in</li>
+          </ul>
+        </div>
+        <div class="plan best">
+          <div class="plan-head">
+            <h2 class="plan-name">Pro</h2>
+            <div class="billing-switch" role="group" aria-label="Billing period">
+              <button type="button" class="billing-opt" data-billing-set="monthly" aria-pressed="true">Monthly</button>
+              <button type="button" class="billing-opt" data-billing-set="yearly" aria-pressed="false">Yearly <span class="billing-save">· Save 37%</span></button>
+            </div>
+          </div>
+          <p class="plan-sub">Does it for you, and undoes it</p>
+          <p class="plan-price"><s class="price-was is-yearly">$3.99</s><s class="price-was is-monthly"></s><span class="is-yearly"><span class="sr-only">Yearly plan: </span><span class="price-amount is-yearly">$2.50</span></span><span class="is-monthly"><span class="sr-only">, monthly plan: </span><span class="price-amount is-monthly">$3.99</span></span> <small>USD / month</small></p>
+          <p class="plan-billed"><span class="is-yearly">$29.99 billed annually</span><span class="sr-only">; </span><span class="is-monthly">billed monthly</span></p>
+          <p class="plan-promo" hidden><span class="plan-promo-label"></span><span class="plan-promo-note"></span></p>
+          {%- if site.data.paddle.netflix.onSale and site.data.paddle.clientToken and site.data.paddle.netflix.prices.monthly and site.data.paddle.netflix.prices.yearly %}
+          <button type="button" class="plan-cta plan-cta-buy" id="pro-buy"
+                  data-price-monthly="{{ site.data.paddle.netflix.prices.monthly }}"
+                  data-price-yearly="{{ site.data.paddle.netflix.prices.yearly }}">Get Pro</button>
+          <p class="plan-cta-note" id="pro-buy-note" hidden></p>
+          {%- else %}
+          <button type="button" class="plan-cta plan-cta-locked" disabled>Arrives with version 1.0.0</button>
+          {%- endif %}
+          <p class="plan-list-head">Everything in Free, and:</p>
+          <ul class="plan-list">
+            <li>Undo removals — 90 days of history, on this device</li>
+            <li>Pin a title and nothing removes it — no rule, no Move, and no bulk remove you run yourself</li>
+            <li>Clean-up rules — archive what you've watched, and what has waited six months</li>
+            <li>Stats — hours of film waiting, and what you add against what you watch</li>
+            <li>Mobile sync — your playlists across browsers, and on your phone</li>
+            <li>Feature requests and support answered first</li>
+          </ul>
+        </div>
+      </div>
+      <ul class="plans-both" aria-label="True on either plan">
+        <li>Everything free does today stays free</li>
+        <li>14-day full refund on every charge — no questions, no conditions</li>
+        <li>Cancel any time</li>
+      </ul>
+      <p class="plans-foot">Prices in US dollars before tax. Checkout, by Paddle, shows your currency and any tax for your country. <a href="/netflix/terms/">Terms of sale</a> · <a href="/netflix/refunds/">Refund policy</a></p>
+    </div>
+  </section>
+
+  <!-- Rendered from page.faq, which the layout also emits as FAQPage JSON-LD. -->
+  <section class="pro-faq">
+    <div class="faq">
+      <p class="section-label">Questions</p>
+      <h2 class="section-heading">Before you decide</h2>
+      <div class="faq-list">
+        {%- for item in page.faq %}
+        <div class="faq-item" id="{{ item.id }}" aria-expanded="false">
+          <button class="faq-q" type="button" aria-controls="faq-{{ item.id }}">
+            <span>{{ item.q }}</span>
+            <span class="plus" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-a" id="faq-{{ item.id }}">{{ item.a }}</div>
+        </div>
+        {%- endfor %}
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<style>
+  .pro-page section { padding: 64px 24px; }
+  .pro-hero {
+    text-align: center; padding: 72px 24px 32px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .pro-hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
+    letter-spacing: -0.02em; line-height: 1.12; max-width: 720px;
+    margin: 0 auto 18px; text-wrap: balance;
+  }
+  .pro-hero h1 .em { color: var(--accent); }
+  .pro-hero .tagline {
+    font-size: clamp(1.05rem, 2.2vw, 1.2rem); color: var(--text-secondary);
+    max-width: 560px; margin: 0 auto 22px; line-height: 1.55; text-wrap: pretty;
+  }
+  .pro-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);
+    border: 1px solid var(--highlight-border); background: var(--bg-card);
+    border-radius: 999px; padding: 6px 14px; margin-bottom: 24px;
+  }
+  .pro-status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  .pro-hero .cta-row { margin-bottom: 0; }
+
+  /* ── PLANS ──
+     Free and Pro side by side. Two columns while the grid can give each card
+     320px, which is a 704px viewport once the 24px section padding is taken
+     off; below that auto-fit stacks them. minmax() takes min(100%, 320px) so a
+     360px phone cannot be made to scroll sideways by the track floor. */
+  .pro-plans { padding-top: 8px; }
+  .plans {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+    gap: 16px; max-width: 880px; margin: 0 auto;
+  }
+  .plan {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 26px 24px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .plan.best { border-color: var(--highlight-border); background: var(--highlight-bg); }
+  /* min-height holds the Free card's name row level with the Pro card's, which
+     carries the switch. */
+  .plan-head {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 10px 12px; min-height: 34px;
+  }
+  .plan-name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; color: var(--text); }
+
+  /* ── BILLING SWITCH ──
+     Two toggle buttons rather than a radio group: no arrow-key contract to
+     honour, and the pressed state is readable straight off aria-pressed. The
+     selected segment takes an inset ring instead of a border so nothing
+     reflows when the selection moves. */
+  .billing-switch {
+    display: inline-flex; align-items: center; gap: 2px;
+    background: var(--bg-alt); border: 1px solid var(--border);
+    border-radius: 999px; padding: 3px;
+  }
+  .billing-opt {
+    border: 0; background: transparent; color: var(--text-muted);
+    font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+    padding: 5px 11px; border-radius: 999px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  }
+  .billing-opt:hover { color: var(--text); }
+  .billing-opt[aria-pressed="true"] {
+    background: var(--bg-card); color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+  .billing-opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .billing-save { color: var(--accent); }
+
+  .plan-price {
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 8px; margin-top: 2px;
+    font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+    font-variant-numeric: tabular-nums; color: var(--text);
+  }
+  .plan-price small { font-size: 0.9rem; font-weight: 500; letter-spacing: 0; color: var(--text-muted); }
+  .plan-billed { font-size: 0.85rem; color: var(--text-subtle); line-height: 1.5; }
+  .plan-sub { font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; text-wrap: pretty; }
+  .plans[data-billing="yearly"] .is-monthly,
+  .plans[data-billing="monthly"] .is-yearly { display: none; }
+  /* Both are empty in the markup and filled only by a whole discount, so an
+     empty one must not reserve space or draw a stray strike-through rule. */
+  .price-was:empty { display: none; }
+  .price-was {
+    margin-right: 8px; font-size: 1.35rem; font-weight: 600;
+    color: var(--text-subtle); text-decoration-thickness: 2px;
+  }
+  .plan-promo {
+    display: flex; flex-direction: column; gap: 2px;
+    margin-top: -4px; margin-bottom: 12px; text-wrap: pretty;
+  }
+  .plan-promo-label { font-size: 0.9rem; font-weight: 700; color: var(--accent); }
+  .plan-promo-note { font-size: 0.82rem; color: var(--text-subtle); line-height: 1.5; }
+
+  .plan-cta {
+    width: 100%; justify-content: center; margin-top: 8px;
+    font-size: 0.95rem; padding: 12px 20px;
+  }
+  /* No checkout exists yet, so this is a real disabled button, not a dead link.
+     The global button rule sets cursor:pointer on every button including
+     disabled ones, hence the explicit override. */
+  .plan-cta-locked {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--bg-alt); color: var(--text-secondary);
+    border: 1px dashed var(--border-strong); border-radius: 8px;
+    font-weight: 600; cursor: not-allowed;
+  }
+
+  /* The live buy button. Solid accent, matching .btn-primary, because this is
+     the one action the whole page exists to produce. Only rendered when
+     _data/paddle.yml has onSale: true — otherwise .plan-cta-locked stands. */
+  .plan-cta-buy {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--accent-fill); color: #fff;
+    border: 0; border-radius: 8px; font-weight: 600;
+    transition: background 0.2s;
+  }
+  .plan-cta-buy:hover { background: var(--accent-fill-hover); }
+  .plan-cta-buy:disabled {
+    background: var(--bg-alt); color: var(--text-secondary);
+    border: 1px dashed var(--border-strong); cursor: not-allowed;
+  }
+  /* Only ever shown when something went wrong opening the checkout. NOT red:
+     --accent is already red on this site, so a red message reads as branding
+     rather than as a problem. A bordered panel carries the weight instead, and
+     every token below is one this stylesheet actually defines — an undefined
+     variable with a same-surface fallback is how an invisible control shipped
+     once already. */
+  .plan-cta-note {
+    margin-top: 10px; padding: 10px 12px;
+    background: var(--bg-alt); border: 1px solid var(--highlight-border);
+    border-radius: 8px;
+    font-size: 0.82rem; line-height: 1.5; color: var(--text);
+  }
+
+  .plan-list-head {
+    margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--border-subtle);
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-subtle);
+  }
+  .plan-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .plan-list li {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 0.92rem; line-height: 1.45; color: var(--text-secondary); text-wrap: pretty;
+  }
+  .plan-list li::before { content: "\2713"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  .plans-both {
+    list-style: none; display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 8px 22px; max-width: 880px; margin: 24px auto 0;
+  }
+  .plans-both li {
+    display: inline-flex; align-items: flex-start; gap: 8px;
+    font-size: 0.9rem; color: var(--text-secondary); text-wrap: pretty;
+  }
+  .plans-both li::before { content: "\2713"; color: var(--accent); font-weight: 700; }
+  .plans-foot {
+    text-align: center; font-size: 0.85rem; color: var(--text-subtle);
+    max-width: 560px; margin: 20px auto 0; line-height: 1.55; text-wrap: pretty;
+  }
+
+  .pro-faq { padding-bottom: 40px; }
+</style>
+
+<script>
+  // The Pro card's prices, read from the same place the extension reads them.
+  //
+  // `pro.pricing` in /config/netflix-config-v1.json is the single source for
+  // both surfaces. The extension resolves it in tidywl-netflix's
+  // src/utils/pricing.js; the rounding, the "whole discount" test, the anchor
+  // rule and the `until` day below are a port of that file and must stay in
+  // step with it — the card and this page are quoted side by side, and a
+  // mismatch reads as a bait and switch. Same origin, a plain fetch.
+  //
+  // The literals already in the markup are the no-JS floor: crawlers, a failed
+  // fetch and a malformed block all leave them exactly as served.
+  (function () {
+    const plans = document.getElementById('plans');
+    if (!plans) return;
+
+    const opts = plans.querySelectorAll('[data-billing-set]');
+    const setBilling = period => {
+      plans.setAttribute('data-billing', period);
+      opts.forEach(o => o.setAttribute('aria-pressed', o.getAttribute('data-billing-set') === period ? 'true' : 'false'));
+    };
+    opts.forEach(btn => btn.addEventListener('click', () => setBilling(btn.getAttribute('data-billing-set'))));
+
+    // ?plan=monthly|yearly opens the page on that period: the extension's
+    // upsell card links here with the period it was showing, and the buy
+    // button reads data-billing at click time.
+    const planParam = new URLSearchParams(location.search).get('plan');
+    if (planParam === 'monthly' || planParam === 'yearly') setBilling(planParam);
+
+    const MIN_PRICE = 0.5, MAX_PRICE = 1000, MAX_LABEL = 120, MAX_BADGE = 24;
+    const DEFAULTS = { monthly: 3.99, yearly: 29.99 };
+    const PERIODS = ['monthly', 'yearly'];
+
+    const cleanPrice = v =>
+      typeof v === 'number' && isFinite(v) && v >= MIN_PRICE && v <= MAX_PRICE ? Math.round(v * 100) / 100 : null;
+    const cleanString = (v, max) =>
+      typeof v === 'string' && v.trim() && v.length <= (max || MAX_LABEL) ? v.trim() : null;
+    const cleanUrl = v => (typeof v === 'string' && /^https:\/\/[^\s]+$/.test(v) ? v : null);
+    // A calendar day that exists, "YYYY-MM-DD".
+    const cleanDay = v => {
+      const m = typeof v === 'string' ? v.match(/^(\d{4})-(\d{2})-(\d{2})$/) : null;
+      if (!m) return null;
+      const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+      return d.getUTCMonth() === +m[2] - 1 && d.getUTCDate() === +m[3] ? v : null;
+    };
+    // Past once the viewer's local midnight after `day` has gone by.
+    const isPastDay = (day, now) => {
+      const m = day.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      return now >= new Date(+m[1], +m[2] - 1, +m[3] + 1).getTime();
+    };
+    const usd = n => '$' + n.toFixed(2);
+    // Never understate the monthly figure, never overstate the saving.
+    const perMonth = yearly => Math.ceil((yearly / 12) * 100 - 1e-9) / 100;
+    const savingPct = (monthly, yearly) => Math.floor((1 - yearly / (12 * monthly)) * 100 + 1e-9);
+    const periodsOf = v => {
+      if (v === undefined) return PERIODS.slice();
+      if (!Array.isArray(v) || !v.length || !v.every(p => PERIODS.indexOf(p) !== -1)) return null;
+      return PERIODS.filter(p => v.indexOf(p) !== -1);
+    };
+
+    function resolve(block, now) {
+      block = block && typeof block === 'object' && !Array.isArray(block) ? block : {};
+      const regular = Object.assign({}, DEFAULTS);
+      let regularBadge = null;
+      if (block.regular && typeof block.regular === 'object') {
+        PERIODS.forEach(period => {
+          const price = cleanPrice(block.regular[period]);
+          if (price != null) regular[period] = price;
+        });
+        regularBadge = cleanString(block.regular.badge, MAX_BADGE);
+      }
+
+      const d = block.discount && typeof block.discount === 'object' ? block.discount : null;
+      const label = d ? cleanString(d.label) : null;
+      const dPrices = d ? { monthly: cleanPrice(d.monthly), yearly: cleanPrice(d.yearly) } : null;
+      const dCheckout = d && d.checkout && typeof d.checkout === 'object' ? d.checkout : {};
+      const periods = d ? periodsOf(d.periods) : null;
+      const until = d && d.until !== undefined ? cleanDay(d.until) : null;
+      const inDate = !!d && (d.until === undefined || (until != null && !isPastDay(until, now)));
+      // Whole or not at all, as the card decides it — and stricter on one
+      // point: this page also needs `paddleDiscountId`, because its buy button
+      // is what hands the discount to Paddle. Without it the checkout would
+      // charge the regular price, so the page shows the regular price.
+      const whole = !!d && d.enabled === true && label != null && periods != null && inDate
+        && typeof d.paddleDiscountId === 'string' && /^dsc_[a-z0-9]{26}$/.test(d.paddleDiscountId)
+        && periods.every(p => dPrices[p] != null && dPrices[p] < regular[p] && cleanUrl(dCheckout[p]) != null);
+      const covers = p => whole && periods.indexOf(p) !== -1;
+
+      const prices = {
+        monthly: covers('monthly') ? dPrices.monthly : regular.monthly,
+        yearly: covers('yearly') ? dPrices.yearly : regular.yearly
+      };
+      const first = whole && d.firstPeriodOnly === true;
+      const anchor = regular.monthly;
+      const monthlyEq = perMonth(prices.yearly);
+      const pct = savingPct(anchor, prices.yearly);
+      const badge = (covers('yearly') ? cleanString(d.badge, MAX_BADGE) : regularBadge)
+        || (pct >= 1 ? 'Save ' + pct + '%' : null);
+
+      return {
+        promo: whole ? { label: label, note: cleanString(d.note), periods: periods } : null,
+        discountIds: {
+          monthly: covers('monthly') ? d.paddleDiscountId : null,
+          yearly: covers('yearly') ? d.paddleDiscountId : null
+        },
+        monthly: {
+          amount: usd(prices.monthly),
+          was: prices.monthly < anchor ? usd(anchor) : null,
+          billed: first && covers('monthly')
+            ? usd(prices.monthly) + ' for your first month, then ' + usd(regular.monthly) + '/month'
+            : 'billed monthly'
+        },
+        yearly: {
+          amount: usd(monthlyEq),
+          was: monthlyEq < anchor ? usd(anchor) : null,
+          billed: first && covers('yearly')
+            ? usd(prices.yearly) + ' for your first year, then ' + usd(regular.yearly) + '/year'
+            : usd(prices.yearly) + ' billed annually',
+          badge: badge
+        }
+      };
+    }
+
+    function paint(model) {
+      const set = (sel, text) => { const el = plans.querySelector(sel); if (el) el.textContent = text; };
+      set('.price-amount.is-monthly', model.monthly.amount);
+      set('.price-amount.is-yearly', model.yearly.amount);
+      set('.plan-billed .is-monthly', model.monthly.billed);
+      set('.plan-billed .is-yearly', model.yearly.billed);
+      set('.price-was.is-monthly', model.monthly.was || '');
+      set('.price-was.is-yearly', model.yearly.was || '');
+
+      const save = plans.querySelector('.billing-save');
+      if (save) {
+        if (model.yearly.badge) { save.textContent = '· ' + model.yearly.badge; save.hidden = false; }
+        else { save.textContent = ''; save.hidden = true; }
+      }
+
+      const promo = plans.querySelector('.plan-promo');
+      if (promo) {
+        if (model.promo) {
+          promo.querySelector('.plan-promo-label').textContent = model.promo.label;
+          promo.querySelector('.plan-promo-note').textContent = model.promo.note || '';
+          const only = model.promo.periods.length === 1 ? model.promo.periods[0] : null;
+          promo.classList.toggle('is-monthly', only === 'monthly');
+          promo.classList.toggle('is-yearly', only === 'yearly');
+          promo.hidden = false;
+        } else {
+          promo.hidden = true;
+        }
+      }
+
+      PERIODS.forEach(p => {
+        const id = model.discountIds[p];
+        if (id) plans.setAttribute('data-discount-' + p, id);
+        else plans.removeAttribute('data-discount-' + p);
+      });
+    }
+
+    fetch('/config/netflix-config-v1.json', { cache: 'no-cache' })
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+      .then(cfg => {
+        const block = cfg && cfg.pro ? cfg.pro.pricing : null;
+        if (block) paint(resolve(block, Date.now()));
+      })
+      .catch(() => { /* the markup literals stand */ });
+  })();
+</script>
+
+{%- if site.data.paddle.netflix.onSale and site.data.paddle.clientToken %}
+<!-- Paddle Checkout, loaded only while _data/paddle.yml's netflix.onSale is
+     true. The token is a client-side token: public by design, it can open a
+     checkout and read prices and nothing else. -->
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script>
+  (function () {
+    var btn = document.getElementById('pro-buy');
+    var note = document.getElementById('pro-buy-note');
+    var plans = document.getElementById('plans');
+    if (!btn || !plans || typeof Paddle === 'undefined') {
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Checkout unavailable';
+        if (note) {
+          note.textContent = 'Something is blocking the payment provider. Disable your content blocker for this page, or email support@tidywl.com.';
+          note.hidden = false;
+        }
+      }
+      return;
+    }
+
+    Paddle.Initialize({
+      token: {{ site.data.paddle.clientToken | jsonify }},
+      eventCallback: function (data) {
+        // An overlay checkout's successUrl redirect carries no transaction id
+        // (TidyWL's first live purchase, 2026-09-13), so redirect from here
+        // with the id this event hands over. The success page claims the key.
+        if (data && data.name === 'checkout.completed') {
+          var txn = data.data && data.data.transaction_id;
+          location.href = '/netflix/checkout/success/' + (txn ? '?_ptxn=' + encodeURIComponent(txn) : '');
+          return;
+        }
+        if (data && data.name === 'checkout.error' && note) {
+          note.textContent = 'The checkout could not open. Try again, or email support@tidywl.com.';
+          note.hidden = false;
+        }
+      }
+    });
+
+    btn.addEventListener('click', function () {
+      var yearly = plans.getAttribute('data-billing') === 'yearly';
+      var priceId = yearly ? btn.dataset.priceYearly : btn.dataset.priceMonthly;
+      if (!priceId) return;
+      if (note) note.hidden = true;
+      var options = {
+        items: [{ priceId: priceId, quantity: 1 }],
+        settings: { displayMode: 'overlay', theme: 'light' }
+      };
+      // Set by the resolver only while the page shows a discount for this
+      // period, so the checkout charges what the page says.
+      var discountId = plans.getAttribute(yearly ? 'data-discount-yearly' : 'data-discount-monthly');
+      if (discountId) options.discountId = discountId;
+      Paddle.Checkout.open(options);
+    });
+  })();
+</script>
+{%- endif %}
