@@ -18,8 +18,9 @@ last_modified_at: 2026-09-23
 
      EVERY CLAIM HERE WAS READ OUT OF THE CODE, not remembered:
        - the seven outbound requests are the only `fetch()` calls in
-         src/background/service-worker.js, and the content scripts make none
-         except to Netflix's own endpoints
+         src/background/service-worker.js — eight calls, since request 6's
+         Transaction ID lookup (claimLicenseKey) has its own — and the content
+         scripts make none except to Netflix's own endpoints
        - what Pro sends is src/utils/license-utils.js and sync-utils.js, and
          what the server keeps is tidywl-api's src/netflix-license.js,
          netflix-sync.js and netflix-phone.js — contract:
@@ -218,7 +219,8 @@ last_modified_at: 2026-09-23
     <h2>The requests that leave your browser</h2>
     <p>
       These are every outbound request the extension makes other than to netflix.com. There are no others; they are
-      the only seven <code>fetch</code> calls in the extension's background worker. The first four carry no
+      the only <code>fetch</code> calls in the extension's background worker, eight of them, because the sixth has
+      two. The first four carry no
       identifier, no cookie, no account, and nothing that distinguishes your copy from anyone else's. The fifth, the
       usage report, carries the random identifier described with it — and nothing else about you. The sixth and
       seventh are Pro's, and a free install never makes them.
@@ -367,6 +369,13 @@ last_modified_at: 2026-09-23
       the subscription's status, the browsers using the key, and a 24-hour sign-in for this browser. Later checks, when
       you open the dashboard at most once every 15 minutes, send the key and this browser's seat number. <em>Deactivate
       this browser</em>, and <em>Remove</em> beside another browser, send the key and that seat's number.
+      <em>Manage subscription</em> sends the key and this browser's seat number to
+      <code>/api/netflix/license/portal</code>.
+    </p>
+    <p>
+      If you enter a Transaction ID from a Paddle receipt instead of a key, the extension first sends that ID, and
+      nothing else, to <code>https://tidywl.com/api/netflix/license/claim</code>, which answers with the key it paid for;
+      that key is then activated as above. Both are described under <em>Paddle, who takes the money</em>.
     </p>
 
     <h3>7. Playlist sync and phones, to tidywl.com — Pro only</h3>
@@ -442,24 +451,62 @@ last_modified_at: 2026-09-23
     </p>
     <p>
       <strong>What Pro keeps on our server,</strong> in the same database and its own tables, never joined with the usage
-      report's: a fingerprint of your key (the key itself is not stored in readable form), the plan, whether the
-      subscription is active, how many browsers it allows, and Paddle's own identifiers for the subscription and for
-      you as their customer; one row per browser using it — its name, and when it was activated and last seen; one row
+      report's: a fingerprint of your key (a bought key is also stored encrypted, so the page you land on after paying
+      can show it to you again, and never in readable form), the plan, whether the subscription is active, past due,
+      cancelled, expired or refunded, whether it is a trial, how many browsers it allows, when the next charge is due
+      and when the paid period ends, and Paddle's own identifiers for the subscription and for you as their customer;
+      one row per payment — Paddle's Transaction ID, the subscription it paid for, which licence, and when it was
+      recorded; one row per browser using it — its name, and when it was activated and last seen; one row
       per synced profile — its id and name, and which browser last wrote to it; one row per playlist, holding what a
       sync sends; and one row per phone — the profile it reads, what kind of device it is, a fingerprint of its pass,
       and when it was paired and last opened. Not your email, your name, your address or one digit of your card.
     </p>
 
     <h2>Paddle, who takes the money</h2>
-    <!-- DRAFT: PLAN-mobile-sync step 4. Mirror the YouTube policy's Paddle section once the Netflix product, its claim
-         page and its customer portal exist — lost-key lookup and Manage subscription are described there. -->
+    <!-- The YouTube policy's Paddle section (/privacy/), for this product's pages and routes: netflix/pricing/,
+         netflix/checkout/success/, tidywl-api's handleClaim() and handlePortal() in src/netflix-license.js, and the
+         webhook in src/paddle.js. The extension's half is claimLicenseKey() and openSubscriptionPortal() in
+         src/background/service-worker.js. -->
     <p>
       TidyWL Pro is sold through <strong>Paddle</strong>, which is the merchant of record — legally the seller, and the
-      one that charges you, files the sales tax and handles refunds. <strong>Your card details, billing address and
-      email go to Paddle, and never to us.</strong> What Paddle tells us is: this subscription exists, this is its plan,
-      this is whether it is paid, and here are Paddle's own reference numbers for it. What Paddle does with what you gave
-      them is covered by <a href="https://www.paddle.com/legal/privacy" target="_blank" rel="noopener">Paddle's privacy
-      policy</a>, not this one.
+      one that charges you, files the sales tax and handles refunds. The checkout is Paddle's own form, opened over the
+      pricing page on this site in an ordinary browser tab, never inside the extension.
+    </p>
+    <p>
+      <strong>Your card details, billing address and email go to Paddle, and never to us.</strong> What Paddle tells us
+      is: this subscription exists, this is its plan, this is whether it is paid, when the next charge is due and when
+      the paid period ends, and here are Paddle's own reference numbers for the subscription, for you as their customer
+      and for each payment. What Paddle does with what you gave them is covered by
+      <a href="https://www.paddle.com/legal/privacy" target="_blank" rel="noopener">Paddle's privacy policy</a>, not
+      this one.
+    </p>
+    <p>
+      <strong>One page loads Paddle's script.</strong> The pricing page, <code>tidywl.com/netflix/pricing/</code>, loads
+      Paddle.js from Paddle's own servers so the checkout can open over it. What that script does in your browser is
+      covered by Paddle's policy, not this one. No other page on this site loads anything from Paddle.
+    </p>
+    <p>
+      <strong>The page you land on after paying.</strong> When the checkout finishes, the pricing page sends you to a
+      page on this site with the payment's Transaction ID in the address, and that page trades the ID for your key.
+      The address carries nothing else, and the page keeps nothing in your browser.
+    </p>
+    <p>
+      <strong>Finding a lost key.</strong> Every Paddle receipt, the first and each renewal, shows that Transaction ID.
+      Paste it into <em>Find my key</em> on the same page, or into the key box under About → Pro in the extension, and
+      it goes to our server once, on its own, to look your key up; the extension then activates that key as if you had
+      typed it. The lookup stores nothing new: the ID is already on our server, recorded when Paddle told us about the
+      payment. The ID alone is enough to see the key, so treat your receipts the way you would the key.
+    </p>
+    <p>
+      <strong>Manage subscription.</strong> The button under About → Pro sends your key and this browser's seat number
+      to our server, which looks up Paddle's customer reference for the key, asks Paddle for a signed-in link to that
+      account, and hands it straight back for the browser to open in a new tab. There you can cancel, change your card
+      or download invoices. It happens only when you press the button. That link is a credential, so it is never
+      written down: not stored, not logged, not kept once the tab is open.
+    </p>
+    <p>
+      <strong>When a subscription ends or is refunded,</strong> Paddle tells our server, the licence's status changes,
+      and Pro switches off in each browser at its next licence check. Nothing else is sent in either direction.
     </p>
 
     <h2>Requests about your data</h2>
@@ -472,8 +519,10 @@ last_modified_at: 2026-09-23
       <strong>Pro is different, because the key identifies it.</strong> Write to
       <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from any address and quote
       your key, and we can tell you exactly what is stored under it, or delete it — the licence, every browser and phone
-      on it, and every synced profile and playlist. Deleting it is permanent: the key stops working and cannot be
-      restored, so cancel your subscription with Paddle first. The playlists in your browsers are not touched.
+      on it, every synced profile and playlist, and the payments recorded against it. Deleting it is permanent: the
+      key stops working and cannot be restored, so cancel your subscription with Paddle first. The playlists in your
+      browsers are not touched. Anything Paddle holds, including your email and your invoices, has to be asked of
+      Paddle.
     </p>
 
     <h2>Children</h2>
