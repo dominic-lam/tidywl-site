@@ -27,15 +27,16 @@ robots: noindex
       </form>
     </div>
 
-    <div class="activate-box">
-      <h2 class="activate-title">Turn Pro on in the extension</h2>
-      <ol>
+    <div class="activate-box" id="activate-box">
+      <h2 class="activate-title" id="activate-title">Turn Pro on in the extension</h2>
+      <p class="activate-auto" id="activate-auto" hidden></p>
+      <ol id="activate-steps">
         <li>Copy the key above.</li>
         <li>Open YouTube and open the TidyWL dashboard.</li>
         <li>Click the <strong>ⓘ About</strong> button in the top right.</li>
         <li>Under <strong>TidyWL Pro</strong>, click <strong>Have a key?</strong>, paste the key and click <strong>Activate</strong>.</li>
       </ol>
-      <p class="activate-done">You are done when the badge turns <strong>PRO</strong>.</p>
+      <p class="activate-done" id="activate-done">You are done when the badge turns <strong>PRO</strong>.</p>
     </div>
 
     <h2>This key is not emailed</h2>
@@ -131,6 +132,8 @@ robots: noindex
   .activate-box li { margin: 6px 0; }
   .activate-box li::marker { color: var(--accent-text, #c62828); font-weight: 700; }
   .activate-done { margin: 0; color: var(--text-secondary, inherit); }
+  .activate-auto { margin: 0 0 10px; font-weight: 600; }
+  .activate-box.is-on { border-color: var(--border, #d1d5db); }
 </style>
 
 <script>
@@ -154,6 +157,21 @@ robots: noindex
     var findInput = document.getElementById('key-find-txn');
     var subtitle = document.getElementById('key-subtitle');
     var copyWired = false;
+
+    // Pro turns on by itself (extension 2.2.0). When the extension is in this
+    // browser, its checkout bridge says `ready` and takes the key from here, then
+    // answers with what happened. Only a key this page has just claimed is ever
+    // posted, never one read from the address. No answer means no extension in
+    // this browser, and the paste steps stay as they are.
+    var claimedKey = null;
+    var auto = document.getElementById('activate-auto');
+    window.addEventListener('message', function (event) {
+      if (event.source !== window || event.origin !== location.origin) return;
+      var data = event.data;
+      if (!data || data.source !== 'tidywl-extension') return;
+      if (data.type === 'ready') handOver();
+      else if (data.type === 'activation') showActivation(data.status, data.error);
+    });
 
     // A hosted checkout redirects here with (observed 2026-09-05):
     //   ?price_id=pri_…&transaction_id=txn_…&customer_email=…&paddle_customer_id=ctm_…
@@ -216,6 +234,40 @@ robots: noindex
       }
     }
 
+    function handOver() {
+      if (claimedKey) window.postMessage({ source: 'tidywl-checkout', type: 'activate', key: claimedKey }, location.origin);
+    }
+
+    function showActivation(state, error) {
+      if (state === 'activated' || state === 'already') {
+        document.getElementById('key-heading').textContent = 'Pro is on';
+        subtitle.textContent = 'Thank you for buying TidyWL Pro. It is switched on in this browser.';
+        document.getElementById('activate-box').classList.add('is-on');
+        document.getElementById('activate-title').textContent = 'Pro is on in this browser';
+        document.getElementById('activate-steps').hidden = true;
+        document.getElementById('activate-done').innerHTML = 'Open the TidyWL dashboard on YouTube and the badge reads <strong>PRO</strong>. ' +
+          'For another computer, paste the key above there, under <strong>ⓘ About</strong> and <strong>Have a key?</strong>. One key covers three.';
+        say(state === 'already' ? 'This key was already on in this browser.' : '');
+        return;
+      }
+      if (state === 'activating') say('Turning Pro on in this browser…');
+      else if (state === 'needs_consent') say('Firefox is asking for permission in a new tab. Choose Allow there and Pro turns on by itself.');
+      else if (state === 'declined') say('Firefox did not get permission to check the key, so Pro is still off. Paste the key as below, and allow key checks when the extension asks.');
+      else if (state === 'other_key') say('This browser already has a different Pro key switched on, so nothing was changed. To use this key here instead, deactivate the other one under ⓘ About, then paste this one.');
+      else if (state === 'failed') say(failure(error));
+    }
+
+    function failure(error) {
+      if (error === 'activation_limit') return 'This key is already on three computers, so it was not switched on here. Deactivate one under ⓘ About on that computer, then paste the key here.';
+      if (error === 'rate_limited') return 'Too many attempts just now. Wait a minute, then paste the key as below.';
+      return 'Pro could not be switched on by itself. Paste the key as below.';
+    }
+
+    function say(text) {
+      auto.textContent = text;
+      auto.hidden = text === '';
+    }
+
     function show(data) {
       find.hidden = true;
       status.removeAttribute('data-tone');
@@ -224,6 +276,10 @@ robots: noindex
       value.hidden = false;
       copy.hidden = false;
       box.classList.add('has-key');
+      if (data.status === 'active' || data.status === 'past_due') {
+        claimedKey = data.key;
+        handOver();
+      }
       if (copyWired) return;
       copyWired = true;
       copy.addEventListener('click', function () {
