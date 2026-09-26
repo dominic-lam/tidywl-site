@@ -8,6 +8,14 @@
   the extension's one-time code was swapped for. The licence key never reaches
   a phone. Titles, names and box art are other people's text and Netflix's
   links, so app.js builds every node with textContent, never innerHTML.
+
+  Dark only, since 2026-09-26: Netflix's own apps are, box art is made for a
+  dark ground, and an iPhone Home Screen app with a translucent status bar
+  draws white status text over the page, which a light page would hide.
+
+  Installable: manifest.webmanifest, and sw.js keeps the page's own files so it
+  opens offline. Neither holds anything of the user's; the last copy of the
+  playlists stays in localStorage, as before.
 -->
 <html lang="en">
 <head>
@@ -15,119 +23,264 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex">
   <meta name="referrer" content="no-referrer">
-  <meta name="theme-color" content="#141414">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#121212">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Playlists">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Netflix Playlists</title>
   <meta name="description" content="Your TidyWL for Netflix playlists on your phone.">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="/assets/netflix-icon128.png">
-  <link rel="apple-touch-icon" href="/assets/netflix-icon128.png">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <style>
     :root {
-      --bg: #f6f6f6;
-      --surface: #ffffff;
-      --text: #141414;
-      --muted: #5f5f5f;
-      --line: #dddddd;
+      color-scheme: dark;
+      --bg: #121212;
+      --bg-glass: rgba(18, 18, 18, 0.78);
+      --surface: #1c1c1e;
+      --surface-2: #2a2a2d;
+      --line: rgba(255, 255, 255, 0.09);
+      --text: #f5f5f7;
+      --muted: #a1a1a6;
+      --faint: #6e6e73;
       --accent: #e50914;
       --accent-fill: #c40812;
-      --accent-text: #b20710;
-      --danger: #b20710;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg: #141414;
-        --surface: #1f1f1f;
-        --text: #f2f2f2;
-        --muted: #a8a8a8;
-        --line: #333333;
-        --accent-text: #ff5a5f;
-        --danger: #ff6b6b;
-      }
-    }
-    :root[data-theme="dark"] {
-      --bg: #141414; --surface: #1f1f1f; --text: #f2f2f2; --muted: #a8a8a8; --line: #333333;
-      --accent-text: #ff5a5f; --danger: #ff6b6b;
+      --accent-press: #a30710;
+      --accent-text: #ff5a5f;
+      --danger: #ff6b6b;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; }
+    html { -webkit-text-size-adjust: 100%; background: var(--bg); }
     body {
       margin: 0;
+      min-height: 100vh;
       background: var(--bg);
       color: var(--text);
-      font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
-    main { max-width: 720px; margin: 0 auto; padding: 16px; }
-    h1 { font-size: 22px; margin: 8px 0 4px; }
-    h2 { font-size: 18px; margin: 0; }
-    p { margin: 0 0 12px; }
-    a { color: var(--accent-text); }
-    button { font: inherit; }
+    h1, h2, p { margin: 0; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    a, button { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; border-radius: 6px; }
 
-    .chip {
-      display: inline-flex; align-items: center; gap: 8px;
-      margin: 4px 0 16px; font-size: 14px; color: var(--muted);
+    #app { position: relative; min-height: 100vh; }
+    .content {
+      position: relative; z-index: 1;
+      max-width: 720px; margin: 0 auto;
+      padding: 4px 16px calc(28px + var(--safe-bottom));
     }
-    .chip-mark {
-      width: 28px; height: 28px; border-radius: 6px; flex: none;
-      display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 14px;
-    }
-    .chip strong { color: var(--text); font-weight: 600; }
+    .enter { animation: enter 0.22s ease-out; }
+    @keyframes enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-    .note { font-size: 14px; color: var(--muted); }
-    .error { color: var(--danger); }
-    .banner {
-      padding: 10px 12px; margin: 0 0 16px; border-radius: 8px;
-      background: var(--surface); border: 1px solid var(--line); font-size: 14px;
+    /* The bar: clear at the top of the page, glass once the page scrolls under it. */
+    .bar {
+      position: sticky; top: 0; z-index: 10;
+      padding-top: var(--safe-top);
+      border-bottom: 1px solid transparent;
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+    .bar.is-scrolled {
+      background: var(--bg-glass);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: saturate(180%) blur(20px);
+      border-bottom-color: var(--line);
+    }
+    .bar-inner {
+      max-width: 720px; margin: 0 auto; height: 52px; padding: 0 6px;
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; column-gap: 8px;
+    }
+    .bar-start { justify-self: start; display: flex; align-items: center; }
+    .bar-end { justify-self: end; }
+    .bar-title {
+      font-size: 16px; font-weight: 600; max-width: 56vw;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .bar.is-scrolled .bar-title { opacity: 1; }
+    .bar-logo { width: 28px; height: 28px; border-radius: 7px; margin-left: 10px; display: block; }
+
+    .icon-btn {
+      width: 40px; height: 40px; border: 0; border-radius: 20px; background: transparent;
+      display: grid; place-items: center;
+    }
+    .icon-btn:active { background: var(--surface-2); }
+    .icon-btn[disabled] { cursor: default; }
+    .icon-btn.is-busy svg { animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 2px; height: 40px; padding: 0 10px 0 2px;
+      border: 0; border-radius: 20px; background: transparent; font-size: 17px; text-decoration: none; color: var(--text);
+    }
+    .back-btn:active { background: var(--surface-2); }
+
+    .title { font-size: 32px; line-height: 1.12; letter-spacing: -0.02em; font-weight: 700; margin: 4px 0 14px; overflow-wrap: anywhere; text-wrap: balance; }
+    .sub { color: var(--muted); font-size: 14px; margin: -6px 0 20px; }
+
+    /* Whose playlists, and how fresh: provenance, not live status. */
+    .profile { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; }
+    .avatar {
+      width: 40px; height: 40px; border-radius: 8px; flex: none;
+      display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 18px;
+    }
+    .profile-name { font-weight: 600; }
+    .profile-meta { font-size: 13px; color: var(--muted); }
+
+    .callout {
+      display: flex; gap: 10px; align-items: flex-start; text-align: left;
+      background: var(--surface); border-radius: 12px; padding: 12px 14px;
+      font-size: 14px; color: var(--muted); margin: 0 0 18px;
+    }
+    .callout svg { flex: none; margin-top: 2px; color: var(--accent-text); }
+    .callout strong { color: var(--text); font-weight: 600; }
+
+    /* Playlists: a cover from the first titles' box art, the name, what is in it. */
+    .pls { list-style: none; margin: 0; padding: 0; }
+    .pl {
+      display: flex; align-items: center; gap: 14px;
+      margin: 0 -8px; padding: 9px 8px; border-radius: 12px;
+      color: var(--text); text-decoration: none;
+      transition: background-color 0.15s;
+    }
+    .pl:active { background: var(--surface); }
+    @media (hover: hover) { .pl:hover { background: var(--surface); } }
+    .cover {
+      position: relative; flex: none; width: 116px; aspect-ratio: 16 / 9; overflow: hidden;
+      border-radius: 8px; background: var(--surface-2); display: grid;
+    }
+    .cover--4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 1px; background: var(--bg); }
+    .cover img { display: block; width: 100%; height: 100%; object-fit: cover; min-width: 0; min-height: 0; }
+    .cover-letter { place-self: center; font-size: 24px; font-weight: 700; color: rgba(255, 255, 255, 0.55); }
+    .pl-text { flex: 1; min-width: 0; }
+    .pl-name {
+      font-weight: 600; line-height: 1.3; overflow-wrap: anywhere;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .pl-meta { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .chev { flex: none; color: var(--faint); }
+
+    /* One playlist: its first title's art, blurred, behind the top of the page. */
+    .hero-bg {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 0;
+      height: calc(320px + var(--safe-top)); overflow: hidden; pointer-events: none;
+    }
+    .hero-bg img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: blur(40px) saturate(1.6); transform: scale(1.3); opacity: 0.6;
+    }
+    .hero-bg::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(18, 18, 18, 0.15) 0%, rgba(18, 18, 18, 0.6) 55%, var(--bg) 100%);
     }
 
-    .pair { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px 16px; margin-top: 16px; }
-    .pair ol { padding-left: 20px; margin: 0 0 16px; }
-    .pair li { margin-bottom: 6px; }
-    .pair form { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pair input {
-      flex: 1 1 160px; min-width: 0; padding: 12px; font-size: 22px; letter-spacing: 0.15em; text-transform: uppercase;
-      font-family: ui-monospace, Menlo, monospace; border: 1px solid var(--line); border-radius: 8px;
-      background: var(--bg); color: var(--text);
+    .grid {
+      list-style: none; margin: 0; padding: 0;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 18px 12px;
     }
-    .btn {
-      padding: 12px 18px; border: 0; border-radius: 8px; background: var(--accent-fill); color: #fff; font-weight: 600;
-    }
-    .btn[disabled] { opacity: 0.6; }
-    .link { background: none; border: 0; padding: 0; color: var(--accent-text); text-decoration: underline; cursor: pointer; }
-
-    .lists { list-style: none; margin: 0; padding: 0; }
-    .lists li + li { margin-top: 8px; }
-    .list-btn {
-      width: 100%; display: flex; align-items: center; gap: 12px; padding: 12px; text-align: left;
-      background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 10px;
-    }
-    .list-btn .count { margin-left: auto; color: var(--muted); font-size: 14px; flex: none; }
-    .list-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
-
-    .back { display: inline-block; margin: 4px 0 12px; }
-    .grid { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
-    .card a { display: block; color: var(--text); text-decoration: none; }
+    .card a, .card > div { display: block; color: inherit; text-decoration: none; }
     .art {
-      display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px;
-      background: var(--surface); border: 1px solid var(--line);
+      display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px;
+      background: var(--surface-2); outline: 1px solid rgba(255, 255, 255, 0.06); outline-offset: -1px;
+      transition: transform 0.15s;
     }
-    .art-none { display: grid; place-items: center; color: var(--muted); font-size: 12px; padding: 8px; text-align: center; }
-    .card-title { font-size: 14px; margin-top: 6px; line-height: 1.3; overflow-wrap: anywhere; }
-    .card-meta { font-size: 12px; color: var(--muted); }
+    .card a:active .art { transform: scale(0.97); }
+    .art-none {
+      display: grid; place-items: center; padding: 10px; text-align: center;
+      background: linear-gradient(135deg, var(--surface-2), var(--surface));
+      color: var(--muted); font-size: 13px; line-height: 1.3; overflow-wrap: anywhere;
+    }
+    .card-title {
+      font-size: 14px; font-weight: 600; line-height: 1.3; margin-top: 8px; overflow-wrap: anywhere;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-    footer { margin: 32px 0 16px; font-size: 13px; color: var(--muted); }
-    footer p { margin-bottom: 8px; }
+    .empty { text-align: center; padding: 40px 16px; color: var(--muted); font-size: 15px; }
+    .empty img { width: 56px; height: 56px; border-radius: 13px; opacity: 0.45; filter: grayscale(1); margin-bottom: 14px; }
+    .empty strong { display: block; color: var(--text); font-size: 17px; margin-bottom: 6px; }
+
+    /* Pairing. */
+    .pair-view { text-align: center; padding-top: calc(var(--safe-top) + 36px); }
+    .app-icon { width: 76px; height: 76px; border-radius: 18px; display: block; margin: 0 auto; box-shadow: 0 12px 32px rgba(229, 9, 20, 0.22); }
+    .pair-view .title { font-size: 26px; margin: 20px 0 8px; }
+    .lead { color: var(--muted); font-size: 15px; margin: 0 auto 26px; max-width: 34ch; text-wrap: balance; }
+    .steps {
+      list-style: none; counter-reset: step; text-align: left;
+      background: var(--surface); border-radius: 14px; padding: 4px 16px; margin: 0 0 20px;
+    }
+    .steps li { counter-increment: step; display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; font-size: 15px; }
+    .steps li + li { border-top: 1px solid var(--line); }
+    .steps li::before {
+      content: counter(step); flex: none; width: 24px; height: 24px; border-radius: 50%;
+      display: grid; place-items: center; background: var(--accent-fill); color: #fff; font-size: 13px; font-weight: 700;
+    }
+    .code-form { display: grid; gap: 10px; }
+    .code-input {
+      width: 100%; min-width: 0; padding: 14px; border-radius: 12px; border: 1px solid var(--line);
+      background: var(--surface); color: var(--text);
+      font: 600 26px/1.2 ui-monospace, "SF Mono", Menlo, monospace;
+      letter-spacing: 0.3em; text-indent: 0.3em; text-align: center; text-transform: uppercase;
+    }
+    .code-input::placeholder { color: #4d4d52; }
+    .code-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+    .btn {
+      height: 50px; padding: 0 20px; border: 0; border-radius: 12px;
+      background: var(--accent-fill); color: #fff; font-size: 17px; font-weight: 600;
+      transition: transform 0.1s, background-color 0.15s;
+    }
+    .btn:active { background: var(--accent-press); transform: scale(0.985); }
+    .btn[disabled] { opacity: 0.6; transform: none; }
+    .error {
+      margin-top: 14px; padding: 10px 12px; border-radius: 10px; text-align: left;
+      background: rgba(255, 107, 107, 0.1); color: var(--danger); font-size: 14px;
+    }
+    .pair-foot { margin-top: 28px; font-size: 13px; color: var(--muted); }
+
+    /* Add to Home Screen. */
+    .install {
+      display: flex; gap: 12px; align-items: center;
+      background: var(--surface); border-radius: 14px; padding: 14px; margin-top: 30px;
+    }
+    .install > img { width: 44px; height: 44px; border-radius: 10px; flex: none; }
+    .install-text { flex: 1; min-width: 0; font-size: 13px; color: var(--muted); }
+    .install-text strong { display: block; color: var(--text); font-size: 15px; font-weight: 600; margin-bottom: 1px; }
+    .install-text svg { vertical-align: -3px; color: var(--text); }
+    .pill-btn {
+      flex: none; height: 34px; padding: 0 16px; border: 0; border-radius: 17px;
+      background: var(--accent-fill); color: #fff; font-size: 14px; font-weight: 600;
+    }
+    .pill-btn:active { background: var(--accent-press); }
+
+    .foot { margin-top: 30px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+    .foot p + p { margin-top: 10px; }
+    .link-btn { padding: 0; border: 0; background: none; color: var(--accent-text); font-weight: 600; }
+
+    /* Loading: the shape of what is coming. */
+    .sk {
+      display: block; border-radius: 6px;
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+      background-size: 300% 100%; animation: shimmer 1.4s ease-in-out infinite;
+    }
+    @keyframes shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+    .sk-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; }
+    .sk-cover { width: 116px; aspect-ratio: 16 / 9; border-radius: 8px; flex: none; }
+    .sk-lines { flex: 1; display: grid; gap: 8px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .enter, .sk, .icon-btn.is-busy svg { animation: none; }
+      .pl, .art, .btn, .bar, .bar-title { transition: none; }
+    }
   </style>
 </head>
 <body>
-  <main id="app" aria-live="polite">
-    <noscript><p>This page needs JavaScript to show your playlists.</p></noscript>
-  </main>
+  <div id="app">
+    <noscript><p style="padding:24px">This page needs JavaScript to show your playlists.</p></noscript>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>
