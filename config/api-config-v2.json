@@ -391,5 +391,9 @@
       0,
       "url"
     ]
+  },
+  "editBatchSizes": {
+    "remove": 100,
+    "add": 200
   }
 }
