@@ -54,6 +54,40 @@ test('words: relative time, card meta, and every claim error in plain language',
   assert.match(P.profileColor('PYNALXALABDV5PSNPM35IYGEFM'), /^hsl\(\d+, 55%, 40%\)$/);
 });
 
+test('install instructions by platform; an iPad asking for the desktop site is still iOS', () => {
+  assert.equal(P.platformOf('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)', 5), 'ios');
+  assert.equal(P.platformOf('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Safari/605.1.15', 5), 'ios');
+  assert.equal(P.platformOf('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Safari/605.1.15', 0), 'other');
+  assert.equal(P.platformOf('Mozilla/5.0 (Linux; Android 15; Pixel 9) Mobile Safari', 5), 'android');
+  assert.equal(P.platformOf(undefined, undefined), 'other');
+});
+
+test('a cover: four arts for a mosaic, else the first, and never art from anywhere else', () => {
+  const art = n => ({ art: `https://occ-0-1.1.nflxso.net/dnm/api/v6/${n}.jpg` });
+  assert.equal(P.coverArts([art(1), art(2), art(3), art(4), art(5)]).length, 4);
+  assert.deepEqual(Array.from(P.coverArts([art(1), art(2), art(3)])), [art(1).art]);
+  assert.deepEqual(Array.from(P.coverArts([{ art: 'https://evil.example/x.jpg' }, { art: null }, null, art(9)])), [art(9).art]);
+  assert.equal(P.coverArts(undefined).length, 0);
+  assert.match(P.coverBackground('mudcujery14aac9q'), /^linear-gradient\(135deg, hsl\(\d+, 38%, 30%\), hsl\(\d+, 42%, 13%\)\)$/);
+});
+
+test('what is in a playlist, in words', () => {
+  const show = { type: 'show' }, movie = { type: 'movie' }, unknown = { type: null };
+  assert.equal(P.countLine([]), 'Empty');
+  assert.equal(P.countLine([show, show]), '2 series');
+  assert.equal(P.countLine([movie]), '1 film');
+  assert.equal(P.countLine([show, show, movie]), '3 titles · 2 series, 1 film');
+  assert.equal(P.countLine([unknown]), '1 title');
+  assert.equal(P.countLine([show, unknown]), '2 titles · 1 series');
+});
+
+test('a page coming back to the front asks again only after a minute', () => {
+  const now = Date.UTC(2026, 8, 26, 12);
+  assert.equal(P.isStale(null, now), true);
+  assert.equal(P.isStale(now - 30e3, now), false);
+  assert.equal(P.isStale(now - 61e3, now), true);
+});
+
 test('the page builds nothing from markup: no innerHTML anywhere', () => {
   assert.doesNotMatch(source, /innerHTML|insertAdjacentHTML|outerHTML|document\.write/);
 });
