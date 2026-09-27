@@ -298,6 +298,10 @@
   <div id="app">
     <noscript><p style="padding:24px">This page needs JavaScript to show your playlists.</p></noscript>
   </div>
-  <script src="app.js"></script>
+  <!-- ?v= changes with every app.js change: Cloudflare tells browsers to keep
+       app.js for 4 hours but this page for 10 minutes, so without it a phone
+       can pair new markup and styles with the old script. sw.js's offline
+       fallback matches ignoring the query. -->
+  <script src="app.js?v=2"></script>
 </body>
 </html>
