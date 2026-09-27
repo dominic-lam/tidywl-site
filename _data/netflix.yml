@@ -20,3 +20,5 @@ version: 0.1.0
 # its `last_modified_at`. Bump it when the policy's substance changes — not
 # for a typo, per the freshness rule in CLAUDE.md.
 privacy_updated: 2026-09-27
+# The day the policy first went live. Rendered as "Published"; never bumped.
+privacy_published: 2026-09-20
