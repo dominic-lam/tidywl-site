@@ -99,6 +99,7 @@ faq:
           {%- else %}
           <button type="button" class="plan-cta plan-cta-locked" disabled>Arrives with version 1.0.0</button>
           {%- endif %}
+          <p class="plan-refund">14-day full refund, no questions asked</p>
           <p class="plan-list-head">Everything in Free, and:</p>
           <ul class="plan-list">
             <li>Undo removals — 90 days of history, on this device</li>
@@ -115,7 +116,7 @@ faq:
         <li>14-day full refund on every charge — no questions, no conditions</li>
         <li>Cancel any time</li>
       </ul>
-      <p class="plans-foot">14-day full refund on every charge, no questions asked. Prices in US dollars before tax. Checkout, by Paddle, shows your currency and any tax for your country. <a href="/netflix/terms/">Terms of sale</a> · <a href="/netflix/refunds/">Refund policy</a></p>
+      <p class="plans-foot">Prices in US dollars before tax. Checkout, by Paddle, shows your currency and any tax for your country. <a href="/netflix/terms/">Terms of sale</a> · <a href="/netflix/refunds/">Refund policy</a></p>
     </div>
   </section>
 
@@ -239,6 +240,11 @@ faq:
   .plan-cta {
     width: 100%; justify-content: center; margin-top: 8px;
     font-size: 0.95rem; padding: 12px 20px;
+  }
+  /* The refund promise under the button that asks for money (2026-09-27). */
+  .plan-refund {
+    margin: 8px 0 0; text-align: center;
+    font-size: 0.8rem; color: var(--text-subtle);
   }
   /* No checkout exists yet, so this is a real disabled button, not a dead link.
      The global button rule sets cursor:pointer on every button including
