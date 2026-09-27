@@ -160,7 +160,8 @@
     ],
     "musicCategory": "Music",
     "channelIdPath":         ["videoDetails", "channelId"],
-    "channelNamePath":       ["microformat", "playerMicroformatRenderer", "ownerChannelName"]
+    "channelNamePath":       ["microformat", "playerMicroformatRenderer", "ownerChannelName"],
+    "shortsEligiblePath":    ["microformat", "playerMicroformatRenderer", "isShortsEligible"]
   },
   "transcriptResponse": {
     "segmentsPath": [
@@ -391,5 +392,9 @@
       0,
       "url"
     ]
+  },
+  "editBatchSizes": {
+    "remove": 100,
+    "add": 200
   }
 }

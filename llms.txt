@@ -57,6 +57,13 @@ Step-by-step instructions for every feature are on the [tutorials page](https://
 - [Undo deletions (Pro)](https://tidywl.com/tutorials/#undo)
 - [Saved views (Pro)](https://tidywl.com/tutorials/#saved-views)
 
+## Guides
+
+Long-form guides on the [blog](https://tidywl.com/blog/) to Watch Later, Liked videos and playlists: YouTube's limits and what to do about them, from unliking and searching to exporting a list or sending it to NotebookLM. Newest first.
+{% for post in site.posts %}
+- [{{ post.title }}]({{ site.url }}{{ post.url }}): {{ post.description | normalize_whitespace }}
+{%- endfor %}
+
 ## Why it exists
 
 YouTube's Watch Later playlist has a hard 5,000 video cap. Once you hit it, YouTube stops adding new videos and gives you no bulk management tools — you have to delete videos one at a time through a three-dot menu. The official YouTube Data API explicitly excludes Watch Later. TidyWL works around this by using your existing logged-in YouTube session, so no account, API key, or OAuth is needed.
@@ -97,9 +104,17 @@ Written reviews of TidyWL from the Chrome Web Store, quoted word for word, newes
 - "{{ r.text | normalize_whitespace }}" by {{ r.author | normalize_whitespace }}, {{ r.stars | plus: 0 }} out of 5{% if r.date %}, {{ r.date }}{% endif %}{% if lang and lang != "en" %} (language: {{ lang }}){% endif %}. https://chromewebstore.google.com/reviews/{{ r.id | uri_escape }}
 {%- endfor %}
 
+## Mentioned elsewhere
+
+Recommendations by people outside TidyWL, oldest first. Each links to the source.
+
+- **zedinabyss**, a personal blog, in "The Age of Debloat and Nosurf" (April 2026, updated June 2026): the author used the extension, then listed as YouTube Watch Later Tidy, to clear a 14-year backlog of saved videos. [The post](https://zedinabyss.xyz/bio/blog/entries/debloat/).
+- **Nerdist Camp** (a Cup The Mic podcast), season 2 episode 10, "Abbey Road Studios", published 11 July 2026. Co-host Andi recommended the extension, then listed as YouTube Watch Later Tidy, after failing to find one video among 1,600 in Watch Later. In Andi's words: "YouTube don't provide tools to search within Watch Later, God knows why. [...] this lets you search within your history and do all sorts of stuff, and it's free." The episode's show notes link to the Chrome Web Store listing: [Nerdist Camp S2E10](https://shows.acast.com/nc/episodes/s2e10).
+- **Reddit, r/androidapps** (24 August 2026): a user recommended the extension, with a store link, to someone who had hit the 5,000-video cap, and the asker replied that it was exactly what they needed. [The thread](https://www.reddit.com/r/androidapps/comments/1vxdcnr/).
+
 ## Usage
 
-TidyWL users have cleaned up over {{ site.data.usage.deletedTotal }} videos (videos deleted from playlists, plus likes removed before version 1.6.0, when the extension counted the two together), removed over {{ site.data.usage.unlikedTotal }} likes since then, and moved over {{ site.data.usage.movedTotal }} videos between playlists (figures as of {{ site.data.usage.lastUpdated }}, refreshed daily). Reporting began in August 2026 with version 1.6.0, but each install reports the lifetime counts the extension has kept on the device since version 1.4.1, so earlier clean-ups are included. Each is a floor, rounded down to the nearest thousand, so the real number is higher. All three are shown on https://tidywl.com and published as JSON at https://tidywl.com/api/stats. Those counts are all the usage report carries: each install sends a random identifier that is not linked to any account, plus its own running counts. No video, title, channel, playlist name, timestamp or account ever leaves the browser as part of it. Firefox users can switch reporting off from the add-on's permissions panel; the full description is in the [privacy policy](https://tidywl.com/privacy/).
+TidyWL users have cleaned up over {{ site.data.usage.deletedTotal }} videos (videos deleted from playlists, plus likes removed before version 1.6.0, when the extension counted the two together), removed over {{ site.data.usage.unlikedTotal }} likes since then, and moved over {{ site.data.usage.movedTotal }} videos between playlists (figures as of {{ site.data.usage.lastUpdated }}, refreshed daily). Reporting began in August 2026 with version 1.6.0, but each install reports the lifetime counts the extension has kept on the device since version 1.4.1, so earlier clean-ups are included. Each is a floor, rounded down to the nearest thousand, so the real number is higher. All three are shown on https://tidywl.com and published as JSON at [tidywl.com/api/stats](https://tidywl.com/api/stats). Those counts are all the usage report carries: each install sends a random identifier that is not linked to any account, plus its own running counts. No video, title, channel, playlist name, timestamp or account ever leaves the browser as part of it. Firefox users can switch reporting off from the add-on's permissions panel; the full description is in the [privacy policy](https://tidywl.com/privacy/).
 
 ## Technical details
 
@@ -135,7 +150,7 @@ Chrome only, on a computer; Chrome for Android has no extension support. It requ
 
 - [Install for Chrome](https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo): the Chrome Web Store listing
 - [Install for Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf): the Microsoft Edge Add-ons listing
-- [Install for Firefox](https://tidywl.com/firefox/): the signed Firefox build, distributed from tidywl.com
+- [Install for Firefox](https://addons.mozilla.org/firefox/addon/watch-later-tidy/): the Firefox Add-ons listing
 - [Landing page](https://tidywl.com/)
 - [Pricing](https://tidywl.com/pricing/): what TidyWL Pro adds, prices, refunds and cancelling
 - [Tutorials](https://tidywl.com/tutorials/): one step-by-step guide per feature
@@ -143,7 +158,7 @@ Chrome only, on a computer; Chrome for Android has no extension support. It requ
 - [Privacy policy](https://tidywl.com/privacy/): everything the extension sends, and where
 - [Terms of sale](https://tidywl.com/terms/): the TidyWL Pro subscription terms
 - [Refunds](https://tidywl.com/refunds/): the 14-day refund and how to ask for it
-- [Blog](https://tidywl.com/blog/): long-form guides to Watch Later
+- [Blog](https://tidywl.com/blog/): long-form guides to Watch Later, Liked videos and playlists
 - [Community on Discord](https://discord.gg/sTvjfp4sCk): bug reports, feature requests and general chat
 - [Support email](mailto:support@tidywl.com): support@tidywl.com
 - [Donate on Ko-fi](https://ko-fi.com/dominiclam): an optional tip for the developer, not a support channel
