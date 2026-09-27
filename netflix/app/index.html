@@ -14,8 +14,9 @@
   draws white status text over the page, which a light page would hide.
 
   Installable: manifest.webmanifest, and sw.js keeps the page's own files so it
-  opens offline. Neither holds anything of the user's; each paired profile's
-  pass and last copy of its playlists stay in localStorage, as before.
+  opens offline. Neither holds anything of the user's; the phone's pass and
+  the last copy of every profile's playlists stay in localStorage, as before.
+  lib/jsqr reads the QR code for Scan code, on the phone.
 -->
 <html lang="en">
 <head>
@@ -123,7 +124,7 @@
     .sub { color: var(--muted); font-size: 14px; margin: -6px 0 20px; }
 
     /* Whose playlists, and how fresh: provenance, not live status. A chip per
-       paired profile, the one shown filled; they scroll sideways past a screen. */
+       synced profile, the one shown filled; they scroll sideways past a screen. */
     .profiles { margin: 0 0 22px; }
     .chips {
       display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
@@ -139,8 +140,6 @@
     .chip:active { background: var(--surface-2); }
     .chip[aria-pressed="true"] { background: var(--text); color: var(--bg); }
     .chip-name { max-width: 40vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .chip-add { padding: 0 14px 0 10px; background: transparent; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22); color: var(--muted); }
-    .chip-plus { font-size: 20px; font-weight: 500; line-height: 1; }
     .avatar {
       width: 32px; height: 32px; border-radius: 8px; flex: none;
       display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 15px;
@@ -222,7 +221,6 @@
 
     /* Pairing. */
     .pair-view { text-align: center; padding-top: calc(var(--safe-top) + 36px); }
-    .pair-view.has-bar { padding-top: 12px; }
     .app-icon { width: 76px; height: 76px; border-radius: 18px; display: block; margin: 0 auto; box-shadow: 0 12px 32px rgba(229, 9, 20, 0.22); }
     .pair-view .title { font-size: 26px; margin: 20px 0 8px; }
     .lead { color: var(--muted); font-size: 15px; margin: 0 auto 26px; max-width: 34ch; text-wrap: balance; }
@@ -232,6 +230,7 @@
     }
     .steps li { counter-increment: step; display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; font-size: 15px; }
     .steps li + li { border-top: 1px solid var(--line); }
+    .step-icon { vertical-align: -3px; }
     .steps li::before {
       content: counter(step); flex: none; width: 24px; height: 24px; border-radius: 50%;
       display: grid; place-items: center; background: var(--accent-fill); color: #fff; font-size: 13px; font-weight: 700;
@@ -252,6 +251,12 @@
     }
     .btn:active { background: var(--accent-press); transform: scale(0.985); }
     .btn[disabled] { opacity: 0.6; transform: none; }
+    .btn-secondary { background: var(--surface-2); }
+    .btn-secondary:active { background: #3a3a3e; }
+    .btn-scan, .btn-ghost { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .btn-ghost { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22); }
+    .btn-ghost:active { background: var(--surface); }
+    .or { margin: 16px 0 12px; font-size: 13px; color: var(--muted); }
     .error {
       margin-top: 14px; padding: 10px 12px; border-radius: 10px; text-align: left;
       background: rgba(255, 107, 107, 0.1); color: var(--danger); font-size: 14px;
@@ -267,6 +272,7 @@
     .install-text { flex: 1; min-width: 0; font-size: 13px; color: var(--muted); }
     .install-text strong { display: block; color: var(--text); font-size: 15px; font-weight: 600; margin-bottom: 1px; }
     .install-text svg { vertical-align: -3px; color: var(--text); }
+    .install-dismiss { display: block; margin-top: 6px; font-size: 13px; }
     .pill-btn {
       flex: none; height: 34px; padding: 0 16px; border: 0; border-radius: 17px;
       background: var(--accent-fill); color: #fff; font-size: 14px; font-weight: 600;
@@ -287,6 +293,27 @@
     .sk-row { display: flex; align-items: center; gap: 14px; padding: 9px 0; }
     .sk-cover { width: 116px; aspect-ratio: 16 / 9; border-radius: 8px; flex: none; }
     .sk-lines { flex: 1; display: grid; gap: 8px; }
+    .sk-chips { display: flex; gap: 8px; margin: 0 0 22px; }
+    .sk-chip { width: 110px; height: 40px; border-radius: 12px; }
+
+    /* Scan code: the camera, full screen, a square to aim with. Every frame is read on the phone. */
+    body.is-scanning { overflow: hidden; }
+    .scan { position: fixed; inset: 0; z-index: 100; background: #000; }
+    .scan-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .scan-frame {
+      position: absolute; left: 50%; top: 45%; width: min(68vw, 300px); aspect-ratio: 1; transform: translate(-50%, -50%);
+      border-radius: 20px; box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.55); outline: 3px solid rgba(255, 255, 255, 0.9); outline-offset: -3px;
+    }
+    .scan-hint {
+      position: absolute; left: 16px; right: 16px; top: calc(var(--safe-top) + 28px);
+      text-align: center; font-size: 17px; font-weight: 600; color: #fff;
+    }
+    .scan-cancel {
+      position: absolute; left: 50%; bottom: calc(var(--safe-bottom) + 28px); transform: translateX(-50%);
+      height: 48px; padding: 0 28px; border: 0; border-radius: 24px;
+      background: rgba(255, 255, 255, 0.18); color: #fff; font-size: 17px; font-weight: 600;
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    }
 
     @media (prefers-reduced-motion: reduce) {
       .enter, .sk, .icon-btn.is-busy svg { animation: none; }
@@ -302,6 +329,6 @@
        app.js for 4 hours but this page for 10 minutes, so without it a phone
        can pair new markup and styles with the old script. sw.js's offline
        fallback matches ignoring the query. -->
-  <script src="app.js?v=2"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>

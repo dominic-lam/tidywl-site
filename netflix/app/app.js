@@ -3,27 +3,36 @@
  * Contract: tidywl-netflix/docs/claude/PLAN-mobile-sync.md § The phone.
  *
  * PAIRING: the extension shows a six-character code that lasts ten minutes and
- * works once. Typed here, or arriving as #pair=<code> from a link, it is
- * swapped at /api/netflix/pair/claim for a pass of this phone's own. The
- * fragment never reaches a server, and it is wiped from the address bar at once.
+ * works once, as text and as a QR code of #pair=<code>. Typed here, scanned
+ * with Scan code, or arriving in the address, it is swapped at
+ * /api/netflix/pair/claim for a pass of this phone's own. The fragment never
+ * reaches a server, and it is wiped from the address bar at once.
  *
- * PROFILES: a pass reads one Netflix profile, and a phone keeps as many passes
- * as it has been paired for — one per profile, each its own row in the
- * extension's phone list, so the server needs nothing (2026-09-26). A chip per
- * profile switches between them; "Add profile" (#add) pairs again. Pairing a
- * profile the phone already has replaces that profile's pass.
+ * ONE PASS, EVERY PROFILE (2026-09-26, the user's call): a pass reads every
+ * profile the licence has synced, one chip each, so a phone is paired once and
+ * a profile synced later simply appears. A phone that held a pass per profile
+ * (the same day's first design) keeps the one it was showing and forgets the
+ * rest, on the server too.
  *
- * OPENING: the active profile's last copy is drawn from this phone's storage
- * straight away, then refreshed from /api/netflix/phone — on open, on a switch
- * to a profile not fetched in the last minute, from the Refresh button, and
- * when the page comes back to the front after a minute away, since a Home
+ * INSTALL FIRST, ON AN IPHONE: Safari and a Home Screen app keep separate
+ * storage, so pairing Safari and then installing means pairing twice and two
+ * rows in the extension. An unpaired Safari tab on an iPhone therefore asks to
+ * be added to the Home Screen first; a scanned code is held, unspent, until
+ * Skip, so the installed app can scan the same one. Android's installed app
+ * shares Chrome's storage and is never asked.
+ *
+ * OPENING: the last copy is drawn from this phone's storage straight away,
+ * then refreshed from /api/netflix/phone — on open, from the Refresh button,
+ * and when the page comes back to the front after a minute away, since a Home
  * Screen app has no reload of its own. A pass the server no longer knows
- * (removed in the extension) drops that profile; a subscription that ended
- * clears the copy: what a lapsed licence returns is nothing.
+ * (removed in the extension) or a subscription that ended clears the copy:
+ * what a lapsed licence returns is nothing. Forget also asks the server to
+ * drop this phone's row.
  *
- * INSTALLING: sw.js keeps this page's own files, never the playlists. On an
- * iPhone a Home Screen app has storage of its own, apart from Safari's, so it
- * may ask to be paired again; the pairing screen says to add it first.
+ * SCANNING: lib/jsqr, loaded on the first Scan code, reads camera frames on the
+ * phone. Nothing from the camera leaves it.
+ *
+ * INSTALLING: sw.js keeps this page's own files, never the playlists.
  *
  * Everything shown is built with textContent. Box art loads straight from
  * Netflix's image servers, never copied to ours (the user, 2026-09-23), and
@@ -33,14 +42,21 @@
   'use strict';
 
   var API = '/api/netflix/';
-  // { active: <pass>, list: [{ pass, guid, name, copy, fetchedAt }] }, one entry per paired profile.
+  // { pass, active: <guid>, profiles: [{ profile, playlists }], fetchedAt }
+  var PHONE_KEY = 'tidywl_nf_phone';
+  // Earlier shapes, moved into PHONE_KEY on first open: a pass per profile (2026-09-26, hours), and before
+  // that one pass and its copy.
   var PROFILES_KEY = 'tidywl_nf_phone_profiles';
-  // Before 2026-09-26 a phone held one pass and its copy under these; moved into PROFILES_KEY on first open.
   var LEGACY_PASS_KEY = 'tidywl_nf_phone_pass';
   var LEGACY_COPY_KEY = 'tidywl_nf_phone_copy';
+  // Skip on the install-first screen, or Not now on the Home Screen card: never asked again on this phone.
+  var INSTALL_DISMISSED_KEY = 'tidywl_nf_phone_install_dismissed';
   var CODE_ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
   var STALE_MS = 60 * 1000;
   var LOGO = 'icons/icon-192.png';
+  var JSQR = 'lib/jsqr/jsQR.js?v=1.4.0';
+  var SCAN_EVERY_MS = 150;
+  var SCAN_MAX_SIDE = 640;
 
   // --- pure --------------------------------------------------------------------
 
@@ -62,17 +78,41 @@
     return normalizeCode(raw);
   }
 
+  /** What a scanned QR code holds: the extension's link, or a bare code. Only the code is ever used. */
+  function codeFromScan(text) {
+    if (typeof text !== 'string' || text.length > 500) return null;
+    var url;
+    try { url = new URL(text.trim()); } catch (e) { return normalizeCode(text); }
+    return pairCodeFromHash(url.hash);
+  }
+
   /** "#list=<id>" → "<id>"; the open playlist lives in the address so Back works. */
   function listIdFromHash(hash) {
     var m = /^#list=([a-z0-9]{8,40})$/.exec(typeof hash === 'string' ? hash : '');
     return m != null ? m[1] : null;
   }
 
-  /** What the extension's phone list calls this device. Nothing more specific is sent. */
-  function phoneName(ua) {
+  /** The browser an iPhone page is running in, by the name it gives itself; null when it gives none. */
+  function browserName(ua) {
     var s = typeof ua === 'string' ? ua : '';
-    if (/iPhone/.test(s)) return 'iPhone';
-    if (/iPad/.test(s)) return 'iPad';
+    if (/CriOS/.test(s)) return 'Chrome';
+    if (/FxiOS/.test(s)) return 'Firefox';
+    if (/EdgiOS/.test(s)) return 'Edge';
+    if (/Safari/.test(s)) return 'Safari';
+    return null;
+  }
+
+  /**
+   * What the extension's phone list calls this device: its kind, and on an iPhone where it runs, since
+   * Safari and the Home Screen app pair separately there. Nothing more specific is sent.
+   */
+  function phoneName(ua, standalone) {
+    var s = typeof ua === 'string' ? ua : '';
+    var apple = /iPhone/.test(s) ? 'iPhone' : /iPad/.test(s) ? 'iPad' : null;
+    if (apple != null) {
+      var where = standalone === true ? 'Home Screen app' : browserName(s);
+      return where != null ? apple + ' · ' + where : apple;
+    }
     if (/Android/.test(s)) return /Mobile/.test(s) ? 'Android phone' : 'Android tablet';
     return 'Phone';
   }
@@ -163,59 +203,6 @@
     return parts.join(' · ');
   }
 
-  // --- profiles: the passes this phone holds -------------------------------------
-
-  function readEntry(e) {
-    if (e == null || typeof e.pass !== 'string' || e.pass === '') return null;
-    var copy = e.copy != null && Array.isArray(e.copy.playlists) ? e.copy : null;
-    return {
-      pass: e.pass,
-      guid: typeof e.guid === 'string' ? e.guid : null,
-      name: typeof e.name === 'string' ? e.name : null,
-      copy: copy,
-      fetchedAt: copy != null && Number.isFinite(e.fetchedAt) ? e.fetchedAt : null
-    };
-  }
-
-  /** Whatever storage held, as {active, list}; active is always one of the list's passes, or null. */
-  function readProfiles(raw) {
-    var list = raw != null && Array.isArray(raw.list) ? raw.list.map(readEntry).filter(Boolean) : [];
-    var has = function (pass) { return list.some(function (e) { return e.pass === pass; }); };
-    return { active: raw != null && has(raw.active) ? raw.active : list.length > 0 ? list[0].pass : null, list: list };
-  }
-
-  /** A phone paired before several profiles: its one pass and copy, as a profile list. Null when it held none. */
-  function fromLegacy(pass, cached) {
-    if (typeof pass !== 'string' || pass === '') return null;
-    var copy = cached != null && cached.copy != null && Array.isArray(cached.copy.playlists) ? cached.copy : null;
-    var profile = copy != null ? copy.profile : null;
-    return readProfiles({ active: pass, list: [{
-      pass: pass,
-      guid: profile != null ? profile.guid : null,
-      name: profile != null ? profile.name : null,
-      copy: copy,
-      fetchedAt: copy != null ? cached.fetchedAt : null
-    }] });
-  }
-
-  /** A new pairing becomes the active profile; one for a profile already here replaces that profile's entry in place. */
-  function addPass(profiles, entry) {
-    var replaced = false;
-    var list = profiles.list.map(function (e) {
-      if (!replaced && entry.guid != null && e.guid === entry.guid) { replaced = true; return entry; }
-      return e;
-    });
-    if (!replaced) list.push(entry);
-    return { active: entry.pass, list: list };
-  }
-
-  /** Without that pass. The active profile stays if it was another, else the first one left, else none. */
-  function dropPass(profiles, pass) {
-    var list = profiles.list.filter(function (e) { return e.pass !== pass; });
-    var keep = profiles.active !== pass && list.some(function (e) { return e.pass === profiles.active; });
-    return { active: keep ? profiles.active : list.length > 0 ? list[0].pass : null, list: list };
-  }
-
   function claimErrorText(error) {
     switch (error) {
       case 'malformed_code': return 'A code is six letters and numbers, like K7M 2QX.';
@@ -225,6 +212,62 @@
       case 'unreachable': return 'Could not reach tidywl.com. Check your connection and try again.';
       default: return 'Something went wrong (' + error + '). Try again in a moment.';
     }
+  }
+
+  function isCopy(c) {
+    return c != null && c.profile != null && typeof c.profile.guid === 'string' && Array.isArray(c.playlists);
+  }
+
+  /** The profiles in a /phone answer — {profiles: [...]}, or a server from before 2026-09-26's one copy — or null. */
+  function profilesFrom(body) {
+    if (body == null) return null;
+    if (Array.isArray(body.profiles)) return body.profiles.filter(isCopy);
+    if (Array.isArray(body.playlists)) return isCopy(body) ? [body] : [];
+    return null;
+  }
+
+  /** The profile on screen: the one chosen if it is still there, else the first. */
+  function pickActive(profiles, guid) {
+    var found = profiles.some(function (c) { return c.profile.guid === guid; });
+    return found ? guid : profiles.length > 0 ? profiles[0].profile.guid : null;
+  }
+
+  /** What storage held, or null when it holds no pass. */
+  function readPhone(raw) {
+    if (raw == null || typeof raw.pass !== 'string' || raw.pass === '') return null;
+    var profiles = Array.isArray(raw.profiles) ? raw.profiles.filter(isCopy) : [];
+    return {
+      pass: raw.pass,
+      active: pickActive(profiles, raw.active),
+      profiles: profiles,
+      fetchedAt: Number.isFinite(raw.fetchedAt) ? raw.fetchedAt : null
+    };
+  }
+
+  /**
+   * A phone paired before one pass read every profile: the pass it was showing, with every copy it had
+   * so the chips draw at once, and the other passes, to forget on the server. Null when it held none.
+   */
+  function migrateStored(profilesKey, legacyPass, legacyCopy) {
+    var list = profilesKey != null && Array.isArray(profilesKey.list)
+      ? profilesKey.list.filter(function (e) { return e != null && typeof e.pass === 'string' && e.pass !== ''; })
+      : [];
+    if (list.length > 0) {
+      var shown = list.filter(function (e) { return e.pass === profilesKey.active; })[0] || list[0];
+      var copies = list.map(function (e) { return e.copy; }).filter(isCopy);
+      return {
+        phone: readPhone({ pass: shown.pass, active: isCopy(shown.copy) ? shown.copy.profile.guid : null, profiles: copies, fetchedAt: null }),
+        forget: list.filter(function (e) { return e.pass !== shown.pass; }).map(function (e) { return e.pass; })
+      };
+    }
+    if (typeof legacyPass === 'string' && legacyPass !== '') {
+      var copy = legacyCopy != null && isCopy(legacyCopy.copy) ? legacyCopy.copy : null;
+      return {
+        phone: readPhone({ pass: legacyPass, active: copy != null ? copy.profile.guid : null, profiles: copy != null ? [copy] : [], fetchedAt: null }),
+        forget: []
+      };
+    }
+    return null;
   }
 
   // --- storage: a convenience, never required ------------------------------------
@@ -270,31 +313,32 @@
     return result.body != null && typeof result.body.error === 'string' ? result.body.error : 'http_' + result.status;
   }
 
+  /** Take a pass off the licence's list of phones. Best effort: offline, the row stays until removed in the extension. */
+  function forgetPass(pass) {
+    return request('phone', { method: 'DELETE', headers: { authorization: 'Bearer ' + pass } });
+  }
+
   // --- drawing -------------------------------------------------------------------
 
   var app = null;
   var state = {
-    profiles: { active: null, list: [] }, inFlight: {}, banner: null, pairError: null, busy: false, typed: '',
-    installPrompt: null, view: null, listsScroll: 0, navigatedIn: false
+    phone: null, banner: null, pairError: null, busy: false, refreshing: false, typed: '', pendingCode: null,
+    installPrompt: null, view: null, listsScroll: 0, navigatedIn: false, scan: null
   };
 
-  function activeEntry() {
-    var active = state.profiles.active;
-    return state.profiles.list.filter(function (e) { return e.pass === active; })[0] || null;
-  }
-
-  function entryFor(pass) {
-    return state.profiles.list.filter(function (e) { return e.pass === pass; })[0] || null;
-  }
-
   function persist() {
-    if (state.profiles.list.length === 0) forget(PROFILES_KEY);
-    else save(PROFILES_KEY, state.profiles);
+    if (state.phone == null) forget(PHONE_KEY);
+    else save(PHONE_KEY, state.phone);
   }
 
-  function clearHash() {
-    if (root.location.hash !== '') root.history.replaceState(null, '', root.location.pathname);
-    state.navigatedIn = false;
+  function activeCopy() {
+    if (state.phone == null) return null;
+    var guid = state.phone.active;
+    return state.phone.profiles.filter(function (c) { return c.profile.guid === guid; })[0] || null;
+  }
+
+  function installDismissed() {
+    return load(INSTALL_DISMISSED_KEY) === true;
   }
 
   function el(tag, props, children) {
@@ -318,7 +362,9 @@
     refresh: ['M21 12a9 9 0 1 1-2.64-6.36', 'M21 4v5h-5'],
     share: ['M12 3v12', 'M8 7l4-4 4 4', 'M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7'],
     info: ['M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18z', 'M12 16v-4', 'M12 8h.01'],
-    alert: ['M10.3 4L2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 4a2 2 0 0 0-3.4 0z', 'M12 9v4', 'M12 17h.01']
+    alert: ['M10.3 4L2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 4a2 2 0 0 0-3.4 0z', 'M12 9v4', 'M12 17h.01'],
+    scan: ['M4 8V6a2 2 0 0 1 2-2h2', 'M16 4h2a2 2 0 0 1 2 2v2', 'M20 16v2a2 2 0 0 1-2 2h-2', 'M8 20H6a2 2 0 0 1-2-2v-2', 'M4 12h16'],
+    plusSquare: ['M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z', 'M12 8v8', 'M8 12h8']
   };
 
   function icon(name, size, className) {
@@ -349,31 +395,38 @@
     return platformOf(root.navigator.userAgent, root.navigator.maxTouchPoints);
   }
 
+  /** An unpaired iPhone browser tab, not yet told no: add to the Home Screen before pairing. */
+  function wantsInstallFirst() {
+    return platform() === 'ios' && !isStandalone() && !installDismissed();
+  }
+
+  /** Scan code is offered where there is a camera worth pointing: a phone or tablet, with the API. */
+  function canScan() {
+    var p = platform();
+    return (p === 'ios' || p === 'android') && root.navigator.mediaDevices != null &&
+      typeof root.navigator.mediaDevices.getUserMedia === 'function';
+  }
+
   function draw() {
-    var entry = activeEntry();
-    var adding = entry != null && root.location.hash === '#add';
+    var copy = activeCopy();
     var listId = listIdFromHash(root.location.hash);
-    var copy = entry != null ? entry.copy : null;
-    var open = !adding && listId != null && copy != null && copy.profile != null
+    var open = listId != null && copy != null
       ? copy.playlists.filter(function (p) { return p.id === listId; })[0]
       : null;
-    var view = entry == null ? 'pair' : adding ? 'add' : open != null ? 'list:' + open.id : 'lists:' + entry.pass;
+    var view = state.phone == null ? (wantsInstallFirst() ? 'install' : 'code') : open != null ? 'list:' + open.id : 'lists';
     var entering = view !== state.view;
-    if (entering && state.view != null && state.view.slice(0, 6) === 'lists:') state.listsScroll = root.scrollY;
+    if (entering && state.view === 'lists') state.listsScroll = root.scrollY;
 
     app.textContent = '';
-    if (entry == null) drawPair(false);
-    else if (adding) drawPair(true);
+    if (view === 'install') drawInstallFirst();
+    else if (view === 'code') drawPair();
     else if (open != null) drawList(open);
-    else drawHome(entry);
+    else drawHome(copy);
 
     if (entering) {
       var content = app.querySelector('.content');
       if (content != null && state.view != null) content.classList.add('enter');
-      var toLists = view.slice(0, 6) === 'lists:';
-      var fromLists = state.view != null && state.view.slice(0, 6) === 'lists:';
-      // Back from a playlist returns to where the list was; a profile switch stays put, under the chips.
-      if (!(toLists && fromLists)) root.scrollTo(0, toLists ? state.listsScroll : 0);
+      root.scrollTo(0, view === 'lists' ? state.listsScroll : 0);
       state.view = view;
     }
     syncBar();
@@ -384,23 +437,15 @@
     if (bar != null) bar.classList.toggle('is-scrolled', root.scrollY > 36);
   }
 
-  function isRefreshing() {
-    var entry = activeEntry();
-    return entry != null && state.inFlight[entry.pass] === true;
-  }
-
-  function drawBar(back, title, withRefresh) {
+  function drawBar(back, title) {
     var start = back
       ? el('a', { className: 'back-btn', href: '#', 'aria-label': 'All playlists', onclick: goBack }, [icon('back', 22), 'Playlists'])
       : el('img', { className: 'bar-logo', src: LOGO, alt: '' });
-    var refreshButton = null;
-    if (withRefresh !== false) {
-      refreshButton = el('button', {
-        type: 'button', className: 'icon-btn' + (isRefreshing() ? ' is-busy' : ''), 'aria-label': 'Refresh',
-        onclick: function () { refresh(true); }
-      }, [icon('refresh', 20)]);
-      refreshButton.disabled = isRefreshing();
-    }
+    var refreshButton = el('button', {
+      type: 'button', className: 'icon-btn' + (state.refreshing ? ' is-busy' : ''), 'aria-label': 'Refresh',
+      onclick: function () { refresh(true); }
+    }, [icon('refresh', 20)]);
+    refreshButton.disabled = state.refreshing;
     return el('header', { className: 'bar' }, [el('div', { className: 'bar-inner' }, [
       el('div', { className: 'bar-start' }, [start]),
       el('div', { className: 'bar-title', 'aria-hidden': 'true', text: title }),
@@ -435,25 +480,25 @@
     return img;
   }
 
-  function drawHome(entry) {
-    var copy = entry.copy;
+  function drawHome(copy) {
     app.appendChild(drawBar(false, 'Playlists'));
     var content = el('main', { className: 'content' });
     app.appendChild(content);
     content.appendChild(el('h1', { className: 'title', text: 'Playlists' }));
-    content.appendChild(drawProfiles(entry));
 
-    if (copy == null) {
+    if (state.phone.fetchedAt == null && copy == null) {
       content.appendChild(state.banner != null ? callout('alert', [state.banner], 'status') : drawSkeleton());
-      content.appendChild(drawFoot(entry));
+      content.appendChild(drawFoot());
       return;
     }
-    if (copy.profile == null) {
-      content.appendChild(emptyState('Nothing has synced yet', 'Turn on sync in the extension (About → Pro), then open this page again.'));
-      content.appendChild(drawFoot(entry));
+    if (copy == null) {
+      if (state.banner != null) content.appendChild(callout('alert', [state.banner], 'status'));
+      else content.appendChild(emptyState('Nothing has synced yet', 'Turn on sync in the extension (About → Pro), then open this page again.'));
+      content.appendChild(drawFoot());
       return;
     }
 
+    content.appendChild(drawProfiles(copy));
     if (state.banner != null) content.appendChild(callout('alert', [state.banner], 'status'));
     if (copy.playlists.length === 0) {
       content.appendChild(emptyState('No playlists yet', 'Make one in the extension and it appears here after the next sync.'));
@@ -462,40 +507,35 @@
     }
     var install = drawInstall();
     if (install != null) content.appendChild(install);
-    content.appendChild(drawFoot(entry));
+    content.appendChild(drawFoot());
   }
 
-  function profileName(entry) {
-    return entry.name != null && entry.name !== '' ? entry.name : 'Profile';
-  }
-
-  /** One chip per paired profile, the active one filled, then Add profile; under them, how fresh the active one is. */
-  function drawProfiles(entry) {
-    var chips = state.profiles.list.map(function (e) {
-      var name = profileName(e);
-      var chip = el('button', {
-        type: 'button', className: 'chip', 'aria-pressed': e.pass === entry.pass ? 'true' : 'false',
-        onclick: function () { switchTo(e.pass); }
+  /** A chip per synced profile, the one shown filled; under them, how fresh it is — provenance, not live status. */
+  function drawProfiles(copy) {
+    var chips = state.phone.profiles.map(function (c) {
+      var name = c.profile.name || 'Profile';
+      return el('button', {
+        type: 'button', className: 'chip', 'aria-pressed': c === copy ? 'true' : 'false',
+        onclick: function () { switchTo(c.profile.guid); }
       }, [
-        el('span', { className: 'avatar', style: 'background:' + profileColor(e.guid), 'aria-hidden': 'true', text: firstChar(name) }),
+        el('span', { className: 'avatar', style: 'background:' + profileColor(c.profile.guid), 'aria-hidden': 'true', text: firstChar(name) }),
         el('span', { className: 'chip-name', text: name })
       ]);
-      return chip;
     });
-    chips.push(el('a', {
-      className: 'chip chip-add', href: '#add', onclick: function () { state.navigatedIn = true; }
-    }, [el('span', { className: 'chip-plus', 'aria-hidden': 'true', text: '+' }), 'Add profile']));
-
-    var profile = entry.copy != null ? entry.copy.profile : null;
-    var detail = '';
-    if (profile != null) {
-      var synced = relativeTime(Date.parse(profile.storedAt), Date.now());
-      detail = [synced != null ? 'Synced ' + synced : null, profile.storedBy ? 'from ' + profile.storedBy : null].filter(Boolean).join(' ');
-    }
+    var synced = relativeTime(Date.parse(copy.profile.storedAt), Date.now());
+    var detail = [synced != null ? 'Synced ' + synced : null, copy.profile.storedBy ? 'from ' + copy.profile.storedBy : null].filter(Boolean).join(' ');
     return el('div', { className: 'profiles' }, [
       el('div', { className: 'chips', role: 'group', 'aria-label': 'Profiles' }, chips),
       detail !== '' ? el('div', { className: 'profile-meta', text: detail }) : null
     ]);
+  }
+
+  function switchTo(guid) {
+    if (state.phone == null || state.phone.active === guid) return;
+    state.phone.active = guid;
+    persist();
+    state.banner = null;
+    draw();
   }
 
   function drawCover(p) {
@@ -536,7 +576,7 @@
     } else {
       content.appendChild(el('ul', { className: 'grid' }, p.titles.map(drawCard)));
     }
-    content.appendChild(drawFoot(activeEntry()));
+    content.appendChild(drawFoot());
   }
 
   function drawCard(t) {
@@ -567,16 +607,19 @@
         el('span', { className: 'sk-lines' }, [bar(['70%', '55%', '80%', '45%'][i], 14), bar('35%', 12)])
       ]);
     });
-    return el('div', { 'aria-busy': 'true', 'aria-label': 'Loading your playlists' }, rows);
+    return el('div', { 'aria-busy': 'true', 'aria-label': 'Loading your playlists' }, [
+      el('div', { className: 'sk-chips' }, [el('span', { className: 'sk sk-chip' }), el('span', { className: 'sk sk-chip' })])
+    ].concat(rows));
   }
 
+  /** The Home Screen card under the playlists, for a browser tab on a phone, until Not now. */
   function drawInstall() {
-    if (isStandalone()) return null;
+    if (isStandalone() || installDismissed()) return null;
     var kind = platform();
     var text;
     var action = null;
     if (kind === 'ios') {
-      text = ['Tap ', icon('share', 16), ' Share, then Add to Home Screen. It opens full screen, even offline. If it asks for a code there, make a new one in the extension.'];
+      text = ['Tap ', icon('share', 16), ' Share, then Add to Home Screen. It opens full screen, even offline. There it asks for a code once: make a new one in the extension and tap Scan code.'];
     } else if (state.installPrompt != null) {
       text = ['Opens full screen, even offline.'];
       action = el('button', { type: 'button', className: 'pill-btn', text: 'Install', onclick: install });
@@ -587,9 +630,16 @@
     }
     return el('div', { className: 'install' }, [
       el('img', { src: LOGO, alt: '' }),
-      el('div', { className: 'install-text' }, [el('strong', { text: 'Add it to your Home Screen' })].concat(text)),
+      el('div', { className: 'install-text' }, [el('strong', { text: 'Add it to your Home Screen' })].concat(text, [
+        el('button', { type: 'button', className: 'link-btn install-dismiss', text: 'Not now', onclick: dismissInstall })
+      ])),
       action
     ]);
+  }
+
+  function dismissInstall() {
+    save(INSTALL_DISMISSED_KEY, true);
+    draw();
   }
 
   async function install() {
@@ -601,76 +651,87 @@
     draw();
   }
 
-  function drawFoot(entry) {
+  function drawFoot() {
     return el('footer', { className: 'foot' }, [
       el('p', { text: 'Tapping a title opens it in the Netflix app, in whichever profile the app is using.' }),
       el('p', null, [
-        el('button', { type: 'button', className: 'link-btn', onclick: forgetProfile, text: 'Forget ' + profileName(entry) + ' on this phone' }),
-        ' · To stop it reading for good, remove it in the extension (About → Pro → Phones).'
+        el('button', { type: 'button', className: 'link-btn', onclick: forgetPhone, text: 'Forget this phone' }),
+        ' · Removes your playlists from this phone, and this phone from the extension’s list.'
       ])
     ]);
   }
 
-  function forgetProfile() {
-    var entry = activeEntry();
-    if (entry == null) return;
-    var whose = entry.name != null && entry.name !== '' ? entry.name + '’s playlists' : 'these playlists';
-    if (!root.confirm('Forget ' + whose + ' on this phone? To see them here again you will need a new code from the extension.')) return;
-    state.profiles = dropPass(state.profiles, entry.pass);
-    persist();
+  async function forgetPhone() {
+    if (state.phone == null) return;
+    if (!root.confirm('Forget your playlists on this phone? To see them here again you will need a new code from the extension.')) return;
+    var pass = state.phone.pass;
+    state.phone = null;
     state.banner = null;
-    clearHash();
+    persist();
+    root.history.replaceState(null, '', root.location.pathname);
     draw();
-    var next = activeEntry();
-    if (next != null && isStale(next.fetchedAt, Date.now())) refresh();
+    await forgetPass(pass);
   }
 
-  function switchTo(pass) {
-    if (state.profiles.active === pass || entryFor(pass) == null) return;
-    state.profiles.active = pass;
-    persist();
-    state.banner = null;
-    draw();
-    if (isStale(entryFor(pass).fetchedAt, Date.now())) refresh();
+  /** An iPhone browser tab with nothing paired: add to the Home Screen first, or Skip. */
+  function drawInstallFirst() {
+    var content = el('main', { className: 'content pair-view' });
+    app.appendChild(content);
+    var where = browserName(root.navigator.userAgent) || 'this browser';
+    var held = state.pendingCode != null;
+    content.appendChild(el('img', { className: 'app-icon', src: LOGO, alt: '' }));
+    content.appendChild(el('h1', { className: 'title', text: 'Add it to your Home Screen first' }));
+    content.appendChild(el('p', { className: 'lead', text: 'Your Netflix playlists then open full screen, even offline, and you pair once, from there.' }));
+    content.appendChild(el('ol', { className: 'steps', role: 'list' }, [
+      // One span each: a step is a flex row, and the icon must sit inside the sentence, not beside it.
+      el('li', null, [el('span', null, ['Tap ', icon('share', 18, 'step-icon'), ' Share in ' + where + '’s toolbar.'])]),
+      el('li', null, [el('span', null, ['Tap ', icon('plusSquare', 18, 'step-icon'), ' Add to Home Screen, then Add.'])]),
+      el('li', { text: held
+        ? 'Open Playlists from your Home Screen and tap Scan code. The code on your computer still works.'
+        : 'Open Playlists from your Home Screen, and pair it there.' })
+    ]));
+    content.appendChild(el('button', {
+      type: 'button', className: 'btn btn-ghost', text: 'Skip — use it in ' + where, onclick: skipInstall
+    }));
+    if (state.pairError != null) content.appendChild(el('p', { className: 'error', role: 'alert', text: state.pairError }));
+    content.appendChild(el('p', { className: 'pair-foot', text: 'Safari and the Home Screen app keep separate storage, so each would need its own pairing.' }));
   }
 
-  /** The first pairing (adding false), or one more profile from the chips' Add profile (adding true, #add). */
-  function drawPair(adding) {
-    var standalone = isStandalone();
-    var ios = platform() === 'ios';
+  function skipInstall() {
+    save(INSTALL_DISMISSED_KEY, true);
+    var code = state.pendingCode;
+    state.pendingCode = null;
+    if (code != null) return claim(code);
+    draw();
+  }
+
+  function drawPair() {
+    var scanning = canScan();
     var input = el('input', {
       type: 'text', className: 'code-input', inputmode: 'text', autocomplete: 'one-time-code', autocapitalize: 'characters',
       spellcheck: 'false', maxlength: '9', placeholder: 'K7M 2QX', 'aria-label': 'Pairing code'
     });
     input.value = state.typed;
     input.addEventListener('input', function () { state.typed = input.value; });
-    var button = el('button', { type: 'submit', className: 'btn', text: state.busy ? 'Pairing…' : adding ? 'Add this profile' : 'Pair this phone' });
+    var button = el('button', { type: 'submit', className: 'btn' + (scanning ? ' btn-secondary' : ''), text: state.busy ? 'Pairing…' : 'Pair this phone' });
     if (state.busy) { input.disabled = true; button.disabled = true; }
 
-    if (adding) app.appendChild(drawBar(true, 'Add a profile', false));
-    var content = el('main', { className: 'content pair-view' + (adding ? ' has-bar' : '') });
+    var content = el('main', { className: 'content pair-view' });
     app.appendChild(content);
     content.appendChild(el('img', { className: 'app-icon', src: LOGO, alt: '' }));
-    if (adding) {
-      content.appendChild(el('h1', { className: 'title', text: 'Add a profile' }));
-      content.appendChild(el('p', { className: 'lead', text: 'Each Netflix profile has its own playlists. Pair this phone once more, from the profile you want to add.' }));
-    } else {
-      content.appendChild(el('h1', { className: 'title', text: 'Your Netflix playlists, on this phone' }));
-      content.appendChild(el('p', { className: 'lead', text: 'Read-only, for TidyWL for Netflix Pro. Playlists are made and edited in the extension, on your computer.' }));
-    }
-    if (ios && !standalone && !adding) {
-      content.appendChild(callout('info', [
-        el('strong', { text: 'Keeping it on your Home Screen? ' }),
-        'Add it there first (tap Share, then Add to Home Screen) and pair from the Home Screen app.'
-      ]));
-    }
+    content.appendChild(el('h1', { className: 'title', text: 'Your Netflix playlists, on this phone' }));
+    content.appendChild(el('p', { className: 'lead', text: 'Read-only, for TidyWL for Netflix Pro. Playlists are made and edited in the extension, on your computer.' }));
     content.appendChild(el('ol', { className: 'steps', role: 'list' }, [
-      el('li', { text: adding
-        ? 'On your computer, switch Netflix to that profile and open the TidyWL dashboard.'
-        : 'On your computer, open the TidyWL dashboard on Netflix, in the profile whose playlists you want here.' }),
+      el('li', { text: 'On your computer, open the TidyWL dashboard on Netflix.' }),
       el('li', { text: 'Open About, then Pro, then Pair a phone.' }),
-      el('li', { text: standalone ? 'Type the six-character code below.' : 'Scan the QR code with this phone’s camera, or type the code below.' })
+      el('li', { text: scanning ? 'Tap Scan code and point this phone at the QR code, or type the code below.' : 'Type the six-character code below.' })
     ]));
+    if (scanning) {
+      var scanButton = el('button', { type: 'button', className: 'btn btn-scan', onclick: startScan }, [icon('scan', 22), 'Scan code']);
+      if (state.busy) scanButton.disabled = true;
+      content.appendChild(scanButton);
+      content.appendChild(el('p', { className: 'or', text: 'or type it' }));
+    }
     content.appendChild(el('form', {
       className: 'code-form',
       onsubmit: function (e) {
@@ -688,6 +749,103 @@
     content.appendChild(el('p', { className: 'pair-foot', text: 'A code lasts ten minutes and works once.' }));
   }
 
+  // --- scanning --------------------------------------------------------------------
+
+  var jsqrLoading = null;
+
+  function loadJsqr() {
+    if (typeof root.jsQR === 'function') return Promise.resolve(root.jsQR);
+    if (jsqrLoading != null) return jsqrLoading;
+    jsqrLoading = new Promise(function (resolve, reject) {
+      var s = root.document.createElement('script');
+      s.src = JSQR;
+      s.onload = function () { typeof root.jsQR === 'function' ? resolve(root.jsQR) : reject(new Error('jsqr')); };
+      s.onerror = function () { jsqrLoading = null; reject(new Error('jsqr')); };
+      root.document.head.appendChild(s);
+    });
+    return jsqrLoading;
+  }
+
+  function scanErrorText(error) {
+    var name = error != null ? error.name : '';
+    if (name === 'NotAllowedError' || name === 'SecurityError') return 'The camera was not allowed. Allow it for this page and try again, or type the code instead.';
+    if (name === 'NotFoundError' || name === 'OverconstrainedError') return 'No camera was found. Type the code instead.';
+    if (error != null && error.message === 'jsqr') return 'The scanner could not load. Check your connection, or type the code instead.';
+    return 'The camera could not start. Type the code instead.';
+  }
+
+  async function startScan() {
+    if (state.scan != null) return;
+    state.pairError = null;
+    var video = el('video', { className: 'scan-video', playsinline: '', muted: '', autoplay: '' });
+    video.muted = true;
+    var hint = el('p', { className: 'scan-hint', text: 'Point at the QR code on your computer' });
+    var overlay = el('div', { className: 'scan', role: 'dialog', 'aria-label': 'Scan the pairing code' }, [
+      video,
+      el('div', { className: 'scan-frame', 'aria-hidden': 'true' }),
+      hint,
+      el('button', { type: 'button', className: 'scan-cancel', text: 'Cancel', onclick: function () { stopScan(); draw(); } })
+    ]);
+    var scan = { overlay: overlay, video: video, hint: hint, stream: null, timer: null, canvas: root.document.createElement('canvas') };
+    state.scan = scan;
+    root.document.body.appendChild(overlay);
+    root.document.body.classList.add('is-scanning');
+
+    try {
+      var decode = loadJsqr();
+      var stream = await root.navigator.mediaDevices.getUserMedia({
+        audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }
+      });
+      if (state.scan !== scan) { stream.getTracks().forEach(function (t) { t.stop(); }); return; }
+      scan.stream = stream;
+      video.srcObject = stream;
+      await video.play();
+      var jsQR = await decode;
+      if (state.scan !== scan) return;
+      tick(scan, jsQR);
+    } catch (error) {
+      if (state.scan !== scan) return;
+      stopScan();
+      state.pairError = scanErrorText(error);
+      draw();
+    }
+  }
+
+  function tick(scan, jsQR) {
+    if (state.scan !== scan) return;
+    var v = scan.video;
+    if (v.videoWidth > 0 && v.videoHeight > 0) {
+      var ratio = Math.min(1, SCAN_MAX_SIDE / Math.max(v.videoWidth, v.videoHeight));
+      var w = Math.round(v.videoWidth * ratio);
+      var h = Math.round(v.videoHeight * ratio);
+      scan.canvas.width = w;
+      scan.canvas.height = h;
+      var ctx = scan.canvas.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(v, 0, 0, w, h);
+      var found = jsQR(ctx.getImageData(0, 0, w, h).data, w, h, { inversionAttempts: 'dontInvert' });
+      if (found != null) {
+        var code = codeFromScan(found.data);
+        if (code != null) {
+          stopScan();
+          return claim(code);
+        }
+        scan.hint.textContent = 'That QR code is not a TidyWL pairing code.';
+      }
+    }
+    scan.timer = root.setTimeout(function () { tick(scan, jsQR); }, SCAN_EVERY_MS);
+  }
+
+  function stopScan() {
+    var scan = state.scan;
+    if (scan == null) return;
+    state.scan = null;
+    root.clearTimeout(scan.timer);
+    if (scan.stream != null) scan.stream.getTracks().forEach(function (t) { t.stop(); });
+    scan.video.srcObject = null;
+    scan.overlay.remove();
+    root.document.body.classList.remove('is-scanning');
+  }
+
   // --- flow ----------------------------------------------------------------------
 
   async function claim(code) {
@@ -697,21 +855,19 @@
     var result = await request('pair/claim', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ code: code, name: phoneName(root.navigator.userAgent) })
+      body: JSON.stringify({ code: code, name: phoneName(root.navigator.userAgent, isStandalone()) })
     });
     state.busy = false;
     if (result.status === 200 && result.body != null && typeof result.body.pass === 'string') {
-      var profile = result.body.profile;
-      state.profiles = addPass(state.profiles, readEntry({
-        pass: result.body.pass,
-        guid: profile != null ? profile.guid : null,
-        name: profile != null ? profile.name : null
-      }));
+      var previous = state.phone != null ? state.phone.pass : null;
+      state.phone = readPhone({ pass: result.body.pass, active: null, profiles: [], fetchedAt: null });
       persist();
       state.typed = '';
       state.banner = null;
-      clearHash();
+      state.pendingCode = null;
       draw();
+      // Paired again over an old pass: take the old one off the extension's list.
+      if (previous != null && previous !== result.body.pass) forgetPass(previous);
       return refresh();
     }
     state.pairError = claimErrorText(errorOf(result));
@@ -719,83 +875,73 @@
   }
 
   function setRefreshing(on) {
+    state.refreshing = on;
     var button = app.querySelector('.bar .icon-btn');
     if (button == null) return;
     button.classList.toggle('is-busy', on);
     button.disabled = on;
   }
 
-  /** The active profile's copy, asked for again. One request per profile at a time; a switch mid-request is fine. */
   async function refresh(byHand) {
-    var entry = activeEntry();
-    if (entry == null) return draw();
-    var pass = entry.pass;
-    if (state.inFlight[pass] === true) return;
+    if (state.phone == null) return draw();
+    if (state.refreshing) return;
+    var pass = state.phone.pass;
     var started = Date.now();
-    state.inFlight[pass] = true;
     setRefreshing(true);
     var result = await request('phone', { headers: { authorization: 'Bearer ' + pass } });
     // A tap that answers in 50ms looks like a tap that did nothing.
     if (byHand === true) await new Promise(function (r) { root.setTimeout(r, Math.max(0, 600 - (Date.now() - started))); });
-    delete state.inFlight[pass];
+    state.refreshing = false;
+    // Forgotten, or paired again, while the request was out: this answer belongs to no one.
+    if (state.phone == null || state.phone.pass !== pass) return draw();
 
-    // The answer belongs to the profile it was asked for, which may no longer be on screen — or on this phone.
-    var target = entryFor(pass);
-    if (target == null) return draw();
-    var shown = state.profiles.active === pass;
-
-    if (result.status === 200 && result.body != null && Array.isArray(result.body.playlists)) {
-      target.copy = result.body;
-      target.fetchedAt = Date.now();
-      var p = result.body.profile;
-      if (p != null && typeof p.guid === 'string') target.guid = p.guid;
-      if (p != null && typeof p.name === 'string' && p.name !== '') target.name = p.name;
+    var profiles = result.status === 200 ? profilesFrom(result.body) : null;
+    if (profiles != null) {
+      state.phone.profiles = profiles;
+      state.phone.active = pickActive(profiles, state.phone.active);
+      state.phone.fetchedAt = Date.now();
+      state.banner = null;
       persist();
-      if (shown) state.banner = null;
       return draw();
     }
 
     var error = errorOf(result);
     if (result.status === 401) {
-      var whose = target.name != null && target.name !== '' ? target.name + '’s playlists were' : 'A profile was';
-      state.profiles = dropPass(state.profiles, pass);
+      state.phone = null;
       persist();
-      if (activeEntry() == null) {
-        state.banner = null;
-        state.pairError = 'This phone was removed in the extension, or its pairing ended. Pair it again to see your playlists.';
-        clearHash();
-        return draw();
-      }
-      state.banner = whose + ' removed from this phone in the extension, or the pairing ended. Add the profile again to see them.';
-      if (shown) clearHash();
+      state.banner = null;
+      state.pairError = 'This phone was removed in the extension, or its pairing ended. Pair it again to see your playlists.';
+      root.history.replaceState(null, '', root.location.pathname);
       return draw();
     }
     if (error === 'not_entitled') {
-      target.copy = null;
-      target.fetchedAt = null;
+      state.phone.profiles = [];
+      state.phone.active = null;
+      state.phone.fetchedAt = Date.now();
       persist();
-      if (shown) state.banner = 'The Pro subscription has ended, so playlists are no longer shown here. They are all still in the extension.';
+      state.banner = 'The Pro subscription has ended, so playlists are no longer shown here. They are all still in the extension.';
       return draw();
     }
-    if (!shown) return draw();
-    var when = relativeTime(target.fetchedAt, Date.now());
-    state.banner = target.copy != null
+    var when = relativeTime(state.phone.fetchedAt, Date.now());
+    state.banner = state.phone.profiles.length > 0
       ? 'Could not refresh — showing the copy from ' + (when != null ? when : 'earlier') + '.'
       : 'Could not reach tidywl.com. Check your connection and reload.';
     draw();
   }
 
-  /** This phone's profiles; a phone paired before 2026-09-26 has its one pass moved over, once, and only if that stuck. */
-  function loadProfiles() {
-    var stored = readProfiles(load(PROFILES_KEY));
-    if (stored.list.length > 0) return stored;
-    var legacy = fromLegacy(load(LEGACY_PASS_KEY), load(LEGACY_COPY_KEY));
-    if (legacy == null) return stored;
-    if (save(PROFILES_KEY, legacy)) {
+  /** This phone's pairing; one kept in an earlier shape is moved over, once, and only if that stuck. */
+  function loadPhone() {
+    var stored = readPhone(load(PHONE_KEY));
+    if (stored != null) return stored;
+    var moved = migrateStored(load(PROFILES_KEY), load(LEGACY_PASS_KEY), load(LEGACY_COPY_KEY));
+    if (moved == null) return null;
+    if (save(PHONE_KEY, moved.phone)) {
+      forget(PROFILES_KEY);
       forget(LEGACY_PASS_KEY);
       forget(LEGACY_COPY_KEY);
+      moved.forget.forEach(forgetPass);
     }
-    return legacy;
+    return moved.phone;
   }
 
   function start() {
@@ -805,12 +951,16 @@
       // The code is spent the moment it is used; keep it out of history and bookmarks.
       root.history.replaceState(null, '', root.location.pathname);
     }
-    state.profiles = loadProfiles();
+    state.phone = loadPhone();
     root.addEventListener('hashchange', draw);
     root.addEventListener('scroll', syncBar, { passive: true });
     root.document.addEventListener('visibilitychange', function () {
-      var entry = activeEntry();
-      if (root.document.visibilityState === 'visible' && entry != null && isStale(entry.fetchedAt, Date.now())) refresh();
+      if (root.document.visibilityState !== 'visible') {
+        // A camera left running behind the Home Screen is the one thing worse than none.
+        if (state.scan != null) { stopScan(); draw(); }
+        return;
+      }
+      if (state.phone != null && isStale(state.phone.fetchedAt, Date.now())) refresh();
     });
     // Android's install offer, shown as our own button rather than the browser's bar.
     root.addEventListener('beforeinstallprompt', function (e) {
@@ -827,17 +977,24 @@
         root.navigator.serviceWorker.register('sw.js').catch(function () { /* the page works without it */ });
       });
     }
-    if (code != null) return claim(code);
+    if (code != null) {
+      // An unpaired iPhone tab holds the code, unspent, so the Home Screen app can scan the same one.
+      if (state.phone == null && wantsInstallFirst()) {
+        state.pendingCode = code;
+        return draw();
+      }
+      return claim(code);
+    }
     draw();
     refresh();
   }
 
   root.TidyPhone = {
-    normalizeCode: normalizeCode, pairCodeFromHash: pairCodeFromHash, listIdFromHash: listIdFromHash,
-    phoneName: phoneName, platformOf: platformOf, isNetflixArt: isNetflixArt, coverArts: coverArts,
+    normalizeCode: normalizeCode, pairCodeFromHash: pairCodeFromHash, codeFromScan: codeFromScan, listIdFromHash: listIdFromHash,
+    browserName: browserName, phoneName: phoneName, platformOf: platformOf, isNetflixArt: isNetflixArt, coverArts: coverArts,
     countLine: countLine, isStale: isStale, titleLink: titleLink, relativeTime: relativeTime,
     profileColor: profileColor, coverBackground: coverBackground, titleMeta: titleMeta, claimErrorText: claimErrorText,
-    readProfiles: readProfiles, fromLegacy: fromLegacy, addPass: addPass, dropPass: dropPass
+    profilesFrom: profilesFrom, pickActive: pickActive, readPhone: readPhone, migrateStored: migrateStored
   };
 
   if (root.document != null && root.document.getElementById('app') != null) start();

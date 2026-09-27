@@ -25,11 +25,10 @@ test('the fragment: a pairing code, or an open playlist, and nothing else', () =
   assert.equal(P.listIdFromHash('#list=<img>'), null);
 });
 
-test('the phone names itself by kind only', () => {
-  assert.equal(P.phoneName('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)'), 'iPhone');
-  assert.equal(P.phoneName('Mozilla/5.0 (Linux; Android 15; Pixel 9) Mobile Safari'), 'Android phone');
-  assert.equal(P.phoneName('Mozilla/5.0 (Linux; Android 15; SM-X910) Safari'), 'Android tablet');
-  assert.equal(P.phoneName(undefined), 'Phone');
+test('an Android phone names itself by kind only: its installed app shares the browser\'s storage', () => {
+  assert.equal(P.phoneName('Mozilla/5.0 (Linux; Android 15; Pixel 9) Mobile Safari', true), 'Android phone');
+  assert.equal(P.phoneName('Mozilla/5.0 (Linux; Android 15; SM-X910) Safari', false), 'Android tablet');
+  assert.equal(P.phoneName(undefined, false), 'Phone');
 });
 
 test('box art only from Netflix image servers over https, and links only to a numeric title page', () => {
@@ -90,56 +89,65 @@ test('a page coming back to the front asks again only after a minute', () => {
 
 // Objects made inside the vm come from another realm; compare them as plain JSON.
 const plain = value => JSON.parse(JSON.stringify(value));
-const copyOf = (guid, name) => ({ profile: { guid, name, storedAt: '2026-09-26T10:00:00Z' }, playlists: [] });
+const copyOf = (guid, name) => ({ profile: { guid, name, storedAt: '2026-09-26T10:00:00Z', storedBy: 'Chrome on Mac' }, playlists: [] });
 
-test('profiles: storage is read defensively, and the active pass is always one the phone holds', () => {
-  assert.deepEqual(plain(P.readProfiles(null)), { active: null, list: [] });
-  assert.deepEqual(plain(P.readProfiles({ active: 'x', list: 'nope' })), { active: null, list: [] });
-  const read = P.readProfiles({ active: 'gone', list: [
-    { pass: 'nps_a', guid: 'A', name: 'Dom', copy: { playlists: 'bad' }, fetchedAt: 5 },
-    null, { pass: '' }, { guid: 'C' },
-    { pass: 'nps_b', guid: 7, name: 'Kids', copy: copyOf('B', 'Kids'), fetchedAt: 'soon' }
-  ] });
-  assert.deepEqual(plain(read), { active: 'nps_a', list: [
-    { pass: 'nps_a', guid: 'A', name: 'Dom', copy: null, fetchedAt: null },
-    { pass: 'nps_b', guid: null, name: 'Kids', copy: copyOf('B', 'Kids'), fetchedAt: null }
-  ] });
-  assert.equal(P.readProfiles({ active: 'nps_b', list: read.list }).active, 'nps_b');
+test('a scanned QR code: the extension\'s link or a bare code, and only ever the code', () => {
+  assert.equal(P.codeFromScan('https://tidywl.com/netflix/app/#pair=K7M2QX'), 'K7M2QX');
+  assert.equal(P.codeFromScan('k7m 2qx'), 'K7M2QX');
+  for (const bad of ['https://tidywl.com/netflix/app/', 'https://example.com/', 'hello', '', null, 'x'.repeat(600)]) {
+    assert.equal(P.codeFromScan(bad), null, String(bad).slice(0, 30));
+  }
 });
 
-test('profiles: a phone paired before several profiles keeps its pairing and its copy', () => {
-  assert.equal(P.fromLegacy(null, null), null);
-  assert.equal(P.fromLegacy('', { copy: copyOf('A', 'Dom'), fetchedAt: 1 }), null);
-  assert.deepEqual(plain(P.fromLegacy('nps_a', { copy: copyOf('A', 'Dom'), fetchedAt: 123 })), { active: 'nps_a', list: [
-    { pass: 'nps_a', guid: 'A', name: 'Dom', copy: copyOf('A', 'Dom'), fetchedAt: 123 }
-  ] });
-  // Paired, never fetched: the pass survives, and the guid and name arrive with the first refresh.
-  assert.deepEqual(plain(P.fromLegacy('nps_a', null)), { active: 'nps_a', list: [
-    { pass: 'nps_a', guid: null, name: null, copy: null, fetchedAt: null }
-  ] });
+test('a phone\'s row names its kind, and on an iPhone where it runs', () => {
+  const safari = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1';
+  const chrome = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 CriOS/129.0 Mobile/15E148 Safari/604.1';
+  assert.equal(P.phoneName(safari, false), 'iPhone · Safari');
+  assert.equal(P.phoneName(safari, true), 'iPhone · Home Screen app');
+  assert.equal(P.phoneName(chrome, false), 'iPhone · Chrome');
+  assert.equal(P.phoneName('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)', false), 'iPhone');
+  assert.equal(P.browserName(chrome), 'Chrome');
+  assert.equal(P.browserName('nothing'), null);
 });
 
-test('profiles: a new pairing is added and shown; pairing a profile again replaces it in place', () => {
-  const entry = (pass, guid, name) => ({ pass, guid, name, copy: null, fetchedAt: null });
-  let p = P.readProfiles(null);
-  p = P.addPass(p, entry('nps_a', 'A', 'Dom'));
-  p = P.addPass(p, entry('nps_b', 'B', 'Kids'));
-  assert.equal(p.active, 'nps_b');
-  assert.deepEqual(plain(p.list.map(e => e.pass)), ['nps_a', 'nps_b']);
-  p = P.addPass(p, entry('nps_a2', 'A', 'Dom'));
-  assert.equal(p.active, 'nps_a2');
-  assert.deepEqual(plain(p.list.map(e => e.pass)), ['nps_a2', 'nps_b']);
-  // A pairing whose profile is unknown never replaces anything.
-  p = P.addPass(p, entry('nps_x', null, null));
-  assert.equal(p.list.length, 3);
+test('a /phone answer: every profile, an older server\'s one copy, or nothing usable', () => {
+  assert.deepEqual(plain(P.profilesFrom({ profiles: [copyOf('A', 'Dom'), { profile: null, playlists: [] }, copyOf('B', 'Kids')] })).map(c => c.profile.name), ['Dom', 'Kids']);
+  assert.deepEqual(plain(P.profilesFrom(copyOf('A', 'Dom'))).map(c => c.profile.name), ['Dom']);
+  assert.deepEqual(plain(P.profilesFrom({ profile: null, playlists: [] })), []);
+  assert.equal(P.profilesFrom({ error: 'x' }), null);
+  assert.equal(P.profilesFrom(null), null);
 });
 
-test('profiles: forgetting one keeps the one on screen if it was another, else moves to the first left', () => {
-  const list = ['nps_a', 'nps_b', 'nps_c'].map(pass => ({ pass, guid: pass, name: pass, copy: null, fetchedAt: null }));
-  assert.equal(P.dropPass({ active: 'nps_c', list }, 'nps_a').active, 'nps_c');
-  assert.equal(P.dropPass({ active: 'nps_b', list }, 'nps_b').active, 'nps_a');
-  const last = P.dropPass({ active: 'nps_a', list: list.slice(0, 1) }, 'nps_a');
-  assert.deepEqual(plain(last), { active: null, list: [] });
+test('the profile on screen stays through a refresh, and falls back to the first when it is gone', () => {
+  const profiles = [copyOf('A', 'Dom'), copyOf('B', 'Kids')];
+  assert.equal(P.pickActive(profiles, 'B'), 'B');
+  assert.equal(P.pickActive(profiles, 'Z'), 'A');
+  assert.equal(P.pickActive([], 'A'), null);
+});
+
+test('storage is read defensively', () => {
+  assert.equal(P.readPhone(null), null);
+  assert.equal(P.readPhone({ pass: '' }), null);
+  assert.deepEqual(plain(P.readPhone({ pass: 'nps_a', active: 'gone', profiles: [copyOf('A', 'Dom'), 'junk'], fetchedAt: 'soon' })),
+    { pass: 'nps_a', active: 'A', profiles: [copyOf('A', 'Dom')], fetchedAt: null });
+});
+
+test('a phone paired before one pass read every profile keeps the pass it showed, and forgets the others', () => {
+  const entry = (pass, guid, name) => ({ pass, guid, name, copy: copyOf(guid, name), fetchedAt: 1 });
+  const moved = P.migrateStored({ active: 'nps_b', list: [entry('nps_a', 'A', 'tidywl'), entry('nps_b', 'B', 'Dominic')] }, null, null);
+  assert.equal(moved.phone.pass, 'nps_b');
+  assert.equal(moved.phone.active, 'B');
+  assert.deepEqual(plain(moved.phone.profiles).map(c => c.profile.name), ['tidywl', 'Dominic'], 'the chips draw at once');
+  assert.equal(moved.phone.fetchedAt, null, 'and refresh straight away');
+  assert.deepEqual(plain(moved.forget), ['nps_a']);
+
+  const single = P.migrateStored(null, 'nps_old', { copy: copyOf('A', 'Dom'), fetchedAt: 5 });
+  assert.equal(single.phone.pass, 'nps_old');
+  assert.equal(single.phone.active, 'A');
+  assert.deepEqual(plain(single.forget), []);
+  assert.equal(P.migrateStored(null, 'nps_old', null).phone.profiles.length, 0);
+  assert.equal(P.migrateStored(null, null, null), null);
+  assert.equal(P.migrateStored({ list: [{ pass: '' }] }, null, null), null);
 });
 
 test('the page builds nothing from markup: no innerHTML anywhere', () => {
