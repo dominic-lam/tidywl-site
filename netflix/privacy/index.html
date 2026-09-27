@@ -209,11 +209,12 @@ last_modified_at: 2026-09-23
       pass of its own. <strong>Your licence key never reaches the phone.</strong>
     </p>
     <ul>
-      <li>A pass reads one profile's synced playlists and nothing else. It cannot change anything, and it cannot be used to sync. To see another profile's playlists on the same phone, pair it again from that profile with <em>Add profile</em>: each pairing is a pass of its own, and a row of its own in the extension's list of phones.</li>
-      <li>The phone tells our server what kind of device it is — "iPhone", "Android phone" — so you can tell your phones apart in the list. Nothing more specific.</li>
-      <li>The phone keeps each pass, the profile's name, and the last copy of that profile's playlists in that page's own storage, so the page opens straight away. <em>Forget</em>, under a profile's playlists, removes that profile's.</li>
+      <li>A pass reads the synced playlists of every profile under your key, and nothing else — so a paired phone shows all of them, as the Netflix app does, including a kids profile's. It cannot change anything, and it cannot be used to sync.</li>
+      <li>The phone tells our server what kind of device it is and, on an iPhone, where the page runs — "iPhone · Safari", "iPhone · Home Screen app", "Android phone" — so you can tell your phones apart in the list. Nothing more specific.</li>
+      <li><em>Scan code</em> uses the phone's camera only while the scanner is open, and reads the QR code on the phone. Nothing from the camera is sent anywhere; the code reader itself is served from tidywl.com, not from a third party.</li>
+      <li>The phone keeps its pass and the last copy of the playlists in that page's own storage, so the page opens straight away, and whether you chose not to add it to your Home Screen. <em>Forget this phone</em> removes both from the phone, and the phone's row from our server.</li>
       <li>Titles' pictures load on the phone straight from Netflix's image servers, which see the request as they would from the Netflix app.</li>
-      <li><em>Remove</em>, beside a phone in the extension, stops that pass for good. The next time the phone opens that profile, it deletes what it kept for it.</li>
+      <li><em>Remove</em>, beside a phone in the extension, stops that pass for good. The next time the phone opens the page, it deletes what it kept.</li>
     </ul>
 
     <h2>The requests that leave your browser</h2>
@@ -381,8 +382,8 @@ last_modified_at: 2026-09-23
     <h3>7. Playlist sync and phones, to tidywl.com — Pro only</h3>
     <p>
       Syncs go to <code>https://tidywl.com/api/netflix/sync</code> and carry exactly what <em>Pro: your playlists on
-      our server</em> lists. Pairing a phone sends the profile's id to <code>/api/netflix/pair</code>; the phone list
-      and <em>Remove</em> use <code>/api/netflix/phones</code>. All of them carry this browser's 24-hour sign-in, never
+      our server</em> lists. Pairing a phone asks <code>/api/netflix/pair</code> for a code and sends nothing else; the
+      phone list and <em>Remove</em> use <code>/api/netflix/phones</code>. All of them carry this browser's 24-hour sign-in, never
       the key.
     </p>
 
@@ -458,7 +459,7 @@ last_modified_at: 2026-09-23
       one row per payment — Paddle's Transaction ID, the subscription it paid for, which licence, and when it was
       recorded; one row per browser using it — its name, and when it was activated and last seen; one row
       per synced profile — its id and name, and which browser last wrote to it; one row per playlist, holding what a
-      sync sends; and one row per phone — the profile it reads, what kind of device it is, a fingerprint of its pass,
+      sync sends; and one row per phone — what kind of device it is and where it runs, a fingerprint of its pass,
       and when it was paired and last opened. Not your email, your name, your address or one digit of your card.
     </p>
 
@@ -531,7 +532,7 @@ last_modified_at: 2026-09-23
       kids profile as for any other. A Netflix account may have a kids profile, and the dashboard works on one;
       everything it reads there stays on the machine under that profile's own id, exactly as for any other profile —
       unless the account holder has Pro and switches sync on while that profile is open, in which case its playlists
-      and its profile name are synced like any other profile's.
+      and its profile name are synced like any other profile's, and a paired phone shows them beside the others'.
     </p>
 
     <h2>Changes to this policy</h2>
