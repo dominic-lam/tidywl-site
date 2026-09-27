@@ -385,12 +385,20 @@ faq:
       const until = d && d.until !== undefined ? cleanDay(d.until) : null;
       const inDate = !!d && (d.until === undefined || (until != null && !isPastDay(until, now)));
       // Whole or not at all, as the card decides it — and stricter on one
-      // point: this page also needs `paddleDiscountId`, because its buy button
-      // is what hands the discount to Paddle. Without it the checkout would
-      // charge the regular price, so the page shows the regular price.
+      // point: this page also needs a Paddle discount id for every period the
+      // offer covers, because its buy button is what hands the discount to
+      // Paddle. Without one the checkout would charge the regular price, so
+      // the page shows the regular price. `paddleDiscountIds` is one id per
+      // period (2026-09-26: a $1 monthly and a $10 yearly cannot be one
+      // discount); the older single `paddleDiscountId` still reads, for both.
+      const cleanDiscountId = v => (typeof v === 'string' && /^dsc_[a-z0-9]{26}$/.test(v) ? v : null);
+      const idsBlock = d && d.paddleDiscountIds && typeof d.paddleDiscountIds === 'object' ? d.paddleDiscountIds : {};
+      const ids = d ? {
+        monthly: cleanDiscountId(idsBlock.monthly) || cleanDiscountId(d.paddleDiscountId),
+        yearly: cleanDiscountId(idsBlock.yearly) || cleanDiscountId(d.paddleDiscountId)
+      } : { monthly: null, yearly: null };
       const whole = !!d && d.enabled === true && label != null && periods != null && inDate
-        && typeof d.paddleDiscountId === 'string' && /^dsc_[a-z0-9]{26}$/.test(d.paddleDiscountId)
-        && periods.every(p => dPrices[p] != null && dPrices[p] < regular[p] && cleanUrl(dCheckout[p]) != null);
+        && periods.every(p => dPrices[p] != null && dPrices[p] < regular[p] && cleanUrl(dCheckout[p]) != null && ids[p] != null);
       const covers = p => whole && periods.indexOf(p) !== -1;
 
       const prices = {
@@ -407,8 +415,8 @@ faq:
       return {
         promo: whole ? { label: label, note: cleanString(d.note), periods: periods } : null,
         discountIds: {
-          monthly: covers('monthly') ? d.paddleDiscountId : null,
-          yearly: covers('yearly') ? d.paddleDiscountId : null
+          monthly: covers('monthly') ? ids.monthly : null,
+          yearly: covers('yearly') ? ids.yearly : null
         },
         monthly: {
           amount: usd(prices.monthly),

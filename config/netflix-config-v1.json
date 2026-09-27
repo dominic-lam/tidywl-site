@@ -1,27 +1,37 @@
 {
   "_comment": "Served at https://tidywl.com/config/netflix-config-v1.json. This checked-in copy is the source of truth for what gets uploaded — edit here, then upload, so the repo always shows what is live. Its shape and fallbacks are documented in src/content-scripts/remote-config.js.",
   "_store_note": "The store address is NOT here. It moved into src/utils/install-store.js on 2026-09-19, because it is fixed for the life of the listing and does not belong behind a file that has to be uploaded first.",
-
   "version": 1,
-
   "links": {
     "discord": "https://discord.gg/4j5u9xd35P",
     "kofi": "https://ko-fi.com/dominiclam",
     "email": "support@tidywl.com"
   },
-
-  "_pro_note": "Read by 1.0.0's upsell card (src/utils/pricing.js) and by tidywl.com/netflix/pricing/, which must quote the same prices. Versions before 1.0.0 ignore it. The founding offer is off until the user sets its end date: turning it on is enabled: true plus an until day. paddleDiscountId is the Paddle discount the pricing page hands to checkout; without it the page shows regular prices.",
+  "_pro_note": "Read by 1.0.0's upsell card (src/utils/pricing.js) and by tidywl.com/netflix/pricing/, which must quote the same prices. Versions before 1.0.0 ignore it. The founding offer is ON since 2026-09-27 with no end date (the user: until further changes): $2.99 for the first month, $19.99 for the first year, then the regular prices. paddleDiscountIds are the Paddle discounts the pricing page hands to checkout, one per period, each limited to that period's price and to one payment; without an id for a period the page shows that period's regular price. Turning the offer off is enabled: false.",
   "pro": {
     "pricing": {
-      "regular": { "monthly": 3.99, "yearly": 29.99 },
+      "regular": {
+        "monthly": 3.99,
+        "yearly": 29.99
+      },
       "discount": {
-        "enabled": false,
+        "enabled": true,
         "label": "Founding offer",
-        "periods": ["yearly"],
+        "periods": [
+          "monthly",
+          "yearly"
+        ],
+        "monthly": 2.99,
         "yearly": 19.99,
         "firstPeriodOnly": true,
-        "paddleDiscountId": "dsc_01m3fnznzegxjd6kavhpkh4639",
-        "checkout": { "yearly": "https://tidywl.com/netflix/pricing/?plan=yearly" }
+        "paddleDiscountIds": {
+          "monthly": "dsc_01m3gs29w9n5j0gt0kz7b7b5kn",
+          "yearly": "dsc_01m3fnznzegxjd6kavhpkh4639"
+        },
+        "checkout": {
+          "monthly": "https://tidywl.com/netflix/pricing/?plan=monthly",
+          "yearly": "https://tidywl.com/netflix/pricing/?plan=yearly"
+        }
       }
     },
     "checkout": {
