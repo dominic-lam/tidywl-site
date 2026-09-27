@@ -177,6 +177,16 @@
   url: "https://chromewebstore.google.com/reviews/94633ba3-15d3-4ade-8a23-65b445f8b5fd"
   date: "2026-05-02"
 
+# Nerdist Camp (a Cup The Mic podcast), S2E10 "Abbey Road Studios", published 2026-07-11. Andi's own words at
+# 57:30-58:00, transcribed from the episode audio on 2026-09-26 with Whisper large-v3-turbo, since the earlier
+# auto-transcript garbled this passage. The elision drops Kris's interjection and the right-click aside. The show
+# notes spell the hosts Andi and Kris; the audio's own outro and the auto-transcript say "Andy" and "Chris".
+- quote: "YouTube don't provide tools to search within Watch Later, God knows why. I got 1,600 vids in Watch Later [...] But this lets you search within your history and do all sorts of stuff, and it's free."
+  author: "Andi, co-host"
+  source: "Nerdist Camp podcast"
+  url: "https://shows.acast.com/nc/episodes/s2e10"
+  date: "2026-07-11"
+
 - quote: "Finally — I NEEDED something to categorize my Watch Later videos. So many damn tabs open for later, it was keeping me from using my browser."
   author: "@DETahaX"
   source: "YouTube"
