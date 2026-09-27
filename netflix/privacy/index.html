@@ -3,15 +3,16 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, what leaves it — four public requests, a usage report, and for Pro a licence check and playlist sync — and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-09-23
+last_modified_at: 2026-09-27
 ---
 
 <!-- ── PRIVACY POLICY ──
-     DRAFT (2026-09-24, branch draft/netflix-pro-privacy) — for the release that
-     adds Pro. Do not merge before that release is approved to ship: every
-     sentence below has to be true of the shipped build. Placeholders: [VERSION],
-     [DATE]. The 90-day deletion after a lapse is tidywl-api's
-     expireLapsedSyncCopies(), in the nightly job since 2026-09-24 (db0a08f).
+     Drafted 2026-09-24 on branch draft/netflix-pro-privacy for 1.0.0, the release
+     that adds Pro; merged 2026-09-27, the day 1.0.0 was submitted, so that the
+     page the listing points at describes the build under review — the 0.2.0
+     practice. Every sentence below has to be true of that build. The 90-day
+     deletion after a lapse is tidywl-api's expireLapsedSyncCopies(), in the
+     nightly job since 2026-09-24 (db0a08f).
 
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
@@ -45,10 +46,13 @@ last_modified_at: 2026-09-23
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version {{ site.data.netflix.version }} and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_updated | date: "%-d %B %Y" }}.
-      Updated [DATE] for version [VERSION], which adds <strong>TidyWL Pro</strong>: playlist sync between your
-      browsers and onto your phone. Pro sends things nothing else in this extension does — your playlists and your
-      profile's name — and only when you have a Pro key and switch sync on; every one is listed under
-      <em>Pro: your playlists on our server</em>.
+      Updated 27 September 2026 for version 1.0.0, which adds <strong>TidyWL Pro</strong>: Undo for removals, pins,
+      two clean-up rules, stats, up to 50 playlists a profile, and playlist sync between your browsers and onto your
+      phone. Of those, only sync sends anything anywhere — your playlists and your profile's name — and only when you
+      have a Pro key and switch sync on; every one is listed under <em>Pro: your playlists on our server</em>. Undo's
+      removal history and the stats tally stay in your browser, in the table of keys below. The same version caps free
+      playlists at five in a browser new to the extension, and may ask once on a removal's summary for a rating or a
+      coffee; both are remembered in your browser and nowhere else.
       Updated 23 September 2026 for version 0.2.0, which added a usage report: versions before 0.2.0 sent nothing
       about your use anywhere.
       This is a different extension from <a href="/privacy/">TidyWL for YouTube</a>, which has its own policy and behaves differently.
