@@ -21,16 +21,16 @@ faq:
     a: "TidyWL for Netflix reads and changes your own list through the same endpoints netflix.com itself calls, using the session you are already signed in with. It is doing what you could do by hand in the Netflix web app, faster. It is not a downloader: it never touches video, and Netflix's playback DRM is not involved anywhere. That said, it is an independent extension and Netflix has not reviewed or endorsed it, so use it on your own account and your own judgement."
   - id: account
     q: "Do I need an account, a sign-in, or a subscription to TidyWL?"
-    a: "No. There is no TidyWL account, no sign-in, no API key and no payment. You need a Netflix subscription and to be signed in to netflix.com in Chrome — that is the whole requirement. The extension reads nothing when you are not signed in."
+    a: "No. Everything in the dashboard is free, and there is no TidyWL account and no sign-in. You need a Netflix subscription and to be signed in to netflix.com in Chrome. TidyWL Pro, a paid subscription, adds Undo for removals, pins, clean-up rules, stats, up to 50 playlists, and playlist sync between browsers and onto your phone; it is a key, not an account — no password, and we never learn your email."
   - id: privacy
     q: "Does my Netflix data get sent anywhere?"
-    a: "Your list, your titles, your watch state and your playlists stay in your browser. Four requests do leave it, and none of them says anything about you: a public settings file from tidywl.com that everyone receives identically, IMDb's public daily ratings file, Netflix's numeric title ids sent to Wikidata to find the matching IMDb id — or, for a title its id cannot find, the title's name — and, for a title Wikidata cannot match at all, its name sent to IMDb's search. From version 0.2.0 there is also a usage report: a random install id and lifetime counts, such as how many titles you have removed or how many searches you have run — never which titles, what you searched for or which profile. There is no account. The privacy policy at tidywl.com/netflix/privacy/ lists every request and every field of the report."
+    a: "Your list, your titles, your watch state and your searches stay in your browser. Your playlists do too, unless you have TidyWL Pro and switch on sync: then that profile's playlists, with each title's name, year and picture link, and the profile's name, go to tidywl.com so your other browsers and your phone can show them. Four requests do leave it, and none of them says anything about you: a public settings file from tidywl.com that everyone receives identically, IMDb's public daily ratings file, Netflix's numeric title ids sent to Wikidata to find the matching IMDb id — or, for a title its id cannot find, the title's name — and, for a title Wikidata cannot match at all, its name sent to IMDb's search. From version 0.2.0 there is also a usage report: a random install id and lifetime counts, such as how many titles you have removed or how many searches you have run — never which titles, what you searched for or which profile. There is no account. The privacy policy at tidywl.com/netflix/privacy/ lists every request, every field of the report, and everything Pro sync sends."
   - id: playlists
     q: "Where do custom playlists live, and what happens if I uninstall?"
-    a: "A playlist is a name and a list of Netflix title ids, stored in Chrome's own sync storage. That means Chrome replicates it to your other signed-in Chrome browsers for free, through Google, not through us — we have no copy. Playlists live inside the extension and are never written to your Netflix account, so nothing you do in TidyWL changes what another person on the account sees. Uninstalling removes everything the extension stored in that browser."
+    a: "A playlist is a name and a list of Netflix title ids, stored in Chrome's own sync storage. That means Chrome replicates it to your other signed-in Chrome browsers for free, through Google, not through us. With TidyWL Pro and sync switched on, a second copy is kept on tidywl.com, so it also reaches Brave, another Google account and your phone. Playlists live inside the extension and are never written to your Netflix account, so nothing you do in TidyWL changes what another person on the account sees. Uninstalling removes everything the extension stored in that browser."
   - id: phone
     q: "Does it work on my phone?"
-    a: "No, and no Chrome extension can: Chrome for Android has no extension support at all. TidyWL for Netflix runs on a desktop or laptop in Chrome. Anything you remove from My List there is gone from the Netflix app on your phone too, because it is the same list on Netflix's side."
+    a: "The dashboard does not, and no Chrome extension can: Chrome for Android has no extension support at all. TidyWL for Netflix runs on a desktop or laptop in Chrome. With TidyWL Pro your playlists can be read on your phone, at tidywl.com/netflix/app — paired once with a code from the extension, read-only, and a tap on a title opens it in the Netflix app. Anything you remove from My List on your computer is gone from the Netflix app too, because it is the same list on Netflix's side."
   - id: profiles
     q: "My account has several profiles. Which one does it use?"
     a: "Whichever profile is active in that tab. Every cached list, every watch state and every custom playlist is stored under that profile's own id, so the kids profile never shows the adult profile's playlists and neither can overwrite the other. Opened on Netflix's 'Who's watching?' screen, before a profile is chosen, the dashboard refuses to open rather than guess."
@@ -256,14 +256,16 @@ faq:
      policy states in full and the code actually does; if one changes, change
      both. The wording is deliberately specific — "your Netflix data", not
      "nothing", because four requests and a usage report do leave the
-     browser and the policy names every one. -->
+     browser and the policy names every one — and, for Pro, the licence
+     check and playlist sync. -->
 <section class="privacy">
   <div class="section-inner">
     <p class="section-label">Privacy</p>
     <h2 class="section-heading">Your Netflix data stays in your browser</h2>
     <p>
-      There is no account and no sign-in. Your list, your watch state, your searches and your
-      playlists are never sent to us. What is sent is a count of how much you use it — never of what.
+      There is no account and no sign-in. Your list, your watch state and your searches are never
+      sent to us, and neither are your playlists unless you switch on Pro sync. What is sent is a
+      count of how much you use it — never of what.
     </p>
 
     <ul class="nf-privacy-points">
@@ -271,6 +273,7 @@ faq:
       <li><strong>A usage report of counts, and nothing else.</strong> A random install id and lifetime totals — titles removed and added, searches run, days opened, My List size. Never a title, a search term or a profile. No third-party analytics.</li>
       <li><strong>Four other requests leave your browser, none about you:</strong> a public settings file, IMDb's public ratings file, title ids — or, where an id finds nothing, a title's name — sent to Wikidata to look up IMDb ids, and, for a title Wikidata cannot match, its name sent to IMDb's search.</li>
       <li><strong>Your list, watch state, pins and playlists are stored per Netflix profile</strong>, and uninstalling removes everything.</li>
+      <li><strong>Pro sync is off until you switch it on.</strong> Then that browser sends the open profile's playlists and the profile's name to tidywl.com, for your other browsers and your phone. Your key never reaches the phone.</li>
     </ul>
 
     <p class="note"><a href="/netflix/privacy/">Read the full privacy policy</a> — it lists every request, every stored key, and why each permission is asked for.</p>
