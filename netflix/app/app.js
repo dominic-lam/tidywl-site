@@ -1,18 +1,25 @@
 /*
- * TidyWL for Netflix — the phone page. Read-only, one profile, no account.
+ * TidyWL for Netflix — the phone page. Read-only, no account.
  * Contract: tidywl-netflix/docs/claude/PLAN-mobile-sync.md § The phone.
  *
  * PAIRING: the extension shows a six-character code that lasts ten minutes and
  * works once. Typed here, or arriving as #pair=<code> from a link, it is
- * swapped at /api/netflix/pair/claim for this phone's own pass. The fragment
- * never reaches a server, and it is wiped from the address bar at once.
+ * swapped at /api/netflix/pair/claim for a pass of this phone's own. The
+ * fragment never reaches a server, and it is wiped from the address bar at once.
  *
- * OPENING: the last copy is drawn from this phone's storage straight away,
- * then refreshed from /api/netflix/phone — on open, from the Refresh button,
- * and when the page comes back to the front after a minute away, since a Home
+ * PROFILES: a pass reads one Netflix profile, and a phone keeps as many passes
+ * as it has been paired for — one per profile, each its own row in the
+ * extension's phone list, so the server needs nothing (2026-09-26). A chip per
+ * profile switches between them; "Add profile" (#add) pairs again. Pairing a
+ * profile the phone already has replaces that profile's pass.
+ *
+ * OPENING: the active profile's last copy is drawn from this phone's storage
+ * straight away, then refreshed from /api/netflix/phone — on open, on a switch
+ * to a profile not fetched in the last minute, from the Refresh button, and
+ * when the page comes back to the front after a minute away, since a Home
  * Screen app has no reload of its own. A pass the server no longer knows
- * (removed in the extension) or a subscription that ended clears the copy:
- * what a lapsed licence returns is nothing.
+ * (removed in the extension) drops that profile; a subscription that ended
+ * clears the copy: what a lapsed licence returns is nothing.
  *
  * INSTALLING: sw.js keeps this page's own files, never the playlists. On an
  * iPhone a Home Screen app has storage of its own, apart from Safari's, so it
@@ -26,8 +33,11 @@
   'use strict';
 
   var API = '/api/netflix/';
-  var PASS_KEY = 'tidywl_nf_phone_pass';
-  var COPY_KEY = 'tidywl_nf_phone_copy';
+  // { active: <pass>, list: [{ pass, guid, name, copy, fetchedAt }] }, one entry per paired profile.
+  var PROFILES_KEY = 'tidywl_nf_phone_profiles';
+  // Before 2026-09-26 a phone held one pass and its copy under these; moved into PROFILES_KEY on first open.
+  var LEGACY_PASS_KEY = 'tidywl_nf_phone_pass';
+  var LEGACY_COPY_KEY = 'tidywl_nf_phone_copy';
   var CODE_ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
   var STALE_MS = 60 * 1000;
   var LOGO = 'icons/icon-192.png';
@@ -153,6 +163,59 @@
     return parts.join(' · ');
   }
 
+  // --- profiles: the passes this phone holds -------------------------------------
+
+  function readEntry(e) {
+    if (e == null || typeof e.pass !== 'string' || e.pass === '') return null;
+    var copy = e.copy != null && Array.isArray(e.copy.playlists) ? e.copy : null;
+    return {
+      pass: e.pass,
+      guid: typeof e.guid === 'string' ? e.guid : null,
+      name: typeof e.name === 'string' ? e.name : null,
+      copy: copy,
+      fetchedAt: copy != null && Number.isFinite(e.fetchedAt) ? e.fetchedAt : null
+    };
+  }
+
+  /** Whatever storage held, as {active, list}; active is always one of the list's passes, or null. */
+  function readProfiles(raw) {
+    var list = raw != null && Array.isArray(raw.list) ? raw.list.map(readEntry).filter(Boolean) : [];
+    var has = function (pass) { return list.some(function (e) { return e.pass === pass; }); };
+    return { active: raw != null && has(raw.active) ? raw.active : list.length > 0 ? list[0].pass : null, list: list };
+  }
+
+  /** A phone paired before several profiles: its one pass and copy, as a profile list. Null when it held none. */
+  function fromLegacy(pass, cached) {
+    if (typeof pass !== 'string' || pass === '') return null;
+    var copy = cached != null && cached.copy != null && Array.isArray(cached.copy.playlists) ? cached.copy : null;
+    var profile = copy != null ? copy.profile : null;
+    return readProfiles({ active: pass, list: [{
+      pass: pass,
+      guid: profile != null ? profile.guid : null,
+      name: profile != null ? profile.name : null,
+      copy: copy,
+      fetchedAt: copy != null ? cached.fetchedAt : null
+    }] });
+  }
+
+  /** A new pairing becomes the active profile; one for a profile already here replaces that profile's entry in place. */
+  function addPass(profiles, entry) {
+    var replaced = false;
+    var list = profiles.list.map(function (e) {
+      if (!replaced && entry.guid != null && e.guid === entry.guid) { replaced = true; return entry; }
+      return e;
+    });
+    if (!replaced) list.push(entry);
+    return { active: entry.pass, list: list };
+  }
+
+  /** Without that pass. The active profile stays if it was another, else the first one left, else none. */
+  function dropPass(profiles, pass) {
+    var list = profiles.list.filter(function (e) { return e.pass !== pass; });
+    var keep = profiles.active !== pass && list.some(function (e) { return e.pass === profiles.active; });
+    return { active: keep ? profiles.active : list.length > 0 ? list[0].pass : null, list: list };
+  }
+
   function claimErrorText(error) {
     switch (error) {
       case 'malformed_code': return 'A code is six letters and numbers, like K7M 2QX.';
@@ -176,7 +239,12 @@
   }
 
   function save(key, value) {
-    try { root.localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* private mode: the page still works */ }
+    try {
+      root.localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (e) {
+      return false; // private mode: the page still works
+    }
   }
 
   function forget(key) {
@@ -206,9 +274,28 @@
 
   var app = null;
   var state = {
-    copy: null, fetchedAt: null, banner: null, pairError: null, busy: false, refreshing: false, typed: '',
+    profiles: { active: null, list: [] }, inFlight: {}, banner: null, pairError: null, busy: false, typed: '',
     installPrompt: null, view: null, listsScroll: 0, navigatedIn: false
   };
+
+  function activeEntry() {
+    var active = state.profiles.active;
+    return state.profiles.list.filter(function (e) { return e.pass === active; })[0] || null;
+  }
+
+  function entryFor(pass) {
+    return state.profiles.list.filter(function (e) { return e.pass === pass; })[0] || null;
+  }
+
+  function persist() {
+    if (state.profiles.list.length === 0) forget(PROFILES_KEY);
+    else save(PROFILES_KEY, state.profiles);
+  }
+
+  function clearHash() {
+    if (root.location.hash !== '') root.history.replaceState(null, '', root.location.pathname);
+    state.navigatedIn = false;
+  }
 
   function el(tag, props, children) {
     var node = root.document.createElement(tag);
@@ -263,25 +350,30 @@
   }
 
   function draw() {
-    var paired = load(PASS_KEY) != null;
+    var entry = activeEntry();
+    var adding = entry != null && root.location.hash === '#add';
     var listId = listIdFromHash(root.location.hash);
-    var copy = state.copy;
-    var open = paired && listId != null && copy != null && copy.profile != null
+    var copy = entry != null ? entry.copy : null;
+    var open = !adding && listId != null && copy != null && copy.profile != null
       ? copy.playlists.filter(function (p) { return p.id === listId; })[0]
       : null;
-    var view = !paired ? 'pair' : open != null ? 'list:' + open.id : 'lists';
+    var view = entry == null ? 'pair' : adding ? 'add' : open != null ? 'list:' + open.id : 'lists:' + entry.pass;
     var entering = view !== state.view;
-    if (entering && state.view === 'lists') state.listsScroll = root.scrollY;
+    if (entering && state.view != null && state.view.slice(0, 6) === 'lists:') state.listsScroll = root.scrollY;
 
     app.textContent = '';
-    if (!paired) drawPair();
+    if (entry == null) drawPair(false);
+    else if (adding) drawPair(true);
     else if (open != null) drawList(open);
-    else drawHome(copy);
+    else drawHome(entry);
 
     if (entering) {
       var content = app.querySelector('.content');
       if (content != null && state.view != null) content.classList.add('enter');
-      root.scrollTo(0, view === 'lists' ? state.listsScroll : 0);
+      var toLists = view.slice(0, 6) === 'lists:';
+      var fromLists = state.view != null && state.view.slice(0, 6) === 'lists:';
+      // Back from a playlist returns to where the list was; a profile switch stays put, under the chips.
+      if (!(toLists && fromLists)) root.scrollTo(0, toLists ? state.listsScroll : 0);
       state.view = view;
     }
     syncBar();
@@ -292,15 +384,23 @@
     if (bar != null) bar.classList.toggle('is-scrolled', root.scrollY > 36);
   }
 
-  function drawBar(back, title) {
+  function isRefreshing() {
+    var entry = activeEntry();
+    return entry != null && state.inFlight[entry.pass] === true;
+  }
+
+  function drawBar(back, title, withRefresh) {
     var start = back
       ? el('a', { className: 'back-btn', href: '#', 'aria-label': 'All playlists', onclick: goBack }, [icon('back', 22), 'Playlists'])
       : el('img', { className: 'bar-logo', src: LOGO, alt: '' });
-    var refreshButton = el('button', {
-      type: 'button', className: 'icon-btn' + (state.refreshing ? ' is-busy' : ''), 'aria-label': 'Refresh',
-      onclick: function () { refresh(true); }
-    }, [icon('refresh', 20)]);
-    refreshButton.disabled = state.refreshing;
+    var refreshButton = null;
+    if (withRefresh !== false) {
+      refreshButton = el('button', {
+        type: 'button', className: 'icon-btn' + (isRefreshing() ? ' is-busy' : ''), 'aria-label': 'Refresh',
+        onclick: function () { refresh(true); }
+      }, [icon('refresh', 20)]);
+      refreshButton.disabled = isRefreshing();
+    }
     return el('header', { className: 'bar' }, [el('div', { className: 'bar-inner' }, [
       el('div', { className: 'bar-start' }, [start]),
       el('div', { className: 'bar-title', 'aria-hidden': 'true', text: title }),
@@ -335,24 +435,25 @@
     return img;
   }
 
-  function drawHome(copy) {
+  function drawHome(entry) {
+    var copy = entry.copy;
     app.appendChild(drawBar(false, 'Playlists'));
     var content = el('main', { className: 'content' });
     app.appendChild(content);
     content.appendChild(el('h1', { className: 'title', text: 'Playlists' }));
+    content.appendChild(drawProfiles(entry));
 
     if (copy == null) {
       content.appendChild(state.banner != null ? callout('alert', [state.banner], 'status') : drawSkeleton());
-      content.appendChild(drawFoot());
+      content.appendChild(drawFoot(entry));
       return;
     }
     if (copy.profile == null) {
       content.appendChild(emptyState('Nothing has synced yet', 'Turn on sync in the extension (About → Pro), then open this page again.'));
-      content.appendChild(drawFoot());
+      content.appendChild(drawFoot(entry));
       return;
     }
 
-    content.appendChild(drawProfile(copy.profile));
     if (state.banner != null) content.appendChild(callout('alert', [state.banner], 'status'));
     if (copy.playlists.length === 0) {
       content.appendChild(emptyState('No playlists yet', 'Make one in the extension and it appears here after the next sync.'));
@@ -361,19 +462,39 @@
     }
     var install = drawInstall();
     if (install != null) content.appendChild(install);
-    content.appendChild(drawFoot());
+    content.appendChild(drawFoot(entry));
   }
 
-  function drawProfile(profile) {
-    var name = profile.name || 'Profile';
-    var synced = relativeTime(Date.parse(profile.storedAt), Date.now());
-    var detail = [synced != null ? 'Synced ' + synced : null, profile.storedBy ? 'from ' + profile.storedBy : null].filter(Boolean).join(' ');
-    return el('div', { className: 'profile' }, [
-      el('span', { className: 'avatar', style: 'background:' + profileColor(profile.guid), 'aria-hidden': 'true', text: firstChar(name) }),
-      el('div', null, [
-        el('div', { className: 'profile-name', text: name + '’s playlists' }),
-        detail !== '' ? el('div', { className: 'profile-meta', text: detail }) : null
-      ])
+  function profileName(entry) {
+    return entry.name != null && entry.name !== '' ? entry.name : 'Profile';
+  }
+
+  /** One chip per paired profile, the active one filled, then Add profile; under them, how fresh the active one is. */
+  function drawProfiles(entry) {
+    var chips = state.profiles.list.map(function (e) {
+      var name = profileName(e);
+      var chip = el('button', {
+        type: 'button', className: 'chip', 'aria-pressed': e.pass === entry.pass ? 'true' : 'false',
+        onclick: function () { switchTo(e.pass); }
+      }, [
+        el('span', { className: 'avatar', style: 'background:' + profileColor(e.guid), 'aria-hidden': 'true', text: firstChar(name) }),
+        el('span', { className: 'chip-name', text: name })
+      ]);
+      return chip;
+    });
+    chips.push(el('a', {
+      className: 'chip chip-add', href: '#add', onclick: function () { state.navigatedIn = true; }
+    }, [el('span', { className: 'chip-plus', 'aria-hidden': 'true', text: '+' }), 'Add profile']));
+
+    var profile = entry.copy != null ? entry.copy.profile : null;
+    var detail = '';
+    if (profile != null) {
+      var synced = relativeTime(Date.parse(profile.storedAt), Date.now());
+      detail = [synced != null ? 'Synced ' + synced : null, profile.storedBy ? 'from ' + profile.storedBy : null].filter(Boolean).join(' ');
+    }
+    return el('div', { className: 'profiles' }, [
+      el('div', { className: 'chips', role: 'group', 'aria-label': 'Profiles' }, chips),
+      detail !== '' ? el('div', { className: 'profile-meta', text: detail }) : null
     ]);
   }
 
@@ -415,7 +536,7 @@
     } else {
       content.appendChild(el('ul', { className: 'grid' }, p.titles.map(drawCard)));
     }
-    content.appendChild(drawFoot());
+    content.appendChild(drawFoot(activeEntry()));
   }
 
   function drawCard(t) {
@@ -446,9 +567,7 @@
         el('span', { className: 'sk-lines' }, [bar(['70%', '55%', '80%', '45%'][i], 14), bar('35%', 12)])
       ]);
     });
-    return el('div', { 'aria-busy': 'true', 'aria-label': 'Loading your playlists' }, [
-      el('div', { className: 'profile' }, [el('span', { className: 'sk avatar' }), el('span', { className: 'sk-lines' }, [bar('50%', 14), bar('70%', 12)])])
-    ].concat(rows));
+    return el('div', { 'aria-busy': 'true', 'aria-label': 'Loading your playlists' }, rows);
   }
 
   function drawInstall() {
@@ -482,27 +601,41 @@
     draw();
   }
 
-  function drawFoot() {
+  function drawFoot(entry) {
     return el('footer', { className: 'foot' }, [
       el('p', { text: 'Tapping a title opens it in the Netflix app, in whichever profile the app is using.' }),
       el('p', null, [
-        el('button', { type: 'button', className: 'link-btn', onclick: forgetPhone, text: 'Forget on this phone' }),
+        el('button', { type: 'button', className: 'link-btn', onclick: forgetProfile, text: 'Forget ' + profileName(entry) + ' on this phone' }),
         ' · To stop it reading for good, remove it in the extension (About → Pro → Phones).'
       ])
     ]);
   }
 
-  function forgetPhone() {
-    if (!root.confirm('Forget your playlists on this phone? To see them here again you will need a new code from the extension.')) return;
-    forget(PASS_KEY);
-    forget(COPY_KEY);
-    state.copy = null;
-    state.fetchedAt = null;
+  function forgetProfile() {
+    var entry = activeEntry();
+    if (entry == null) return;
+    var whose = entry.name != null && entry.name !== '' ? entry.name + '’s playlists' : 'these playlists';
+    if (!root.confirm('Forget ' + whose + ' on this phone? To see them here again you will need a new code from the extension.')) return;
+    state.profiles = dropPass(state.profiles, entry.pass);
+    persist();
     state.banner = null;
+    clearHash();
     draw();
+    var next = activeEntry();
+    if (next != null && isStale(next.fetchedAt, Date.now())) refresh();
   }
 
-  function drawPair() {
+  function switchTo(pass) {
+    if (state.profiles.active === pass || entryFor(pass) == null) return;
+    state.profiles.active = pass;
+    persist();
+    state.banner = null;
+    draw();
+    if (isStale(entryFor(pass).fetchedAt, Date.now())) refresh();
+  }
+
+  /** The first pairing (adding false), or one more profile from the chips' Add profile (adding true, #add). */
+  function drawPair(adding) {
     var standalone = isStandalone();
     var ios = platform() === 'ios';
     var input = el('input', {
@@ -511,22 +644,30 @@
     });
     input.value = state.typed;
     input.addEventListener('input', function () { state.typed = input.value; });
-    var button = el('button', { type: 'submit', className: 'btn', text: state.busy ? 'Pairing…' : 'Pair this phone' });
+    var button = el('button', { type: 'submit', className: 'btn', text: state.busy ? 'Pairing…' : adding ? 'Add this profile' : 'Pair this phone' });
     if (state.busy) { input.disabled = true; button.disabled = true; }
 
-    var content = el('main', { className: 'content pair-view' });
+    if (adding) app.appendChild(drawBar(true, 'Add a profile', false));
+    var content = el('main', { className: 'content pair-view' + (adding ? ' has-bar' : '') });
     app.appendChild(content);
     content.appendChild(el('img', { className: 'app-icon', src: LOGO, alt: '' }));
-    content.appendChild(el('h1', { className: 'title', text: 'Your Netflix playlists, on this phone' }));
-    content.appendChild(el('p', { className: 'lead', text: 'Read-only, for TidyWL for Netflix Pro. Playlists are made and edited in the extension, on your computer.' }));
-    if (ios && !standalone) {
+    if (adding) {
+      content.appendChild(el('h1', { className: 'title', text: 'Add a profile' }));
+      content.appendChild(el('p', { className: 'lead', text: 'Each Netflix profile has its own playlists. Pair this phone once more, from the profile you want to add.' }));
+    } else {
+      content.appendChild(el('h1', { className: 'title', text: 'Your Netflix playlists, on this phone' }));
+      content.appendChild(el('p', { className: 'lead', text: 'Read-only, for TidyWL for Netflix Pro. Playlists are made and edited in the extension, on your computer.' }));
+    }
+    if (ios && !standalone && !adding) {
       content.appendChild(callout('info', [
         el('strong', { text: 'Keeping it on your Home Screen? ' }),
         'Add it there first (tap Share, then Add to Home Screen) and pair from the Home Screen app.'
       ]));
     }
     content.appendChild(el('ol', { className: 'steps', role: 'list' }, [
-      el('li', { text: 'On your computer, open the TidyWL dashboard on Netflix.' }),
+      el('li', { text: adding
+        ? 'On your computer, switch Netflix to that profile and open the TidyWL dashboard.'
+        : 'On your computer, open the TidyWL dashboard on Netflix, in the profile whose playlists you want here.' }),
       el('li', { text: 'Open About, then Pro, then Pair a phone.' }),
       el('li', { text: standalone ? 'Type the six-character code below.' : 'Scan the QR code with this phone’s camera, or type the code below.' })
     ]));
@@ -560,11 +701,16 @@
     });
     state.busy = false;
     if (result.status === 200 && result.body != null && typeof result.body.pass === 'string') {
-      save(PASS_KEY, result.body.pass);
-      forget(COPY_KEY);
+      var profile = result.body.profile;
+      state.profiles = addPass(state.profiles, readEntry({
+        pass: result.body.pass,
+        guid: profile != null ? profile.guid : null,
+        name: profile != null ? profile.name : null
+      }));
+      persist();
       state.typed = '';
-      state.copy = null;
       state.banner = null;
+      clearHash();
       draw();
       return refresh();
     }
@@ -573,52 +719,83 @@
   }
 
   function setRefreshing(on) {
-    state.refreshing = on;
     var button = app.querySelector('.bar .icon-btn');
     if (button == null) return;
     button.classList.toggle('is-busy', on);
     button.disabled = on;
   }
 
+  /** The active profile's copy, asked for again. One request per profile at a time; a switch mid-request is fine. */
   async function refresh(byHand) {
-    var pass = load(PASS_KEY);
-    if (typeof pass !== 'string') return draw();
-    if (state.refreshing) return;
+    var entry = activeEntry();
+    if (entry == null) return draw();
+    var pass = entry.pass;
+    if (state.inFlight[pass] === true) return;
     var started = Date.now();
+    state.inFlight[pass] = true;
     setRefreshing(true);
     var result = await request('phone', { headers: { authorization: 'Bearer ' + pass } });
     // A tap that answers in 50ms looks like a tap that did nothing.
     if (byHand === true) await new Promise(function (r) { root.setTimeout(r, Math.max(0, 600 - (Date.now() - started))); });
-    state.refreshing = false;
+    delete state.inFlight[pass];
+
+    // The answer belongs to the profile it was asked for, which may no longer be on screen — or on this phone.
+    var target = entryFor(pass);
+    if (target == null) return draw();
+    var shown = state.profiles.active === pass;
 
     if (result.status === 200 && result.body != null && Array.isArray(result.body.playlists)) {
-      state.copy = result.body;
-      state.fetchedAt = Date.now();
-      state.banner = null;
-      save(COPY_KEY, { copy: result.body, fetchedAt: state.fetchedAt });
+      target.copy = result.body;
+      target.fetchedAt = Date.now();
+      var p = result.body.profile;
+      if (p != null && typeof p.guid === 'string') target.guid = p.guid;
+      if (p != null && typeof p.name === 'string' && p.name !== '') target.name = p.name;
+      persist();
+      if (shown) state.banner = null;
       return draw();
     }
 
     var error = errorOf(result);
     if (result.status === 401) {
-      forget(PASS_KEY);
-      forget(COPY_KEY);
-      state.copy = null;
-      state.banner = null;
-      state.pairError = 'This phone was removed in the extension, or its pairing ended. Pair it again to see your playlists.';
+      var whose = target.name != null && target.name !== '' ? target.name + '’s playlists were' : 'A profile was';
+      state.profiles = dropPass(state.profiles, pass);
+      persist();
+      if (activeEntry() == null) {
+        state.banner = null;
+        state.pairError = 'This phone was removed in the extension, or its pairing ended. Pair it again to see your playlists.';
+        clearHash();
+        return draw();
+      }
+      state.banner = whose + ' removed from this phone in the extension, or the pairing ended. Add the profile again to see them.';
+      if (shown) clearHash();
       return draw();
     }
     if (error === 'not_entitled') {
-      forget(COPY_KEY);
-      state.copy = null;
-      state.banner = 'The Pro subscription has ended, so playlists are no longer shown here. They are all still in the extension.';
+      target.copy = null;
+      target.fetchedAt = null;
+      persist();
+      if (shown) state.banner = 'The Pro subscription has ended, so playlists are no longer shown here. They are all still in the extension.';
       return draw();
     }
-    var when = relativeTime(state.fetchedAt, Date.now());
-    state.banner = state.copy != null
+    if (!shown) return draw();
+    var when = relativeTime(target.fetchedAt, Date.now());
+    state.banner = target.copy != null
       ? 'Could not refresh — showing the copy from ' + (when != null ? when : 'earlier') + '.'
       : 'Could not reach tidywl.com. Check your connection and reload.';
     draw();
+  }
+
+  /** This phone's profiles; a phone paired before 2026-09-26 has its one pass moved over, once, and only if that stuck. */
+  function loadProfiles() {
+    var stored = readProfiles(load(PROFILES_KEY));
+    if (stored.list.length > 0) return stored;
+    var legacy = fromLegacy(load(LEGACY_PASS_KEY), load(LEGACY_COPY_KEY));
+    if (legacy == null) return stored;
+    if (save(PROFILES_KEY, legacy)) {
+      forget(LEGACY_PASS_KEY);
+      forget(LEGACY_COPY_KEY);
+    }
+    return legacy;
   }
 
   function start() {
@@ -628,15 +805,12 @@
       // The code is spent the moment it is used; keep it out of history and bookmarks.
       root.history.replaceState(null, '', root.location.pathname);
     }
-    var cached = load(COPY_KEY);
-    if (cached != null && cached.copy != null && Array.isArray(cached.copy.playlists)) {
-      state.copy = cached.copy;
-      state.fetchedAt = cached.fetchedAt;
-    }
+    state.profiles = loadProfiles();
     root.addEventListener('hashchange', draw);
     root.addEventListener('scroll', syncBar, { passive: true });
     root.document.addEventListener('visibilitychange', function () {
-      if (root.document.visibilityState === 'visible' && isStale(state.fetchedAt, Date.now())) refresh();
+      var entry = activeEntry();
+      if (root.document.visibilityState === 'visible' && entry != null && isStale(entry.fetchedAt, Date.now())) refresh();
     });
     // Android's install offer, shown as our own button rather than the browser's bar.
     root.addEventListener('beforeinstallprompt', function (e) {
@@ -662,7 +836,8 @@
     normalizeCode: normalizeCode, pairCodeFromHash: pairCodeFromHash, listIdFromHash: listIdFromHash,
     phoneName: phoneName, platformOf: platformOf, isNetflixArt: isNetflixArt, coverArts: coverArts,
     countLine: countLine, isStale: isStale, titleLink: titleLink, relativeTime: relativeTime,
-    profileColor: profileColor, coverBackground: coverBackground, titleMeta: titleMeta, claimErrorText: claimErrorText
+    profileColor: profileColor, coverBackground: coverBackground, titleMeta: titleMeta, claimErrorText: claimErrorText,
+    readProfiles: readProfiles, fromLegacy: fromLegacy, addPass: addPass, dropPass: dropPass
   };
 
   if (root.document != null && root.document.getElementById('app') != null) start();

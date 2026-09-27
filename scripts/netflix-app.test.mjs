@@ -88,6 +88,60 @@ test('a page coming back to the front asks again only after a minute', () => {
   assert.equal(P.isStale(now - 61e3, now), true);
 });
 
+// Objects made inside the vm come from another realm; compare them as plain JSON.
+const plain = value => JSON.parse(JSON.stringify(value));
+const copyOf = (guid, name) => ({ profile: { guid, name, storedAt: '2026-09-26T10:00:00Z' }, playlists: [] });
+
+test('profiles: storage is read defensively, and the active pass is always one the phone holds', () => {
+  assert.deepEqual(plain(P.readProfiles(null)), { active: null, list: [] });
+  assert.deepEqual(plain(P.readProfiles({ active: 'x', list: 'nope' })), { active: null, list: [] });
+  const read = P.readProfiles({ active: 'gone', list: [
+    { pass: 'nps_a', guid: 'A', name: 'Dom', copy: { playlists: 'bad' }, fetchedAt: 5 },
+    null, { pass: '' }, { guid: 'C' },
+    { pass: 'nps_b', guid: 7, name: 'Kids', copy: copyOf('B', 'Kids'), fetchedAt: 'soon' }
+  ] });
+  assert.deepEqual(plain(read), { active: 'nps_a', list: [
+    { pass: 'nps_a', guid: 'A', name: 'Dom', copy: null, fetchedAt: null },
+    { pass: 'nps_b', guid: null, name: 'Kids', copy: copyOf('B', 'Kids'), fetchedAt: null }
+  ] });
+  assert.equal(P.readProfiles({ active: 'nps_b', list: read.list }).active, 'nps_b');
+});
+
+test('profiles: a phone paired before several profiles keeps its pairing and its copy', () => {
+  assert.equal(P.fromLegacy(null, null), null);
+  assert.equal(P.fromLegacy('', { copy: copyOf('A', 'Dom'), fetchedAt: 1 }), null);
+  assert.deepEqual(plain(P.fromLegacy('nps_a', { copy: copyOf('A', 'Dom'), fetchedAt: 123 })), { active: 'nps_a', list: [
+    { pass: 'nps_a', guid: 'A', name: 'Dom', copy: copyOf('A', 'Dom'), fetchedAt: 123 }
+  ] });
+  // Paired, never fetched: the pass survives, and the guid and name arrive with the first refresh.
+  assert.deepEqual(plain(P.fromLegacy('nps_a', null)), { active: 'nps_a', list: [
+    { pass: 'nps_a', guid: null, name: null, copy: null, fetchedAt: null }
+  ] });
+});
+
+test('profiles: a new pairing is added and shown; pairing a profile again replaces it in place', () => {
+  const entry = (pass, guid, name) => ({ pass, guid, name, copy: null, fetchedAt: null });
+  let p = P.readProfiles(null);
+  p = P.addPass(p, entry('nps_a', 'A', 'Dom'));
+  p = P.addPass(p, entry('nps_b', 'B', 'Kids'));
+  assert.equal(p.active, 'nps_b');
+  assert.deepEqual(plain(p.list.map(e => e.pass)), ['nps_a', 'nps_b']);
+  p = P.addPass(p, entry('nps_a2', 'A', 'Dom'));
+  assert.equal(p.active, 'nps_a2');
+  assert.deepEqual(plain(p.list.map(e => e.pass)), ['nps_a2', 'nps_b']);
+  // A pairing whose profile is unknown never replaces anything.
+  p = P.addPass(p, entry('nps_x', null, null));
+  assert.equal(p.list.length, 3);
+});
+
+test('profiles: forgetting one keeps the one on screen if it was another, else moves to the first left', () => {
+  const list = ['nps_a', 'nps_b', 'nps_c'].map(pass => ({ pass, guid: pass, name: pass, copy: null, fetchedAt: null }));
+  assert.equal(P.dropPass({ active: 'nps_c', list }, 'nps_a').active, 'nps_c');
+  assert.equal(P.dropPass({ active: 'nps_b', list }, 'nps_b').active, 'nps_a');
+  const last = P.dropPass({ active: 'nps_a', list: list.slice(0, 1) }, 'nps_a');
+  assert.deepEqual(plain(last), { active: null, list: [] });
+});
+
 test('the page builds nothing from markup: no innerHTML anywhere', () => {
   assert.doesNotMatch(source, /innerHTML|insertAdjacentHTML|outerHTML|document\.write/);
 });

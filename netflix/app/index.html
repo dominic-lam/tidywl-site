@@ -14,8 +14,8 @@
   draws white status text over the page, which a light page would hide.
 
   Installable: manifest.webmanifest, and sw.js keeps the page's own files so it
-  opens offline. Neither holds anything of the user's; the last copy of the
-  playlists stays in localStorage, as before.
+  opens offline. Neither holds anything of the user's; each paired profile's
+  pass and last copy of its playlists stay in localStorage, as before.
 -->
 <html lang="en">
 <head>
@@ -122,14 +122,30 @@
     .title { font-size: 32px; line-height: 1.12; letter-spacing: -0.02em; font-weight: 700; margin: 4px 0 14px; overflow-wrap: anywhere; text-wrap: balance; }
     .sub { color: var(--muted); font-size: 14px; margin: -6px 0 20px; }
 
-    /* Whose playlists, and how fresh: provenance, not live status. */
-    .profile { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; }
-    .avatar {
-      width: 40px; height: 40px; border-radius: 8px; flex: none;
-      display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 18px;
+    /* Whose playlists, and how fresh: provenance, not live status. A chip per
+       paired profile, the one shown filled; they scroll sideways past a screen. */
+    .profiles { margin: 0 0 22px; }
+    .chips {
+      display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+      margin: 0 -16px; padding: 2px 16px;
     }
-    .profile-name { font-weight: 600; }
-    .profile-meta { font-size: 13px; color: var(--muted); }
+    .chips::-webkit-scrollbar { display: none; }
+    .chip {
+      flex: none; display: inline-flex; align-items: center; gap: 8px;
+      height: 40px; padding: 0 14px 0 4px; border: 0; border-radius: 12px;
+      background: var(--surface); color: var(--text); font-size: 15px; font-weight: 600;
+      text-decoration: none; transition: background-color 0.15s;
+    }
+    .chip:active { background: var(--surface-2); }
+    .chip[aria-pressed="true"] { background: var(--text); color: var(--bg); }
+    .chip-name { max-width: 40vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chip-add { padding: 0 14px 0 10px; background: transparent; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22); color: var(--muted); }
+    .chip-plus { font-size: 20px; font-weight: 500; line-height: 1; }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 8px; flex: none;
+      display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 15px;
+    }
+    .profile-meta { font-size: 13px; color: var(--muted); margin-top: 10px; }
 
     .callout {
       display: flex; gap: 10px; align-items: flex-start; text-align: left;
@@ -206,6 +222,7 @@
 
     /* Pairing. */
     .pair-view { text-align: center; padding-top: calc(var(--safe-top) + 36px); }
+    .pair-view.has-bar { padding-top: 12px; }
     .app-icon { width: 76px; height: 76px; border-radius: 18px; display: block; margin: 0 auto; box-shadow: 0 12px 32px rgba(229, 9, 20, 0.22); }
     .pair-view .title { font-size: 26px; margin: 20px 0 8px; }
     .lead { color: var(--muted); font-size: 15px; margin: 0 auto 26px; max-width: 34ch; text-wrap: balance; }
@@ -273,7 +290,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .enter, .sk, .icon-btn.is-busy svg { animation: none; }
-      .pl, .art, .btn, .bar, .bar-title { transition: none; }
+      .pl, .art, .btn, .bar, .bar-title, .chip { transition: none; }
     }
   </style>
 </head>
