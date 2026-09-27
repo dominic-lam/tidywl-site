@@ -59,7 +59,7 @@ Step-by-step instructions for every feature are on the [tutorials page](https://
 
 ## Guides
 
-Long-form articles on the [blog](https://tidywl.com/blog/) about Watch Later itself: how its limits work and what to do about them, with or without TidyWL. Newest first.
+Long-form guides on the [blog](https://tidywl.com/blog/) to Watch Later, Liked videos and playlists: YouTube's limits and what to do about them, from unliking and searching to exporting a list or sending it to NotebookLM. Newest first.
 {% for post in site.posts %}
 - [{{ post.title }}]({{ site.url }}{{ post.url }}): {{ post.description | normalize_whitespace }}
 {%- endfor %}
@@ -158,7 +158,7 @@ Chrome only, on a computer; Chrome for Android has no extension support. It requ
 - [Privacy policy](https://tidywl.com/privacy/): everything the extension sends, and where
 - [Terms of sale](https://tidywl.com/terms/): the TidyWL Pro subscription terms
 - [Refunds](https://tidywl.com/refunds/): the 14-day refund and how to ask for it
-- [Blog](https://tidywl.com/blog/): long-form guides to Watch Later
+- [Blog](https://tidywl.com/blog/): long-form guides to Watch Later, Liked videos and playlists
 - [Community on Discord](https://discord.gg/sTvjfp4sCk): bug reports, feature requests and general chat
 - [Support email](mailto:support@tidywl.com): support@tidywl.com
 - [Donate on Ko-fi](https://ko-fi.com/dominiclam): an optional tip for the developer, not a support channel
