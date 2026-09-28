@@ -62,8 +62,9 @@ last_modified_at: 2026-09-28
       Updated 28 September 2026 for version 1.1.0, which adds IMDb rating badges on Netflix's own title cards and,
       in Pro, <strong>Tonight</strong>. The badges send the Netflix ids of the cards on the page you are looking at to
       a ratings table on our server, which keeps no record of them; that is request 8, new, under <em>The requests
-      that leave your browser</em>. Tonight, with its surprises on, reads a few of Netflix's genre catalogues, and
-      what it remembers stays in your browser. The usage report gains fourteen counts: how often Pro's offer is
+      that leave your browser</em>. Tonight, with its surprises on, reads a few of Netflix's genre catalogues; it also
+      reads your Netflix viewing history and thumbs, so it never offers what you have seen or disliked; and what it
+      remembers stays in your browser. The usage report gains fourteen counts: how often Pro's offer is
       shown and its Upgrade button pressed, and how Tonight is used.
       Updated 27 September 2026 for version 1.0.0, which adds <strong>TidyWL Pro</strong>: Undo for removals, pins,
       two clean-up rules, stats, up to 50 playlists a profile, and playlist sync between your browsers and onto your
@@ -80,7 +81,7 @@ last_modified_at: 2026-09-28
 
     <h2>The short version</h2>
     <ul>
-      <li><strong>Your Netflix data stays in your browser.</strong> Your watch state and your searches are never sent to us.</li>
+      <li><strong>Your Netflix data stays in your browser.</strong> Your watch state, your searches and, with Pro, the viewing history and thumbs Tonight reads are never sent to us.</li>
       <li><strong>Your playlists stay in your browser too — unless you have Pro and switch sync on.</strong> Then this profile's playlists, with each title's name, year and picture link, and the profile's name, go to our server, so your other browsers and your phone can show them. Only from browsers where you switched it on. Never for a free install.</li>
       <li><strong>If you buy Pro, your licence key goes to tidywl.com.</strong> It switches Pro on and is checked again when you open the dashboard, at most once every 15 minutes. Paddle takes the payment; your card details and your email never reach us.</li>
       <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard for the first time in a day, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
@@ -106,6 +107,7 @@ last_modified_at: 2026-09-28
       <li><strong>Search results and genre catalogues</strong> — only for a search you typed or a genre you opened. For each search result, and each film in a genre, details such as its year, runtime and number of seasons are then asked for once, and kept for the rest of that page's life.</li>
       <li><strong>A title's details on hover</strong> — its synopsis, cast, director or creators, genres, runtime and a still image, asked for once per title when you rest the pointer on a card, and kept for the rest of that page's life so a second look costs nothing.</li>
       <li><strong>For Tonight</strong> — Pro only, from version 1.1.0, and only once you open it. With <em>Surprises from outside My List</em> on, as it is until you switch it off: a few of Netflix's genre catalogues that fit the mood you chose, and details, such as the runtime, of the best-rated few films in them; a mood already read today is not read again. On the poster layout, a larger picture of the main pick, asked for once it has stayed on screen for a moment and kept for the rest of that page's life.</li>
+      <li><strong>Your viewing history and your thumbs, for Tonight</strong> — Pro only, from version 1.1.0, and only when you open Tonight: the titles this profile has played on Netflix and when, and the titles it has given a thumbs up, down or "love", so Tonight never offers what you have already seen or disliked. Read from Netflix's own viewing-activity service, the one behind Account → Viewing activity, through the session you are signed in with and only for the profile you are using — at most once every six hours, one page of 50 at a time a second apart, and after the first time usually just the newest page. What is kept is the title ids, the time of the last play and the thumb, in this browser only; never a title's name, never an episode, and <strong>none of it is sent to us or to anyone</strong>.</li>
     </ul>
     <p>
       <strong>One thing it reads without being asked, from version 1.1.0:</strong> the link on each of Netflix's own
@@ -167,6 +169,7 @@ last_modified_at: 2026-09-28
           <tr><td><code>tidywl_stats_&lt;profile&gt;</code></td><td>The Stats tally, kept for everyone after a Sync so that the numbers exist if you turn Pro on later: the ids that were in My List at the last Sync, the ids not yet started or partway through, and for each month a count of titles added, watched and removed. Counts and ids, no names.</td></tr>
           <tr><td><code>tidywl_tonight_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0 — a free install writes nothing here. What Tonight remembers for this profile: whether surprises from outside My List are on, the time and mood you last chose, the poster or the cards layout, each title you put off with <em>Not tonight</em> and until when (seven days), when you did so over the last thirty days — so a title you keep putting off can be marked in My List — and the id of the last main pick shown, so the next one is a different title. Ids and times, no names. Pruned on every read and write. Never sent.</td></tr>
           <tr><td><code>tidywl_tonight_pool_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0. Today's surprises for Tonight: the rows it read from Netflix's genre catalogues — each title's id, name, type, year, maturity rating, season count and box-art address as Netflix returned them, and each genre's name — with the IMDb rating and votes found for each title, the runtime of the few films it read one for, and which moods were asked for today. Anything older than a day is dropped on the next write. Never sent.</td></tr>
+          <tr><td><code>tidywl_viewed_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0. What Tonight knows you have already watched or rated on Netflix, so it does not offer it: for each title id — a film's, or the show's for an episode — when it was last played, and each rated title's thumb (down, up or love), with when it was last read. At most 5,000 of each, newest kept. Never sent anywhere; removed when you uninstall.</td></tr>
           <tr><td><code>tidywl_playlist_cap_exempt</code></td><td><code>true</code> in a browser that had the extension before version 1.0.0, so it keeps making up to 50 playlists without Pro. Nothing else.</td></tr>
           <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once the rating ask on a removal's summary has been answered or declined, so it is not shown again in this browser.</td></tr>
           <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
@@ -281,7 +284,8 @@ last_modified_at: 2026-09-28
       links shown in the About dialog and the Pro prices on the upgrade card, so that small things can be corrected
       without shipping a new version. From version 1.1.0 it can also switch IMDb ratings off: while it does,
       requests 2, 3, 4 and 8 are not made, the badges come off Netflix's cards, and the dashboard hides the ratings
-      it saved.
+      it saved. It can switch Tonight's reading of your viewing history off the same way, and correct the address
+      that reading uses on netflix.com if Netflix moves it — never to anywhere outside netflix.com.
     </p>
     <p>
       The request carries no identifier and no payload; every install receives the same bytes. Nothing in the file is
