@@ -86,7 +86,7 @@ last_modified_at: 2026-09-28
       <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard for the first time in a day, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
       <li><strong>There is no switch in the extension to turn this off.</strong> Uninstalling stops it, and records not updated for 12 months are deleted.</li>
       <li><strong>There is no account and no sign-in.</strong> A Pro key is not an account: there is no password, and we never learn your email. The usage report's identifier is random, made in your browser, and linked to nothing — not your Netflix account, not a profile, not your email, not a Pro key.</li>
-      <li><strong>Five other requests leave your browser, and none of them identifies you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id, with a title's name when its id finds nothing; for a title Wikidata cannot match at all, its name sent to IMDb's search; and, from version 1.1.0, Netflix's numeric title ids sent to our own ratings table, which answers with each one's IMDb rating. Each one is described in full below.</li>
+      <li><strong>Five other requests leave your browser, and none of them identifies you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id; for a title its id cannot match, its name sent to IMDb's search and to Wikidata's; and, from version 1.1.0, Netflix's numeric title ids sent to our own ratings table, which answers with each one's IMDb rating. Each one is described in full below.</li>
       <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. Without Pro sync we never see them.</li>
       <li><strong>Everything about your account is stored per Netflix profile</strong>, and uninstalling the extension removes everything it stored in that browser.</li>
       <li><strong>Nothing is sold, shared or used for advertising.</strong> There is nothing to sell and nobody to share it with.</li>
@@ -112,8 +112,11 @@ last_modified_at: 2026-09-28
       title cards, on whatever netflix.com page you are looking at. The link carries the title's Netflix id
       (<code>/browse?jbv=&lt;id&gt;</code>), and that id is how the extension puts an IMDb rating badge on the card. It
       reads the link and what kind of card it is, never the card's text, skips games, and asks Netflix nothing for
-      it. The ids go to our ratings table, request 8 below, and, when that cannot answer, to Wikidata, request 3. A
-      click on a badge opens that title's page on imdb.com in a new tab.
+      it. The ids go to our ratings table, request 8 below, and, when that cannot answer, to Wikidata, request 3.
+      Some titles cannot be matched by their id at all, because Wikidata has no Netflix id recorded for them. For
+      those, and only those, the extension takes the title's name and year from what the Netflix page has already
+      loaded to draw that card — it asks Netflix nothing for it — and searches by name, requests 4 and 3. A click on
+      a badge opens that title's page on imdb.com in a new tab.
     </p>
     <p>
       Your search terms go to Netflix, on your own signed-in session, in the same way that typing them into
@@ -298,7 +301,7 @@ last_modified_at: 2026-09-28
       The important consequence: <strong>this download tells IMDb nothing about which titles you have.</strong> The
       extension asks for the whole file, exactly as anyone else does, and does the matching itself. IMDb sees a
       download, not a request about you. The one request that does name a title to IMDb is the fourth, below, and it
-      is made only for a title Wikidata cannot match.
+      is made only for a title that cannot be matched by its id.
     </p>
 
     <h3>3. Netflix title ids — and sometimes a title's name — to Wikidata</h3>
@@ -322,10 +325,13 @@ last_modified_at: 2026-09-28
       own privacy policy governs what Wikimedia does with the request.
     </p>
 
-    <h3>4. A title's name — to IMDb's search, when Wikidata cannot match it</h3>
+    <h3>4. A title's name — to IMDb's search, when its id cannot be matched</h3>
     <p>
-      Some titles are not on Wikidata at all yet — most often ones released in the last few months. For a title that
-      both Wikidata requests above have tried and failed to match, and only for those, the extension sends its
+      Some titles are not on Wikidata at all yet — most often ones released in the last few months — and some are
+      there without their Netflix id. In the dashboard, for a title that both Wikidata requests above have tried and
+      failed to match, and only for those; for the badges on Netflix's own cards, for a title neither our ratings
+      table nor Wikidata could match by its id, before Wikidata's name search, because IMDb answers in under a second
+      and Wikidata can take most of a minute. For those titles, and only those, the extension sends its
       <strong>name</strong>, as Netflix shows it, to <code>https://v3.sg.media-imdb.com/suggestion/</code>, the
       address behind the search box on imdb.com, one title per request. It accepts an answer only when exactly one film
       or series comes back with that name, that kind and a matching year; otherwise the title simply has no rating. As
@@ -340,17 +346,20 @@ last_modified_at: 2026-09-28
     </p>
     <p>
       <strong>When requests 2, 3 and 4 happen:</strong> when you press Sync, for the titles in your list; when a
-      page of search or genre results is drawn, for the titles on it; and, for Tonight, for the few films whose
-      details it reads. All three are answered from the browser's own
+      page of search or genre results is drawn, for the titles on it; for Tonight, for the few films whose
+      details it reads; and, from version 1.1.0, for the badges on the Netflix cards on your screen, for the titles
+      their ids could not match. All three are answered from the browser's own
       copy once a title has been matched, so a matched title is never asked about again; a title that could not be
       matched is asked about again after a week — by id, then by name on Wikidata, then by name on IMDb — at most 40
       names at a time for each.
     </p>
     <p>
       From version 1.1.0, requests 2 and 3 also stand in for our ratings table, request 8, when it refuses, is down
-      or does not answer within eight seconds. For the badges, the ids it could not answer go to Wikidata by id —
-      never by name — and their ratings come from IMDb's file. Tonight does the same for its surprises; only the few
-      films whose details it reads can also be searched by name, as above. After such a
+      or does not answer within eight seconds. For the badges, the ids it could not answer go to Wikidata by id, and
+      their ratings come from IMDb's file; a title that neither the table nor Wikidata can match by its id is then
+      searched by name, as above, at most 40 at a time, and a title neither name search finds is not searched again
+      for a week. Tonight does the same by id for its surprises; only the few films whose details it reads can also
+      be searched by name, as above. After such a
       failure the badges leave the table alone for a quarter of an hour and use these two instead, and they ask
       Wikidata again about a title it had no match for only after a week.
     </p>
@@ -455,6 +464,14 @@ last_modified_at: 2026-09-28
       If you enter a Transaction ID from a Paddle receipt instead of a key, the extension first sends that ID, and
       nothing else, to <code>https://tidywl.com/api/netflix/license/claim</code>, which answers with the key it paid for;
       that key is then activated as above. Both are described under <em>Paddle, who takes the money</em>.
+    </p>
+    <p>
+      From version 1.1.0 you do not have to paste the key after buying. The page tidywl.com shows after checkout,
+      <code>/netflix/checkout/success/</code>, hands the key it shows you to the extension, if the extension is
+      installed in that browser, and the extension activates it exactly as above, with the same pre-filled browser
+      name. This is the only page on tidywl.com the extension runs anything on. It tells the page only whether Pro
+      was switched on — never the key back, and nothing else from your browser. A different key already active in
+      the browser is never replaced.
     </p>
 
     <h3>7. Playlist sync and phones, to tidywl.com — Pro only</h3>
