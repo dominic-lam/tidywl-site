@@ -10,6 +10,9 @@ faq:
   - id: breaks
     q: "What happens if Netflix breaks a Pro feature?"
     a: "TidyWL for Netflix works with Netflix's web endpoints rather than an official API, and Netflix can change them. Many changes are fixed within hours through a remote configuration; some need an extension update. If a Pro feature is not restored within 30 days, yearly subscribers can ask for the unused part back, and monthly subscribers can cancel. The full rule is in the terms of sale at tidywl.com/netflix/terms/."
+  - id: trial
+    q: "Is there a free trial?"
+    a: "Yes. Pro starts with 7 days free. Checkout takes your card but charges nothing; your first period starts, and is charged, when the 7 days are up. Cancel before then from Manage subscription in the dashboard's About → Pro tab, and you pay nothing. Paddle emails you before the first charge, and that charge still has the 14-day full refund."
   - id: charges
     q: "Who charges my card?"
     a: "Paddle, our merchant of record. Paddle takes the payment in your currency, adds any tax that applies where you live, sends the receipt and processes refunds. We never see your card number."
@@ -92,12 +95,12 @@ faq:
           {%- if site.data.paddle.netflix.onSale and site.data.paddle.clientToken and site.data.paddle.netflix.prices.monthly and site.data.paddle.netflix.prices.yearly %}
           <button type="button" class="plan-cta plan-cta-buy" id="pro-buy"
                   data-price-monthly="{{ site.data.paddle.netflix.prices.monthly }}"
-                  data-price-yearly="{{ site.data.paddle.netflix.prices.yearly }}">Get Pro</button>
+                  data-price-yearly="{{ site.data.paddle.netflix.prices.yearly }}">Start 7-day free trial</button>
           <p class="plan-cta-note" id="pro-buy-note" hidden></p>
           {%- else %}
           <button type="button" class="plan-cta plan-cta-locked" disabled>Arrives with version 1.0.0</button>
           {%- endif %}
-          <p class="plan-refund">14-day full refund, no questions asked</p>
+          <p class="plan-refund"><strong>7 days free, card required.</strong> Cancel before day 8 and you pay nothing. After that, a 14-day full refund on every charge, no questions asked.</p>
           <p class="plan-list-head">Everything in Free, and:</p>
           <ul class="plan-list">
             <li>Undo removals — 90 days of history, on this device</li>
@@ -111,7 +114,7 @@ faq:
       </div>
       <ul class="plans-both" aria-label="True on either plan">
         <li>Everything free does today stays free</li>
-        <li>14-day full refund on every charge — no questions, no conditions</li>
+        <li>7 days free on Pro, then a 14-day full refund on every charge — no questions, no conditions</li>
         <li>Cancel any time</li>
       </ul>
       <p class="plans-foot">Prices in US dollars before tax. Checkout, by Paddle, shows your currency and any tax for your country. <a href="/netflix/terms/">Terms of sale</a> · <a href="/netflix/refunds/">Refund policy</a></p>
