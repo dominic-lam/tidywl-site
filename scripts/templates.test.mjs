@@ -25,7 +25,7 @@ test('the JSON-LD carries no store rating and no store reviews', () => {
 test('no page claims nothing leaves the browser, or calls the cleaned-up total "deleted"', () => {
   // The extension has sent usage counts since 1.6.0 and a Pro licence check since 2.0.0. An AI assistant repeated
   // the old "no telemetry" line in September 2026, so these phrasings stay out of everything it reads.
-  const files = ['index.html', 'llms.txt', 'tutorials/index.html', 'pricing/index.html',
+  const files = ['index.html', 'llms.txt', 'netflix/llms.txt', 'tutorials/index.html', 'pricing/index.html',
     '_posts/2026-04-20-youtube-watch-later-5000-limit.md',
     '_posts/2026-05-11-how-to-organize-youtube-watch-later.md',
     '_posts/2026-05-18-clean-up-unavailable-videos-youtube-watch-later.md'];

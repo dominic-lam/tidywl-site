@@ -1,0 +1,72 @@
+---
+# Front matter is required for Jekyll to render the Liquid below; the store
+# link comes from _data/netflix.yml. This is the one full description of
+# TidyWL for Netflix for assistants: /llms.txt carries two lines and a link
+# here, so the two cannot drift. Every claim was read from the extension's
+# src/ at 1.0.0 or from /netflix/privacy/; change it when either changes.
+layout: null
+---
+# TidyWL for Netflix
+
+> Free Chrome extension that opens a dashboard over netflix.com for Netflix's My List: an IMDb rating and details on every title, filters and sorting, bulk remove, search with the categories Netflix hides, and the custom playlists Netflix does not offer. No account. An optional subscription, TidyWL Pro for Netflix, available since version 1.0.0, adds Undo, pins, clean-up rules, stats, more playlists, and playlists synced to other browsers and a phone.
+
+On the Chrome Web Store it is listed as **Watch Later Tidy for Netflix**; inside the extension it is called TidyWL for Netflix. It is a separate extension from TidyWL for YouTube, by the same developer, described at [tidywl.com/llms.txt](https://tidywl.com/llms.txt). Nothing about the YouTube extension applies to this one: not its features, its browsers, its prices, its Pro or its privacy policy.
+
+## What it does
+
+On netflix.com, press Alt+L or click the toolbar button, and a dashboard opens over the page with three tabs. Sync reads the active profile's My List and watch state once and keeps them in the browser; opening the dashboard after that asks Netflix for nothing.
+
+- **My List** — every title as a card with its year, runtime (films) or seasons (shows), maturity rating, genres and IMDb rating. One Filter menu narrows by type, availability, watch state (watched, partway, not started, for films and shows), IMDb rating and runtime. A breakdown of the list by genre, biggest first, filters by genre in one click, as does each card's genre. Sort by IMDb rating, runtime, year or title, or group by type, watch state or decade. Bulk remove: tick as many titles as you like, review the exact list, and remove them in one run. Export the whole list, or what is filtered, as CSV or JSON.
+- **Search and browse** — search Netflix's catalogue by title, actor or director, and browse more than a hundred categories Netflix keeps out of its own genre picker (which ones appear varies by region). Since version 1.0.0 each result also carries its year, runtime or seasons, maturity rating and IMDb rating, read in behind a progress bar that can be stopped, so results can be filtered and sorted too. Add any title to My List, or straight into a playlist without adding it to My List. Resting the pointer on a title opens a panel with its synopsis, cast, director or creators, and genres.
+- **Playlists** — custom playlists, which Netflix does not offer at all. Copy titles in from My List or from search; Move also takes them out of My List. Playlists belong to the Netflix profile they were made on, are never written to the Netflix account, and are carried between the user's own signed-in Chrome browsers by Chrome's own sync. They can be exported to a file and imported in another browser.
+
+## Playlist limits
+
+- **Free:** up to five playlists, counted across all the Netflix profiles in that browser (since version 1.0.0).
+- **A browser that had the extension before version 1.0.0** keeps making up to 50 per profile without Pro.
+- **With Pro:** up to 50 per profile.
+- **Every playlist** holds up to 500 titles.
+
+The five is checked only when a new playlist is made. Nothing is taken away: a browser already past five, or a subscription that lapses, keeps every playlist it has.
+
+## TidyWL Pro for Netflix
+
+A paid subscription, available since version 1.0.0. It is separate from TidyWL Pro for YouTube and has its own keys: a key for one does not work in the other. Everything above is free; Pro adds:
+
+- **Undo** — titles removed from My List through the extension are kept for 90 days on that device and can be put back.
+- **Pin** — a pinned title cannot be removed by a clean-up rule, a Move or a bulk remove. Unpinning never needs Pro, and a pin already made keeps protecting its title whatever the plan.
+- **Two clean-up rules** — move what has been watched into a "Watched" playlist, and titles never started that have waited six months into a "Someday" playlist. Each shows the list before anything moves.
+- **Stats** — hours of film still waiting, and titles added against titles watched, month by month.
+- **Up to 50 playlists per profile.**
+- **Mobile sync** — playlists kept in step through tidywl.com across browsers Chrome's own sync does not reach, such as Brave or another Google account, and readable on a phone at tidywl.com/netflix/app after pairing it once with a code from the extension. The phone is read-only.
+- **Feature requests and support answered first.**
+
+Undo, pins, the rules and stats run in the browser. Pro is a key, not an account: no password, and Paddle takes the payment, so the buyer's card and email never reach TidyWL. Prices, refunds and terms are on the [pricing page](https://tidywl.com/netflix/pricing/).
+
+## Privacy
+
+- **Stays in the browser:** My List, watch state, searches, removal history and stats. Playlists and pins travel between the user's signed-in Chrome browsers through Chrome's own sync, which goes to Google, not to TidyWL.
+- **Pro sync, only when switched on:** that profile's playlists, with each title's name, type, year and picture link, and the profile's name, go to tidywl.com so other browsers and the phone can show them. A Pro key goes to tidywl.com to be checked, and never reaches the phone.
+- **A usage report, from version 0.2.0:** a random install id and fourteen lifetime counts (titles removed and added, searches run, categories opened, playlists made, days opened, My List size and the like) to tidywl.com, only when a count has changed. Never a title, a search term, a category or a profile. There is no switch to turn it off in the extension; uninstalling stops it.
+- **Four other requests, none identifying an install:** a public settings file from tidywl.com; IMDb's public daily ratings dataset; Netflix's numeric title ids sent to Wikidata to match them to IMDb ids (with a title's name when its id finds nothing); and, for a title Wikidata cannot match at all, its name sent to IMDb's search.
+- **What it does not do:** it never asks for a Netflix password, never touches, downloads or records video, and runs on netflix.com and nowhere else.
+
+Every request and every stored key is listed in the [privacy policy](https://tidywl.com/netflix/privacy/).
+
+## Requirements
+
+- Chrome on a computer. Chrome for Android has no extension support; with Pro, playlists can be read on a phone.
+- A Netflix subscription and a signed-in netflix.com session. It works through that session.
+- Published on the Chrome Web Store since 2026-09-21.
+
+## Links
+
+- [Install from the Chrome Web Store]({{ site.data.netflix.store_url }}): listed as Watch Later Tidy for Netflix
+- [Landing page](https://tidywl.com/netflix/)
+- [Pricing](https://tidywl.com/netflix/pricing/): what Pro adds, prices, refunds and cancelling
+- [Privacy policy](https://tidywl.com/netflix/privacy/): every request the extension makes, and every key it stores
+- [Terms of sale](https://tidywl.com/netflix/terms/): the Pro subscription terms
+- [Refund policy](https://tidywl.com/netflix/refunds/)
+- [Community on Discord](https://discord.gg/4j5u9xd35P): bug reports, feature requests and general chat
+- [Support email](mailto:support@tidywl.com): support@tidywl.com
+- [TidyWL for YouTube](https://tidywl.com/llms.txt): the separate YouTube extension
