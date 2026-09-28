@@ -34,7 +34,7 @@ The five is checked only when a new playlist is made. Nothing is taken away: a b
 
 A paid subscription, available since version 1.0.0. It is separate from TidyWL Pro for YouTube and has its own keys: a key for one does not work in the other. Everything above is free; Pro adds:
 
-- **Tonight** (since version 1.1.0) — choose how long you have (an episode, a movie, or no limit) and a mood, and it deals one pick and two backups from My List, each with its reason: IMDb rating, runtime, the genre that fits. Re-roll deals more; "Not tonight" hides a pick for seven days, and a title put off three times in 30 days is marked in My List. An optional switch adds surprises from outside My List that fit the mood. Alt+T opens it on any Netflix page.
+- **Tonight** (since version 1.1.0) — choose how long you have (an episode, a movie, or no limit) and a mood, and it deals one pick and two backups from My List, each with its reason: IMDb rating, runtime, the genre that fits. Re-roll deals more; "Not tonight" hides a pick for seven days, and a title put off three times in 30 days is marked in My List. Surprises from outside My List that fit the mood are included unless switched off. Alt+T opens it on any Netflix page.
 - **Undo** — titles removed from My List through the extension are kept for 90 days on that device and can be put back.
 - **Pin** — a pinned title cannot be removed by a clean-up rule, a Move or a bulk remove. Unpinning never needs Pro, and a pin already made keeps protecting its title whatever the plan.
 - **Two clean-up rules** — move what has been watched into a "Watched" playlist, and titles never started that have waited six months into a "Someday" playlist. Each shows the list before anything moves.
