@@ -1,14 +1,35 @@
 {
   "announcements": [
     {
+      "id": "v2.2.0-release",
+      "title": "What's New in v2.2.0",
+      "bullets": [
+        "Deleting and copying many videos is several times faster. Each request to YouTube now carries up to 100 deletions or 200 additions, up from 20 and 50, so a clean-up of thousands of videos takes a fraction of the time it did.",
+        "Pro switches on by itself after you buy it. The page you land on after paying hands your key to the extension in the same browser; the dashboard shows the PRO badge and a welcome with your key, your next payment date and how to use it on another computer. No more copying and pasting.",
+        "Remove a saved playlist from your library. Playlists you saved from other channels now have the same trash button as your own. The playlist itself is untouched, and its owner is not told.",
+        "The Shorts filter finds Shorts up to three minutes long, and only Shorts. It used to count any video of a minute or less.",
+        "The dialog after adding or moving videos now matches the one after deleting: where the videos came from and went, how many were added or skipped, and how long it took.",
+        "Fixed: a playlist you delete from the Playlists menu leaves the menu at once; Retry works after a delete or move that finished with errors; deleting one video from its card counts toward your total; a playlist you emptied can be deleted; white text on blue is easier to read in the dark theme.",
+        "The store name is now Watch Later Tidy for YouTube. The dashboard still says Watch Later Tidy."
+      ],
+      "type": "info",
+      "created_at": "2026-09-27",
+      "expires_at": "2026-12-27"
+    },
+    {
       "id": "2026-09-netflix",
       "display": "modal",
       "size": "small",
       "title": "Watch Later Tidy, now for Netflix",
       "message": "TidyWL for Netflix: a free dashboard for your Netflix My List, from the maker of Watch Later Tidy. https://tidywl.com/netflix/",
       "body": [
-        { "text": "Same idea, different queue: a dashboard over your Netflix **My List**, with IMDb ratings on every card and bulk remove." },
-        { "text": "Free, no account. Chrome on a computer.", "tone": "muted" }
+        {
+          "text": "Same idea, different queue: a dashboard over your Netflix **My List**, with IMDb ratings on every card and bulk remove."
+        },
+        {
+          "text": "Free, no account. Chrome on a computer.",
+          "tone": "muted"
+        }
       ],
       "button": {
         "label": "Add to Chrome",
