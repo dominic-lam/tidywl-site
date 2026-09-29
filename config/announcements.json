@@ -1,6 +1,19 @@
 {
   "announcements": [
     {
+      "id": "v2.3.0-release",
+      "title": "What's New in v2.3.0",
+      "bullets": [
+        "Sending to Gemini Notebook is faster. Videos now go five at a time, three batches at once, instead of all in one request: 15 videos go in about 8 seconds. If Gemini Notebook refuses one batch, the rest still go in.",
+        "Fixed: Send to Gemini Notebook said 0 videos added after a change on Google's side, even when every video went in. It counts correctly again.",
+        "The Gemini Notebook result stays on screen until you close it, and a big send that finishes late still shows its result and opens the notebook.",
+        "Add to Playlist has a filter box: type a few letters to find the playlist you want."
+      ],
+      "type": "info",
+      "created_at": "2026-09-29",
+      "expires_at": "2026-12-29"
+    },
+    {
       "id": "v2.2.0-release",
       "title": "What's New in v2.2.0",
       "bullets": [
