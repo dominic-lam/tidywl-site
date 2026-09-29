@@ -398,5 +398,13 @@
   "editBatchSizes": {
     "remove": 100,
     "add": 200
+  },
+  "likeRemoval": {
+    "appliedPath": [
+      "responseContext",
+      "consistencyTokenJar"
+    ],
+    "paceMs": 1000,
+    "maxAttempts": 6
   }
 }
