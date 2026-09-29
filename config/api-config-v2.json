@@ -191,7 +191,9 @@
       "template": [null, null, null, null, null, null, null, null, null, null, 1],
       "urlIndex": 7
     },
-    "createNotebookResponseIdIndex": 2
+    "createNotebookResponseIdIndex": 2,
+    "addSourcesBatchSize": 5,
+    "addSourcesConcurrency": 3
   },
   "usageReport": {
     "installsPath": "/api/installs"
