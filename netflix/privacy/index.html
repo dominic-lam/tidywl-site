@@ -21,6 +21,13 @@ last_modified_at: 2026-09-28
      limiter only — is tidywl-api's as deployed 2026-09-28, recorded in
      docs/claude/CONTRACTS-1.1.0.md § 1 in the extension repo.
 
+     Updated 2026-09-29 for 1.1.0's "Later, on my phone": one title, Tonight's
+     pick, sent as a playlist with the id tonightpick, and the storage key
+     tidywl_tonight_phone_<profile>. Checked 2026-09-29 against the extension's
+     sync-utils.js (planTonightPhone) and dashboard-tonight-phone.js; the
+     contract is docs/claude/PLAN-tonight-phone.md there. The phone's half is
+     this site's netflix/app/.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -62,8 +69,10 @@ last_modified_at: 2026-09-28
       Updated 28 September 2026 for version 1.1.0, which adds IMDb rating badges on Netflix's own title cards and,
       in Pro, <strong>Tonight</strong>. The badges send the Netflix ids of the cards on the page you are looking at to
       a ratings table on our server, which keeps no record of them; that is request 8, new, under <em>The requests
-      that leave your browser</em>. Tonight, with its surprises on, reads a few of Netflix's genre catalogues, and
-      what it remembers stays in your browser. The usage report gains fourteen counts: how often Pro's offer is
+      that leave your browser</em>. Tonight, with its surprises on, reads a few of Netflix's genre catalogues; it also
+      reads your Netflix viewing history and thumbs, so it never offers what you have seen or disliked; and what it
+      remembers stays in your browser. Its <em>Later, on my phone</em> sends one title, the pick you press it on, to your
+      paired phones through Pro's playlist sync, until 5 am. The usage report gains fourteen counts: how often Pro's offer is
       shown and its Upgrade button pressed, and how Tonight is used.
       Updated 27 September 2026 for version 1.0.0, which adds <strong>TidyWL Pro</strong>: Undo for removals, pins,
       two clean-up rules, stats, up to 50 playlists a profile, and playlist sync between your browsers and onto your
@@ -80,13 +89,13 @@ last_modified_at: 2026-09-28
 
     <h2>The short version</h2>
     <ul>
-      <li><strong>Your Netflix data stays in your browser.</strong> Your watch state and your searches are never sent to us.</li>
-      <li><strong>Your playlists stay in your browser too — unless you have Pro and switch sync on.</strong> Then this profile's playlists, with each title's name, year and picture link, and the profile's name, go to our server, so your other browsers and your phone can show them. Only from browsers where you switched it on. Never for a free install.</li>
+      <li><strong>Your Netflix data stays in your browser.</strong> Your watch state, your searches and, with Pro, the viewing history and thumbs Tonight reads are never sent to us.</li>
+      <li><strong>Your playlists stay in your browser too — unless you have Pro and switch sync on.</strong> Then this profile's playlists, with each title's name, year and picture link, and the profile's name, go to our server, so your other browsers and your phone can show them. So does a title you send to your phone from Tonight. Only from browsers where you switched it on. Never for a free install.</li>
       <li><strong>If you buy Pro, your licence key goes to tidywl.com.</strong> It switches Pro on and is checked again when you open the dashboard, at most once every 15 minutes. Paddle takes the payment; your card details and your email never reach us.</li>
       <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard for the first time in a day, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
       <li><strong>There is no switch in the extension to turn this off.</strong> Uninstalling stops it, and records not updated for 12 months are deleted.</li>
       <li><strong>There is no account and no sign-in.</strong> A Pro key is not an account: there is no password, and we never learn your email. The usage report's identifier is random, made in your browser, and linked to nothing — not your Netflix account, not a profile, not your email, not a Pro key.</li>
-      <li><strong>Five other requests leave your browser, and none of them identifies you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id, with a title's name when its id finds nothing; for a title Wikidata cannot match at all, its name sent to IMDb's search; and, from version 1.1.0, Netflix's numeric title ids sent to our own ratings table, which answers with each one's IMDb rating. Each one is described in full below.</li>
+      <li><strong>Five other requests leave your browser, and none of them identifies you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id; for a title its id cannot match, its name sent to IMDb's search and to Wikidata's; and, from version 1.1.0, Netflix's numeric title ids sent to our own ratings table, which answers with each one's IMDb rating. Each one is described in full below.</li>
       <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. Without Pro sync we never see them.</li>
       <li><strong>Everything about your account is stored per Netflix profile</strong>, and uninstalling the extension removes everything it stored in that browser.</li>
       <li><strong>Nothing is sold, shared or used for advertising.</strong> There is nothing to sell and nobody to share it with.</li>
@@ -106,14 +115,18 @@ last_modified_at: 2026-09-28
       <li><strong>Search results and genre catalogues</strong> — only for a search you typed or a genre you opened. For each search result, and each film in a genre, details such as its year, runtime and number of seasons are then asked for once, and kept for the rest of that page's life.</li>
       <li><strong>A title's details on hover</strong> — its synopsis, cast, director or creators, genres, runtime and a still image, asked for once per title when you rest the pointer on a card, and kept for the rest of that page's life so a second look costs nothing.</li>
       <li><strong>For Tonight</strong> — Pro only, from version 1.1.0, and only once you open it. With <em>Surprises from outside My List</em> on, as it is until you switch it off: a few of Netflix's genre catalogues that fit the mood you chose, and details, such as the runtime, of the best-rated few films in them; a mood already read today is not read again. On the poster layout, a larger picture of the main pick, asked for once it has stayed on screen for a moment and kept for the rest of that page's life.</li>
+      <li><strong>Your viewing history and your thumbs, for Tonight</strong> — Pro only, from version 1.1.0, and only when you open Tonight: the titles this profile has played on Netflix and when, and the titles it has given a thumbs up, down or "love", so Tonight never offers what you have already seen or disliked. Read from Netflix's own viewing-activity service, the one behind Account → Viewing activity, through the session you are signed in with and only for the profile you are using — at most once every six hours, one page of 50 at a time a second apart, and after the first time usually just the newest page. What is kept is the title ids, the time of the last play and the thumb, in this browser only; never a title's name, never an episode, and <strong>none of it is sent to us or to anyone</strong>.</li>
     </ul>
     <p>
       <strong>One thing it reads without being asked, from version 1.1.0:</strong> the link on each of Netflix's own
       title cards, on whatever netflix.com page you are looking at. The link carries the title's Netflix id
       (<code>/browse?jbv=&lt;id&gt;</code>), and that id is how the extension puts an IMDb rating badge on the card. It
       reads the link and what kind of card it is, never the card's text, skips games, and asks Netflix nothing for
-      it. The ids go to our ratings table, request 8 below, and, when that cannot answer, to Wikidata, request 3. A
-      click on a badge opens that title's page on imdb.com in a new tab.
+      it. The ids go to our ratings table, request 8 below, and, when that cannot answer, to Wikidata, request 3.
+      Some titles cannot be matched by their id at all, because Wikidata has no Netflix id recorded for them. For
+      those, and only those, the extension takes the title's name and year from what the Netflix page has already
+      loaded to draw that card — it asks Netflix nothing for it — and searches by name, requests 4 and 3. A click on
+      a badge opens that title's page on imdb.com in a new tab.
     </p>
     <p>
       Your search terms go to Netflix, on your own signed-in session, in the same way that typing them into
@@ -162,8 +175,10 @@ last_modified_at: 2026-09-28
           <tr><td><code>tidywl_sync_deleted_&lt;profile&gt;</code></td><td>Pro only. The ids of playlists you deleted in this browser, with when, so the deletion reaches your other browsers instead of the playlist coming back from one of them. An id and two times each, no name; kept 90 days, at most 200.</td></tr>
           <tr><td><code>tidywl_removed_&lt;profile&gt;</code></td><td>Pro only — a free install writes nothing here. Removal history, for Undo and Restore: each title you removed from My List through the extension, as its id, name, type, year, box-art address, the date this extension first saw it in your list, and, for a Move, the playlist it went to. Pruned to the last 90 days on every read and write.</td></tr>
           <tr><td><code>tidywl_stats_&lt;profile&gt;</code></td><td>The Stats tally, kept for everyone after a Sync so that the numbers exist if you turn Pro on later: the ids that were in My List at the last Sync, the ids not yet started or partway through, and for each month a count of titles added, watched and removed. Counts and ids, no names.</td></tr>
-          <tr><td><code>tidywl_tonight_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0 — a free install writes nothing here. What Tonight remembers for this profile: whether surprises from outside My List are on, the time and mood you last chose, the poster or the cards layout, each title you put off with <em>Not tonight</em> and until when (seven days), when you did so over the last thirty days — so a title you keep putting off can be marked in My List — and the id of the last main pick shown, so the next one is a different title. Ids and times, no names. Pruned on every read and write. Never sent.</td></tr>
+          <tr><td><code>tidywl_tonight_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0 — a free install writes nothing here. What Tonight remembers for this profile: your occasions, up to five — the name you give each one, the who's watching, how long and mood it stands for, its icon and when you last used it; your last answers, when you gave them and the picks they dealt, so opening Tonight again within four hours shows the same picks; the films you pressed <em>Play</em> on in the last day, so they leave the picks; for <em>With family</em>, the youngest viewer's rating level you chose; whether surprises from outside My List are on; the poster or the cards layout; each title you put off with <em>Not tonight</em> and until when (seven days), when you did so over the last thirty days — so a title you keep putting off can be marked in My List — and the id of the last main pick shown, so the next one is a different title. Titles by id; the only names are the ones you give your occasions. Pruned on every read and write. Never sent.</td></tr>
           <tr><td><code>tidywl_tonight_pool_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0. Today's surprises for Tonight: the rows it read from Netflix's genre catalogues — each title's id, name, type, year, maturity rating, season count and box-art address as Netflix returned them, and each genre's name — with the IMDb rating and votes found for each title, the runtime of the few films it read one for, and which moods were asked for today. Anything older than a day is dropped on the next write. Never sent.</td></tr>
+          <tr><td><code>tidywl_viewed_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0. What Tonight knows you have already watched or rated on Netflix, so it does not offer it: for each title id — a film's, or the show's for an episode — when it was last played, and each rated title's thumb (down, up or love), with when it was last read. At most 5,000 of each, newest kept. Never sent anywhere; removed when you uninstall.</td></tr>
+          <tr><td><code>tidywl_tonight_phone_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0 — a free install writes nothing here. The one title you sent to your phone with <em>Later, on my phone</em> in Tonight: its id, name, type, year and box-art address, when you sent it, when you undid it, and when it reached our server. It is kept apart from your playlists, so Chrome's own sync does not copy it. Forgotten once its 5 am has passed or it was undone, and nothing is left to send.</td></tr>
           <tr><td><code>tidywl_playlist_cap_exempt</code></td><td><code>true</code> in a browser that had the extension before version 1.0.0, so it keeps making up to 50 playlists without Pro. Nothing else.</td></tr>
           <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once the rating ask on a removal's summary has been answered or declined, so it is not shown again in this browser.</td></tr>
           <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
@@ -239,7 +254,8 @@ last_modified_at: 2026-09-28
       <em>Sync now</em>. Each sync first asks the server for its copy, then sends what is newer here.
     </p>
     <p>
-      <strong>Not sent, even with sync on:</strong> your My List, your watch state, your searches, your pins, your IMDb
+      <strong>Not sent, even with sync on:</strong> your My List — except the one title you send to your
+      phone, below — your watch state, your searches, your pins, your IMDb
       ratings, or another profile's playlists. Your Netflix password is never seen by the extension at all.
     </p>
 
@@ -258,6 +274,18 @@ last_modified_at: 2026-09-28
       <li>Titles' pictures load on the phone straight from Netflix's image servers, which see the request as they would from the Netflix app.</li>
       <li><em>Remove</em>, beside a phone in the extension, stops that pass for good. The next time the phone opens the page, it deletes what it kept.</li>
     </ul>
+    <p>
+      <strong>Tonight's pick, on your phone</strong> — from version 1.1.0. When you press <em>Later, on my phone</em>
+      under a pick in Tonight, that one title goes to our server at once — if sync is off in that browser, Tonight asks
+      you to switch it on first, and sends nothing until you do: its Netflix id, name, whether it is a film
+      or a series, its year and the address of its picture, as a playlist named <em>Tonight's pick</em> in the same
+      copy your paired phones read. Nothing else from Tonight or your My List goes with it, and nothing goes unless you
+      press it. Your phone shows it above your playlists and hides it after 5 am. It is deleted from our server by the
+      next sync after 5 am of any of your browsers on version 1.1.0 or later, or by the next sync after you press
+      <em>Undo</em>; a title sent
+      later replaces it. A browser still on version 1.0.0 lists it as an ordinary playlist until the deletion reaches
+      it. The phone remembers when the last pick it opened onto was sent, so it opens on that pick's profile once.
+    </p>
 
     <h2>The requests that leave your browser</h2>
     <p>
@@ -278,7 +306,8 @@ last_modified_at: 2026-09-28
       links shown in the About dialog and the Pro prices on the upgrade card, so that small things can be corrected
       without shipping a new version. From version 1.1.0 it can also switch IMDb ratings off: while it does,
       requests 2, 3, 4 and 8 are not made, the badges come off Netflix's cards, and the dashboard hides the ratings
-      it saved.
+      it saved. It can switch Tonight's reading of your viewing history off the same way, and correct the address
+      that reading uses on netflix.com if Netflix moves it — never to anywhere outside netflix.com.
     </p>
     <p>
       The request carries no identifier and no payload; every install receives the same bytes. Nothing in the file is
@@ -298,7 +327,7 @@ last_modified_at: 2026-09-28
       The important consequence: <strong>this download tells IMDb nothing about which titles you have.</strong> The
       extension asks for the whole file, exactly as anyone else does, and does the matching itself. IMDb sees a
       download, not a request about you. The one request that does name a title to IMDb is the fourth, below, and it
-      is made only for a title Wikidata cannot match.
+      is made only for a title that cannot be matched by its id.
     </p>
 
     <h3>3. Netflix title ids — and sometimes a title's name — to Wikidata</h3>
@@ -322,10 +351,13 @@ last_modified_at: 2026-09-28
       own privacy policy governs what Wikimedia does with the request.
     </p>
 
-    <h3>4. A title's name — to IMDb's search, when Wikidata cannot match it</h3>
+    <h3>4. A title's name — to IMDb's search, when its id cannot be matched</h3>
     <p>
-      Some titles are not on Wikidata at all yet — most often ones released in the last few months. For a title that
-      both Wikidata requests above have tried and failed to match, and only for those, the extension sends its
+      Some titles are not on Wikidata at all yet — most often ones released in the last few months — and some are
+      there without their Netflix id. In the dashboard, for a title that both Wikidata requests above have tried and
+      failed to match, and only for those; for the badges on Netflix's own cards, for a title neither our ratings
+      table nor Wikidata could match by its id, before Wikidata's name search, because IMDb answers in under a second
+      and Wikidata can take most of a minute. For those titles, and only those, the extension sends its
       <strong>name</strong>, as Netflix shows it, to <code>https://v3.sg.media-imdb.com/suggestion/</code>, the
       address behind the search box on imdb.com, one title per request. It accepts an answer only when exactly one film
       or series comes back with that name, that kind and a matching year; otherwise the title simply has no rating. As
@@ -340,17 +372,20 @@ last_modified_at: 2026-09-28
     </p>
     <p>
       <strong>When requests 2, 3 and 4 happen:</strong> when you press Sync, for the titles in your list; when a
-      page of search or genre results is drawn, for the titles on it; and, for Tonight, for the few films whose
-      details it reads. All three are answered from the browser's own
+      page of search or genre results is drawn, for the titles on it; for Tonight, for the few films whose
+      details it reads; and, from version 1.1.0, for the badges on the Netflix cards on your screen, for the titles
+      their ids could not match. All three are answered from the browser's own
       copy once a title has been matched, so a matched title is never asked about again; a title that could not be
       matched is asked about again after a week — by id, then by name on Wikidata, then by name on IMDb — at most 40
       names at a time for each.
     </p>
     <p>
       From version 1.1.0, requests 2 and 3 also stand in for our ratings table, request 8, when it refuses, is down
-      or does not answer within eight seconds. For the badges, the ids it could not answer go to Wikidata by id —
-      never by name — and their ratings come from IMDb's file. Tonight does the same for its surprises; only the few
-      films whose details it reads can also be searched by name, as above. After such a
+      or does not answer within eight seconds. For the badges, the ids it could not answer go to Wikidata by id, and
+      their ratings come from IMDb's file; a title that neither the table nor Wikidata can match by its id is then
+      searched by name, as above, at most 40 at a time, and a title neither name search finds is not searched again
+      for a week. Tonight does the same by id for its surprises; only the few films whose details it reads can also
+      be searched by name, as above. After such a
       failure the badges leave the table alone for a quarter of an hour and use these two instead, and they ask
       Wikidata again about a title it had no match for only after a week.
     </p>
@@ -456,6 +491,14 @@ last_modified_at: 2026-09-28
       nothing else, to <code>https://tidywl.com/api/netflix/license/claim</code>, which answers with the key it paid for;
       that key is then activated as above. Both are described under <em>Paddle, who takes the money</em>.
     </p>
+    <p>
+      From version 1.1.0 you do not have to paste the key after buying. The page tidywl.com shows after checkout,
+      <code>/netflix/checkout/success/</code>, hands the key it shows you to the extension, if the extension is
+      installed in that browser, and the extension activates it exactly as above, with the same pre-filled browser
+      name. This is the only page on tidywl.com the extension runs anything on. It tells the page only whether Pro
+      was switched on — never the key back, and nothing else from your browser. A different key already active in
+      the browser is never replaced.
+    </p>
 
     <h3>7. Playlist sync and phones, to tidywl.com — Pro only</h3>
     <p>
@@ -528,10 +571,11 @@ last_modified_at: 2026-09-28
       <li><strong>The cache</strong> stays until you Sync again, which replaces it, or until you uninstall.</li>
       <li><strong>The IMDb ratings file</strong> is replaced when it is more than twelve hours old.</li>
       <li><strong>The badges' ratings</strong> are asked for again after a day, and at most 5,000 titles are kept.</li>
-      <li><strong>Tonight's surprises</strong> are kept for a day. A title put off with <em>Not tonight</em> stays put off for seven days, and the record that you did for thirty.</li>
+      <li><strong>Tonight's surprises</strong> are kept for a day. A title put off with <em>Not tonight</em> stays put off for seven days, and the record that you did for thirty. A film you pressed <em>Play</em> on in Tonight leaves its picks for a day. <strong>Your occasions</strong> stay until you delete them.</li>
       <li><strong>Playlists</strong> stay until you delete them, and <strong>pins</strong> until you unpin them.</li>
       <li><strong>The usage report's record</strong> is kept on our server as described below, and deleted after 12 months without a report.</li>
       <li><strong>Pro's copy of your playlists</strong> stays on our server while your subscription is active, updated by each sync. Turning sync off stops that browser sending; it does not delete the copy, because your other browsers and your phone still use it. A deleted playlist leaves only its id and two times. <strong>When a subscription ends, the copy — every profile, playlist and phone under the key — is deleted 90 days later</strong>, so it is still there if you come back within that time.</li>
+      <li><strong>Tonight's pick on your phone</strong> is hidden there after 5 am, and deleted from our server by the next sync of any of your browsers on version 1.1.0 or later after that, or after you press <em>Undo</em>.</li>
       <li><strong>A paired phone</strong> stays until you remove it in the extension. An unused pairing code is deleted when the next one is made, and cannot be used after ten minutes in any case.</li>
       <li><strong>Uninstalling</strong> removes everything the extension stored in that browser, and stops the usage report. It does not delete Pro's copy on our server — see <em>Requests about your data</em>. If you want to be certain your playlists are gone from your <em>other</em> signed-in Chrome browsers as well, delete them in the dashboard before you uninstall, so the deletion is what syncs.</li>
     </ul>
