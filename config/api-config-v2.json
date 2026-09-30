@@ -404,7 +404,7 @@
       "responseContext",
       "consistencyTokenJar"
     ],
-    "paceMs": 1000,
+    "paceMs": 500,
     "maxAttempts": 6,
     "statusEndpoint": "/youtubei/v1/next?prettyPrint=false",
     "statusMutationsPath": [
