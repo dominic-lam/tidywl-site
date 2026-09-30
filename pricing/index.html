@@ -556,13 +556,27 @@ faq:
       // promotion is not ready, and the card would not show it either.
       //
       // Stricter than src/utils/pricing.js on one point: this page also needs
-      // `paddleDiscountId`, because its buy button is what hands the discount to
-      // Paddle. Without it the checkout charges the regular price, so the page
-      // shows the regular price. The extension's card cannot check this, so the
-      // config must never set `enabled: true` before the id is in place.
+      // the Paddle discount id for every period it covers, because its buy
+      // button is what hands the discount to Paddle. Without it the checkout
+      // charges the regular price, so the page shows the regular price. The
+      // extension's card cannot check this, so the config must never set
+      // `enabled: true` before the ids are in place.
+      //
+      // `paddleDiscountIds` { monthly, yearly } is additive (2026-09-29, two
+      // founding offers): a Paddle discount has one amount, so $1.00 off monthly
+      // and $15.88 off yearly are two discounts. Present, it must name every
+      // period the discount covers: never fall back to `paddleDiscountId` then,
+      // since that discount is restricted to the yearly price and the monthly
+      // checkout would charge $4.99 under a card saying $3.99. Absent, the one
+      // `paddleDiscountId` covers every period, the one-offer shape.
+      const isDiscountId = v => typeof v === 'string' && /^dsc_[a-z0-9]{26}$/.test(v);
+      const perPeriodIds = d && d.paddleDiscountIds && typeof d.paddleDiscountIds === 'object' && !Array.isArray(d.paddleDiscountIds)
+        ? d.paddleDiscountIds : null;
+      const idFor = p => (perPeriodIds != null
+        ? (isDiscountId(perPeriodIds[p]) ? perPeriodIds[p] : null)
+        : (d && isDiscountId(d.paddleDiscountId) ? d.paddleDiscountId : null));
       const whole = !!d && d.enabled === true && label != null && periods != null
-        && typeof d.paddleDiscountId === 'string' && /^dsc_[a-z0-9]{26}$/.test(d.paddleDiscountId)
-        && periods.every(p => dPrices[p] != null && dPrices[p] < regular[p] && cleanUrl(dCheckout[p]) != null);
+        && periods.every(p => idFor(p) != null && dPrices[p] != null && dPrices[p] < regular[p] && cleanUrl(dCheckout[p]) != null);
       const covers = p => whole && periods.indexOf(p) !== -1;
 
       // A period the discount does not cover keeps its regular price and badge.
@@ -585,8 +599,8 @@ faq:
         // Read by the buy button at click time: a period it covers opens
         // Paddle's checkout with this discount applied.
         discountIds: {
-          monthly: covers('monthly') ? d.paddleDiscountId : null,
-          yearly: covers('yearly') ? d.paddleDiscountId : null
+          monthly: covers('monthly') ? idFor('monthly') : null,
+          yearly: covers('yearly') ? idFor('yearly') : null
         },
         monthly: {
           amount: usd(prices.monthly),
