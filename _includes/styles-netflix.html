@@ -159,6 +159,9 @@
     }
     .nf-tab h3 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; }
     .nf-tab > p { color: var(--text-secondary); font-size: 1rem; line-height: 1.65; text-wrap: pretty; max-width: 720px; }
+    /* The link to /netflix/pro/ in the Playlists tab. `a` inherits its colour
+       site-wide, so without this it read as plain text, the privacy note's bug. */
+    .nf-tab > p a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
     .nf-tab-list {
       list-style: none; margin: 18px 0 0; padding: 0;
       display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px 32px;

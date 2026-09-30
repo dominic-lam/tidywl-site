@@ -66,6 +66,7 @@ Every request and every stored key is listed in the [privacy policy](https://tid
 - [Install from the Chrome Web Store]({{ site.data.netflix.store_url }}): listed as Watch Later Tidy for Netflix
 - [Landing page](https://tidywl.com/netflix/)
 - [Pricing](https://tidywl.com/netflix/pricing/): what Pro adds, prices, refunds and cancelling
+- [What Pro does](https://tidywl.com/netflix/pro/): each Pro feature on its own, with a screenshot
 - [Privacy policy](https://tidywl.com/netflix/privacy/): every request the extension makes, and every key it stores
 - [Terms of sale](https://tidywl.com/netflix/terms/): the Pro subscription terms
 - [Refund policy](https://tidywl.com/netflix/refunds/)

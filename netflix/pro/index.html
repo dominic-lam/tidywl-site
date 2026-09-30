@@ -1,0 +1,216 @@
+---
+layout: netflix
+permalink: /netflix/pro/
+title: "TidyWL for Netflix Pro — what each feature does"
+description: "What TidyWL for Netflix Pro adds, one feature at a time: Tonight's pick, pins, 90 days of Undo, stats, clean-up rules, mobile sync and up to 50 playlists, each with a screenshot."
+last_modified_at: 2026-09-30
+---
+
+<!-- ── WHAT PRO DOES, TidyWL for Netflix ──
+     Added 2026-09-30 for 1.1.0 (PLAN-1.1.0 decision 35 in the extension repo).
+     The extension's upgrade cards link to the sections below with "See it in
+     action", in a new tab, so the seven ids are a contract with shipped code:
+     src/dashboard/dashboard-pro.js, PRO_DEMO_URL plus the anchor. Renaming one
+     sends every installed build to the top of the page. Keep them.
+
+     Every sentence is taken from the approved store description
+     (docs/cws-descriptions/CWS-DESCRIPTION-v1.1.0.md), PRO_GATES' pitches, or
+     PLAN-tonight-phone.md. Nothing here promises a TV, an alert or a
+     notification: Netflix dropped casting to most TVs in November 2025, and the
+     phone app has no push. If the store copy changes, change this with it. -->
+
+<div class="nf-pro">
+
+  <section class="nf-hero nf-pro-hero">
+    <div class="nf-hero-inner">
+      <p class="section-label">TidyWL for Netflix Pro</p>
+      <h1>Everything Pro adds, <em>one at a time</em></h1>
+      <p class="nf-hero-sub">
+        The free extension does everything by hand, and stays free. Pro is for what a browser
+        cannot do by hand: doing it for you, remembering it, or undoing it. Here is each
+        feature, with a screenshot of it at work.
+      </p>
+
+      <nav class="nf-pro-index" aria-label="Pro features">
+        <a href="#tonight">Tonight</a>
+        <a href="#pin">Pin</a>
+        <a href="#removal-history">Undo</a>
+        <a href="#stats">Stats</a>
+        <a href="#clean-up-rules">Clean-up rules</a>
+        <a href="#mobile-sync">Mobile sync</a>
+        <a href="#playlists">50 playlists</a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="section-inner">
+
+      <div class="nf-tab" id="tonight">
+        <h2>Tonight</h2>
+        <p>
+          Say who's watching, how long you have and what you are in the mood for, and Tonight
+          deals one pick and two backups from My List, each with its reason: the IMDb rating,
+          the runtime, the genre that fits. Surprises from outside it join in if you want them.
+          Watching later? "Later, on my phone" keeps the pick on the TidyWL phone app until 5 am.
+        </p>
+        <figure class="nf-shot">
+          <img src="/assets/netflix-pro-tonight.webp"
+               alt="Tonight set to a date night with a partner, a movie, gripping: Primal Fear as the pick with its IMDb rating, runtime and genre, The Whisper Man and Serpico as the two backups, and a Later, on my phone button under Play."
+               width="1600" height="1297" loading="eager" decoding="async">
+        </figure>
+      </div>
+
+      <div class="nf-tab" id="pin">
+        <h2>Pin</h2>
+        <p>
+          Pin a title and TidyWL won't remove it: no clean-up rule, no Move, and no bulk remove
+          you run yourself. So you can clear a long list quickly without losing what you mean
+          to watch. Unpinning never needs Pro, and a pin you already made keeps protecting its
+          title whatever your plan.
+        </p>
+        <figure class="nf-shot">
+          <img src="/assets/netflix-pro-pin.webp"
+               alt="My List in the dashboard, with a pin mark on two of the titles, Gilmore Girls and Breaking Bad."
+               width="1600" height="1308" loading="lazy" decoding="async">
+        </figure>
+      </div>
+
+      <div class="nf-tab" id="removal-history">
+        <h2>Undo and removal history</h2>
+        <p>
+          Everything you remove from My List is kept for 90 days on this device, so a clean-out
+          you regret is not permanent. A removal's summary has an Undo, and Removal history puts
+          back anything you removed in the last 90 days.
+        </p>
+        <figure class="nf-shot">
+          <img src="/assets/netflix-pro-removal-history.webp"
+               alt="Removal history in the dashboard, listing titles removed from My List in the last 90 days, each of which can be put back."
+               width="1600" height="1308" loading="lazy" decoding="async">
+        </figure>
+      </div>
+
+      <div class="nf-tab" id="stats">
+        <h2>Stats</h2>
+        <p>
+          Hours of film still waiting in My List, and what you add against what you watch,
+          month by month. One look tells you whether the list is getting shorter, or only longer.
+        </p>
+        <figure class="nf-shot">
+          <img src="/assets/netflix-pro-stats.webp"
+               alt="The Stats panel over My List: the hours of film still to watch, and a month-by-month table of titles added, watched and removed."
+               width="1600" height="1308" loading="lazy" decoding="async">
+          <figcaption>A test profile, with sample numbers.</figcaption>
+        </figure>
+      </div>
+
+      <div class="nf-tab" id="clean-up-rules">
+        <h2>Clean-up rules</h2>
+        <p>
+          Two rules: archive what you have watched into a playlist, and move what has sat
+          unstarted for six months into a "Someday" playlist. You see the list before anything
+          moves, and a pinned title is never touched.
+        </p>
+        <figure class="nf-shot">
+          <img src="/assets/netflix-pro-clean-up-rules.webp"
+               alt="A clean-up rule in the dashboard, showing the list of titles it will move out of My List before anything moves."
+               width="1600" height="1308" loading="lazy" decoding="async">
+        </figure>
+      </div>
+
+      <div class="nf-tab" id="mobile-sync">
+        <h2>Mobile sync</h2>
+        <p>
+          Your playlists in step across every browser you use — Chrome, Brave, another Google
+          account, another computer — and on your phone, once you switch sync on. Pair a phone
+          once and tidywl.com/netflix/app shows the playlists of every profile you have synced;
+          tap a title and it opens in the Netflix app. The phone app is read-only, and it is
+          where "Later, on my phone" keeps Tonight's pick until 5 am.
+        </p>
+        <figure class="nf-shot nf-shot--phone">
+          <img src="/assets/netflix-pro-mobile-sync.webp"
+               alt="The TidyWL phone app: Tonight's pick at the top, marked until 5:00 am, above one profile's synced playlists."
+               width="780" height="1688" loading="lazy" decoding="async">
+        </figure>
+      </div>
+
+      <div class="nf-tab" id="playlists">
+        <h2>Up to 50 playlists</h2>
+        <p>
+          Free makes five playlists, counted across the profiles in this browser. Pro makes up
+          to 50 a profile, with 500 titles in each, and puts them on your phone with mobile sync.
+        </p>
+        <figure class="nf-shot">
+          <img src="/assets/netflix-pro-playlists.webp"
+               alt="The Playlists tab: seven playlists down the side, and one of them, Date night, open with its eight titles."
+               width="1600" height="1308" loading="lazy" decoding="async">
+        </figure>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="nf-closer">
+    <div class="section-inner">
+      <h2 class="section-heading">Try it on your own list</h2>
+      <p>
+        Pro starts with 7 days free, card required: cancel before day 8 and you pay nothing.
+        Feature requests and support from subscribers are answered first. Prices, refunds and
+        cancelling are on the <a href="/netflix/pricing/">pricing page</a>.
+      </p>
+
+      <div class="cta-row nf-cta-tail">
+        {%- if site.data.paddle.netflix.onSale %}
+        <a class="btn-primary" href="/netflix/pricing/">Start 7 days free</a>
+        {%- else %}
+        <a class="btn-primary" href="/netflix/pricing/">See pricing</a>
+        {%- endif %}
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<style>
+  /* ── WHAT PRO DOES ──
+     The landing page's tab blocks (.nf-tab, .nf-shot), with one change: each
+     feature is an h2 here, since there is no section heading above them. */
+  .nf-pro-hero { padding-bottom: 48px; }
+
+  /* The seven features as links, so a visitor who arrives at the top can jump.
+     Wraps on a phone; never scrolls sideways. */
+  .nf-pro-index {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+    max-width: 760px; margin: 0 auto;
+  }
+  .nf-pro-index a {
+    font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 999px; padding: 6px 14px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .nf-pro-index a:hover { border-color: var(--border-strong); color: var(--text); }
+
+  .nf-pro .nf-tab + .nf-tab { margin-top: 96px; }
+  .nf-pro .nf-tab h2 {
+    font-size: clamp(1.35rem, 2.6vw, 1.6rem); font-weight: 700;
+    letter-spacing: -0.01em; line-height: 1.25; margin-bottom: 10px;
+  }
+  .nf-pro .nf-tab .nf-shot { margin-top: 28px; }
+
+  /* The header scrolls away with the page, so nothing covers an anchored
+     section; the margin only keeps its heading off the top edge. :target
+     marks the one the extension's link asked for, which matters most for the
+     last section, where the page ends before it can reach the top. */
+  .nf-pro .nf-tab { scroll-margin-top: 32px; }
+  .nf-pro .nf-tab:target h2 { color: var(--accent); }
+
+  /* A phone at the desktop shots' width would be two screens tall. */
+  .nf-shot--phone { max-width: 340px; }
+
+  /* Said once, where a number could be read as a claim: the shots come from a
+     test profile, and Stats' months are samples. */
+  .nf-pro .nf-shot figcaption {
+    margin-top: 8px; font-size: 0.8rem; color: var(--text-secondary); text-align: center;
+  }
+</style>

@@ -110,6 +110,7 @@ faq:
             <li>Mobile sync — your playlists across browsers, and on your phone</li>
             <li>Feature requests and support answered first</li>
           </ul>
+          <p class="plan-more"><a href="/netflix/pro/">See what each Pro feature does</a></p>
         </div>
       </div>
       <ul class="plans-both" aria-label="True on either plan">
@@ -295,6 +296,9 @@ faq:
     font-size: 0.92rem; line-height: 1.45; color: var(--text-secondary); text-wrap: pretty;
   }
   .plan-list li::before { content: "\2713"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  /* The way to /netflix/pro/, one screenshot per item above. */
+  .plan-more { margin-top: 4px; font-size: 0.88rem; }
+  .plan-more a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
   .plans-both {
     list-style: none; display: flex; flex-wrap: wrap; justify-content: center;
     gap: 8px 22px; max-width: 880px; margin: 24px auto 0;
