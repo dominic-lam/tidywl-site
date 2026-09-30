@@ -34,6 +34,13 @@
  *
  * INSTALLING: sw.js keeps this page's own files, never the playlists.
  *
+ * TONIGHT'S PICK (1.1.0): the extension's "Later, on my phone" sends one title
+ * as a playlist with the fixed id `tonightpick`. It is never drawn as a
+ * playlist: until the first 5:00 am after it was sent it is the first row above
+ * them, and a tap opens the title as a card does; after that it is not drawn.
+ * Once per pick, the list opens on the profile it came from. Contract:
+ * tidywl-netflix/docs/claude/PLAN-tonight-phone.md.
+ *
  * Everything shown is built with textContent. Box art loads straight from
  * Netflix's image servers, never copied to ours (the user, 2026-09-23), and
  * only from the host the server already checked.
@@ -42,7 +49,8 @@
   'use strict';
 
   var API = '/api/netflix/';
-  // { pass, active: <guid>, profiles: [{ profile, playlists }], fetchedAt }
+  // { pass, active: <guid>, profiles: [{ profile, playlists }], fetchedAt, pickSeen }; pickSeen is the updatedAt of
+  // the last Tonight's pick this phone opened onto.
   var PHONE_KEY = 'tidywl_nf_phone';
   // Earlier shapes, moved into PHONE_KEY on first open: a pass per profile (2026-09-26, hours), and before
   // that one pass and its copy.
@@ -57,6 +65,9 @@
   var JSQR = 'lib/jsqr/jsQR.js?v=1.4.0';
   var SCAN_EVERY_MS = 150;
   var SCAN_MAX_SIDE = 640;
+  // Tonight's pick: one per profile, and a normal playlist id can never be this one. Gone at 5 am, the night's end.
+  var TONIGHT_ID = 'tonightpick';
+  var NIGHT_ENDS_HOUR = 5;
 
   // --- pure --------------------------------------------------------------------
 
@@ -203,6 +214,52 @@
     return parts.join(' · ');
   }
 
+  /** A title's name, or its id when the browser that synced it could not name it. */
+  function titleName(t) {
+    return typeof t.title === 'string' && t.title !== '' ? t.title : 'Title ' + t.id;
+  }
+
+  /** When a pick sent at `updatedAt` stops showing: the first 5:00 am, local time, strictly after it. */
+  function tonightExpiry(updatedAt) {
+    if (!Number.isFinite(updatedAt)) return null;
+    var end = new Date(updatedAt);
+    end.setHours(NIGHT_ENDS_HOUR, 0, 0, 0);
+    if (end.getTime() <= updatedAt) {
+      end.setDate(end.getDate() + 1);
+      end.setHours(NIGHT_ENDS_HOUR, 0, 0, 0); // a clock change overnight
+    }
+    return end.getTime();
+  }
+
+  /** The playlists drawn as playlists, in their order: never Tonight's pick, which has a row of its own. */
+  function listedPlaylists(playlists) {
+    return playlists.filter(function (p) { return p.id !== TONIGHT_ID; });
+  }
+
+  /** A profile's pick while its night lasts — its one title, when it was sent, when it goes — else null. */
+  function tonightPick(playlists, now) {
+    var p = playlists.filter(function (x) { return x.id === TONIGHT_ID; })[0];
+    if (p == null || !Array.isArray(p.titles) || p.titles[0] == null) return null;
+    var expiry = tonightExpiry(p.updatedAt);
+    return expiry != null && now < expiry ? { title: p.titles[0], updatedAt: p.updatedAt, expiry: expiry } : null;
+  }
+
+  /** The profile to open on, once per pick: the newest live pick sent after the last one opened onto, or null. */
+  function pickToFollow(profiles, seen, now) {
+    var best = null;
+    profiles.forEach(function (c) {
+      var pick = tonightPick(c.playlists, now);
+      if (pick == null || (seen != null && pick.updatedAt <= seen)) return;
+      if (best == null || pick.updatedAt > best.updatedAt) best = { guid: c.profile.guid, updatedAt: pick.updatedAt };
+    });
+    return best;
+  }
+
+  /** "Until 5:00 am", in the phone's own clock format. */
+  function untilText(expiry, locale) {
+    return 'Until ' + new Date(expiry).toLocaleTimeString(locale, { timeStyle: 'short' });
+  }
+
   function claimErrorText(error) {
     switch (error) {
       case 'malformed_code': return 'A code is six letters and numbers, like K7M 2QX.';
@@ -240,7 +297,8 @@
       pass: raw.pass,
       active: pickActive(profiles, raw.active),
       profiles: profiles,
-      fetchedAt: Number.isFinite(raw.fetchedAt) ? raw.fetchedAt : null
+      fetchedAt: Number.isFinite(raw.fetchedAt) ? raw.fetchedAt : null,
+      pickSeen: Number.isFinite(raw.pickSeen) ? raw.pickSeen : null
     };
   }
 
@@ -321,6 +379,7 @@
   // --- drawing -------------------------------------------------------------------
 
   var app = null;
+  var pickTimer = null; // redraws when Tonight's pick on screen reaches its 5 am
   var state = {
     phone: null, banner: null, pairError: null, busy: false, refreshing: false, typed: '', pendingCode: null,
     installPrompt: null, view: null, listsScroll: 0, navigatedIn: false, scan: null
@@ -329,6 +388,15 @@
   function persist() {
     if (state.phone == null) forget(PHONE_KEY);
     else save(PHONE_KEY, state.phone);
+  }
+
+  /** Once per pick, open on the profile it came from; after that the viewer's own chip stands. True when it followed one. */
+  function followPick() {
+    var pick = pickToFollow(state.phone.profiles, state.phone.pickSeen, Date.now());
+    if (pick == null) return false;
+    state.phone.active = pick.guid;
+    state.phone.pickSeen = pick.updatedAt;
+    return true;
   }
 
   function activeCopy() {
@@ -361,6 +429,8 @@
     chevron: ['M9 18l6-6-6-6'],
     refresh: ['M21 12a9 9 0 1 1-2.64-6.36', 'M21 4v5h-5'],
     share: ['M12 3v12', 'M8 7l4-4 4 4', 'M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7'],
+    out: ['M7 17L17 7', 'M9 7h8v8'],
+    clock: ['M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18z', 'M12 7v5l3 2'],
     info: ['M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18z', 'M12 16v-4', 'M12 8h.01'],
     alert: ['M10.3 4L2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 4a2 2 0 0 0-3.4 0z', 'M12 9v4', 'M12 17h.01'],
     scan: ['M4 8V6a2 2 0 0 1 2-2h2', 'M16 4h2a2 2 0 0 1 2 2v2', 'M20 16v2a2 2 0 0 1-2 2h-2', 'M8 20H6a2 2 0 0 1-2-2v-2', 'M4 12h16'],
@@ -371,7 +441,7 @@
     var ns = 'http://www.w3.org/2000/svg';
     var svg = root.document.createElementNS(ns, 'svg');
     var attrs = { viewBox: '0 0 24 24', width: size, height: size, fill: 'none', stroke: 'currentColor',
-      'stroke-width': name === 'back' || name === 'chevron' ? 2.4 : 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' };
+      'stroke-width': name === 'back' || name === 'chevron' || name === 'out' ? 2.4 : 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' };
     if (className != null) attrs['class'] = className;
     for (var k in attrs) svg.setAttribute(k, attrs[k]);
     ICONS[name].forEach(function (d) {
@@ -411,9 +481,14 @@
     var copy = activeCopy();
     var listId = listIdFromHash(root.location.hash);
     var open = listId != null && copy != null
-      ? copy.playlists.filter(function (p) { return p.id === listId; })[0]
+      ? listedPlaylists(copy.playlists).filter(function (p) { return p.id === listId; })[0]
       : null;
     var view = state.phone == null ? (wantsInstallFirst() ? 'install' : 'code') : open != null ? 'list:' + open.id : 'lists';
+    if (view === 'lists' && followPick()) {
+      persist();
+      copy = activeCopy();
+    }
+    root.clearTimeout(pickTimer);
     var entering = view !== state.view;
     if (entering && state.view === 'lists') state.listsScroll = root.scrollY;
 
@@ -500,10 +575,16 @@
 
     content.appendChild(drawProfiles(copy));
     if (state.banner != null) content.appendChild(callout('alert', [state.banner], 'status'));
-    if (copy.playlists.length === 0) {
+    var lists = listedPlaylists(copy.playlists);
+    var pick = tonightPick(copy.playlists, Date.now());
+    var rows = lists.map(drawPlaylistRow);
+    if (pick != null) {
+      rows.unshift(drawPickRow(pick));
+      pickTimer = root.setTimeout(draw, pick.expiry - Date.now());
+    }
+    if (rows.length > 0) content.appendChild(el('ul', { className: 'pls' }, rows));
+    if (lists.length === 0) {
       content.appendChild(emptyState('No playlists yet', 'Make one in the extension and it appears here after the next sync.'));
-    } else {
-      content.appendChild(el('ul', { className: 'pls' }, copy.playlists.map(drawPlaylistRow)));
     }
     var install = drawInstall();
     if (install != null) content.appendChild(install);
@@ -562,6 +643,28 @@
     ])]);
   }
 
+  /** Tonight's pick: a playlist row that is the title itself, so a tap opens Netflix as a card does. */
+  function drawPickRow(pick) {
+    var t = pick.title;
+    var name = titleName(t);
+    var until = untilText(pick.expiry);
+    var href = titleLink(t.id);
+    var body = [
+      drawCover({ id: t.id, name: name, titles: [t] }),
+      el('div', { className: 'pl-text' }, [
+        el('div', { className: 'pl-kicker', text: 'Tonight’s pick' }),
+        el('div', { className: 'pl-name', text: name }),
+        el('div', { className: 'pl-until' }, [icon('clock', 13), until])
+      ]),
+      href != null ? icon('out', 18, 'chev') : null
+    ];
+    if (href == null) return el('li', null, [el('div', { className: 'pl' }, body)]);
+    var link = titleLinkProps(href);
+    link.className = 'pl';
+    link['aria-label'] = 'Tonight’s pick: ' + name + '. Opens in the Netflix app. ' + until + '.';
+    return el('li', null, [el('a', link, body)]);
+  }
+
   function drawList(p) {
     var arts = coverArts(p.titles);
     if (arts.length > 0) app.appendChild(el('div', { className: 'hero-bg', 'aria-hidden': 'true' }, [artImg(arts[0], true)]));
@@ -580,7 +683,7 @@
   }
 
   function drawCard(t) {
-    var name = typeof t.title === 'string' && t.title !== '' ? t.title : 'Title ' + t.id;
+    var name = titleName(t);
     var art = isNetflixArt(t.art)
       ? el('img', { className: 'art', src: t.art, alt: '', loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer' })
       : el('span', { className: 'art art-none', text: name });
@@ -592,11 +695,15 @@
     if (meta !== '') body.push(el('div', { className: 'card-meta', text: meta }));
     var href = titleLink(t.id);
     if (href == null) return el('li', { className: 'card' }, [el('div', null, body)]);
+    return el('li', { className: 'card' }, [el('a', titleLinkProps(href), body)]);
+  }
+
+  function titleLinkProps(href) {
     var link = { href: href };
     // From an iPhone Home Screen app a plain link opens inside the app, where
     // the Netflix app cannot take it; a new window hands it to the system.
     if (isStandalone() && platform() === 'ios') { link.target = '_blank'; link.rel = 'noopener'; }
-    return el('li', { className: 'card' }, [el('a', link, body)]);
+    return link;
   }
 
   function drawSkeleton() {
@@ -994,7 +1101,9 @@
     browserName: browserName, phoneName: phoneName, platformOf: platformOf, isNetflixArt: isNetflixArt, coverArts: coverArts,
     countLine: countLine, isStale: isStale, titleLink: titleLink, relativeTime: relativeTime,
     profileColor: profileColor, coverBackground: coverBackground, titleMeta: titleMeta, claimErrorText: claimErrorText,
-    profilesFrom: profilesFrom, pickActive: pickActive, readPhone: readPhone, migrateStored: migrateStored
+    profilesFrom: profilesFrom, pickActive: pickActive, readPhone: readPhone, migrateStored: migrateStored,
+    titleName: titleName, tonightExpiry: tonightExpiry, listedPlaylists: listedPlaylists, tonightPick: tonightPick,
+    pickToFollow: pickToFollow, untilText: untilText
   };
 
   if (root.document != null && root.document.getElementById('app') != null) start();

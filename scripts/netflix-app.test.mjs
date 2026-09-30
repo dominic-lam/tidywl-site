@@ -129,7 +129,8 @@ test('storage is read defensively', () => {
   assert.equal(P.readPhone(null), null);
   assert.equal(P.readPhone({ pass: '' }), null);
   assert.deepEqual(plain(P.readPhone({ pass: 'nps_a', active: 'gone', profiles: [copyOf('A', 'Dom'), 'junk'], fetchedAt: 'soon' })),
-    { pass: 'nps_a', active: 'A', profiles: [copyOf('A', 'Dom')], fetchedAt: null });
+    { pass: 'nps_a', active: 'A', profiles: [copyOf('A', 'Dom')], fetchedAt: null, pickSeen: null });
+  assert.equal(P.readPhone({ pass: 'nps_a', pickSeen: 1790000000000 }).pickSeen, 1790000000000);
 });
 
 test('a phone paired before one pass read every profile keeps the pass it showed, and forgets the others', () => {
@@ -148,6 +149,57 @@ test('a phone paired before one pass read every profile keeps the pass it showed
   assert.equal(P.migrateStored(null, 'nps_old', null).phone.profiles.length, 0);
   assert.equal(P.migrateStored(null, null, null), null);
   assert.equal(P.migrateStored({ list: [{ pass: '' }] }, null, null), null);
+});
+
+// Tonight's pick (PLAN-tonight-phone). Dates in the machine's local time, as the phone reads them.
+const at = (d, h, m) => new Date(2026, 8, d, h, m).getTime();
+const pickList = (updatedAt, titles) => ({ id: 'tonightpick', name: "Tonight's pick", updatedAt, titles });
+const law = { id: '70113002', title: 'Law Abiding Citizen', type: 'movie', year: 2009, art: null };
+const list = (id, name) => ({ id, name, updatedAt: 1, titles: [] });
+
+test('a pick is gone at the first 5:00 am strictly after it was sent', () => {
+  assert.equal(P.tonightExpiry(at(29, 20, 30)), at(30, 5, 0), '8:30 pm: 5 am tomorrow');
+  assert.equal(P.tonightExpiry(at(30, 1, 0)), at(30, 5, 0), '1 am: 5 am today');
+  assert.equal(P.tonightExpiry(at(30, 4, 59)), at(30, 5, 0), '4:59 am: a minute later');
+  assert.equal(P.tonightExpiry(at(30, 5, 0)), at(31, 5, 0), 'exactly 5 am: the next night');
+  assert.equal(P.tonightExpiry(null), null);
+  assert.equal(P.tonightExpiry(NaN), null);
+});
+
+test('the pick is never a playlist: left out of the list, the others kept in order', () => {
+  const playlists = [list('mfriday0001', 'Friday'), pickList(at(29, 20, 30), [law]), list('mkids000001', 'Kids')];
+  assert.deepEqual(plain(P.listedPlaylists(playlists)).map(p => p.id), ['mfriday0001', 'mkids000001']);
+  assert.equal(P.listedPlaylists([pickList(at(29, 20, 30), [law])]).length, 0, 'counted as no playlists');
+});
+
+test('the pick is shown until its 5 am, and not without a title', () => {
+  const playlists = [list('mfriday0001', 'Friday'), pickList(at(29, 20, 30), [law])];
+  const live = P.tonightPick(playlists, at(29, 21, 0));
+  assert.equal(live.title.title, 'Law Abiding Citizen');
+  assert.equal(live.updatedAt, at(29, 20, 30));
+  assert.equal(live.expiry, at(30, 5, 0));
+  assert.notEqual(P.tonightPick(playlists, at(30, 4, 59)), null, 'still there at 4:59');
+  assert.equal(P.tonightPick(playlists, at(30, 5, 0)), null, 'gone at 5');
+  assert.equal(P.tonightPick([pickList(at(29, 20, 30), [])], at(29, 21, 0)), null);
+  assert.equal(P.tonightPick([pickList('soon', [law])], at(29, 21, 0)), null);
+  assert.equal(P.tonightPick([list('mfriday0001', 'Friday')], at(29, 21, 0)), null);
+  assert.equal(P.titleName({ id: '70113002', title: '' }), 'Title 70113002');
+});
+
+test('the page opens once on the profile of the newest pick it has not opened onto', () => {
+  const withPick = (guid, sent) => ({ profile: { guid, name: guid }, playlists: sent != null ? [list('mfriday0001', 'F'), pickList(sent, [law])] : [] });
+  const profiles = [withPick('A', null), withPick('B', at(29, 20, 30)), withPick('C', at(29, 21, 0))];
+  const now = at(29, 22, 0);
+  assert.deepEqual(plain(P.pickToFollow(profiles, null, now)), { guid: 'C', updatedAt: at(29, 21, 0) }, 'the newest');
+  assert.equal(P.pickToFollow(profiles, at(29, 21, 0), now), null, 'already opened onto: the chip chosen stands');
+  assert.deepEqual(plain(P.pickToFollow([withPick('B', at(29, 20, 30))], at(28, 20, 0), now)), { guid: 'B', updatedAt: at(29, 20, 30) }, 'a newer pick');
+  assert.equal(P.pickToFollow(profiles, null, at(30, 6, 0)), null, 'past 5 am: nothing to follow');
+  assert.equal(P.pickToFollow([], null, now), null);
+});
+
+test('"Until 5:00 am" in the phone\'s own clock format', () => {
+  assert.match(P.untilText(at(30, 5, 0), 'en-US'), /^Until 5:00\sAM$/);
+  assert.equal(P.untilText(at(30, 5, 0), 'en-GB'), 'Until 05:00');
 });
 
 test('the page builds nothing from markup: no innerHTML anywhere', () => {
