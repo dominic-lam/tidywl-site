@@ -405,6 +405,17 @@
       "consistencyTokenJar"
     ],
     "paceMs": 1000,
-    "maxAttempts": 6
+    "maxAttempts": 6,
+    "statusEndpoint": "/youtubei/v1/next?prettyPrint=false",
+    "statusMutationsPath": [
+      "frameworkUpdates",
+      "entityBatchUpdate",
+      "mutations"
+    ],
+    "statusValuePath": [
+      "payload",
+      "likeStatusEntity",
+      "likeStatus"
+    ]
   }
 }
