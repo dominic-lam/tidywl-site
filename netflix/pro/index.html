@@ -153,15 +153,19 @@ last_modified_at: 2026-09-30
   <section class="nf-closer">
     <div class="section-inner">
       <h2 class="section-heading">Try it on your own list</h2>
+      {%- comment -%} The trial's words only while Paddle runs one: trial_days in
+      _data/netflix.yml, set when it is switched on (PLAN-1.1.0, release day). {%- endcomment %}
       <p>
-        Pro starts with 7 days free, card required: cancel before day 8 and you pay nothing.
+        {%- if site.data.netflix.trial_days %}
+        Pro starts with {{ site.data.netflix.trial_days }} days free, card required: cancel before day {{ site.data.netflix.trial_days | plus: 1 }} and you pay nothing.
+        {%- endif %}
         Feature requests and support from subscribers are answered first. Prices, refunds and
         cancelling are on the <a href="/netflix/pricing/">pricing page</a>.
       </p>
 
       <div class="cta-row nf-cta-tail">
-        {%- if site.data.paddle.netflix.onSale %}
-        <a class="btn-primary" href="/netflix/pricing/">Start 7 days free</a>
+        {%- if site.data.paddle.netflix.onSale and site.data.netflix.trial_days %}
+        <a class="btn-primary" href="/netflix/pricing/">Start {{ site.data.netflix.trial_days }} days free</a>
         {%- else %}
         <a class="btn-primary" href="/netflix/pricing/">See pricing</a>
         {%- endif %}
