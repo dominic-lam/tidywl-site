@@ -178,6 +178,13 @@
     }
     .pl-meta { font-size: 13px; color: var(--muted); margin-top: 2px; }
     .chev { flex: none; color: var(--faint); }
+    /* Tonight's pick: the first row, one title marked in red, until 5 am. Its arrow points out, to Netflix. */
+    .pl-kicker {
+      font-size: 11.5px; font-weight: 700; line-height: 1.3; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent-text); margin-bottom: 1px;
+    }
+    .pl-until { display: flex; align-items: center; gap: 5px; font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .pl-until svg { flex: none; }
 
     /* One playlist: its first title's art, blurred, behind the top of the page. */
     .hero-bg {
@@ -329,6 +336,6 @@
        app.js for 4 hours but this page for 10 minutes, so without it a phone
        can pair new markup and styles with the old script. sw.js's offline
        fallback matches ignoring the query. -->
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>

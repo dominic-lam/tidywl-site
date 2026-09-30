@@ -21,6 +21,13 @@ last_modified_at: 2026-09-28
      limiter only — is tidywl-api's as deployed 2026-09-28, recorded in
      docs/claude/CONTRACTS-1.1.0.md § 1 in the extension repo.
 
+     Updated 2026-09-29 for 1.1.0's "Later, on my phone": one title, Tonight's
+     pick, sent as a playlist with the id tonightpick, and the storage key
+     tidywl_tonight_phone_<profile>. Checked 2026-09-29 against the extension's
+     sync-utils.js (planTonightPhone) and dashboard-tonight-phone.js; the
+     contract is docs/claude/PLAN-tonight-phone.md there. The phone's half is
+     this site's netflix/app/.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -64,7 +71,8 @@ last_modified_at: 2026-09-28
       a ratings table on our server, which keeps no record of them; that is request 8, new, under <em>The requests
       that leave your browser</em>. Tonight, with its surprises on, reads a few of Netflix's genre catalogues; it also
       reads your Netflix viewing history and thumbs, so it never offers what you have seen or disliked; and what it
-      remembers stays in your browser. The usage report gains fourteen counts: how often Pro's offer is
+      remembers stays in your browser. Its <em>Later, on my phone</em> sends one title, the pick you press it on, to your
+      paired phones through Pro's playlist sync, until 5 am. The usage report gains fourteen counts: how often Pro's offer is
       shown and its Upgrade button pressed, and how Tonight is used.
       Updated 27 September 2026 for version 1.0.0, which adds <strong>TidyWL Pro</strong>: Undo for removals, pins,
       two clean-up rules, stats, up to 50 playlists a profile, and playlist sync between your browsers and onto your
@@ -82,7 +90,7 @@ last_modified_at: 2026-09-28
     <h2>The short version</h2>
     <ul>
       <li><strong>Your Netflix data stays in your browser.</strong> Your watch state, your searches and, with Pro, the viewing history and thumbs Tonight reads are never sent to us.</li>
-      <li><strong>Your playlists stay in your browser too — unless you have Pro and switch sync on.</strong> Then this profile's playlists, with each title's name, year and picture link, and the profile's name, go to our server, so your other browsers and your phone can show them. Only from browsers where you switched it on. Never for a free install.</li>
+      <li><strong>Your playlists stay in your browser too — unless you have Pro and switch sync on.</strong> Then this profile's playlists, with each title's name, year and picture link, and the profile's name, go to our server, so your other browsers and your phone can show them. So does a title you send to your phone from Tonight. Only from browsers where you switched it on. Never for a free install.</li>
       <li><strong>If you buy Pro, your licence key goes to tidywl.com.</strong> It switches Pro on and is checked again when you open the dashboard, at most once every 15 minutes. Paddle takes the payment; your card details and your email never reach us.</li>
       <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard for the first time in a day, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
       <li><strong>There is no switch in the extension to turn this off.</strong> Uninstalling stops it, and records not updated for 12 months are deleted.</li>
@@ -170,6 +178,7 @@ last_modified_at: 2026-09-28
           <tr><td><code>tidywl_tonight_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0 — a free install writes nothing here. What Tonight remembers for this profile: your occasions, up to five — the name you give each one, the who's watching, how long and mood it stands for, its icon and when you last used it; your last answers, when you gave them and the picks they dealt, so opening Tonight again within four hours shows the same picks; the films you pressed <em>Play</em> on in the last day, so they leave the picks; for <em>With family</em>, the youngest viewer's rating level you chose; whether surprises from outside My List are on; the poster or the cards layout; each title you put off with <em>Not tonight</em> and until when (seven days), when you did so over the last thirty days — so a title you keep putting off can be marked in My List — and the id of the last main pick shown, so the next one is a different title. Titles by id; the only names are the ones you give your occasions. Pruned on every read and write. Never sent.</td></tr>
           <tr><td><code>tidywl_tonight_pool_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0. Today's surprises for Tonight: the rows it read from Netflix's genre catalogues — each title's id, name, type, year, maturity rating, season count and box-art address as Netflix returned them, and each genre's name — with the IMDb rating and votes found for each title, the runtime of the few films it read one for, and which moods were asked for today. Anything older than a day is dropped on the next write. Never sent.</td></tr>
           <tr><td><code>tidywl_viewed_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0. What Tonight knows you have already watched or rated on Netflix, so it does not offer it: for each title id — a film's, or the show's for an episode — when it was last played, and each rated title's thumb (down, up or love), with when it was last read. At most 5,000 of each, newest kept. Never sent anywhere; removed when you uninstall.</td></tr>
+          <tr><td><code>tidywl_tonight_phone_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0 — a free install writes nothing here. The one title you sent to your phone with <em>Later, on my phone</em> in Tonight: its id, name, type, year and box-art address, when you sent it, when you undid it, and when it reached our server. It is kept apart from your playlists, so Chrome's own sync does not copy it. Forgotten once its 5 am has passed or it was undone, and nothing is left to send.</td></tr>
           <tr><td><code>tidywl_playlist_cap_exempt</code></td><td><code>true</code> in a browser that had the extension before version 1.0.0, so it keeps making up to 50 playlists without Pro. Nothing else.</td></tr>
           <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once the rating ask on a removal's summary has been answered or declined, so it is not shown again in this browser.</td></tr>
           <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
@@ -245,7 +254,8 @@ last_modified_at: 2026-09-28
       <em>Sync now</em>. Each sync first asks the server for its copy, then sends what is newer here.
     </p>
     <p>
-      <strong>Not sent, even with sync on:</strong> your My List, your watch state, your searches, your pins, your IMDb
+      <strong>Not sent, even with sync on:</strong> your My List — except the one title you send to your
+      phone, below — your watch state, your searches, your pins, your IMDb
       ratings, or another profile's playlists. Your Netflix password is never seen by the extension at all.
     </p>
 
@@ -264,6 +274,18 @@ last_modified_at: 2026-09-28
       <li>Titles' pictures load on the phone straight from Netflix's image servers, which see the request as they would from the Netflix app.</li>
       <li><em>Remove</em>, beside a phone in the extension, stops that pass for good. The next time the phone opens the page, it deletes what it kept.</li>
     </ul>
+    <p>
+      <strong>Tonight's pick, on your phone</strong> — from version 1.1.0. When you press <em>Later, on my phone</em>
+      under a pick in Tonight, that one title goes to our server at once — if sync is off in that browser, Tonight asks
+      you to switch it on first, and sends nothing until you do: its Netflix id, name, whether it is a film
+      or a series, its year and the address of its picture, as a playlist named <em>Tonight's pick</em> in the same
+      copy your paired phones read. Nothing else from Tonight or your My List goes with it, and nothing goes unless you
+      press it. Your phone shows it above your playlists and hides it after 5 am. It is deleted from our server by the
+      next sync after 5 am of any of your browsers on version 1.1.0 or later, or by the next sync after you press
+      <em>Undo</em>; a title sent
+      later replaces it. A browser still on version 1.0.0 lists it as an ordinary playlist until the deletion reaches
+      it. The phone remembers when the last pick it opened onto was sent, so it opens on that pick's profile once.
+    </p>
 
     <h2>The requests that leave your browser</h2>
     <p>
@@ -553,6 +575,7 @@ last_modified_at: 2026-09-28
       <li><strong>Playlists</strong> stay until you delete them, and <strong>pins</strong> until you unpin them.</li>
       <li><strong>The usage report's record</strong> is kept on our server as described below, and deleted after 12 months without a report.</li>
       <li><strong>Pro's copy of your playlists</strong> stays on our server while your subscription is active, updated by each sync. Turning sync off stops that browser sending; it does not delete the copy, because your other browsers and your phone still use it. A deleted playlist leaves only its id and two times. <strong>When a subscription ends, the copy — every profile, playlist and phone under the key — is deleted 90 days later</strong>, so it is still there if you come back within that time.</li>
+      <li><strong>Tonight's pick on your phone</strong> is hidden there after 5 am, and deleted from our server by the next sync of any of your browsers on version 1.1.0 or later after that, or after you press <em>Undo</em>.</li>
       <li><strong>A paired phone</strong> stays until you remove it in the extension. An unused pairing code is deleted when the next one is made, and cannot be used after ten minutes in any case.</li>
       <li><strong>Uninstalling</strong> removes everything the extension stored in that browser, and stops the usage report. It does not delete Pro's copy on our server — see <em>Requests about your data</em>. If you want to be certain your playlists are gone from your <em>other</em> signed-in Chrome browsers as well, delete them in the dashboard before you uninstall, so the deletion is what syncs.</li>
     </ul>
