@@ -8,7 +8,7 @@ layout: null
 ---
 # TidyWL for Netflix
 
-> Free Chrome extension that opens a dashboard over netflix.com for Netflix's My List: an IMDb rating and details on every title, filters and sorting, bulk remove, search with the categories Netflix hides, and the custom playlists Netflix does not offer. No account. Since version 1.1.0 it also puts IMDb ratings on Netflix's own title cards. An optional subscription, TidyWL Pro for Netflix, available since version 1.0.0, adds Tonight (a pick for the time and mood you have), Undo, pins, clean-up rules, stats, more playlists, and playlists synced to other browsers and a phone.
+> Free Chrome extension that opens a dashboard over netflix.com for Netflix's My List: an IMDb rating and details on every title, filters and sorting, bulk remove, search with the categories Netflix hides, and the custom playlists Netflix does not offer. No account. Since version 1.1.0 it also puts IMDb ratings on Netflix's own title cards. An optional subscription, TidyWL Pro for Netflix, available since version 1.0.0, adds Tonight (a pick for the time and mood you have), Undo, pins, clean-up rules, stats, more playlists, and playlists synced to other browsers and a phone, with a 7-day free trial since version 1.1.0.
 
 On the Chrome Web Store it is listed as **Watch Later Tidy for Netflix**; inside the extension it is called TidyWL for Netflix. It is a separate extension from TidyWL for YouTube, by the same developer, described at [tidywl.com/llms.txt](https://tidywl.com/llms.txt). Nothing about the YouTube extension applies to this one: not its features, its browsers, its prices, its Pro or its privacy policy.
 
@@ -43,7 +43,7 @@ A paid subscription, available since version 1.0.0. It is separate from TidyWL P
 - **Mobile sync** — playlists kept in step through tidywl.com across browsers Chrome's own sync does not reach, such as Brave or another Google account, and readable on a phone at tidywl.com/netflix/app after pairing it once with a code from the extension. The phone is read-only.
 - **Feature requests and support answered first.**
 
-Undo, pins, the rules, stats and Tonight run in the browser. Since version 1.1.0, Pro switches itself on in the browser that checked out; a key can also be pasted in the dashboard, or found again from any Paddle receipt. Pro is a key, not an account: no password, and Paddle takes the payment, so the buyer's card and email never reach TidyWL. Prices, refunds and terms are on the [pricing page](https://tidywl.com/netflix/pricing/).
+Undo, pins, the rules, stats and Tonight run in the browser. Pro starts with a 7-day free trial, card required, since version 1.1.0: nothing is charged until the trial ends, and cancelling before then costs nothing. After checkout, Pro switches itself on in that browser; a key can also be pasted in the dashboard, or found again from any Paddle receipt. Pro is a key, not an account: no password, and Paddle takes the payment, so the buyer's card and email never reach TidyWL. Prices, refunds and terms are on the [pricing page](https://tidywl.com/netflix/pricing/).
 
 ## Privacy
 

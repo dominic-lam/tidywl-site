@@ -22,3 +22,8 @@ version: 1.0.0
 privacy_updated: 2026-09-30
 # The day the policy first went live. Rendered as "Published"; never bumped.
 privacy_published: 2026-09-20
+
+# Pro's free trial, in days, while Paddle runs one on both Netflix prices. The
+# Pro page's closing words read it; absent means no trial is promised. Set on
+# release day, after the trial is on in Paddle (PLAN-1.1.0 decision 23).
+trial_days: 7
