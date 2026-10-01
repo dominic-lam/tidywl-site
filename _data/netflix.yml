@@ -14,7 +14,7 @@
 
 published: true
 store_url: https://chromewebstore.google.com/detail/watch-later-tidy-for-netf/gbgdgeamachehbegdghnhpkiebahmafm
-version: 1.0.0
+version: 1.1.0
 
 # The date the privacy policy last changed, rendered on the page and used as
 # its `last_modified_at`. Bump it when the policy's substance changes — not
