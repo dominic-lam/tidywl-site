@@ -17,6 +17,14 @@ faq:
 
 YouTube gives your Liked videos no search box. The search bar at the top searches all of YouTube, and the Liked videos page only loads a batch at a time as you scroll, so finding one video you liked two years ago means scrolling for a long time. A browser extension can load the whole list and search it: TidyWL lets you search your likes by title, channel or the uploader's hidden tags, and sort them so the oldest likes come first.
 
+<div class="video-wrapper">
+<button type="button" class="video-facade" data-video-id="8ia-hwuiDb4" aria-label="Play the video: how to search and unlike all your liked videos">
+<img src="/assets/liked-videos-video-poster.jpg" alt="" width="1280" height="720" decoding="async">
+<span class="video-play" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><polygon points="7 4 20 12 7 20 7 4"/></svg></span>
+</button>
+</div>
+<p class="video-note">Nothing loads from YouTube until you press play.</p>
+
 ## Why YouTube's Liked videos are hard to search
 
 Liked videos is a playlist that YouTube fills for you, newest like first. The page shows the first batch and loads more only as you scroll toward the bottom. Your browser's find-in-page (Ctrl+F, or Cmd+F on a Mac) can only see the videos that have already loaded, so on a long list you have to scroll to the end before it can find anything.

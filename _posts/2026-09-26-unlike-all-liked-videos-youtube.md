@@ -19,6 +19,14 @@ faq:
 
 YouTube has no "unlike all" button. On youtube.com you can only remove a like one video at a time, which is hopeless when years of likes have piled up. A browser extension can do it in bulk: TidyWL opens your Liked videos as a list you can filter, then removes the likes on everything you select in one run. You can clear the whole list, or remove likes only from certain channels, topics or lengths and keep the rest.
 
+<div class="video-wrapper">
+<button type="button" class="video-facade" data-video-id="8ia-hwuiDb4" aria-label="Play the video: how to search and unlike all your liked videos">
+<img src="/assets/liked-videos-video-poster.jpg" alt="" width="1280" height="720" decoding="async">
+<span class="video-play" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><polygon points="7 4 20 12 7 20 7 4"/></svg></span>
+</button>
+</div>
+<p class="video-note">Nothing loads from YouTube until you press play.</p>
+
 ## The slow way YouTube gives you
 
 Open **Liked videos** in YouTube's left menu. For each video, open the three-dot menu and choose to remove it from Liked videos, or open the video and click the thumbs-up again to take the like back. Each removal is one click at a time, and the list only loads a batch of videos as you scroll.
