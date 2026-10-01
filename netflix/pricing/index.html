@@ -75,11 +75,16 @@ faq:
           <ul class="plan-list">
             <li>Search, filter and sort My List</li>
             <li>Bulk remove, and review the exact list first</li>
-            <li>Custom playlists, and Move from My List</li>
+            <li>Five playlists, and Move from My List</li>
             <li>Search Netflix and browse by genre</li>
+            <li>IMDb ratings on My List and on Netflix's own rows</li>
             <li>Export, import, and no account or sign-in</li>
           </ul>
         </div>
+        {%- comment -%} The trial's words only while Paddle runs one: trial_days in
+        _data/netflix.yml, as on /netflix/pro/. Without it the card is 1.0.0's:
+        the billed line, "Get Pro" and the plain refund line. {%- endcomment %}
+        {%- assign trial_days = site.data.netflix.trial_days %}
         <div class="plan best">
           <div class="plan-head">
             <h2 class="plan-name">Pro</h2>
@@ -88,26 +93,54 @@ faq:
               <button type="button" class="billing-opt" data-billing-set="yearly" aria-pressed="false">Yearly <span class="billing-save">· Save 37%</span></button>
             </div>
           </div>
-          <p class="plan-sub">A list you'd actually pick from</p>
+          <p class="plan-sub plan-promise">Tonight picks what to watch, your own list first</p>
           <p class="plan-price"><s class="price-was is-yearly">$3.99</s><s class="price-was is-monthly"></s><span class="is-yearly"><span class="sr-only">Yearly plan: </span><span class="price-amount is-yearly">$2.50</span></span><span class="is-monthly"><span class="sr-only">, monthly plan: </span><span class="price-amount is-monthly">$3.99</span></span> <small>USD / month</small></p>
+          {%- unless trial_days %}
           <p class="plan-billed"><span class="is-yearly">$29.99 billed annually</span><span class="sr-only">; </span><span class="is-monthly">billed monthly</span></p>
+          {%- endunless %}
           <p class="plan-promo" hidden><span class="plan-promo-label"></span><span class="plan-promo-note"></span></p>
+          {%- if trial_days %}
+          <!-- The trial as three stops, right above the button that starts it:
+               the card's timeline (C3, PLAN-1.1.0 decision 26), which replaces
+               the billed line. The amounts are the no-JS floor; the script
+               repaints them with the first period's price and the renewal. -->
+          <ol class="plan-timeline" aria-label="What you pay, and when">
+            <li><span class="plan-when">Today</span><span><strong>$0</strong> · all of Pro, card required</span></li>
+            <li><span class="plan-when">In {{ trial_days }} days</span><span><strong><span class="tl-first is-monthly">$3.99</span><span class="tl-first is-yearly">$29.99</span></strong> · unless you cancel</span></li>
+            <li><span class="plan-when">Then</span><span><strong><span class="tl-renews is-monthly">$3.99/month</span><span class="tl-renews is-yearly">$29.99/year</span></strong> · renews until you cancel</span></li>
+          </ol>
+          {%- endif %}
           {%- if site.data.paddle.netflix.onSale and site.data.paddle.clientToken and site.data.paddle.netflix.prices.monthly and site.data.paddle.netflix.prices.yearly %}
           <button type="button" class="plan-cta plan-cta-buy" id="pro-buy"
                   data-price-monthly="{{ site.data.paddle.netflix.prices.monthly }}"
-                  data-price-yearly="{{ site.data.paddle.netflix.prices.yearly }}">Start 7-day free trial</button>
+                  data-price-yearly="{{ site.data.paddle.netflix.prices.yearly }}">{% if trial_days %}Start {{ trial_days }} days free{% else %}Get Pro{% endif %}</button>
           <p class="plan-cta-note" id="pro-buy-note" hidden></p>
           {%- else %}
           <button type="button" class="plan-cta plan-cta-locked" disabled>Arrives with version 1.0.0</button>
           {%- endif %}
-          <p class="plan-refund"><strong>7 days free, card required.</strong> Cancel before day 8 and you pay nothing. After that, a 14-day full refund on every charge, no questions asked.</p>
+          <p class="plan-refund">{% if trial_days %}After that, a 14-day full refund on every charge, no questions asked{% else %}14-day full refund, no questions asked{% endif %}</p>
           <p class="plan-list-head">Everything in Free, and:</p>
           <ul class="plan-list">
-            <li>Undo removals — 90 days of history, on this device</li>
-            <li>Pin a title and nothing removes it — no rule, no Move, and no bulk remove you run yourself</li>
-            <li>Clean-up rules — archive what you've watched, and what has waited six months</li>
-            <li>Stats — hours of film waiting, and what you add against what you watch</li>
-            <li>Mobile sync — your playlists across browsers, and on your phone</li>
+            <!-- Tonight first and set apart, as on the card: Pro's main thing,
+                 with its one-line demo. No rating in the demo, on purpose — on
+                 a paywall a rating would read as a Pro feature. -->
+            <li class="plan-tonight">
+              <p class="plan-tonight-name"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false"><rect x="1.25" y="8.25" width="4" height="7.5" rx="1" fill="none" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.5"/><rect x="18.75" y="8.25" width="4" height="7.5" rx="1" fill="none" stroke="currentColor" stroke-opacity="0.6" stroke-width="1.5"/><rect x="7" y="4.5" width="10" height="15" rx="1.5" fill="currentColor"/></svg>Tonight</p>
+              <p class="plan-tonight-text">Say how long you have and your mood. Tonight picks one title and two backups, My List first.</p>
+              <p class="plan-tonight-demo">
+                <span class="plan-tonight-chip">A movie</span>
+                <span class="plan-tonight-chip">Gripping</span>
+                <span class="plan-tonight-arrow" aria-hidden="true">→</span>
+                <span><b>Sample title</b> · 1h 52m <em>+ 2 backups</em></span>
+                <span class="plan-tonight-sample">Sample</span>
+              </p>
+            </li>
+            <li>Undo removals, 90 days back, on this device</li>
+            <li>Pin a title and TidyWL won't remove it</li>
+            <li>Clean-up rules for watched and six-month-old titles</li>
+            <li>Stats: hours waiting, added against watched</li>
+            <li>Up to 50 playlists a profile</li>
+            <li>Mobile sync to your phone and other browsers</li>
             <li>Feature requests and support answered first</li>
           </ul>
           <p class="plan-more"><a href="/netflix/pro/">See what each Pro feature does</a></p>
@@ -115,7 +148,7 @@ faq:
       </div>
       <ul class="plans-both" aria-label="True on either plan">
         <li>Everything free does today stays free</li>
-        <li>7 days free on Pro, then a 14-day full refund on every charge — no questions, no conditions</li>
+        <li>{% if trial_days %}{{ trial_days }} days free on Pro, then a 14-day{% else %}14-day{% endif %} full refund on every charge — no questions, no conditions</li>
         <li>Cancel any time</li>
       </ul>
       <p class="plans-foot">Prices in US dollars before tax. Checkout, by Paddle, shows your currency and any tax for your country. <a href="/netflix/terms/">Terms of sale</a> · <a href="/netflix/refunds/">Refund policy</a></p>
@@ -238,6 +271,24 @@ faq:
   }
   .plan-promo-label { font-size: 0.9rem; font-weight: 700; color: var(--accent); }
   .plan-promo-note { font-size: 0.82rem; color: var(--text-subtle); line-height: 1.5; }
+  /* Pro's one line is Tonight's promise, so it reads as a claim, not a caption. */
+  .plan-promise { font-weight: 500; color: var(--text); }
+
+  /* The trial's three stops — Today, In 7 days, Then — as on the card. */
+  .plan-timeline {
+    list-style: none; margin: 0; padding: 0;
+    border: 1px solid var(--border); border-radius: 8px; background: var(--bg-card);
+  }
+  .plan-timeline li {
+    display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 8px;
+    padding: 8px 12px; font-size: 0.85rem; line-height: 1.4; color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+  }
+  .plan-timeline li + li { border-top: 1px solid var(--border-subtle); }
+  .plan-when { font-weight: 600; color: var(--text); }
+  .plan-timeline strong { font-weight: 700; color: var(--text); }
+  /* Today's $0 is the reason to press the button. */
+  .plan-timeline li:first-child strong { font-size: 0.95rem; }
 
   .plan-cta {
     width: 100%; justify-content: center; margin-top: 8px;
@@ -245,7 +296,7 @@ faq:
   }
   /* The refund promise under the button that asks for money (2026-09-27). */
   .plan-refund {
-    margin: 8px 0 0; text-align: center;
+    margin: 8px 0 0; text-align: center; text-wrap: balance;
     font-size: 0.8rem; color: var(--text-subtle);
   }
   /* No checkout exists yet, so this is a real disabled button, not a dead link.
@@ -296,6 +347,34 @@ faq:
     font-size: 0.92rem; line-height: 1.45; color: var(--text-secondary); text-wrap: pretty;
   }
   .plan-list li::before { content: "\2713"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  /* Tonight, first on Pro's list and set apart from the rest, as on the card. */
+  .plan-list li.plan-tonight {
+    display: block; margin-bottom: 4px; padding: 12px 14px;
+    border: 1px solid var(--highlight-border); border-radius: 10px; background: var(--bg-card);
+  }
+  .plan-list li.plan-tonight::before { content: none; }
+  .plan-tonight-name {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 1rem; font-weight: 700; color: var(--text);
+  }
+  .plan-tonight-name svg { color: var(--accent); flex-shrink: 0; }
+  .plan-tonight-text { margin: 4px 0 10px; color: var(--text); }
+  .plan-tonight-demo {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 7px;
+    font-size: 0.82rem; line-height: 1.4; color: var(--text);
+  }
+  .plan-tonight-chip {
+    padding: 1px 9px; border: 1px solid var(--border); border-radius: 999px;
+    background: var(--bg-alt); white-space: nowrap;
+  }
+  .plan-tonight-arrow { color: var(--text-subtle); }
+  .plan-tonight-demo b { font-weight: 600; }
+  .plan-tonight-demo em { font-style: normal; color: var(--text-secondary); }
+  .plan-tonight-sample {
+    padding: 0 8px; border: 1px dashed var(--border-strong); border-radius: 999px;
+    font-size: 0.65rem; font-weight: 700; line-height: 1.6; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--text-secondary);
+  }
   /* The way to /netflix/pro/, one screenshot per item above. */
   .plan-more { margin-top: 4px; font-size: 0.88rem; }
   .plan-more a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
@@ -417,6 +496,13 @@ faq:
         yearly: covers('yearly') ? dPrices.yearly : regular.yearly
       };
       const first = whole && d.firstPeriodOnly === true;
+      // What each period charges after its first: the regular price where a
+      // discount covers the first period only, else the price itself — the
+      // trial's "Then" row (pricing.js `renewal`).
+      const renewal = {
+        monthly: covers('monthly') && first ? regular.monthly : prices.monthly,
+        yearly: covers('yearly') && first ? regular.yearly : prices.yearly
+      };
       const anchor = regular.monthly;
       const monthlyEq = perMonth(prices.yearly);
       const pct = savingPct(anchor, prices.yearly);
@@ -434,7 +520,9 @@ faq:
           was: prices.monthly < anchor ? usd(anchor) : null,
           billed: first && covers('monthly')
             ? usd(prices.monthly) + ' for your first month, then ' + usd(regular.monthly) + '/month'
-            : 'billed monthly'
+            : 'billed monthly',
+          first: usd(prices.monthly),
+          renews: usd(renewal.monthly) + '/month'
         },
         yearly: {
           amount: usd(monthlyEq),
@@ -442,6 +530,8 @@ faq:
           billed: first && covers('yearly')
             ? usd(prices.yearly) + ' for your first year, then ' + usd(regular.yearly) + '/year'
             : usd(prices.yearly) + ' billed annually',
+          first: usd(prices.yearly),
+          renews: usd(renewal.yearly) + '/year',
           badge: badge
         }
       };
@@ -455,6 +545,10 @@ faq:
       set('.plan-billed .is-yearly', model.yearly.billed);
       set('.price-was.is-monthly', model.monthly.was || '');
       set('.price-was.is-yearly', model.yearly.was || '');
+      set('.tl-first.is-monthly', model.monthly.first);
+      set('.tl-first.is-yearly', model.yearly.first);
+      set('.tl-renews.is-monthly', model.monthly.renews);
+      set('.tl-renews.is-yearly', model.yearly.renews);
 
       const save = plans.querySelector('.billing-save');
       if (save) {
