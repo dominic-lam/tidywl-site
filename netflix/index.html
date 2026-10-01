@@ -2,10 +2,10 @@
 layout: netflix
 permalink: /netflix/
 title: "TidyWL for Netflix — custom playlists and a real dashboard for My List"
-description: "A free Chrome extension that opens a full dashboard over Netflix My List: IMDb ratings, runtime and genre on every card, filters, custom playlists, and bulk remove."
+description: "A free Chrome extension for Netflix: IMDb ratings on Netflix's own title cards, and a full dashboard over My List with runtime and genre on every card, filters, custom playlists and bulk remove."
 og_image: /assets/netflix-og-image.jpg
 json_ld_app: true
-last_modified_at: 2026-09-28
+last_modified_at: 2026-09-30
 
 # One source for the FAQ: the visible list below loops over this, and the
 # layout emits the same items as FAQPage JSON-LD. Editing one edits both.
@@ -21,10 +21,10 @@ faq:
     a: "TidyWL for Netflix reads and changes your own list through the same endpoints netflix.com itself calls, using the session you are already signed in with. It is doing what you could do by hand in the Netflix web app, faster. It is not a downloader: it never touches video, and Netflix's playback DRM is not involved anywhere. That said, it is an independent extension and Netflix has not reviewed or endorsed it, so use it on your own account and your own judgement."
   - id: account
     q: "Do I need an account, a sign-in, or a subscription to TidyWL?"
-    a: "No. The dashboard is free, and there is no TidyWL account and no sign-in. You need a Netflix subscription and to be signed in to netflix.com in Chrome. TidyWL Pro, a paid subscription, adds Undo for removals, pins, clean-up rules, stats, up to 50 playlists, and playlist sync between browsers and onto your phone; it is a key, not an account — no password, and we never learn your email."
+    a: "No. The dashboard is free, and there is no TidyWL account and no sign-in. You need a Netflix subscription and to be signed in to netflix.com in Chrome. TidyWL Pro, a paid subscription, adds Tonight (one pick and two backups from My List for the time and mood you have), Undo for removals, pins, clean-up rules, stats, up to 50 playlists, and playlist sync between browsers and onto your phone; it is a key, not an account — no password, and we never learn your email. Each Pro feature is shown at tidywl.com/netflix/pro/."
   - id: privacy
     q: "Does my Netflix data get sent anywhere?"
-    a: "Your list, your titles, your watch state and your searches stay in your browser. Your playlists do too, unless you have TidyWL Pro and switch on sync: then that profile's playlists, with each title's name, year and picture link, and the profile's name, go to tidywl.com so your other browsers and your phone can show them. Four requests do leave it, and none of them says anything about you: a public settings file from tidywl.com that everyone receives identically, IMDb's public daily ratings file, Netflix's numeric title ids sent to Wikidata to find the matching IMDb id — or, for a title its id cannot find, the title's name — and, for a title Wikidata cannot match at all, its name sent to IMDb's search. From version 0.2.0 there is also a usage report: a random install id and lifetime counts, such as how many titles you have removed or how many searches you have run — never which titles, what you searched for or which profile. There is no account. The privacy policy at tidywl.com/netflix/privacy/ lists every request, every field of the report, and everything Pro sync sends."
+    a: "Your list, your titles, your watch state and your searches stay in your browser. Your playlists do too, unless you have TidyWL Pro and switch on sync: then that profile's playlists, with each title's name, year and picture link, and the profile's name, go to tidywl.com so your other browsers and your phone can show them. With Pro, Tonight also reads your Netflix viewing history and thumbs, so it never offers what you have seen or disliked; that stays in your browser too. Five requests do leave it, and none of them says anything about you: a public settings file from tidywl.com that everyone receives identically, IMDb's public daily ratings file, Netflix's numeric title ids sent to Wikidata to find the matching IMDb id, a title's name sent to IMDb's search and Wikidata's when its id cannot be matched, and, from version 1.1.0, the numeric ids of the Netflix titles on your screen sent to our ratings table, which answers with their IMDb ratings. From version 0.2.0 there is also a usage report: a random install id and lifetime counts, such as how many titles you have removed or how many searches you have run — never which titles, what you searched for or which profile. There is no account. The privacy policy at tidywl.com/netflix/privacy/ lists every request, every field of the report, and everything Pro sync sends."
   - id: playlists
     q: "Where do custom playlists live, and what happens if I uninstall?"
     a: "A playlist is a name and a list of Netflix title ids, stored in Chrome's own sync storage. That means Chrome replicates it to your other signed-in Chrome browsers for free, through Google, not through us. With TidyWL Pro and sync switched on, a second copy is kept on tidywl.com, so it also reaches Brave, another Google account and your phone. Playlists live inside the extension and are never written to your Netflix account, so nothing you do in TidyWL changes what another person on the account sees. Uninstalling removes everything the extension stored in that browser."
@@ -47,9 +47,9 @@ faq:
     <p class="section-label">Free Chrome extension</p>
     <h1>Your Netflix My List, <em>finally worth opening</em></h1>
     <p class="nf-hero-sub">
-      A full dashboard on top of Netflix. IMDb ratings, runtime and genre on every card,
-      filters that cut hundreds of saved titles down to the three you would actually watch
-      tonight — and the custom playlists Netflix has never offered.
+      IMDb ratings right on Netflix's title cards, and a full dashboard on top of My List:
+      runtime and genre on every card, filters that cut hundreds of saved titles down to the
+      three you would actually watch tonight — and the custom playlists Netflix has never offered.
     </p>
 
     {%- if site.data.netflix.published %}
@@ -73,9 +73,9 @@ faq:
     {%- endif %}
 
     <figure class="nf-shot">
-      <img src="/assets/netflix-dashboard-my-list-dark.webp"
-           alt="The TidyWL dashboard open over Netflix, showing 44 titles as cards with IMDb ratings, runtime and genre tags, a genre breakdown down the left, and a toolbar of sort and filter controls."
-           width="1204" height="984" loading="eager" decoding="async">
+      <img src="/assets/netflix-landing-my-list.webp"
+           alt="The TidyWL dashboard open over Netflix: 141 titles as cards, each with its IMDb rating in a corner of the art and its year, runtime or seasons, maturity rating and genres, a genre breakdown down the left, and a toolbar of sort, filter and selection controls."
+           width="1600" height="1308" loading="eager" decoding="async">
     </figure>
     <p class="nf-shot-caption">The dashboard, opened over Netflix with Alt+L. Titles are from a test profile.</p>
   </div>
@@ -92,6 +92,12 @@ faq:
 
     <div class="nf-rows">
       <div class="nf-row">
+        <p class="nf-row-from"><strong>On Netflix:</strong> no IMDb rating anywhere. Is it any good? That is another tab.</p>
+        <span class="nf-row-arrow" aria-hidden="true">→</span>
+        <p class="nf-row-to"><strong>With TidyWL:</strong> the <strong>IMDb rating on Netflix's own title cards</strong> — the home page, search and every category.</p>
+      </div>
+
+      <div class="nf-row">
         <p class="nf-row-from"><strong>On Netflix:</strong> one flat list, in an order you did not choose and cannot change.</p>
         <span class="nf-row-arrow" aria-hidden="true">→</span>
         <p class="nf-row-to"><strong>With TidyWL:</strong> sort by <strong>IMDb rating, runtime, year, title or type</strong> — and see what you have already watched.</p>
@@ -100,7 +106,7 @@ faq:
       <div class="nf-row">
         <p class="nf-row-from"><strong>On Netflix:</strong> no folders. Everything you ever saved sits in the same place.</p>
         <span class="nf-row-arrow" aria-hidden="true">→</span>
-        <p class="nf-row-to"><strong>With TidyWL:</strong> <strong>custom playlists</strong> — Tonight, Under 90 minutes, With the kids — five free, up to 50 with Pro.</p>
+        <p class="nf-row-to"><strong>With TidyWL:</strong> <strong>custom playlists</strong> — Weekend, Under 90 minutes, With the kids — five free, up to 50 with Pro.</p>
       </div>
 
       <div class="nf-row">
@@ -120,6 +126,32 @@ faq:
         <span class="nf-row-arrow" aria-hidden="true">→</span>
         <p class="nf-row-to"><strong>With TidyWL:</strong> tick as many as you like, see the exact list, and <strong>remove them in one run</strong>.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ON NETFLIX ITSELF ──
+     1.1.0's rating badges, src/content-scripts/rating-badges.js in the
+     extension repo; the 100 is MIN_VOTES there. Free, and it stays free:
+     IMDb ratings are never inside a Pro feature (MONETIZATION-STRATEGY). -->
+<section id="ratings">
+  <div class="section-inner">
+    <p class="section-label">On Netflix itself</p>
+    <h2 class="section-heading">An IMDb rating on every title card</h2>
+
+    <div class="nf-tab">
+      <p>
+        No dashboard needed. On Netflix's home page, in search and in every category, each
+        title's art carries its IMDb rating in the top-right corner, and a click opens the title
+        on IMDb. A title with fewer than 100 votes gets no badge: a rating from a handful of
+        people misleads more than it helps.
+      </p>
+      <figure class="nf-shot">
+        <img src="/assets/netflix-landing-badges.webp"
+             alt="Three rows of Netflix's own home page, Bingeworthy TV Comedies, 30-Minute Laughs and Doing Crime, Looking Fine, with an IMDb rating badge in the top-right corner of every title's art, such as The Office at 9.0 and Peaky Blinders at 8.7."
+             width="1600" height="564" loading="lazy" decoding="async">
+      </figure>
+      <p class="nf-shot-caption">Netflix's home page with the extension installed. Free, from version 1.1.0.</p>
     </div>
   </div>
 </section>
@@ -149,9 +181,9 @@ faq:
         <li><strong>Export</strong> the list, or just what you filtered to, as CSV or JSON</li>
       </ul>
       <figure class="nf-shot">
-        <img src="/assets/netflix-dashboard-bulk-select-dark.webp"
-             alt="The dashboard with several titles ticked and a bulk actions bar showing the number selected."
-             width="1204" height="984" loading="lazy" decoding="async">
+        <img src="/assets/netflix-landing-bulk-select.webp"
+             alt="The dashboard with four titles ticked, Zodiac, Everwood, Breaking Bad and Nobody Wants This, and a bar at the bottom reading 4 titles selected."
+             width="1600" height="1308" loading="lazy" decoding="async">
       </figure>
     </div>
 
@@ -176,9 +208,9 @@ faq:
         <li><strong>An honest answer</strong> when Netflix did not recognise what you typed</li>
       </ul>
       <figure class="nf-shot">
-        <img src="/assets/netflix-dashboard-hidden-genres-dark.webp"
-             alt="Browse by genre with the Hidden menu open, listing categories such as Action Comedy Movies and Comic Book and Superhero Movies above a grid of film cards."
-             width="1204" height="984" loading="lazy" decoding="async">
+        <img src="/assets/netflix-landing-hidden-genres.webp"
+             alt="Browse by genre on Comedies, with the Hidden menu open on 123 categories such as Action Comedy Movies and Comic Book and Superhero Movies, above a grid of film cards with IMDb ratings."
+             width="1600" height="1308" loading="lazy" decoding="async">
       </figure>
       <!-- The 22 and the 123 are read off this screenshot's own chips, on the
            en-CA test profile. Netflix names a different subset per region, so
@@ -190,9 +222,9 @@ faq:
       </p>
 
       <figure class="nf-shot">
-        <img src="/assets/netflix-dashboard-search-dark.webp"
-             alt="The Search tab showing results for &quot;space&quot; as a grid of box art with IMDb ratings, and a panel open beside one card with its synopsis, cast and genres."
-             width="1204" height="984" loading="lazy" decoding="async">
+        <img src="/assets/netflix-landing-search.webp"
+             alt="The Search tab showing results for &quot;space&quot; with IMDb ratings, and a panel open beside Spaceman with its synopsis, cast, director and genres."
+             width="1600" height="1308" loading="lazy" decoding="async">
       </figure>
       <p class="nf-shot-caption">
         Search, with the preview panel open on a result — synopsis, cast and genres without
@@ -206,7 +238,7 @@ faq:
         <h3>Playlists</h3>
       </div>
       <p>
-        The folders Netflix has never given you. Make five of them free, up to fifty with Pro, move or copy titles in
+        The folders Netflix has never given you. Make five of them free, up to fifty with <a href="/netflix/pro/">Pro</a>, move or copy titles in
         from My List or from search, and reorder them. They belong to the Netflix profile you made
         them on, so the kids profile never sees yours.
       </p>
@@ -217,10 +249,49 @@ faq:
         <li><strong>Nothing is written to your Netflix account</strong> — playlists are yours alone</li>
       </ul>
       <figure class="nf-shot">
-        <img src="/assets/netflix-dashboard-playlists-dark.webp"
-             alt="The Playlists tab, showing several custom playlists and the titles inside one of them."
-             width="1204" height="984" loading="lazy" decoding="async">
+        <img src="/assets/netflix-pro-playlists.webp"
+             alt="The Playlists tab: seven playlists down the side, and one of them, Date night, open with its titles, each with its IMDb rating."
+             width="1600" height="1308" loading="lazy" decoding="async">
       </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRO ──
+     A summary of /netflix/pro/, which has a section and a screenshot for each
+     feature; every item links to its anchor there. No price and no trial on
+     this page: prices are served by the config the pricing page reads, and
+     the trial's words go live only with trial_days, as on /netflix/pro/. -->
+<section id="pro">
+  <div class="section-inner">
+    <p class="section-label">TidyWL Pro</p>
+    <h2 class="section-heading">Pro does it for you, remembers it, or undoes it</h2>
+
+    <div class="nf-tab">
+      <p>
+        The dashboard, the ratings and five playlists are free, and stay free. Pro is an optional
+        subscription for what you would rather not do by hand. It is a key, not an account: no
+        password, and Paddle takes the payment.
+      </p>
+      <ul class="nf-tab-list">
+        <li><a href="/netflix/pro/#tonight"><strong>Tonight</strong></a> — say who's watching, how long you have and your mood, and get one pick and two backups from My List</li>
+        <li><a href="/netflix/pro/#pin"><strong>Pin</strong></a> — a pinned title is never removed by a rule, a Move or a bulk remove</li>
+        <li><a href="/netflix/pro/#removal-history"><strong>Undo</strong></a> — anything you remove from My List can be put back for 90 days</li>
+        <li><a href="/netflix/pro/#stats"><strong>Stats</strong></a> — hours still waiting, and what you add against what you watch</li>
+        <li><a href="/netflix/pro/#clean-up-rules"><strong>Clean-up rules</strong></a> — what you have watched into one playlist, what has waited six months into Someday</li>
+        <li><a href="/netflix/pro/#mobile-sync"><strong>Mobile sync</strong></a> — your playlists in every browser you use, and on your phone</li>
+        <li><a href="/netflix/pro/#playlists"><strong>Up to 50 playlists</strong></a> a profile, instead of five</li>
+      </ul>
+      <figure class="nf-shot">
+        <img src="/assets/netflix-pro-tonight.webp"
+             alt="Tonight set to a date night with a partner, a movie, gripping: Primal Fear as the pick with its IMDb rating, runtime and genre, The Whisper Man and Serpico as the two backups, and a Later, on my phone button under Play."
+             width="1600" height="1297" loading="lazy" decoding="async">
+      </figure>
+      <p class="nf-shot-caption">Tonight: one pick and two backups, each with its reason.</p>
+      <div class="cta-row nf-pro-cta">
+        <a class="btn-primary" href="/netflix/pro/">See what each Pro feature does</a>
+        <a class="btn-ghost" href="/netflix/pricing/">Pricing</a>
+      </div>
     </div>
   </div>
 </section>
@@ -255,7 +326,7 @@ faq:
      A summary, and the policy is one link away. Every claim here is one the
      policy states in full and the code actually does; if one changes, change
      both. The wording is deliberately specific — "your Netflix data", not
-     "nothing", because four requests and a usage report do leave the
+     "nothing", because five requests and a usage report do leave the
      browser and the policy names every one — and, for Pro, the licence
      check and playlist sync. -->
 <section class="privacy">
@@ -271,7 +342,7 @@ faq:
     <ul class="nf-privacy-points">
       <li><strong>No sign-in, no account, no API key.</strong> It reads Netflix through the session you are already signed in with.</li>
       <li><strong>A usage report of counts, and nothing else.</strong> A random install id and lifetime totals — titles removed and added, searches run, days opened, My List size. Never a title, a search term or a profile. No third-party analytics.</li>
-      <li><strong>Four other requests leave your browser, none about you:</strong> a public settings file, IMDb's public ratings file, title ids — or, where an id finds nothing, a title's name — sent to Wikidata to look up IMDb ids, and, for a title Wikidata cannot match, its name sent to IMDb's search.</li>
+      <li><strong>Five other requests leave your browser, none about you:</strong> a public settings file, IMDb's public ratings file, title ids sent to Wikidata to look up IMDb ids, a title's name sent to IMDb's search and Wikidata's where its id finds nothing, and the ids of the titles on your screen sent to our ratings table for the badges.</li>
       <li><strong>Your list, watch state, pins and playlists are stored per Netflix profile</strong>, and uninstalling removes everything.</li>
       <li><strong>Pro sync is off until you switch it on.</strong> Then that browser sends the open profile's playlists and the profile's name to tidywl.com, for your other browsers and your phone. Your key never reaches the phone.</li>
     </ul>

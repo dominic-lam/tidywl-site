@@ -69,6 +69,22 @@
       letter-spacing: 0;
     }
 
+    /* Four links since the Pro page (2026-09-30), and between the drawer's
+       640px and 900px the bar ran out of room: links, wordmark and button all
+       wrapped (at 660px it already did with three). The button shortens to
+       "Install", and below 800px the wordmark drops "for Netflix"; the red
+       icon still says which product this is. */
+    @media (min-width: 641px) and (max-width: 900px) {
+      .site-nav-cta--bar .cta-long { display: none; }
+      .site-nav-cta--bar .cta-short { display: inline; }
+    }
+    @media (min-width: 641px) and (max-width: 800px) {
+      .nf-wordmark-sub { display: none; }
+    }
+    @media (min-width: 641px) and (max-width: 700px) {
+      .site-header .site-nav a { padding-left: 8px; padding-right: 8px; }
+    }
+
     /* ── HERO ── */
     .nf-hero { padding: 56px 24px 72px; text-align: center; }
     .nf-hero-inner { max-width: 760px; margin: 0 auto; }
@@ -115,6 +131,9 @@
       font-size: 0.82rem; color: var(--text-subtle);
       text-align: center; margin-top: 12px; line-height: 1.55;
     }
+    /* Inside a tab block, `.nf-tab > p` caps paragraphs at 720px, which
+       centred a caption under the left part of its 1000px screenshot. */
+    .nf-tab > .nf-shot-caption { max-width: none; }
 
     /* ── PAIN → FIX ROWS ──
        Netflix's behaviour on the left, this extension's on the right. Each row
@@ -159,6 +178,9 @@
     }
     .nf-tab h3 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; }
     .nf-tab > p { color: var(--text-secondary); font-size: 1rem; line-height: 1.65; text-wrap: pretty; max-width: 720px; }
+    /* The link to /netflix/pro/ in the Playlists tab. `a` inherits its colour
+       site-wide, so without this it read as plain text, the privacy note's bug. */
+    .nf-tab > p a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
     .nf-tab-list {
       list-style: none; margin: 18px 0 0; padding: 0;
       display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px 32px;
@@ -172,6 +194,10 @@
       width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
     }
     .nf-tab-list strong { color: var(--text); font-weight: 600; }
+    /* The Pro list's items each link to their section of /netflix/pro/. */
+    .nf-tab-list a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+    .nf-tab-list a strong { color: inherit; }
+    .nf-pro-cta { margin-top: 32px; margin-bottom: 0; }
 
     /* ── GETTING STARTED ── */
     .nf-steps {
