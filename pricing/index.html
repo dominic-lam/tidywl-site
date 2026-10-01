@@ -3,7 +3,7 @@ layout: default
 title: TidyWL Pro
 description: TidyWL Pro keeps your YouTube Watch Later under control automatically and makes every cleanup reversible. $4.99 a month or $47.88 a year. Available since version 2.0.
 permalink: /pricing/
-last_modified_at: 2026-09-18
+last_modified_at: 2026-09-30
 faq:
   - q: "Is the free version changing?"
     a: "No. Everything the extension does today stays in the free version: search, filters, sorting, bulk delete, reorder, move, every playlist you own, tags, transcripts, export. Pro adds to it."
@@ -82,6 +82,7 @@ faq:
           <button type="button" class="plan-cta plan-cta-buy" id="pro-buy"
                   data-price-monthly="{{ site.data.paddle.prices.monthly }}"
                   data-price-yearly="{{ site.data.paddle.prices.yearly }}">Get Pro</button>
+          <p class="plan-trial" id="pro-trial" hidden></p>
           <p class="plan-cta-note" id="pro-buy-note" hidden></p>
           {%- else %}
           <button type="button" class="plan-cta plan-cta-locked" disabled>Available with version 2.0</button>
@@ -377,6 +378,7 @@ faq:
   }
   .plan-promo-label { font-size: 0.9rem; font-weight: 700; color: var(--accent); }
   .plan-promo-note { font-size: 0.82rem; color: var(--text-subtle); line-height: 1.5; }
+  .plan-trial { margin-top: 8px; font-size: 0.82rem; color: var(--text-subtle); line-height: 1.5; text-wrap: pretty; }
 
   .plan-cta {
     width: 100%; justify-content: center; margin-top: 8px;
@@ -661,11 +663,30 @@ faq:
       });
     }
 
+    // The free trial. Paddle runs it (a trial_period on both prices); the live
+    // config's `license.trial` { "days": 7 } is the switch that lets this page
+    // and the extension's card say so, the same check as resolveProTrial() in
+    // src/utils/pricing.js. Paddle's trial goes on first and off last, so the
+    // words never promise a trial the checkout does not give (2026-09-30).
+    const trialDays = v => (v && typeof v === 'object' && !Array.isArray(v)
+      && Number.isInteger(v.days) && v.days >= 1 && v.days <= 30 ? v.days : null);
+
+    function paintTrial(days) {
+      const line = document.getElementById('pro-trial');
+      const btn = document.getElementById('pro-buy');
+      if (!line || !btn || days == null) return;
+      // A blocked checkout has already said so on the button; leave it.
+      if (!btn.disabled) btn.textContent = 'Start ' + days + (days === 1 ? ' day' : ' days') + ' free';
+      line.textContent = 'Pro starts with ' + days + (days === 1 ? ' day' : ' days') + ' free, card required: cancel before day ' + (days + 1) + ' and you pay nothing.';
+      line.hidden = false;
+    }
+
     fetch('/config/api-config-v2.json', { cache: 'no-cache' })
       .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
       .then(cfg => {
         const block = cfg && cfg.license ? cfg.license.pricing : null;
         if (block) paint(resolve(block));
+        paintTrial(cfg && cfg.license ? trialDays(cfg.license.trial) : null);
       })
       .catch(() => { /* the markup literals stand */ });
   })();
