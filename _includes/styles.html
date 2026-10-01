@@ -835,6 +835,16 @@
        players on one page is the same video twice. */
     .demo-section { padding-top: 16px; padding-bottom: 24px; }
     @media (max-width: 860px) { .demo-section { display: none; } }
+    .demo-videos {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+      max-width: 1120px; margin: 0 auto;
+    }
+    .demo-video { margin: 0; }
+    .demo-video figcaption {
+      margin-top: 12px; text-align: center;
+      font-size: 0.95rem; font-weight: 600; color: var(--text);
+    }
+    .demo-video figcaption span { margin-left: 6px; font-weight: 400; color: var(--text-subtle); }
     .demo-label {
       display: flex; align-items: center; justify-content: center; gap: 8px;
       max-width: 880px; margin: 0 auto 12px;

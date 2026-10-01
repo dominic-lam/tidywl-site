@@ -400,15 +400,34 @@ last_modified_at: 2026-09-18
          it: the poster is ours, and the iframe (youtube-nocookie.com) is only created
          on click. Embedding it directly would set YouTube and DoubleClick cookies on
          every visitor who scrolls this far, before any of them pressed play. -->
-    <div class="video-wrapper">
-      <button type="button" class="video-facade" data-video-id="WlubM-dDaPE"
-              aria-label="Play the TidyWL demo video">
-        <img src="/assets/demo-poster.jpg" alt="" width="1280" height="720" fetchpriority="low" decoding="async">
-        <span class="video-play" aria-hidden="true">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><polygon points="7 4 20 12 7 20 7 4"/></svg>
-        </span>
-      </button>
+    <div class="demo-videos">
+      <figure class="demo-video">
+        <div class="video-wrapper">
+          <button type="button" class="video-facade" data-video-id="WlubM-dDaPE"
+                  aria-label="Play the video: clear your Watch Later">
+            <img src="/assets/demo-poster.jpg" alt="" width="1280" height="720" fetchpriority="low" decoding="async">
+            <span class="video-play" aria-hidden="true">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><polygon points="7 4 20 12 7 20 7 4"/></svg>
+            </span>
+          </button>
+        </div>
+        <figcaption>Clear your Watch Later <span>3 min</span></figcaption>
+      </figure>
+      <figure class="demo-video">
+        <div class="video-wrapper">
+          <button type="button" class="video-facade" data-video-id="8ia-hwuiDb4"
+                  aria-label="Play the video: search and unlike your liked videos">
+            <img src="/assets/liked-videos-video-poster.jpg" alt="" width="1280" height="720" fetchpriority="low" decoding="async">
+            <span class="video-play" aria-hidden="true">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor"><polygon points="7 4 20 12 7 20 7 4"/></svg>
+            </span>
+          </button>
+        </div>
+        <figcaption>Search and unlike your Liked videos <span>2 min</span></figcaption>
+      </figure>
     </div>
+    <!-- One note for both, outside either figure: the facade script removes the
+         note beside the video that starts, and this one stays true for the other. -->
     <p class="video-note">Nothing loads from YouTube until you press play.</p>
   </section>
 
