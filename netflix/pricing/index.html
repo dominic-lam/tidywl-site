@@ -2,7 +2,7 @@
 layout: netflix
 permalink: /netflix/pricing/
 title: "TidyWL for Netflix Pro — pricing"
-description: "TidyWL for Netflix Pro undoes a removal for 90 days, pins what you want to keep, archives what you have watched, and puts your playlists on your phone. $3.99 a month or $29.99 a year."
+description: "TidyWL for Netflix Pro picks what to watch from your own list, undoes a removal for 90 days, pins what you want to keep, archives what you have watched, and puts your playlists on your phone. $3.99 a month or $29.99 a year."
 faq:
   - id: free
     q: "Is the free version changing?"
@@ -46,8 +46,10 @@ faq:
   <section class="pro-hero">
     <p class="section-label">TidyWL for Netflix Pro</p>
     <h1>A list you'd <span class="em">actually pick from.</span></h1>
-    <p class="tagline">The free extension does everything by hand. Pro keeps what you pin, clears what you have watched, undoes a removal for 90 days, and puts your playlists on your phone.</p>
-    <p class="pro-status"><span class="dot" aria-hidden="true"></span>Arrives with version 1.0.0.</p>
+    <p class="tagline">The free extension does everything by hand. Pro picks what to watch from your own list, keeps what you pin, clears what you have watched, undoes a removal for 90 days, and puts your playlists on your phone.</p>
+    {%- comment -%} Switches itself on release day, when _data/netflix.yml's version
+    goes to 1.1.0. {%- endcomment %}
+    <p class="pro-status"><span class="dot" aria-hidden="true"></span>{% if site.data.netflix.version == "1.0.0" %}Tonight arrives with version 1.1.0.{% else %}New in version 1.1.0: Tonight.{% endif %}</p>
   </section>
 
   <section class="pro-plans">
