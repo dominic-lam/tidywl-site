@@ -1,6 +1,32 @@
 {
   "announcements": [
     {
+      "id": "2026-09-30-pro-trial",
+      "display": "modal",
+      "size": "small",
+      "title": "Try TidyWL Pro free for 7 days",
+      "message": "TidyWL Pro now starts with 7 days free. Card required: cancel before day 8 and you pay nothing. Founding offer for the first 50 on each plan: $3.99 for your first month, or $32 for your first year. https://tidywl.com/pricing/",
+      "body": [
+        {
+          "text": "Pro now starts with **7 days free**: clean-up rules that run by themselves, Pin, undo for deletions, saved views and the Lineup."
+        },
+        {
+          "text": "Founding offer for the first 50 on each plan: **$3.99** for your first month, or **$32** for your first year."
+        },
+        {
+          "text": "Card required: cancel before day 8 and you pay nothing. Everything free stays free, and if you already have Pro, nothing changes.",
+          "tone": "muted"
+        }
+      ],
+      "button": {
+        "label": "Start 7 days free",
+        "url": "https://tidywl.com/pricing/?utm_source=watch-later-tidy&utm_medium=announcement"
+      },
+      "type": "info",
+      "created_at": "2026-09-30",
+      "expires_at": "2026-10-31"
+    },
+    {
       "id": "v2.3.0-release",
       "title": "What's New in v2.3.0",
       "bullets": [
