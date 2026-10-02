@@ -49,6 +49,7 @@ Step-by-step instructions for every feature are on the [tutorials page](https://
 - [Sync a playlist](https://tidywl.com/tutorials/#sync)
 - [Search, and filter by tag](https://tidywl.com/tutorials/#search)
 - [By channel, by topic, and the sidebar search](https://tidywl.com/tutorials/#breakdown)
+- [List view, and fill the window](https://tidywl.com/tutorials/#view)
 - [Sort, and group by channel](https://tidywl.com/tutorials/#sort)
 - [Select videos](https://tidywl.com/tutorials/#select)
 - [Delete videos, or remove likes](https://tidywl.com/tutorials/#delete)

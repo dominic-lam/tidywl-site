@@ -3,7 +3,7 @@ layout: default
 title: Tutorials
 description: "Step-by-step instructions for every TidyWL feature — syncing, search, filters, bulk delete, reorder, export, transcripts, and the Pro tools: the Lineup, clean-up rules, pin, undo and saved views."
 permalink: /tutorials/
-last_modified_at: 2026-09-18
+last_modified_at: 2026-10-02
 faq:
   - q: "Where do I open the TidyWL dashboard?"
     a: "Open YouTube and go to your Watch Later playlist, your Liked videos, or any playlist you created. Click the TidyWL icon in the browser toolbar and press Open Dashboard. If you are anywhere else on YouTube the popup offers Go to Watch Later instead, which navigates there and opens the dashboard for you."
@@ -44,6 +44,7 @@ faq:
             <li><a href="#playlists">Switch playlists</a></li>
             <li><a href="#merged-view">See several at once</a></li>
             <li><a href="#breakdown">By channel, by topic</a></li>
+            <li><a href="#view">List view and full page</a></li>
           </ul>
         </div>
         <div class="tut-toc-group">
@@ -116,10 +117,10 @@ faq:
         <h2>Find your way around the dashboard</h2>
         <p class="tut-where">The panel that opens over the YouTube page</p>
         <ul class="tut-list">
-          <li><b class="ui">The header</b> carries the extension name and version, the playlist switcher in the middle, and on the right your plan badge, the announcements bell, a <b class="ui">Help</b> button that opens this page, an <b class="ui">About</b> button and the close ×.</li>
+          <li><b class="ui">The header</b> carries the extension name and version, the playlist switcher in the middle, and on the right your plan badge, the announcements bell, a <b class="ui">Help</b> button that opens this page, an <b class="ui">About</b> button, a <b class="ui">Full page</b> button and the close ×.</li>
           <li><b class="ui">The left sidebar</b> holds two stat cards — <b class="ui">Videos Fetched</b> and <b class="ui">Last Synced</b> with the <b class="ui">Sync</b> button — and, below them, the <b class="ui">By Channel</b> and <b class="ui">By Topic</b> breakdowns.</li>
           <li><b class="ui">The toolbar</b> across the top of the video grid holds every action, as icons, in labelled groups: <b class="ui">Find</b>, <b class="ui">Pro tools</b>, <b class="ui">Select &amp; move</b> and <b class="ui">Export &amp; open</b>, plus an unlabelled group for the two red removal buttons. Hover any icon to see its name; the Pro tools add a short line on what they do. The name is what these tutorials use.</li>
-          <li><b class="ui">The grid</b> below it is your videos, as cards.</li>
+          <li><b class="ui">The grid</b> below it is your videos, as cards, or as one row each in <a href="#view">List view</a>.</li>
         </ul>
         <p class="tut-note">Hover the divider between the sidebar and the grid and a small handle appears. Click it to collapse the sidebar down to a narrow rail that still carries <b class="ui">Sync</b>. On a narrow window the sidebar stacks above the grid instead. The collapsed state is not remembered — the dashboard reopens with the sidebar showing.</p>
       </article>
@@ -154,7 +155,8 @@ faq:
           <li>Use the <b class="ui">Filter playlists…</b> box at the top to find one by name. The down arrow walks the list, Enter picks the first match, Escape goes back to the switcher.</li>
         </ol>
         <p class="tut-note">Clicking a playlist you have never synced syncs it on the spot. Each playlist keeps its own cache and its own last-synced time, so working on one never disturbs another.</p>
-        <p class="tut-note">The menu lists only playlists you created. YouTube gives no way to edit a playlist you merely saved from someone else, so those are not offered. Reordering is off on <b class="ui">Liked videos</b> too, because YouTube orders that list by when you liked something.</p>
+        <p class="tut-note">From version 2.1.0 the menu also lists the playlists you saved from other channels, marked <em>Saved · owner</em>. Open one to search it, sort it or copy its videos into a playlist of your own. Only its owner can edit it, so Delete and Move are not offered there: Delete is greyed out, and hovering it names the owner.</p>
+        <p class="tut-note">Reordering is off on <b class="ui">Liked videos</b>, because YouTube orders that list by when you liked something.</p>
       </article>
 
       <article class="tut" id="merged-view">
@@ -180,8 +182,18 @@ faq:
           <li>Both lists start at ten rows. <b class="ui">Show 10 More</b> adds the next ten; near the end it reads however many are left.</li>
           <li>A search box above the rows narrows the list as you type. It reads <em>“Search channels”</em> on one tab and <em>“Search topics”</em> on the other, and looks through every row, not only the ten on screen. Escape clears it.</li>
         </ol>
-        <p class="tut-note">On the free plan the search box carries a <b class="ui">Pro</b> pill, and clicking into it or typing opens the Pro upsell instead. Clicking a row after a search filters the grid exactly as before.</p>
+        <p class="tut-note">The search box is free from version 2.1.0; in 2.0 it was part of Pro. Clicking a row after a search filters the grid exactly as before.</p>
         <p class="tut-note">On a topic row, the crossed-out eye hides that topic from the grid rather than filtering to it — <em>“Hide these videos from the list”</em>. Hide as many as you like; the eye turns back on to <em>“Show these videos again”</em>. Videos with no matching keyword are never hidden this way.</p>
+      </article>
+
+      <article class="tut" id="view">
+        <h2>Switch to List view, or fill the window</h2>
+        <p class="tut-where">Toolbar → <b class="ui">List view</b> · Header → <b class="ui">Full page</b></p>
+        <ol class="tut-steps">
+          <li>Click <b class="ui">List view</b>, in the toolbar’s <b class="ui">Find</b> group just left of the search, to show each video as one row: the thumbnail, the title, and the channel, views and date under it. The button then reads <b class="ui">Grid view</b> and puts the cards back.</li>
+          <li>Click <b class="ui">Full page</b>, in the header beside the close ×, to make the dashboard fill the whole browser window instead of sitting in the middle of it. It then reads <b class="ui">Exit full page</b>.</li>
+        </ol>
+        <p class="tut-note">Both arrived in version 2.1.0, and the dashboard remembers each choice the next time it opens. Everything else works the same in either view, including selecting, pinning and dragging to reorder. A row leaves out the video’s tags; switch back to the grid to see them.</p>
       </article>
     </div>
   </section>
@@ -368,7 +380,8 @@ faq:
           <li>Open <b class="ui">Playlists ⌄</b> and click the bin icon on the playlist’s row. If that playlist is already the one on screen, the red list icon in the toolbar does the same.</li>
           <li>Confirm — TidyWL names the playlist back to you and says: <em>“The playlist itself is deleted — its videos stay on YouTube. This cannot be undone.”</em></li>
         </ol>
-        <p class="tut-note tut-note--warn">Never offered on Watch Later or Liked videos, and never on a playlist you did not create. Deleting a playlist is permanent; the videos in it are not touched.</p>
+        <p class="tut-note">On a playlist you saved from someone else (version 2.2.0 and later), the same bin reads <b class="ui">Remove from your library</b>. It takes the playlist off your list; the playlist stays on YouTube and its owner is not told. To get it back, open it on YouTube and press Save.</p>
+        <p class="tut-note tut-note--warn">Never offered on Watch Later or Liked videos. Deleting a playlist is permanent; the videos in it are not touched.</p>
       </article>
     </div>
   </section>
