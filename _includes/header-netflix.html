@@ -11,6 +11,10 @@
        3. The CTA renders only when site.data.netflix.published is true. Until
           the listing is approved its URL serves Chrome's empty shell, and a
           primary button that lands on a blank page is worse than no button.
+          A page can also switch it off with `hide_cta: true` in its front
+          matter: /netflix/removed/, which Chrome opens right after someone
+          removes the extension, where an install button would be a sales
+          pitch to a person who just said no.
 
        Everything else — the drawer, the breakpoint, the toggle's position — is
        header.html's, deliberately, so the two products feel like one site. -->
@@ -43,12 +47,12 @@
         <a href="mailto:support@tidywl.com">Email support</a>
       </div>
 
-      {%- if site.data.netflix.published %}
+      {%- if site.data.netflix.published and page.hide_cta != true %}
       <a class="site-nav-cta site-nav-cta--drawer" href="{{ site.data.netflix.store_url }}" target="_blank" rel="noopener">Add to Chrome</a>
       {%- endif %}
     </nav>
 
-    {%- if site.data.netflix.published %}
+    {%- if site.data.netflix.published and page.hide_cta != true %}
     <a class="site-nav-cta site-nav-cta--bar" href="{{ site.data.netflix.store_url }}" target="_blank" rel="noopener"><span class="cta-long">Add to Chrome</span><span class="sr-only"> </span><span class="cta-short">Install</span></a>
     {%- endif %}
 
