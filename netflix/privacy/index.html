@@ -28,6 +28,15 @@ last_modified_at: 2026-09-28
      contract is docs/claude/PLAN-tonight-phone.md there. The phone's half is
      this site's netflix/app/.
 
+     Drafted 2026-10-01 for 1.2.0 (extension main at 5148600) on branch
+     draft/netflix-1.2.0-release, to merge the day 1.2.0 is approved: Leaving soon
+     (the read at Sync, three storage keys, one session key) and the toolbar
+     popup's pictures, checked against the extension's dashboard-leaving.js,
+     leaving-utils.js, storage.js and popup.js; the popup no longer shows the
+     Sync to mobile count. The wording was approved by the user that day.
+     The same day, at the user's word: an occasion's icon is "before version 1.2.0"
+     only — 1.2.0 stores none and drops an old one when Tonight next saves.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -116,6 +125,7 @@ last_modified_at: 2026-09-28
       <li><strong>A title's details on hover</strong> — its synopsis, cast, director or creators, genres, runtime and a still image, asked for once per title when you rest the pointer on a card, and kept for the rest of that page's life so a second look costs nothing.</li>
       <li><strong>For Tonight</strong> — Pro only, from version 1.1.0, and only once you open it. With <em>Surprises from outside My List</em> on, as it is until you switch it off: a few of Netflix's genre catalogues that fit the mood you chose, and details, such as the runtime, of the best-rated few films in them; a mood already read today is not read again. On the poster layout, a larger picture of the main pick, asked for once it has stayed on screen for a moment and kept for the rest of that page's life.</li>
       <li><strong>Your viewing history and your thumbs, for Tonight</strong> — Pro only, from version 1.1.0, and only when you open Tonight: the titles this profile has played on Netflix and when, and the titles it has given a thumbs up, down or "love", so Tonight never offers what you have already seen or disliked. Read from Netflix's own viewing-activity service, the one behind Account → Viewing activity, through the session you are signed in with and only for the profile you are using — at most once every six hours, one page of 50 at a time a second apart, and after the first time usually just the newest page. What is kept is the title ids, the time of the last play and the thumb, in this browser only; never a title's name, never an episode, and <strong>none of it is sent to us or to anyone</strong>.</li>
+      <li><strong>Which titles in your My List Netflix is about to remove</strong> — from version 1.2.0, as part of Sync. Netflix marks these on the title's picture, and gives a sentence with the last day, such as "Last day to watch on Netflix: October 5". TidyWL asks for those sentences for up to 100 titles at a time, so one or two requests for most lists, and only when you press Sync.</li>
     </ul>
     <p>
       <strong>One thing it reads without being asked, from version 1.1.0:</strong> the link on each of Netflix's own
@@ -165,7 +175,7 @@ last_modified_at: 2026-09-28
           <tr><td><code>tidywl_dashboard_view</code></td><td>Whether you last had the dashboard full-page or as a panel.</td></tr>
           <tr><td><code>tidywl_imdb_dump_fetched_at</code></td><td>When IMDb's ratings file was last downloaded, so it is not downloaded again for twelve hours. A timestamp and nothing else.</td></tr>
           <tr><td><code>tidywl_badge_ratings</code></td><td>From version 1.1.0. What the badges on Netflix's own cards show, so a card seen again is not asked about again: for each Netflix title id, its IMDb id, rating and number of votes, whether the rating is the whole series', when it was found, and whether it came from our ratings table or from this browser's own lookups — with, when Wikidata had no match, when it was asked. Each title is asked about again after a day; at most 5,000 are kept. Not filed per profile: it holds the ids of titles Netflix's pages showed in this browser, with no note of which page, row or profile. Never sent.</td></tr>
-          <tr><td><code>tidywl_mobile_interest_clicks</code></td><td>A count of how many times you pressed the <em>Sync to mobile</em> button, which opens Pro in the About window, or Pro's offer if you do not have Pro. You can read it in the extension's popup. <strong>Since version 0.2.0 it is sent</strong>, as one of the usage report's counts — it is how the developer learns whether mobile sync is wanted.</td></tr>
+          <tr><td><code>tidywl_mobile_interest_clicks</code></td><td>A count of how many times you pressed the <em>Sync to mobile</em> button, which opens Pro in the About window, or Pro's offer if you do not have Pro. <strong>Since version 0.2.0 it is sent</strong>, as one of the usage report's counts — it is how the developer learns whether mobile sync is wanted.</td></tr>
           <tr><td><code>tidywl_install_id</code></td><td>The random identifier the usage report carries. Made once, in your browser; linked to nothing.</td></tr>
           <tr><td><code>tidywl_usage</code></td><td>The usage report's other counts, listed field by field below.</td></tr>
           <tr><td><code>tidywl_usage_open_day</code></td><td>The last day the dashboard was counted as opened, so it is counted at most once a day. Never sent.</td></tr>
@@ -175,16 +185,29 @@ last_modified_at: 2026-09-28
           <tr><td><code>tidywl_sync_deleted_&lt;profile&gt;</code></td><td>Pro only. The ids of playlists you deleted in this browser, with when, so the deletion reaches your other browsers instead of the playlist coming back from one of them. An id and two times each, no name; kept 90 days, at most 200.</td></tr>
           <tr><td><code>tidywl_removed_&lt;profile&gt;</code></td><td>Pro only — a free install writes nothing here. Removal history, for Undo and Restore: each title you removed from My List through the extension, as its id, name, type, year, box-art address, the date this extension first saw it in your list, and, for a Move, the playlist it went to. Pruned to the last 90 days on every read and write.</td></tr>
           <tr><td><code>tidywl_stats_&lt;profile&gt;</code></td><td>The Stats tally, kept for everyone after a Sync so that the numbers exist if you turn Pro on later: the ids that were in My List at the last Sync, the ids not yet started or partway through, and for each month a count of titles added, watched and removed. Counts and ids, no names.</td></tr>
-          <tr><td><code>tidywl_tonight_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0 — a free install writes nothing here. What Tonight remembers for this profile: your occasions, up to five — the name you give each one, the who's watching, how long and mood it stands for, its icon and when you last used it; your last answers, when you gave them and the picks they dealt, so opening Tonight again within four hours shows the same picks; the films you pressed <em>Play</em> on in the last day, so they leave the picks; for <em>With family</em>, the youngest viewer's rating level you chose; whether surprises from outside My List are on; the poster or the cards layout; each title you put off with <em>Not tonight</em> and until when (seven days), when you did so over the last thirty days — so a title you keep putting off can be marked in My List — and the id of the last main pick shown, so the next one is a different title. Titles by id; the only names are the ones you give your occasions. Pruned on every read and write. Never sent.</td></tr>
+          <tr><td><code>tidywl_tonight_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0 — a free install writes nothing here. What Tonight remembers for this profile: your occasions, up to five — the name you give each one, the who's watching, how long and mood it stands for, its icon (before version 1.2.0) and when you last used it; your last answers, when you gave them and the picks they dealt, so opening Tonight again within four hours shows the same picks; the films you pressed <em>Play</em> on in the last day, so they leave the picks; for <em>With family</em>, the youngest viewer's rating level you chose; whether surprises from outside My List are on; the poster or the cards layout; each title you put off with <em>Not tonight</em> and until when (seven days), when you did so over the last thirty days — so a title you keep putting off can be marked in My List — and the id of the last main pick shown, so the next one is a different title. Titles by id; the only names are the ones you give your occasions. Pruned on every read and write. Never sent.</td></tr>
           <tr><td><code>tidywl_tonight_pool_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0. Today's surprises for Tonight: the rows it read from Netflix's genre catalogues — each title's id, name, type, year, maturity rating, season count and box-art address as Netflix returned them, and each genre's name — with the IMDb rating and votes found for each title, the runtime of the few films it read one for, and which moods were asked for today. Anything older than a day is dropped on the next write. Never sent.</td></tr>
           <tr><td><code>tidywl_viewed_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0. What Tonight knows you have already watched or rated on Netflix, so it does not offer it: for each title id — a film's, or the show's for an episode — when it was last played, and each rated title's thumb (down, up or love), with when it was last read. At most 5,000 of each, newest kept. Never sent anywhere; removed when you uninstall.</td></tr>
           <tr><td><code>tidywl_tonight_phone_&lt;profile&gt;</code></td><td>Pro only, from version 1.1.0 — a free install writes nothing here. The one title you sent to your phone with <em>Later, on my phone</em> in Tonight: its id, name, type, year and box-art address, when you sent it, when you undid it, and when it reached our server. It is kept apart from your playlists, so Chrome's own sync does not copy it. Forgotten once its 5 am has passed or it was undone, and nothing is left to send.</td></tr>
+          <tr><td><code>tidywl_leaving_&lt;profile&gt;</code></td><td>From version 1.2.0. The titles in this profile's My List that Netflix says are leaving: each one's Netflix id, Netflix's sentence as Netflix wrote it, and when TidyWL first saw it leaving. Also the time of that Sync, the profile's name, and whether it is a Kids profile. Replaced at every Sync. Never sent.</td></tr>
+          <tr><td><code>tidywl_leaving_seen_&lt;profile&gt;</code></td><td>From version 1.2.0. When this profile last opened the toolbar popup, opened Tonight, and saw the "leaving" notice, so "new" means new since you last looked. Times only. Never sent.</td></tr>
+          <tr><td><code>tidywl_last_profile</code></td><td>From version 1.2.0. The id of the Netflix profile last used in this browser, and when, so the toolbar badge and popup show that profile's list. Never sent.</td></tr>
           <tr><td><code>tidywl_playlist_cap_exempt</code></td><td><code>true</code> in a browser that had the extension before version 1.0.0, so it keeps making up to 50 playlists without Pro. Nothing else.</td></tr>
           <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once the rating ask on a removal's summary has been answered or declined, so it is not shown again in this browser.</td></tr>
           <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
         </tbody>
       </table>
     </div>
+
+    <p>
+      And in <code>chrome.storage.session</code>, which Chrome clears when it closes: <code>tidywl_popup_intent</code>,
+      from version 1.2.0 — a popup button you pressed while not on Netflix (which button, for which tab, and when),
+      held for two minutes until the Netflix tab opens.
+    </p>
+    <p>
+      From version 1.2.0 the toolbar popup shows each leaving title's picture. It loads from Netflix's image servers,
+      at the address saved at Sync, the same way the dashboard's pictures do.
+    </p>
 
     <p>
       One more thing is held locally and is not a key: the browser's own Cache Storage keeps a copy of
