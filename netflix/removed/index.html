@@ -1,0 +1,958 @@
+---
+layout: netflix
+permalink: /netflix/removed/
+title: "Removed · TidyWL for Netflix"
+description: "TidyWL for Netflix has been removed from Chrome. One question, from the person who makes it: what made you remove it?"
+robots: noindex
+sitemap: false
+hide_cta: true
+---
+{%- assign store = site.data.netflix.store_url -%}
+{%- assign trial = site.data.netflix.trial_days | default: 7 -%}
+
+<!-- ── REMOVED, TidyWL for Netflix ──
+     Built 2026-10-04 for 1.2.1. Chrome opens this page in a new tab right after
+     someone removes the extension (chrome.runtime.setUninstallURL in the
+     extension's service worker), so the extension is already gone when it
+     loads. It is the one place a stranger who left can say why.
+
+     The decisions are PLAN-uninstall-page.md in the extension repo (designer B's
+     "Helpful exit": B1a B2a B3a B4a B5b B6b, "I'm done" last); the seams are
+     CONTRACTS-1.2.1.md there — the link's fields, the two POST routes, the chip
+     keys. Change a seam there first.
+
+     THE LINK. #a=<age>&v=<version>&l=<lang>&p=<plan>&d=<days>, read from
+     location.hash, then location.search for anything the hash lacks. Every
+     field is optional and an unknown value counts as missing, because anyone
+     can open this address by hand. `p` (trial or pro) shows the notice at the
+     top and is NEVER sent anywhere: with two paid subscribers, "pro" plus an
+     age bucket would point at one person. The privacy policy (#removed there)
+     says all of this; change it with this page.
+
+     EVERY FEATURE CLAIM below was checked against netflix/llms.txt on
+     2026-10-04, and the button labels against the extension's src/ (Open
+     dashboard: leaving-utils.js; Title A–Z, Leaving soon, Partway, Not
+     started: dashboard-ui.js; Browse by genre: dashboard-search.js). No
+     hotkey is named on purpose: every step is a mouse click.
+
+     EMAIL ADDRESSES live in the markup, inside email_off / email_on, never in
+     the script: Cloudflare's Email Address Obfuscation rewrites every address it
+     finds in the HTML (see the note on /netflix/privacy/), and a cancel button
+     that only works once a decoder has run is the wrong place to find out
+     whether it reaches into a script or a mailto subject. -->
+
+<div class="nfr">
+  <div class="nfr-col">
+
+    <!-- B4a. Above the question, only when the link says trial or pro. -->
+    <div class="nfr-notice" id="nfr-notice-trial" hidden>
+      <h2 class="nfr-notice-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
+        Your Pro trial is still running
+      </h2>
+      <p>Removing the extension didn't cancel it. <strong>Cancel before your {{ trial }} days are up and you pay nothing.</strong></p>
+      <p>Email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from the address you paid with, or include the Transaction ID from your Paddle receipt, so I can find it.</p>
+      <div class="nfr-actions">
+        <!--email_off--><a class="nfr-btn-outline" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20for%20Netflix%20Pro%20trial">Email to cancel my trial</a><!--email_on-->
+      </div>
+      <p class="nfr-small">Or <a href="{{ store }}" target="_blank" rel="noopener">add TidyWL back</a> and use <strong>Manage subscription</strong> under About → Pro.</p>
+    </div>
+
+    <div class="nfr-notice" id="nfr-notice-pro" hidden>
+      <h2 class="nfr-notice-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
+        Your Pro subscription is still active
+      </h2>
+      <p>Removing the extension didn't cancel it, and it renews until you do. <strong>To cancel, email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from the address you paid with.</strong> Pro runs to the end of the period you paid for.</p>
+      <p>Charged in the last 14 days? Ask, and it's refunded in full, no questions.</p>
+      <p>If you switched on sync, your playlists stay on tidywl.com until 90 days after the subscription ends.</p>
+      <div class="nfr-actions">
+        <!--email_off--><a class="nfr-btn-outline" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20for%20Netflix%20Pro%20subscription">Email to cancel</a><!--email_on-->
+        <a href="/netflix/refunds/" target="_blank" rel="noopener">Refund policy</a>
+      </div>
+      <p class="nfr-small">Or <a href="{{ store }}" target="_blank" rel="noopener">add TidyWL back</a> and use <strong>Manage subscription</strong> under About → Pro.</p>
+    </div>
+
+    <!-- The question. Replaced in place by #nfr-thanks after Send. -->
+    <div id="nfr-ask">
+      <p class="nfr-eyebrow">TidyWL for Netflix has been removed from Chrome.</p>
+      <h1 class="nfr-title">What made you remove it?</h1>
+      <p class="nfr-lead">Pick one reason and press Send. That's all. If it's something TidyWL already does, the answer shows up right here.</p>
+      <p class="nfr-founder">I'm Dominic, and I make TidyWL on my own. I read every answer.</p>
+
+      <form id="nfr-form" novalidate autocomplete="off">
+        <fieldset class="nfr-reasons">
+          <legend class="sr-only">What made you remove it? Pick one.</legend>
+
+          <!-- 1. lost -->
+          <div class="nfr-reason" data-reason="lost">
+            <label class="nfr-reason-head">
+              <input type="radio" name="reason" value="lost">
+              <span class="nfr-reason-label">I couldn't find how to open it.</span>
+            </label>
+            <div class="nfr-reason-body" hidden>
+              <div class="nfr-fixcopy" data-fix="lost">
+                <p class="nfr-fix-title">It opens from TidyWL's icon in Chrome's toolbar.</p>
+                <!-- The two clicks, drawn. Decoration: the steps below say the same. -->
+                <div class="nfr-toolbar" aria-hidden="true">
+                  <div class="nfr-tb-bar">
+                    <span class="nfr-tb-url">netflix.com/browse</span>
+                    <span class="nfr-mark" data-n="1"></span>
+                    <img class="nfr-tb-icon" src="/assets/netflix-icon128.png" alt="" width="22" height="22">
+                    <svg class="nfr-tb-puzzle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.44 7.85c-.05.32.06.65.29.88l1.57 1.57c.47.47.7 1.09.7 1.7s-.23 1.24-.7 1.71l-1.61 1.61a.98.98 0 0 1-.84.28c-.47-.07-.8-.48-.97-.93a2.5 2.5 0 1 0-3.21 3.22c.44.16.85.5.92.96a.98.98 0 0 1-.27.84l-1.61 1.61a2.4 2.4 0 0 1-1.7.7 2.4 2.4 0 0 1-1.71-.7l-1.57-1.57a1.03 1.03 0 0 0-.87-.29c-.5.07-.84.5-1.02.97a2.5 2.5 0 1 1-3.24-3.24c.47-.18.9-.53.97-1.02a1.03 1.03 0 0 0-.29-.87l-1.57-1.57A2.4 2.4 0 0 1 2 12c0-.62.24-1.24.7-1.7l1.53-1.53c.24-.24.58-.35.92-.3.51.08.87.53 1.07 1.01a2.5 2.5 0 1 0 3.26-3.26c-.48-.2-.93-.56-1.01-1.07-.05-.34.06-.68.3-.92L10.3 2.7A2.4 2.4 0 0 1 12 2c.62 0 1.23.24 1.7.7l1.57 1.57c.23.23.56.34.88.29.49-.07.84-.5 1.02-.97a2.5 2.5 0 1 1 3.24 3.24c-.47.18-.9.53-.97 1.02Z"/></svg>
+                  </div>
+                  <div class="nfr-tb-page">
+                    <span class="nfr-tb-tiles"><span></span><span></span><span></span></span>
+                    <div class="nfr-tb-pop">
+                      <span class="nfr-tb-pop-name"><img src="/assets/netflix-icon128.png" alt="" width="14" height="14"> TidyWL for Netflix</span>
+                      <span class="nfr-tb-pop-row"><span class="nfr-mark" data-n="2"></span><span class="nfr-tb-open">Open dashboard</span></span>
+                    </div>
+                  </div>
+                </div>
+                <ol class="nfr-steps">
+                  <li><span class="nfr-mark" data-n="1" aria-hidden="true"></span><span>Click TidyWL's icon at the top right of Chrome. Not there? Click the puzzle-piece icon, find TidyWL and pin it, so it stays in view.</span></li>
+                  <li><span class="nfr-mark" data-n="2" aria-hidden="true"></span><span>Click <span class="nfr-ui">Open dashboard</span>. It opens over Netflix.</span></li>
+                </ol>
+              </div>
+              <p><a class="nfr-link" href="{{ store }}" target="_blank" rel="noopener">Add it back to Chrome&nbsp;<span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></p>
+              <fieldset class="nfr-chips">
+                <legend class="nfr-q">Where did you look for it? <span class="nfr-hint">Tap any, optional</span></legend>
+                <div class="nfr-chip-row">
+                  <label class="nfr-chip"><input type="checkbox" value="netflix_page"><span>On Netflix's page</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="toolbar"><span>In Chrome's toolbar</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="auto"><span>I thought it would open by itself</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="didnt_look"><span>I didn't look</span></label>
+                </div>
+              </fieldset>
+              <div class="nfr-text-slot"></div>
+            </div>
+          </div>
+
+          <!-- 2. missing: the question first, since the fix depends on the chip -->
+          <div class="nfr-reason" data-reason="missing">
+            <label class="nfr-reason-head">
+              <input type="radio" name="reason" value="missing">
+              <span class="nfr-reason-label">It was missing something I wanted.</span>
+            </label>
+            <div class="nfr-reason-body" hidden>
+              <fieldset class="nfr-chips">
+                <legend class="nfr-q">What were you looking for? <span class="nfr-hint">Tap any, optional</span></legend>
+                <div class="nfr-chip-row">
+                  <label class="nfr-chip"><input type="checkbox" value="sort_az"><span>Sort A–Z</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="bulk_remove"><span>Remove lots at once</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="playlists"><span>Playlists</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="hidden_categories"><span>Netflix's hidden categories</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="leaving"><span>What's leaving Netflix</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="hide_watched"><span>Hide what I've watched</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="ratings"><span>IMDb ratings</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="tonight"><span>A pick for tonight</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="other" data-ask="What else were you looking for?"><span>Something else</span></label>
+                </div>
+              </fieldset>
+              <div class="nfr-fixes">
+                <div class="nfr-fix" data-chip="sort_az" hidden>
+                  <p class="nfr-fix-title">Sort A–Z is in TidyWL.</p>
+                  <p><span class="nfr-ui">My List</span> <span class="nfr-sep" aria-hidden="true">›</span> <span class="nfr-ui">Sort</span> <span class="nfr-sep" aria-hidden="true">›</span> <span class="nfr-ui">Title A–Z</span></p>
+                  <p>Netflix's categories sort A–Z too: <span class="nfr-ui">Search</span> <span class="nfr-sep" aria-hidden="true">›</span> <span class="nfr-ui">Browse by genre</span>.</p>
+                </div>
+                <div class="nfr-fix" data-chip="bulk_remove" hidden>
+                  <p class="nfr-fix-title">Removing lots at once is in TidyWL.</p>
+                  <p>In <span class="nfr-ui">My List</span>, tick as many titles as you like, review the exact list, and remove them in one run.</p>
+                </div>
+                <div class="nfr-fix" data-chip="playlists" hidden>
+                  <p class="nfr-fix-title">Playlists are in TidyWL.</p>
+                  <p>The <span class="nfr-ui">Playlists</span> tab. Up to five are free.</p>
+                </div>
+                <div class="nfr-fix" data-chip="hidden_categories" hidden>
+                  <p class="nfr-fix-title">Netflix's hidden categories are in TidyWL.</p>
+                  <p><span class="nfr-ui">Search</span> <span class="nfr-sep" aria-hidden="true">›</span> <span class="nfr-ui">Browse by genre</span>: more than a hundred categories Netflix leaves out of its own picker. Which ones appear varies by region.</p>
+                </div>
+                <div class="nfr-fix" data-chip="leaving" hidden>
+                  <p class="nfr-fix-title">What's leaving Netflix is in TidyWL, since version 1.2.0.</p>
+                  <p>Press Sync, then <span class="nfr-ui">My List</span> <span class="nfr-sep" aria-hidden="true">›</span> <span class="nfr-ui">Filter</span> <span class="nfr-sep" aria-hidden="true">›</span> <span class="nfr-ui">Leaving soon</span>. TidyWL's toolbar popup lists them too.</p>
+                </div>
+                <div class="nfr-fix" data-chip="hide_watched" hidden>
+                  <p class="nfr-fix-title">Hiding what you've watched is in TidyWL.</p>
+                  <p><span class="nfr-ui">My List</span> <span class="nfr-sep" aria-hidden="true">›</span> <span class="nfr-ui">Filter</span>, by watch state: <span class="nfr-ui">Not started</span>, <span class="nfr-ui">Partway</span> or <span class="nfr-ui">Watched</span>, for films and shows.</p>
+                </div>
+                <div class="nfr-fix" data-chip="ratings" hidden>
+                  <p class="nfr-fix-title">IMDb ratings are in TidyWL.</p>
+                  <p>On every title in the dashboard, and since version 1.1.0 on Netflix's own title art too, in the top-right corner. There, a title with fewer than 100 votes gets none.</p>
+                </div>
+                <div class="nfr-fix" data-chip="tonight" hidden>
+                  <p class="nfr-fix-title">A pick for tonight is Tonight, in TidyWL Pro.</p>
+                  <p>Say who's watching, how long you have and the mood, and it deals one pick and two backups from My List. Pro starts with {{ trial }} days free, card required. <a href="/netflix/pricing/" target="_blank" rel="noopener">What Pro adds and costs&nbsp;<span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></p>
+                </div>
+              </div>
+              <div class="nfr-text-slot"></div>
+            </div>
+          </div>
+
+          <!-- 3. broken: the one reason that needs words -->
+          <div class="nfr-reason" data-reason="broken" data-ask="What were you doing when it went wrong?">
+            <label class="nfr-reason-head">
+              <input type="radio" name="reason" value="broken">
+              <span class="nfr-reason-label">Something didn't work.</span>
+            </label>
+            <div class="nfr-reason-body" hidden>
+              <p class="nfr-fix-title">Sorry about that.</p>
+              <p>TidyWL works through Netflix's website, and when Netflix changes it, things break. Many fixes go out within hours, without an update. Tell me what happened and I'll look.</p>
+              <div class="nfr-text-slot"></div>
+              <p class="nfr-small">Want an answer back? Write to <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> or post on <a href="https://discord.gg/4j5u9xd35P" target="_blank" rel="noopener">Discord</a>.</p>
+            </div>
+          </div>
+
+          <!-- 4. clutter: the question first, since the fix depends on the chip -->
+          <div class="nfr-reason" data-reason="clutter">
+            <label class="nfr-reason-head">
+              <input type="radio" name="reason" value="clutter">
+              <span class="nfr-reason-label">It got in the way on Netflix's pages.</span>
+            </label>
+            <div class="nfr-reason-body" hidden>
+              <fieldset class="nfr-chips">
+                <legend class="nfr-q">What got in the way? <span class="nfr-hint">Tap any, optional</span></legend>
+                <div class="nfr-chip-row">
+                  <label class="nfr-chip"><input type="checkbox" value="ratings"><span>The ratings on the posters</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="pick_for_me"><span>The Pick for me button</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="icon_number"><span>The number on TidyWL's icon</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="slow" data-ask="Which page felt slow?"><span>It made Netflix slow</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="other" data-ask="What else got in the way?"><span>Something else</span></label>
+                </div>
+              </fieldset>
+              <div class="nfr-fixes">
+                <div class="nfr-fix" data-chip="ratings" hidden>
+                  <p><strong>The ratings on the posters.</strong> There's no switch to hide them yet. Hearing it from you is how I'll know one is needed.</p>
+                </div>
+                <div class="nfr-fix" data-chip="pick_for_me" hidden>
+                  <p><strong>The Pick for me button.</strong> It shows only with Pro or a trial, and there's no switch to hide it yet.</p>
+                </div>
+                <div class="nfr-fix" data-chip="icon_number" hidden>
+                  <p><strong>The number on TidyWL's icon.</strong> It counts the titles that started leaving Netflix since you last opened TidyWL's popup. Opening the popup clears it.</p>
+                </div>
+                <div class="nfr-fix" data-chip="slow" hidden>
+                  <p><strong>Slow pages.</strong> Sorry about that. Tell me below which page it was.</p>
+                </div>
+              </div>
+              <div class="nfr-text-slot"></div>
+            </div>
+          </div>
+
+          <!-- 5. device -->
+          <div class="nfr-reason" data-reason="device">
+            <label class="nfr-reason-head">
+              <input type="radio" name="reason" value="device">
+              <span class="nfr-reason-label">I watch Netflix on a TV or phone, not in Chrome.</span>
+            </label>
+            <div class="nfr-reason-body" hidden>
+              <p>Fair. TidyWL only runs in Chrome on a computer, and Chrome on a phone can't run extensions.</p>
+              <fieldset class="nfr-chips">
+                <legend class="nfr-q">Where do you usually pick what to watch? <span class="nfr-hint">Tap any, optional</span></legend>
+                <div class="nfr-chip-row">
+                  <label class="nfr-chip"><input type="checkbox" value="tv"><span>On the TV</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="phone"><span>On my phone</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="other_browser"><span>On a computer, in another browser</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="other" data-ask="Where else do you pick what to watch?"><span>Somewhere else</span></label>
+                </div>
+              </fieldset>
+              <div class="nfr-text-slot"></div>
+            </div>
+          </div>
+
+          <!-- 6. pro -->
+          <div class="nfr-reason" data-reason="pro">
+            <label class="nfr-reason-head">
+              <input type="radio" name="reason" value="pro">
+              <span class="nfr-reason-label">The part I wanted was in Pro.</span>
+            </label>
+            <div class="nfr-reason-body" hidden>
+              <p>Tonight, Undo, Pin, clean-up rules, stats, playlists on a phone and more than five playlists are Pro. Everything else stays free. <a href="/netflix/pricing/" target="_blank" rel="noopener">What Pro adds and costs&nbsp;<span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></p>
+              <fieldset class="nfr-chips">
+                <legend class="nfr-q">Which part did you want? <span class="nfr-hint">Tap any, optional</span></legend>
+                <div class="nfr-chip-row">
+                  <label class="nfr-chip"><input type="checkbox" value="tonight"><span>Tonight</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="undo"><span>Undo</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="pin"><span>Pin</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="rules"><span>Clean-up rules</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="stats"><span>Stats</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="more_playlists"><span>More than five playlists</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="phone_playlists"><span>Playlists on my phone</span></label>
+                </div>
+              </fieldset>
+              <div class="nfr-text-slot"></div>
+            </div>
+          </div>
+
+          <!-- 7. privacy -->
+          <div class="nfr-reason" data-reason="privacy">
+            <label class="nfr-reason-head">
+              <input type="radio" name="reason" value="privacy">
+              <span class="nfr-reason-label">I wasn't comfortable with what it could access.</span>
+            </label>
+            <div class="nfr-reason-body" hidden>
+              <p>Plainly: TidyWL never asks for your Netflix password and never touches video. Your list, watch state and searches stay in your browser.</p>
+              <p>Its usage report sends a random install ID with counts, never a title, a search or a profile. There's no switch for it, and removing the extension stopped it. <a href="/netflix/privacy/" target="_blank" rel="noopener">Every request it makes is on the privacy page&nbsp;<span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></p>
+              <fieldset class="nfr-chips">
+                <legend class="nfr-q">What worried you? <span class="nfr-hint">Tap any, optional</span></legend>
+                <div class="nfr-chip-row">
+                  <label class="nfr-chip"><input type="checkbox" value="install_warning"><span>Chrome's warning when I added it</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="reads_account"><span>That it reads my Netflix account</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="sends"><span>What it sends to tidywl.com</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="other" data-ask="What else worried you?"><span>Something else</span></label>
+                </div>
+              </fieldset>
+              <div class="nfr-text-slot"></div>
+            </div>
+          </div>
+
+          <!-- 8. language: only when the browser isn't English (Q5) -->
+          <div class="nfr-reason" data-reason="language" data-ask="Which language would you want it in?" hidden>
+            <label class="nfr-reason-head">
+              <input type="radio" name="reason" value="language">
+              <span class="nfr-reason-label">It wasn't in my language.</span>
+            </label>
+            <div class="nfr-reason-body" hidden>
+              <p class="nfr-fix-title">Sorry about that.</p>
+              <p>TidyWL itself is in English only, for now.</p>
+              <div class="nfr-text-slot"></div>
+            </div>
+          </div>
+
+          <!-- 9. done: last, so it cannot catch someone in a hurry -->
+          <div class="nfr-reason" data-reason="done">
+            <label class="nfr-reason-head">
+              <input type="radio" name="reason" value="done">
+              <span class="nfr-reason-label">It did what I needed. I'm done.</span>
+            </label>
+            <div class="nfr-reason-body" hidden>
+              <p class="nfr-fix-title">Glad it did the job.</p>
+              <p>Your Netflix list stays as you left it.</p>
+              <fieldset class="nfr-chips">
+                <legend class="nfr-q">What did you use it for? <span class="nfr-hint">Tap any, optional</span></legend>
+                <div class="nfr-chip-row">
+                  <label class="nfr-chip"><input type="checkbox" value="clear"><span>Clearing out My List</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="sort"><span>Sorting and filtering it</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="playlists"><span>Making playlists</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="find"><span>Finding something to watch</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="ratings"><span>The IMDb ratings on Netflix's posters</span></label>
+                  <label class="nfr-chip"><input type="checkbox" value="other" data-ask="What else did you use it for?"><span>Something else</span></label>
+                </div>
+              </fieldset>
+              <div class="nfr-text-slot"></div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- The one text box. It lives here until a reason is chosen, then
+             moves into that reason and takes its question as its label. -->
+        <div class="nfr-text-home" id="nfr-text-home">
+          <div class="nfr-text" id="nfr-text-wrap">
+            <label class="nfr-text-label" for="nfr-text"><span id="nfr-text-q">Anything else?</span> <span class="nfr-hint" id="nfr-text-hint">In your own words, optional</span></label>
+            <textarea id="nfr-text" rows="3" maxlength="1000"></textarea>
+          </div>
+        </div>
+
+        <div class="nfr-send-row">
+          <button type="submit" class="btn-primary nfr-send" id="nfr-send" disabled>Send</button>
+          <p class="nfr-send-note">
+            <span id="nfr-note-fields">Goes with your answer: the version you had, your browser's language, and roughly how long you had TidyWL and how often you opened it.</span>
+            <span id="nfr-note-plain" hidden>Only your answer is sent.</span>
+            No name, no install ID. <a href="/netflix/privacy/#removed" target="_blank" rel="noopener">Privacy</a>
+          </p>
+        </div>
+
+        <div class="nfr-error" id="nfr-send-error" role="alert" hidden>
+          <p data-error="network" hidden>Couldn't reach tidywl.com, so nothing was sent. Your answer is still here: check your connection and press Send again.</p>
+          <p data-error="busy" hidden>Too many answers from this connection just now. Wait a minute, then press Send again.</p>
+          <p data-error="rejected" hidden>tidywl.com didn't accept the answer, so nothing was saved. Press Send again, and if it keeps failing, email it to <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on-->.</p>
+          <p data-error="other" hidden>Something went wrong on tidywl.com's side, so nothing was saved. Your answer is still here: press Send again in a moment.</p>
+        </div>
+
+        <noscript>
+          <p class="nfr-error">This page needs JavaScript to send your answer. You can email it to <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> instead.</p>
+        </noscript>
+      </form>
+    </div>
+
+    <!-- After Send (B5b, B6b). -->
+    <div class="nfr-thanks" id="nfr-thanks" aria-live="polite" hidden>
+      <div class="nfr-thanks-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h1 class="nfr-title" id="nfr-thanks-title" tabindex="-1">Thank you. That's in.</h1>
+      <p class="nfr-lead">I read every answer myself. — Dominic</p>
+
+      <p class="nfr-recap">
+        <span class="nfr-recap-k">You told me:</span>
+        <strong id="nfr-recap-reason"></strong><span id="nfr-recap-chips"></span>
+        <span class="nfr-recap-text" id="nfr-recap-text" hidden></span>
+      </p>
+
+      <!-- B6b: the way back carries the fix, when there was one. -->
+      <div class="nfr-card nfr-back" id="nfr-back-fix" hidden>
+        <div class="nfr-fixes" id="nfr-back-fixes"></div>
+        <div class="nfr-actions">
+          <a class="nfr-btn-outline" href="{{ store }}" target="_blank" rel="noopener">Add it back to Chrome&nbsp;<span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+        <p class="nfr-small" id="nfr-back-hint">Then click its icon in Chrome's toolbar, and then <span class="nfr-ui">Open dashboard</span>.</p>
+      </div>
+
+      <!-- B5b: one question, by email, only if they like. -->
+      <div class="nfr-card nfr-email" id="nfr-email">
+        <h2 class="nfr-card-title">One more, only if you like</h2>
+        <p id="nfr-email-intro">Leave your email and I'll send you one question about what you told me. Just one, from me. No newsletter, no list, and I delete the address after 60 days.</p>
+        <form id="nfr-email-form" novalidate>
+          <label class="sr-only" for="nfr-email-input">Your email address</label>
+          <div class="nfr-email-row">
+            <input type="email" id="nfr-email-input" autocomplete="email" maxlength="254" spellcheck="false" placeholder="you@example.com">
+            <button type="submit" class="btn-primary nfr-email-send" id="nfr-email-send">Send</button>
+          </div>
+          <p class="nfr-small">Used only for that one question. <a href="/netflix/privacy/#removed" target="_blank" rel="noopener">Privacy</a></p>
+        </form>
+        <div class="nfr-email-status" role="status">
+          <p class="nfr-email-msg" data-state="bad" hidden>That doesn't look like an email address. Check it and press Send again.</p>
+          <p class="nfr-email-msg" data-state="busy" hidden>Too many tries from this connection just now. Wait a minute, then press Send again.</p>
+          <p class="nfr-email-msg" data-state="network" hidden>Couldn't reach tidywl.com, so the email wasn't saved. Press Send again in a moment.</p>
+          <p class="nfr-email-msg" data-state="other" hidden>Something went wrong on tidywl.com's side, so the email wasn't saved. Press Send again in a moment.</p>
+          <p class="nfr-email-msg" data-state="missing" hidden>That answer couldn't be found, so the email wasn't saved. Write to <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> instead, and I'll answer there.</p>
+          <p class="nfr-email-msg" data-state="taken" hidden>An email is already saved with this answer.</p>
+          <p class="nfr-email-done" data-state="ok" tabindex="-1" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            Thanks. One question, then I'm out of your inbox.
+          </p>
+        </div>
+      </div>
+
+      <p class="nfr-quiet" id="nfr-back-quiet" hidden>Changed your mind? <a href="{{ store }}" target="_blank" rel="noopener">Add TidyWL back to Chrome&nbsp;<span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></p>
+      <p class="nfr-quiet">A question or a bug? <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> · <a href="https://discord.gg/4j5u9xd35P" target="_blank" rel="noopener">Discord</a></p>
+    </div>
+
+    <!-- B4b, kept for everyone: the one safeguard for a subscriber whose link
+         carried no plan. Its cancel line hides when the notice above shows. -->
+    <aside class="nfr-know" aria-labelledby="nfr-know-title">
+      <h2 class="nfr-know-title" id="nfr-know-title">Good to know</h2>
+      <p>Removing TidyWL didn't change your Netflix account or your My List.</p>
+      <details class="nfr-know-cancel" id="nfr-know-cancel">
+        <summary>Had Pro or a trial? Removing the extension doesn't cancel it. <span class="nfr-link">How to cancel</span></summary>
+        <p>Email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from the address you paid with. A trial cancelled before day {{ trial | plus: 1 }} costs nothing, and any charge from the last 14 days is refunded in full.</p>
+      </details>
+    </aside>
+
+  </div>
+</div>
+
+<style>
+  /* ── REMOVED ──
+     One column (B1a), the site's tokens throughout, so the light and dark
+     themes and the manual toggle need nothing of their own here. */
+  .nfr { padding: 40px 24px 80px; }
+  .nfr-col { max-width: 620px; margin: 0 auto; }
+  /* `hidden` must win over every display rule below. */
+  .nfr [hidden] { display: none !important; }
+
+  .nfr a:not([class]), .nfr .nfr-link {
+    color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px;
+  }
+  .nfr :is(a, button, input, textarea, summary):focus-visible {
+    outline: 2px solid var(--accent-fill); outline-offset: 2px;
+  }
+
+  .nfr-eyebrow { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; }
+  .nfr-title {
+    font-size: clamp(1.9rem, 5vw, 2.5rem); font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 14px; text-wrap: balance;
+  }
+  /* Focus lands on the thank-you's heading by script; the ring shows only
+     when the visitor is on the keyboard. */
+  .nfr-title:focus:not(:focus-visible) { outline: none; }
+  .nfr-lead { font-size: 1.06rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 12px; text-wrap: pretty; }
+  .nfr-founder { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 26px; }
+  .nfr-small { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; }
+  .nfr-hint { font-weight: 400; font-size: 0.8rem; color: var(--text-muted); margin-left: 2px; }
+
+  /* ── The reasons ── */
+  .nfr-reasons { border: 0; min-width: 0; display: grid; gap: 10px; }
+  .nfr-reason {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+    transition: border-color 0.15s;
+  }
+  .nfr-reason:hover { border-color: var(--border-strong); }
+  .nfr-reason.is-chosen { border-color: var(--accent); background: var(--highlight-bg); }
+  .nfr-reason-head {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 13px 16px; cursor: pointer;
+    font-size: 1rem; line-height: 1.45; color: var(--text);
+  }
+  .nfr-reason-head input {
+    -webkit-appearance: none; appearance: none; flex: none;
+    width: 20px; height: 20px; margin: 1px 0 0;
+    border: 2px solid var(--border-strong); border-radius: 50%;
+    background: transparent; cursor: pointer;
+  }
+  .nfr-reason-head input:checked {
+    border-color: var(--accent);
+    background: radial-gradient(circle, var(--accent) 0 4.5px, transparent 5px);
+  }
+  .nfr-reason.is-chosen .nfr-reason-label { font-weight: 600; }
+  .nfr-reason-body { padding: 0 16px 18px 48px; animation: nfr-in 0.18s ease-out; }
+  .nfr-reason-body > * + * { margin-top: 14px; }
+  .nfr-reason-body p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; text-wrap: pretty; }
+  .nfr-reason-body .nfr-small { font-size: 0.85rem; color: var(--text-muted); }
+  .nfr .nfr-fix-title { font-weight: 700; color: var(--text); }
+  .nfr-reason-body > .nfr-fix-title + p { margin-top: 4px; }
+  .nfr-fixcopy > * + * { margin-top: 10px; }
+
+  /* A control's name in the dashboard, so it reads as something to click. */
+  .nfr-ui {
+    display: inline-block; font-size: 0.82rem; font-weight: 600; color: var(--text);
+    background: var(--bg); border: 1px solid var(--border-strong); border-radius: 5px;
+    padding: 0 7px; line-height: 1.65; white-space: nowrap;
+  }
+  .nfr-sep { color: var(--text-subtle); }
+
+  /* ── Chips: checkboxes, drawn as pills ── */
+  .nfr-chips { border: 0; min-width: 0; }
+  .nfr-q { float: left; width: 100%; padding: 0; margin-bottom: 10px; font-size: 0.95rem; font-weight: 700; color: var(--text); }
+  .nfr-chip-row { clear: both; display: flex; flex-wrap: wrap; gap: 8px; }
+  .nfr-chip { position: relative; display: inline-flex; }
+  .nfr-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+  .nfr-chip span {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 7px 14px; border: 1px solid var(--border); border-radius: 999px;
+    background: var(--bg-card); color: var(--text-secondary);
+    font-size: 0.9rem; line-height: 1.3; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .nfr-chip span:hover { border-color: var(--border-strong); color: var(--text); }
+  .nfr-chip input:checked + span {
+    border-color: var(--accent); background: var(--feature-icon-bg);
+    color: var(--text); font-weight: 600;
+  }
+  .nfr-chip input:checked + span::before {
+    content: ""; flex: none; width: 9px; height: 5px; margin-top: -3px;
+    border-left: 2px solid var(--accent-text); border-bottom: 2px solid var(--accent-text);
+    transform: rotate(-45deg);
+  }
+  .nfr-chip input:focus-visible + span { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+
+  /* ── A fix ── */
+  .nfr-fixes { display: grid; gap: 10px; }
+  /* An empty fix list or text slot would still take its 14px of spacing. */
+  .nfr-fixes:not(:has(> :not([hidden]))),
+  .nfr-text-slot:not(:has(> :not([hidden]))) { display: none; }
+  .nfr-fix {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-left: 3px solid var(--accent); border-radius: 8px; padding: 12px 14px;
+  }
+  .nfr-fix p { font-size: 0.93rem; color: var(--text-secondary); line-height: 1.6; }
+  .nfr-fix p + p { margin-top: 6px; }
+  .nfr-fix strong { color: var(--text); }
+
+  .nfr-steps { list-style: none; display: grid; gap: 8px; }
+  .nfr-steps li { display: flex; gap: 10px; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.55; }
+  .nfr-mark {
+    display: grid; place-items: center; flex: none;
+    width: 20px; height: 20px; margin-top: 1px; border-radius: 50%;
+    background: var(--accent-fill); color: #fff; font-size: 0.7rem; font-weight: 700; line-height: 1;
+  }
+
+  /* The toolbar and its popup, drawn. */
+  .nfr-toolbar {
+    max-width: 400px; padding: 10px 12px 12px;
+    background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+  }
+  .nfr-tb-bar { display: flex; align-items: center; gap: 9px; }
+  .nfr-tb-url {
+    flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+    font-size: 0.75rem; color: var(--text-muted);
+    background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 999px; padding: 3px 12px;
+  }
+  .nfr-tb-icon { width: 22px; height: 22px; border-radius: 5px; outline: 2px dashed var(--accent); outline-offset: 3px; }
+  .nfr-tb-puzzle { width: 18px; height: 18px; color: var(--text-muted); flex: none; margin-left: 4px; }
+  .nfr-tb-page { display: flex; align-items: flex-start; gap: 14px; margin-top: 12px; }
+  .nfr-tb-tiles { flex: 1; display: flex; gap: 6px; padding-top: 4px; }
+  .nfr-tb-tiles span {
+    position: relative; width: 34px; height: 50px; border-radius: 4px;
+    background: var(--border-subtle); border: 1px solid var(--border);
+  }
+  /* A rating badge in each poster's corner, as on Netflix's own page. */
+  .nfr-tb-tiles span::after {
+    content: ""; position: absolute; top: 3px; right: 3px;
+    width: 12px; height: 7px; border-radius: 2px; background: #f5c518;
+  }
+  .nfr-tb-pop {
+    display: grid; gap: 8px; width: 210px; margin-right: 4px; padding: 10px;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
+    box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.45);
+  }
+  .nfr-tb-pop-name { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 600; color: var(--text); }
+  .nfr-tb-pop-name img { border-radius: 3px; }
+  .nfr-tb-pop-row { display: flex; align-items: center; gap: 8px; }
+  .nfr-tb-open {
+    flex: 1; text-align: center; font-size: 0.78rem; font-weight: 600; color: #fff;
+    background: var(--accent-fill); border-radius: 6px; padding: 5px 8px;
+  }
+
+  /* ── The text box ── */
+  .nfr-text-home > .nfr-text { margin-top: 20px; }
+  .nfr-text-label { display: block; font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .nfr-text textarea {
+    display: block; width: 100%; min-height: 92px; resize: vertical;
+    font: inherit; font-size: 1rem; line-height: 1.5; color: var(--text);
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 11px 13px;
+  }
+  .nfr-text textarea:hover { border-color: var(--border-strong); }
+
+  /* ── Send ── */
+  .nfr-send-row { display: flex; align-items: center; gap: 18px; margin-top: 22px; }
+  .nfr-send { flex: none; padding: 13px 34px; justify-content: center; }
+  .nfr-send:disabled { opacity: 0.45; cursor: not-allowed; }
+  .nfr-send:disabled:hover { background: var(--accent-fill); }
+  .nfr-send-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; text-wrap: pretty; }
+  .nfr-error {
+    margin-top: 16px; padding: 12px 14px; font-size: 0.92rem; line-height: 1.55; color: var(--text);
+    background: var(--highlight-bg); border: 1px solid var(--highlight-border); border-radius: 10px;
+  }
+
+  /* ── The subscription notice (B4a) ── */
+  .nfr-notice {
+    margin-bottom: 36px; padding: 20px 22px;
+    background: var(--highlight-bg); border: 1px solid var(--highlight-border); border-radius: 14px;
+  }
+  .nfr-notice-title { display: flex; align-items: flex-start; gap: 10px; font-size: 1.08rem; font-weight: 700; margin-bottom: 10px; }
+  .nfr-notice-title svg { width: 20px; height: 20px; flex: none; margin-top: 3px; color: var(--accent-text); }
+  .nfr-notice p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; text-wrap: pretty; }
+  .nfr-notice p + p { margin-top: 8px; }
+  .nfr-notice strong { color: var(--text); }
+  .nfr-notice .nfr-small { font-size: 0.85rem; color: var(--text-muted); }
+  .nfr-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin: 16px 0 12px; }
+  /* Outlined, never red: it must not compete with Send. */
+  .nfr-btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 18px; border-radius: 8px;
+    border: 1.5px solid var(--border-strong); background: var(--bg-card); color: var(--text);
+    font-size: 0.95rem; font-weight: 600; line-height: 1.3;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .nfr-btn-outline:hover { border-color: var(--ghost-hover-border); background: var(--ghost-hover-bg); }
+
+  /* ── After Send ── */
+  .nfr-thanks { animation: nfr-in 0.24s ease-out; }
+  .nfr-thanks-mark {
+    display: grid; place-items: center; width: 46px; height: 46px; margin-bottom: 18px;
+    border-radius: 50%; background: var(--feature-icon-bg); color: var(--accent-text);
+  }
+  .nfr-thanks-mark svg { width: 22px; height: 22px; }
+  .nfr-recap {
+    margin: 22px 0 18px; padding: 12px 14px;
+    border: 1px dashed var(--border-strong); border-radius: 10px;
+    font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; overflow-wrap: anywhere;
+  }
+  .nfr-recap strong { color: var(--text); }
+  .nfr-recap-text { display: block; margin-top: 4px; font-style: italic; }
+  .nfr-card { padding: 20px 22px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
+  .nfr-card + .nfr-card { margin-top: 16px; }
+  .nfr-card-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+  .nfr-card > p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
+  .nfr-back .nfr-fixes { gap: 14px; }
+  .nfr-back .nfr-fix { padding: 0; border: 0; background: none; }
+  .nfr-back .nfr-fix + .nfr-fix { padding-top: 14px; border-top: 1px solid var(--border-subtle); }
+  .nfr-back .nfr-actions { margin-bottom: 8px; }
+  .nfr-email-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 10px; }
+  .nfr-email-row input {
+    flex: 1 1 220px; min-width: 0; padding: 11px 13px;
+    font: inherit; font-size: 1rem; color: var(--text);
+    background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  }
+  .nfr-email-send { padding: 11px 24px; justify-content: center; }
+  .nfr-email-send:disabled { opacity: 0.6; cursor: progress; }
+  .nfr-email-msg { margin-top: 10px; font-size: 0.9rem; color: var(--text); line-height: 1.55; }
+  .nfr-email-done { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 0.98rem; color: var(--text); }
+  .nfr-email-done svg { width: 18px; height: 18px; flex: none; color: var(--accent-text); }
+  .nfr-email-done:focus:not(:focus-visible) { outline: none; }
+  .nfr-quiet { margin-top: 18px; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* ── Good to know (B4b) ── */
+  .nfr-know { margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--border-subtle); }
+  .nfr-know-title {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .nfr-know p, .nfr-know summary { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+  .nfr-know summary { margin-top: 6px; cursor: pointer; list-style: none; }
+  .nfr-know summary::-webkit-details-marker { display: none; }
+  .nfr-know details p {
+    margin-top: 8px; padding: 12px 14px; color: var(--text-secondary);
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+  }
+
+  @keyframes nfr-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .nfr-reason-body, .nfr-thanks { animation: none; }
+  }
+
+  /* Phone: the same page, a 16px gutter, Send full width. */
+  @media (max-width: 640px) {
+    .nfr { padding: 24px 16px 56px; }
+    .nfr-reason-head { padding: 13px 14px; }
+    .nfr-reason-body { padding: 0 14px 16px; }
+    .nfr-send-row { flex-direction: column; align-items: stretch; gap: 12px; }
+    .nfr-notice, .nfr-card { padding: 18px 16px; }
+    .nfr-email-send { flex: 1 1 100%; }
+    .nfr-tb-tiles { display: none; }
+    .nfr-tb-pop { flex: 1; width: auto; margin-left: 24px; }
+  }
+</style>
+
+<script>
+  (() => {
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+    // ── The link's fields (CONTRACTS-1.2.1 § 1) ──
+    // The hash first; the query string only for a field the hash lacks. A
+    // value outside the contract counts as missing, never as a guess.
+    const fromHash = new URLSearchParams(location.hash.replace(/^#/, ''));
+    const fromQuery = new URLSearchParams(location.search);
+    const raw = (key) => {
+      const value = fromHash.get(key) || fromQuery.get(key);
+      return value == null ? null : value.trim();
+    };
+    const only = (value, ok) => (value != null && ok(value) ? value : null);
+    const lang = raw('l');
+    const fields = {
+      a: only(raw('a'), (v) => ['lt1h', 'lt1d', 'lt1w', 'lt1m', 'gte1m', 'na'].includes(v)),
+      v: only(raw('v'), (v) => /^\d{1,4}\.\d{1,4}\.\d{1,4}$/.test(v)),
+      l: only(lang == null ? null : lang.toLowerCase(), (v) => /^[a-z]{2}$/.test(v)),
+      d: only(raw('d'), (v) => ['0', '1', '2'].includes(v)),
+    };
+    // Read for the notice, and never put in a request.
+    const plan = only(raw('p'), (v) => v === 'trial' || v === 'pro');
+
+    if (plan != null) {
+      $('#nfr-notice-' + plan).hidden = false;
+      $('#nfr-know-cancel').hidden = true;
+    }
+
+    // "It wasn't in my language", only for a browser that isn't English.
+    const browserLang = fields.l != null ? fields.l : (navigator.language || '').slice(0, 2).toLowerCase();
+    if (browserLang !== '' && browserLang !== 'en') $('[data-reason="language"]').hidden = false;
+
+    const hasFields = Object.values(fields).some((v) => v != null);
+    $('#nfr-note-fields').hidden = !hasFields;
+    $('#nfr-note-plain').hidden = hasFields;
+
+    // ── The form ──
+    const form = $('#nfr-form');
+    const send = $('#nfr-send');
+    const textWrap = $('#nfr-text-wrap');
+    const textarea = $('#nfr-text');
+    const items = $$('.nfr-reason');
+    let busy = false;
+
+    const chosenItem = () => items.find((item) => !item.hidden && $('input[type="radio"]', item).checked) || null;
+    const tickedChips = (item) => $$('input[type="checkbox"]:checked', item);
+    const canSend = () => !busy && (chosenItem() != null || textarea.value.trim() !== '');
+
+    function setLabel(question, hint) {
+      $('#nfr-text-q').textContent = question;
+      $('#nfr-text-hint').textContent = hint;
+    }
+
+    // The one text box: under the list until a reason is chosen, then inside
+    // it, asking that reason's question. Words already typed are never hidden.
+    function placeText(item) {
+      const target = item == null ? $('#nfr-text-home') : $('.nfr-text-slot', item);
+      // Moving an element blurs it, so move only when the place changes.
+      if (textWrap.parentNode !== target) target.append(textWrap);
+      if (item == null) {
+        textWrap.hidden = false;
+        setLabel('Anything else?', 'In your own words, optional');
+        return;
+      }
+      const asks = item.dataset.ask != null
+        ? [item.dataset.ask]
+        : tickedChips(item).filter((chip) => chip.dataset.ask != null).map((chip) => chip.dataset.ask);
+      textWrap.hidden = asks.length === 0 && textarea.value.trim() === '';
+      if (asks.length > 0) setLabel(asks.join(' '), 'Optional');
+      else setLabel('Anything else?', 'In your own words, optional');
+    }
+
+    function sync() {
+      const chosen = chosenItem();
+      items.forEach((item) => {
+        item.classList.toggle('is-chosen', item === chosen);
+        $('.nfr-reason-body', item).hidden = item !== chosen;
+      });
+      if (chosen != null) {
+        $$('.nfr-fix[data-chip]', chosen).forEach((fix) => {
+          fix.hidden = !$('input[value="' + fix.dataset.chip + '"]', chosen).checked;
+        });
+      }
+      placeText(chosen);
+      send.disabled = !canSend();
+    }
+
+    form.addEventListener('change', (event) => {
+      if (event.target.matches('input[type="radio"], input[type="checkbox"]')) sync();
+    });
+    textarea.addEventListener('input', () => { send.disabled = !canSend(); });
+
+    function showError(kind) {
+      const box = $('#nfr-send-error');
+      $$('[data-error]', box).forEach((p) => { p.hidden = p.dataset.error !== kind; });
+      box.hidden = kind == null;
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!canSend()) return;
+      const chosen = chosenItem();
+      const answer = {
+        reason: chosen == null ? null : chosen.dataset.reason,
+        chips: chosen == null ? [] : tickedChips(chosen).map((chip) => chip.value),
+        text: textarea.value.trim().slice(0, 1000),
+        a: fields.a, v: fields.v, l: fields.l, d: fields.d,
+      };
+
+      busy = true;
+      send.disabled = true;
+      send.textContent = 'Sending…';
+      showError(null);
+
+      let outcome = 'network';
+      let id = null;
+      try {
+        const res = await fetch('/api/netflix/removed', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(answer),
+          credentials: 'omit',
+          cache: 'no-store',
+        });
+        if (res.ok) {
+          const body = await res.json().catch(() => null);
+          if (body != null && typeof body.id === 'string' && /^[0-9a-f]{32}$/.test(body.id)) id = body.id;
+          outcome = 'ok';
+        } else if (res.status === 429) {
+          outcome = 'busy';
+        } else if (res.status === 400) {
+          outcome = 'rejected';
+        } else {
+          outcome = 'other';
+        }
+      } catch (error) {
+        outcome = 'network';
+      }
+
+      busy = false;
+      send.textContent = 'Send';
+      if (outcome === 'ok') {
+        thank(chosen, answer, id);
+        return;
+      }
+      // The answer stays exactly as it was, so Send can simply be pressed again.
+      send.disabled = !canSend();
+      showError(outcome);
+    });
+
+    // ── After Send ──
+    let answerId = null;
+
+    function thank(chosen, answer, id) {
+      const chipNames = chosen == null ? [] : tickedChips(chosen).map((chip) => chip.nextElementSibling.textContent);
+      const label = chosen == null ? '' : $('.nfr-reason-label', chosen).textContent;
+      $('#nfr-recap-reason').textContent = chipNames.length > 0 ? label.replace(/\.$/, '') : label;
+      $('#nfr-recap-chips').textContent = chipNames.length > 0 ? ' · ' + chipNames.join(' · ') : '';
+      if (answer.text !== '') {
+        const recap = $('#nfr-recap-text');
+        recap.textContent = '“' + (answer.text.length > 280 ? answer.text.slice(0, 280) + '…' : answer.text) + '”';
+        recap.hidden = false;
+      }
+
+      // B6b: the way back carries the fix when TidyWL already had it.
+      let fixes = [];
+      if (answer.reason === 'lost') fixes = [$('[data-fix="lost"]', chosen)];
+      if (answer.reason === 'missing') fixes = $$('.nfr-fix[data-chip]', chosen).filter((fix) => !fix.hidden);
+      if (fixes.length > 0) {
+        const box = $('#nfr-back-fixes');
+        fixes.forEach((fix) => {
+          const copy = fix.cloneNode(true);
+          copy.hidden = false;
+          box.append(copy);
+        });
+        $('#nfr-back-hint').hidden = answer.reason === 'lost';
+        $('#nfr-back-fix').hidden = false;
+      } else {
+        $('#nfr-back-quiet').hidden = false;
+      }
+
+      if (id == null) $('#nfr-email').hidden = true;
+      answerId = id;
+
+      $('#nfr-ask').hidden = true;
+      $('#nfr-thanks').hidden = false;
+      document.title = 'Thank you · TidyWL for Netflix';
+      $('#nfr-thanks-title').focus();
+    }
+
+    // ── The email card (B5b) ──
+    const emailForm = $('#nfr-email-form');
+    const emailInput = $('#nfr-email-input');
+    const emailSend = $('#nfr-email-send');
+    let emailBusy = false;
+
+    function emailSay(state) {
+      $$('#nfr-email [data-state]').forEach((p) => { p.hidden = p.dataset.state !== state; });
+    }
+
+    emailForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (emailBusy || answerId == null) return;
+      const email = emailInput.value.trim();
+      if (email.length > 254 || !/^[^\s@]+@[^\s@]+$/.test(email)) {
+        emailSay('bad');
+        emailInput.focus();
+        return;
+      }
+
+      emailBusy = true;
+      emailSend.disabled = true;
+      emailSend.textContent = 'Sending…';
+      emailSay(null);
+
+      let state = 'network';
+      try {
+        const res = await fetch('/api/netflix/removed/email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: answerId, email }),
+          credentials: 'omit',
+          cache: 'no-store',
+        });
+        if (res.ok) state = 'ok';
+        else if (res.status === 400) state = 'bad';
+        else if (res.status === 404) state = 'missing';
+        else if (res.status === 409) state = 'taken';
+        else if (res.status === 429) state = 'busy';
+        else state = 'other';
+      } catch (error) {
+        state = 'network';
+      }
+
+      emailBusy = false;
+      emailSend.textContent = 'Send';
+      emailSend.disabled = false;
+      emailSay(state);
+      if (state === 'ok' || state === 'missing' || state === 'taken') {
+        emailForm.hidden = true;
+        $('#nfr-email-intro').hidden = true;
+        const said = $('#nfr-email [data-state="' + state + '"]');
+        said.tabIndex = -1;
+        said.focus();
+      }
+    });
+
+    // A reload can bring a ticked radio back; show what it ticks.
+    sync();
+  })();
+</script>
