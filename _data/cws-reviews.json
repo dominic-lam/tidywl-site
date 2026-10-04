@@ -1,5 +1,41 @@
 [
   {
+    "id": "3c738ff2-c9c8-4f9b-90af-31d033bda5f4",
+    "author": "Peter Müller",
+    "stars": 5,
+    "text": "Top . endlich konnte ich die später ansehen Playlist lehren. danke dir",
+    "date": "2026-10-03",
+    "version": "2.3.2",
+    "lang": "de"
+  },
+  {
+    "id": "313da772-336f-4140-b8c9-9e9782ef02f0",
+    "author": "Scrappy",
+    "stars": 4,
+    "text": "Good one.",
+    "date": "2026-10-01",
+    "version": "2.3.2",
+    "lang": "en"
+  },
+  {
+    "id": "32d3b704-17f6-4252-98c8-d8b70a8cce55",
+    "author": "THIAGO MOYANO",
+    "stars": 5,
+    "text": "buenisimo",
+    "date": "2026-09-29",
+    "version": "2.3.0",
+    "lang": "es"
+  },
+  {
+    "id": "335f2ec8-024b-4501-a2c7-0880a434ff97",
+    "author": "abdelillah lotfallah",
+    "stars": 5,
+    "text": "just perfect",
+    "date": "2026-09-27",
+    "version": "2.1.1",
+    "lang": "en"
+  },
+  {
     "id": "af05d679-fd1b-4d33-9f5e-f807a6f69e50",
     "author": "Chan D",
     "stars": 5,
