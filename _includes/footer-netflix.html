@@ -4,7 +4,7 @@
        trademark disclaimer is the kind of wrong a store reviewer reads. -->
   <footer>
     <div class="footer-links">
-      {%- if site.data.netflix.published %}
+      {%- if site.data.netflix.published and page.hide_cta != true %}
       <a class="btn-footer" href="{{ site.data.netflix.store_url }}" target="_blank" rel="noopener">Add to Chrome</a>
       {%- endif %}
       <a href="/netflix/">TidyWL for Netflix</a>
