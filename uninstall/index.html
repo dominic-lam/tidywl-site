@@ -1,0 +1,496 @@
+---
+layout: null
+title: TidyWL removed
+description: The page the browser opens when TidyWL is removed. One anonymous question about why, a reply to each answer, and how to cancel Pro.
+permalink: /uninstall/
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} — TidyWL</title>
+  <meta name="description" content="{{ page.description }}">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <link rel="icon" type="image/png" href="/assets/icon128.png">
+
+  {% include fonts.html %}
+  {% include theme-init.html %}
+  {% include styles.html %}
+
+  <style>
+    /* The uninstall page (2026-10-03). The browser opens it the moment the
+       extension is removed (chrome.runtime.setUninstallURL), so it has its own
+       quiet header and footer: no install button in a bar, no menu. */
+    .un { --un-field: var(--bg-card); min-height: 100vh; display: flex; flex-direction: column; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .un { --un-field: var(--bg); } }
+    :root[data-theme="dark"] .un { --un-field: var(--bg); }
+
+    .un-wrap { width: 100%; max-width: 1040px; margin: 0 auto; padding-left: clamp(16px, 4vw, 24px); padding-right: clamp(16px, 4vw, 24px); }
+    .un-head { padding-top: 20px; display: flex; align-items: center; }
+    .un-home { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em; }
+    .un-home img { display: block; width: 28px; height: 28px; border-radius: 6px; }
+
+    .un-main { flex: 1 0 auto; padding-top: clamp(28px, 5vw, 56px); padding-bottom: clamp(48px, 7vw, 88px); }
+    .un-cols { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px; }
+    .un-flow { flex: 999 1 560px; min-width: 0; }
+    .un-step { display: flex; flex-direction: column; gap: 28px; padding: 0; }
+    .un-step[hidden], .un-branch[hidden] { display: none; }
+
+    .un-eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-text); }
+    .un-intro { display: flex; flex-direction: column; gap: 12px; }
+    .un-h1 { font-size: clamp(1.6rem, 3.5vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; text-wrap: balance; }
+    .un-lede { max-width: 34rem; font-size: 1.0625rem; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
+    .un-h1:focus, .un-h2:focus { outline: none; }
+
+    .un-reasons { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); gap: 10px; }
+    .un-reason { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 12px 14px; text-align: left; background: var(--bg-card); color: var(--text); border: 1px solid var(--border); border-radius: 10px; font-size: 0.9375rem; font-weight: 600; line-height: 1.35; transition: border-color 0.2s; }
+    .un-reason:hover { border-color: var(--ghost-hover-border); }
+    .un-reason-label { flex: 1; min-width: 0; }
+    .un-icon { flex: none; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--feature-icon-bg); color: var(--accent); }
+    .un-icon svg, .un-chev, .un-chip svg, .un-btn svg, .un-note-privacy svg, .un-small svg { display: block; flex: none; }
+    .un-chev { color: var(--text-muted); }
+
+    .un-small { display: flex; align-items: flex-start; gap: 8px; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
+    .un-small svg { margin-top: 2px; }
+    .un-inline-links { display: flex; flex-wrap: wrap; align-items: center; column-gap: 2px; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
+    .un-inline-links > span:first-child { padding-right: 4px; }
+    .un-pick-foot { display: flex; flex-direction: column; gap: 4px; }
+    .un-pick-foot .un-inline-links { padding-left: 24px; }
+    .un-tlink { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+    .un-tlink:hover { text-decoration-thickness: 2px; }
+    p .un-tlink, li .un-tlink { display: inline; min-height: 0; padding: 0; }
+
+    .un-sent-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+    .un-textbtn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 10px 4px; background: transparent; border: 0; color: var(--text-muted); font-size: 0.9375rem; font-weight: 600; }
+    .un-textbtn:hover { color: var(--text); }
+    .un-sent { margin-left: auto; max-width: 100%; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+    .un-chip { display: flex; align-items: center; gap: 10px; max-width: 100%; padding: 10px 16px 10px 12px; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px 14px 4px 14px; font-size: 0.9375rem; font-weight: 600; line-height: 1.35; }
+    .un-chip-icon { flex: none; display: flex; color: var(--accent); }
+    .un-sent-tick { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8125rem; color: var(--text-muted); }
+    .un-sent-tick svg { color: var(--accent-text); }
+
+    .un-reply { display: flex; align-items: flex-start; gap: 14px; }
+    .un-reply > img { flex: none; display: block; width: 40px; height: 40px; border-radius: 10px; }
+    .un-reply-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+    .un-by { font-size: 0.8125rem; font-weight: 600; line-height: 1.4; color: var(--text-muted); }
+    .un-branch { display: flex; flex-direction: column; gap: 14px; }
+    .un-h2 { font-size: 1.375rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; text-wrap: balance; }
+    .un-p { font-size: 1rem; line-height: 1.65; color: var(--text-secondary); text-wrap: pretty; }
+    .un-dots { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .un-dots li { display: flex; align-items: flex-start; gap: 11px; font-size: 1rem; line-height: 1.65; color: var(--text-secondary); }
+    .un-dots li::before { content: ""; flex: none; width: 5px; height: 5px; margin-top: 0.7em; border-radius: 50%; background: var(--accent); }
+    .un-strong { font-weight: 600; color: var(--text); overflow-wrap: anywhere; }
+    .un-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+    .un-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; background: transparent; color: var(--text); font-size: 0.95rem; font-weight: 600; line-height: 1.5; padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border); transition: border-color 0.2s, background 0.2s; }
+    .un-btn:hover { border-color: var(--ghost-hover-border); background: var(--ghost-hover-bg); }
+
+    .un-card { display: flex; flex-direction: column; gap: 12px; padding: 22px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
+    .un-card label { font-size: 1.0625rem; font-weight: 700; line-height: 1.4; }
+    .un-help { font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
+    .un-card textarea { display: block; width: 100%; min-height: 112px; resize: vertical; padding: 12px 14px; background: var(--un-field); color: var(--text); border: 1px solid var(--border); border-radius: 8px; font: inherit; font-size: 1rem; line-height: 1.55; }
+    .un-card textarea::placeholder { color: var(--text-muted); opacity: 1; }
+    .un-card-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+    .un-note-privacy { flex: 1 1 260px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.5; color: var(--text-muted); }
+    .un-note-privacy svg { margin-top: 3px; }
+    .un-primary { flex: none; display: inline-flex; align-items: center; min-height: 48px; padding: 14px 28px; border-radius: 8px; font-size: 1rem; font-weight: 600; line-height: 1.25; background: var(--accent-fill); color: #fff; border: 1px solid var(--accent-fill); transition: background 0.2s; }
+    .un-primary:hover:not(:disabled) { background: var(--accent-fill-hover); border-color: var(--accent-fill-hover); }
+    .un-primary:disabled { background: var(--bg-alt); color: var(--text-muted); border-color: var(--border); cursor: not-allowed; }
+
+    .un-done-mark { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--feature-icon-bg); color: var(--accent); }
+    .un-again { display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border-subtle); }
+    .un-again-title { font-size: 1rem; font-weight: 600; }
+
+    .un-pro { flex: 1 1 320px; min-width: 0; max-width: 36rem; }
+    .un-pro-card { display: flex; flex-direction: column; gap: 14px; padding: 22px; background: var(--highlight-bg); border: 1px solid var(--highlight-border); border-radius: 12px; }
+    .un-pro-top { display: flex; align-items: center; gap: 12px; }
+    .un-pro-top .un-icon { width: 40px; height: 40px; }
+    .un-pro h2 { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; text-wrap: balance; }
+    .un-pro-text { font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+    .un-pro .un-dots li { font-size: 0.875rem; line-height: 1.55; color: var(--text-muted); }
+    .un-pro .un-dots li::before { margin-top: 0.65em; }
+    .un-pro .un-btn { align-self: flex-start; background: var(--bg-card); }
+    .un-pro-never { padding-top: 12px; border-top: 1px solid var(--highlight-border); font-size: 0.8125rem; line-height: 1.5; color: var(--text-muted); }
+
+    .un-foot { border-top: 1px solid var(--border-subtle); padding-top: 32px; padding-bottom: 36px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+    .un-foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 8px; }
+    .un-foot nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; font-size: 0.9rem; color: var(--text-muted); transition: color 0.2s; }
+    .un-foot nav a:hover { color: var(--text); }
+    .un-legal { max-width: 620px; font-size: 0.78rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
+    .un-copy { font-size: 0.8rem; color: var(--text-muted); }
+
+    .un :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .un textarea:focus-visible { outline-offset: 1px; }
+    .un-reveal { animation: un-in 0.24s ease-out both; }
+    @keyframes un-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .un-reveal { animation: none; }
+      .un-reason, .un-btn, .un-primary { transition: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="un">
+
+  <header class="un-wrap un-head">
+    <a class="un-home" href="/" aria-label="TidyWL home">
+      <img src="/assets/icon128.png" alt="" width="28" height="28">
+      <span>TidyWL</span>
+    </a>
+  </header>
+
+  <main class="un-wrap un-main">
+    <div class="un-cols">
+      <div class="un-flow">
+
+        <section class="un-step" id="un-pick" aria-labelledby="un-q">
+          <div class="un-intro">
+            <p class="un-eyebrow">Extension removed</p>
+            <h1 class="un-h1" id="un-q" tabindex="-1">What made you remove it?</h1>
+            <p class="un-lede">One click is enough. Each answer gets a straight reply, and anything you type after that is optional.</p>
+          </div>
+
+          <div class="un-reasons" role="group" aria-labelledby="un-q">
+            <button type="button" class="un-reason" data-reason="done" data-prompt="Anything that would have made the cleanup quicker?" data-placeholder="One line is plenty.">
+              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+              <span class="un-reason-label">I finished my cleanup</span>
+              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button type="button" class="un-reason" data-reason="load" data-prompt="What happened when you tried to open it?" data-placeholder="Where you clicked, what you saw instead, and which browser.">
+              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></span>
+              <span class="un-reason-label">It never opened, or showed the wrong account</span>
+              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button type="button" class="un-reason" data-reason="broke" data-prompt="What were you trying to do when it broke?" data-placeholder="Which list, which button, and what happened instead.">
+              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+              <span class="un-reason-label">Something that used to work stopped working</span>
+              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button type="button" class="un-reason" data-reason="slow" data-prompt="Roughly how many videos, and which part was slow?" data-placeholder="Syncing, searching, removing, or opening the dashboard.">
+              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg></span>
+              <span class="un-reason-label">It was too slow on my big list</span>
+              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button type="button" class="un-reason" data-reason="feature" data-prompt="What did you need it to do?" data-placeholder="The job you were trying to get done, in your own words.">
+              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span>
+              <span class="un-reason-label">It's missing something I need</span>
+              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button type="button" class="un-reason" data-reason="price" data-prompt="What would have made Pro worth paying for, if anything?" data-placeholder="A feature, a price, or nothing at all. All of it helps.">
+              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><path d="M7.5 7.5h.01"/></svg></span>
+              <span class="un-reason-label">Pro isn't worth the price to me</span>
+              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button type="button" class="un-reason" data-reason="privacy" data-prompt="What gave you pause?" data-placeholder="A permission warning, something you read, something it did.">
+              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+              <span class="un-reason-label">I wasn't sure what it does with my data</span>
+              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button type="button" class="un-reason" data-reason="other" data-prompt="What made you remove it?" data-placeholder="Anything at all.">
+              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span>
+              <span class="un-reason-label">Something else</span>
+              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+
+          <div class="un-pick-foot">
+            <p class="un-small">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>A click sends only the reason you picked. No name, no email, nothing that identifies you.</span>
+            </p>
+            <div class="un-inline-links">
+              <span>Removed it by mistake? Add it back for</span>
+              <a class="un-tlink" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Chrome</a>
+              <span aria-hidden="true">·</span>
+              <a class="un-tlink" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Firefox</a>
+              <span aria-hidden="true">·</span>
+              <a class="un-tlink" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Edge</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="un-step" id="un-answer" hidden>
+          <div class="un-sent-row">
+            <button type="button" class="un-textbtn" data-action="change">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+              Change answer
+            </button>
+            <div class="un-sent">
+              <div class="un-chip">
+                <span class="un-chip-icon" id="un-chip-icon"></span>
+                <span id="un-chip-label"></span>
+              </div>
+              <span class="un-sent-tick">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                Sent
+              </span>
+            </div>
+          </div>
+
+          <div class="un-reply un-reveal">
+            <img src="/assets/icon128.png" alt="" width="40" height="40">
+            <div class="un-reply-body">
+              <p class="un-by">Dominic, who builds TidyWL</p>
+
+              <div class="un-branch" data-branch="done" hidden>
+                <h2 class="un-h2" tabindex="-1">Then it did its job. Thanks for using it.</h2>
+                <p class="un-p">If your Watch Later fills up again, it's free to add back, and there's no account to set up.</p>
+                <div class="un-btns">
+                  <a class="un-btn" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
+                  <a class="un-btn" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Add to Firefox</a>
+                  <a class="un-btn" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Add to Edge</a>
+                </div>
+              </div>
+
+              <div class="un-branch" data-branch="load" hidden>
+                <h2 class="un-h2" tabindex="-1">Two things to check, if you try it again.</h2>
+                <ul class="un-dots">
+                  <li><span>Open it from your Watch Later page, <span class="un-strong">youtube.com/playlist?list=WL</span>, while you're signed in to YouTube.</span></li>
+                  <li><span>Wrong account? Refresh the YouTube tab so it picks up the account you're signed in with, then open the dashboard again.</span></li>
+                </ul>
+                <p class="un-p">If you'd already tried both, that's a bug, and I'd like to fix it.</p>
+                <div class="un-btns">
+                  <a class="un-btn" href="/help/" target="_blank" rel="noopener">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                    Read the help page
+                  </a>
+                  <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                    Ask on Discord
+                  </a>
+                </div>
+              </div>
+
+              <div class="un-branch" data-branch="broke" hidden>
+                <h2 class="un-h2" tabindex="-1">YouTube changes things. Most fixes go out within hours.</h2>
+                <p class="un-p">TidyWL works with YouTube's web endpoints rather than an official API, and YouTube changes them without notice. Most fixes go out within hours, with no extension update to install. Bigger changes need a new version.</p>
+                <p class="un-p">So it may already be working again. The Discord is the quickest place to see whether it's a known problem.</p>
+                <div class="un-btns">
+                  <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                    Check Discord
+                  </a>
+                  <div class="un-inline-links">
+                    <span>Reinstall:</span>
+                    <a class="un-tlink" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Chrome</a>
+                    <span aria-hidden="true">·</span>
+                    <a class="un-tlink" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Firefox</a>
+                    <span aria-hidden="true">·</span>
+                    <a class="un-tlink" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Edge</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="un-branch" data-branch="slow" hidden>
+                <h2 class="un-h2" tabindex="-1">Slow on a big list is worth fixing.</h2>
+                <p class="un-p">Part of it is YouTube. It hands over a long playlist one page at a time, in order, and refuses removals sent all at once, so a first sync and a big delete take a while. After the first sync, search and filters run on a copy in your browser.</p>
+                <p class="un-p">If something stayed slow after that, I'd like the details.</p>
+              </div>
+
+              <div class="un-branch" data-branch="feature" hidden>
+                <h2 class="un-h2" tabindex="-1">Tell me what it is.</h2>
+                <p class="un-p">Requests like this shape what gets built next. If you'd like to make the case, or see what other people have asked for, the Discord is where requests get talked through.</p>
+                <div class="un-btns">
+                  <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                    Join the Discord
+                  </a>
+                </div>
+              </div>
+
+              <div class="un-branch" data-branch="price" hidden>
+                <h2 class="un-h2" tabindex="-1">Fair. The free dashboard needs no card.</h2>
+                <p class="un-p">No card and no account, so a reinstall costs nothing.</p>
+                <p class="un-p">If you did subscribe, removing the extension didn't cancel it. Email <a class="un-tlink" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">support@tidywl.com</a> to cancel. Every charge can be refunded in full within 14 days.</p>
+              </div>
+
+              <div class="un-branch" data-branch="privacy" hidden>
+                <h2 class="un-h2" tabindex="-1">Here's exactly what left your browser.</h2>
+                <p class="un-p">Your YouTube data (titles, video IDs, channels, playlists, watch history, your Google account) never left it, except links you chose to send to Gemini Notebook. What did go to tidywl.com was a random install ID with usage counts, never which videos, plus a licence check if you had Pro.</p>
+                <p class="un-p">Uninstalling stopped both and removed the copy of your lists it kept in your browser. Records not updated for 12 months are deleted.</p>
+                <div class="un-btns">
+                  <a class="un-btn" href="/privacy/" target="_blank" rel="noopener">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+                    Read the privacy policy
+                  </a>
+                </div>
+              </div>
+
+              <div class="un-branch" data-branch="other" hidden>
+                <h2 class="un-h2" tabindex="-1">Then you know something I don't.</h2>
+                <p class="un-p">Tell me below. This form is anonymous, so it can't reply. If you'd like an answer, ask on the <a class="un-tlink" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord</a> or email <a class="un-tlink" href="mailto:support@tidywl.com">support@tidywl.com</a>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="un-card">
+            <div>
+              <label for="un-note" id="un-note-label">Anything else?</label>
+              <p class="un-help" id="un-note-help">Optional. A sentence is plenty.</p>
+            </div>
+            <textarea id="un-note" rows="4" maxlength="2000" aria-describedby="un-note-help un-note-privacy"></textarea>
+            <div class="un-card-foot">
+              <p class="un-note-privacy" id="un-note-privacy">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <span>Anonymous: sends your note with the reason, nothing else. Want a reply? Use Discord or email.</span>
+              </p>
+              <button type="button" class="un-primary" id="un-send" disabled>Send note</button>
+            </div>
+          </div>
+
+          <p class="un-small">Or close the tab. Your answer is already in.</p>
+        </section>
+
+        <section class="un-step un-reveal" id="un-thanks" hidden>
+          <div class="un-intro">
+            <span class="un-done-mark">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <h1 class="un-h1" id="un-thanks-title" tabindex="-1">Thank you. That helps.</h1>
+            <p class="un-lede">Your answer and your note are in. They go to Dominic, who builds TidyWL alone. It's anonymous, so there's no way to write back; if you'd like an answer, ask on Discord or email support@tidywl.com.</p>
+            <div class="un-btns">
+              <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                Discord community
+              </a>
+              <a class="un-btn" href="mailto:support@tidywl.com">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                Email support
+              </a>
+            </div>
+          </div>
+
+          <div class="un-again">
+            <p class="un-again-title">If you ever need it again</p>
+            <div class="un-btns">
+              <a class="un-btn" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
+              <a class="un-btn" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Add to Firefox</a>
+              <a class="un-btn" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Add to Edge</a>
+            </div>
+          </div>
+
+          <div class="un-btns">
+            <p class="un-small">You can close this tab now.</p>
+            <button type="button" class="un-textbtn" data-action="change">Change my answer</button>
+          </div>
+        </section>
+      </div>
+
+      <aside class="un-pro" aria-labelledby="un-pro-title">
+        <div class="un-pro-card">
+          <div class="un-pro-top">
+            <span class="un-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+            </span>
+            <p class="un-eyebrow">If you pay for Pro</p>
+          </div>
+          <h2 id="un-pro-title">Removing the extension doesn't cancel your subscription.</h2>
+          <p class="un-pro-text">To cancel, email <a class="un-tlink" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">support@tidywl.com</a>. The Manage subscription button lived in the extension, so it went with it. Pro keeps working until the end of the period you paid for.</p>
+          <ul class="un-dots">
+            <li><span>On the free trial? Cancel before it ends and you're not charged.</span></li>
+            <li><span>Charged in the last 14 days? Every charge can be refunded in full. Same email.</span></li>
+          </ul>
+          <a class="un-btn" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Email to cancel
+          </a>
+          <p class="un-pro-never">Never subscribed? There's nothing to do here.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="un-wrap un-foot">
+    <nav aria-label="Footer">
+      <a href="/help/">Help</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/refunds/">Refunds</a>
+      <a href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord community</a>
+    </nav>
+    <p class="un-legal">TidyWL is an independent extension and is not affiliated with, endorsed by or sponsored by YouTube or Google. YouTube is a trademark of Google LLC.</p>
+    <p class="un-copy">© 2026 TidyWL</p>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    // The answer goes out on the click, so a visitor who closes the tab at once
+    // still counts. Every send carries the same per-visit id, so the server keeps
+    // only the last answer of a visit: changing it does not count twice. The id
+    // is drawn here, lives only in this tab, and is not linked to the install.
+    // The route and its rules: tidywl-api src/removed.js.
+    var ENDPOINT = '/api/removed';
+    var visit = Array.prototype.map.call(crypto.getRandomValues(new Uint8Array(16)), function (b) {
+      return ('0' + b.toString(16)).slice(-2);
+    }).join('');
+
+    var steps = {
+      pick: document.getElementById('un-pick'),
+      answer: document.getElementById('un-answer'),
+      thanks: document.getElementById('un-thanks')
+    };
+    var branches = document.querySelectorAll('.un-branch');
+    var chipIcon = document.getElementById('un-chip-icon');
+    var chipLabel = document.getElementById('un-chip-label');
+    var noteLabel = document.getElementById('un-note-label');
+    var note = document.getElementById('un-note');
+    var sendBtn = document.getElementById('un-send');
+    var reason = null;
+
+    function post(body) {
+      body.id = visit;
+      try {
+        fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          keepalive: true,
+          credentials: 'omit'
+        }).catch(function () {});
+      } catch (e) {}
+    }
+
+    function show(name, focusEl) {
+      Object.keys(steps).forEach(function (k) { steps[k].hidden = k !== name; });
+      window.scrollTo(0, 0);
+      if (focusEl) focusEl.focus({ preventScroll: true });
+    }
+
+    function pick(btn) {
+      reason = btn.getAttribute('data-reason');
+      chipIcon.replaceChildren(btn.querySelector('.un-icon svg').cloneNode(true));
+      chipLabel.textContent = btn.querySelector('.un-reason-label').textContent;
+      noteLabel.textContent = btn.getAttribute('data-prompt');
+      note.placeholder = btn.getAttribute('data-placeholder');
+      note.value = '';
+      sendBtn.disabled = true;
+      var heading = null;
+      branches.forEach(function (b) {
+        var on = b.getAttribute('data-branch') === reason;
+        b.hidden = !on;
+        if (on) heading = b.querySelector('.un-h2');
+      });
+      post({ reason: reason });
+      show('answer', heading);
+    }
+
+    document.querySelectorAll('.un-reason').forEach(function (btn) {
+      btn.addEventListener('click', function () { pick(btn); });
+    });
+    document.querySelectorAll('[data-action="change"]').forEach(function (btn) {
+      btn.addEventListener('click', function () { show('pick', document.getElementById('un-q')); });
+    });
+    note.addEventListener('input', function () { sendBtn.disabled = note.value.trim() === ''; });
+    sendBtn.addEventListener('click', function () {
+      var text = note.value.trim();
+      if (!text || reason == null) return;
+      post({ reason: reason, text: text });
+      show('thanks', document.getElementById('un-thanks-title'));
+    });
+  })();
+</script>
+</body>
+</html>
