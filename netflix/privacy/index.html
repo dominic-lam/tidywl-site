@@ -169,6 +169,7 @@ last_modified_at: 2026-09-28
           <tr><td><code>tidywl_install_id</code></td><td>The random identifier the usage report carries. Made once, in your browser; linked to nothing.</td></tr>
           <tr><td><code>tidywl_usage</code></td><td>The usage report's other counts, listed field by field below.</td></tr>
           <tr><td><code>tidywl_usage_open_day</code></td><td>The last day the dashboard was counted as opened, so it is counted at most once a day. Never sent.</td></tr>
+          <tr><td><code>tidywl_usage_badge_day</code></td><td>From version 1.2.2. The last day the rating badges were counted as shown, so that is counted at most once a day too. Never sent.</td></tr>
           <tr><td><code>tidywl_usage_sent</code></td><td>The counts as they stood at the last report that arrived, so an unchanged report is not sent again. Never sent.</td></tr>
           <tr><td><code>tidywl_license_token</code></td><td>Pro only. A sign-in our server gave this browser, good for 24 hours, so a sync does not send your key every time. Never shared between browsers.</td></tr>
           <tr><td><code>tidywl_cloud_sync</code></td><td>Pro only. Whether you switched sync on in this browser — it is off until you do — and when the last sync ran and whether it worked.</td></tr>
@@ -403,7 +404,7 @@ last_modified_at: 2026-09-28
     <p>
       Whenever one of your lifetime counts has changed, the extension sends that identifier and the counts to
       <code>https://tidywl.com/api/netflix/installs</code>. It checks on each Netflix page load, after a Sync, after a
-      removal, and the first time you open the dashboard on a given day. The report is exactly this, and nothing else:
+      removal, the first time you open the dashboard on a given day, and the first time the rating badges show on a given day. The report is exactly this, and nothing else:
     </p>
 
     <div class="nf-policy-table-wrap">
@@ -442,13 +443,17 @@ last_modified_at: 2026-09-28
           <tr><td>tonight_plays_outside</td><td>How many of those were a surprise from outside My List.</td></tr>
           <tr><td>tonight_rerolls</td><td>How many times you have pressed <em>Re-roll</em>.</td></tr>
           <tr><td>tonight_snoozes</td><td>How many times you have pressed <em>Not tonight</em>. Not on which title.</td></tr>
+          <tr><td>badge_days</td><td>On how many days the IMDb rating badges have shown on Netflix's own pages, ever. It goes up by one at most once a day, like <code>open_days</code>. Not which titles, and not how many badges.</td></tr>
         </tbody>
       </table>
     </div>
 
     <p>
-      The last fifteen, from <code>paywall_pin</code> down, were added in version 1.1.0. Before it, the report was
-      the identifier and the fourteen above them.
+      The fifteen from <code>paywall_pin</code> to <code>tonight_snoozes</code> were added in version 1.1.0. Before
+      it, the report was the identifier and the fourteen above them. <code>badge_days</code> was added in version
+      1.2.2, because someone who only
+      uses the badges never opens the dashboard, and without it would look like someone who stopped using the
+      extension.
     </p>
 
     <p>
