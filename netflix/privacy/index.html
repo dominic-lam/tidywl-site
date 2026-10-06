@@ -75,6 +75,10 @@ last_modified_at: 2026-09-28
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
+      Updated 6 October 2026 for version 1.2.1: removing the extension now opens one page on tidywl.com asking why,
+      described under <em>The page that opens when you remove it</em>. Its address carries a few rough facts that
+      reach our server only if you press Send there, and an email only if you add one. One new storage key,
+      <code>tidywl_installed_at</code>, is in the table of keys below. Nothing else the extension sends changes.
       Updated 3 October 2026 for version 1.2.0, which adds <strong>Leaving soon</strong>: when you press Sync, TidyWL
       asks Netflix which titles in your My List it is about to remove, up to 100 titles a request, and keeps the answer in
       your browser. Nothing new is sent anywhere but Netflix, and the usage report does not change. Three new storage keys,

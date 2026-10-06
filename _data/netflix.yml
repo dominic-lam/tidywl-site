@@ -14,12 +14,12 @@
 
 published: true
 store_url: https://chromewebstore.google.com/detail/watch-later-tidy-for-netf/gbgdgeamachehbegdghnhpkiebahmafm
-version: 1.2.0
+version: 1.2.1
 
 # The date the privacy policy last changed, rendered on the page and used as
 # its `last_modified_at`. Bump it when the policy's substance changes — not
 # for a typo, per the freshness rule in CLAUDE.md.
-privacy_updated: 2026-10-03
+privacy_updated: 2026-10-06
 # The day the policy first went live. Rendered as "Published"; never bumped.
 privacy_published: 2026-09-20
 
