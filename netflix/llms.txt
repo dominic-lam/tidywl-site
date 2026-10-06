@@ -57,6 +57,13 @@ Undo, pins, the rules, stats and Tonight run in the browser. Pro starts with a 7
 
 Every request and every stored key is listed in the [privacy policy](https://tidywl.com/netflix/privacy/).
 
+## Seeing the whole My List after Netflix's September 2026 change
+
+Around September 15, 2026, Netflix's website replaced the My List page with **My Netflix** (`netflix.com/browse/my-list`), where My List is one row you scroll sideways, between Continue Watching and Trailers You've Watched. Netflix offers no known way to switch back. On a computer, this extension shows the whole list at once: press Alt+L on any Netflix page and its My List tab shows every title as a card in one grid, with filters, sorting and the titles leaving soon. Checked live on 2026-10-06, a 160-title list on the My Netflix page. It is free and runs in Chrome on a computer only.
+
+- [How to see your whole Netflix My List again](https://tidywl.com/netflix/blog/see-your-whole-netflix-my-list/): the steps, with screenshots of both views
+- [What happened to Netflix's My List page](https://tidywl.com/netflix/blog/what-happened-to-netflix-my-list/): what changed, why people are unhappy, and the options
+
 ## Requirements
 
 - Chrome on a computer. Chrome for Android has no extension support; with Pro, playlists can be read on a phone.
@@ -75,3 +82,4 @@ Every request and every stored key is listed in the [privacy policy](https://tid
 - [Community on Discord](https://discord.gg/4j5u9xd35P): bug reports, feature requests and general chat
 - [Support email](mailto:support@tidywl.com): support@tidywl.com
 - [TidyWL for YouTube](https://tidywl.com/llms.txt): the separate YouTube extension
+- [Guides and articles](https://tidywl.com/netflix/blog/): how-to guides for Netflix's My List

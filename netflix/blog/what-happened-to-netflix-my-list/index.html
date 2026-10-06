@@ -1,0 +1,87 @@
+---
+layout: netflix
+permalink: /netflix/blog/what-happened-to-netflix-my-list/
+title: "What happened to Netflix's My List page — TidyWL for Netflix"
+headline: "What happened to Netflix's My List page"
+description: "In September 2026 Netflix's website turned My List from a full page into one sideways row on My Netflix. What changed, why people are unhappy, and the ways to see the whole list again."
+nf_kind: article
+date: 2026-10-06
+og_image: /assets/netflix-guide-my-list-grid.jpg
+---
+
+<!-- ── ARTICLE: THE MY LIST REDESIGN ──
+     Added 2026-10-06. Netflix's page as described was read live that day on
+     /browse/my-list (nav label "My Netflix"; rows Continue Watching, My List,
+     Trailers You've Watched, TV Shows & Movies You've Liked). What people say
+     is paraphrased from r/netflix thread 1whjv4j (2026-09-16 to 2026-10-06),
+     never quoted at length. Nothing here claims a reason Netflix has not
+     given. The extension repo keeps the notes:
+     docs/outreach/2026-10-06-my-netflix-redesign-thread.md. -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "What happened to Netflix's My List page",
+  "description": {{ page.description | jsonify }},
+  "datePublished": "2026-10-06",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
+  "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
+  "publisher": { "@id": "{{ site.url }}/#organization" },
+  "image": "{{ site.url }}/assets/netflix-guide-my-list-grid.jpg",
+  "mainEntityOfPage": "{{ site.url }}{{ page.url }}"
+}
+</script>
+
+<section class="blog-wrap">
+  <p class="section-label">Article</p>
+  <h1 class="blog-title">What happened to Netflix's My List page</h1>
+  <p class="blog-subtitle">It did not disappear. It became one row on a page called My Netflix, and a lot of people are not happy about it.</p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-10-06">October 6, 2026</time></p>
+
+  <div class="post-body">
+    <h2>What changed</h2>
+    <p>Around September 15, 2026, people opening Netflix on a computer found the My List page gone. The menu item that used to say My List now says <strong>My Netflix</strong>. It opens a page of rows: Continue Watching, then <strong>My List</strong>, then Trailers You've Watched, then the titles you have given a thumbs up.</p>
+    <p>Your saved titles are still saved. But My List is now one row, and you see a handful of titles at a time, moving sideways with the arrows at each end. The old page showed the whole list as a grid you could scroll down.</p>
+
+    <figure class="nf-shot">
+      <img src="/assets/netflix-guide-my-list-row.webp"
+           alt="Netflix's My Netflix page on a computer: rows for Continue Watching, My List, Trailers You've Watched and titles you liked, with My List as a single row of seven cards that scrolls sideways."
+           width="1568" height="756" loading="lazy" decoding="async">
+      <figcaption class="nf-shot-caption">My Netflix, read on October 6, 2026. The IMDb ratings on the cards are added by TidyWL, not Netflix.</figcaption>
+    </figure>
+
+    <h2>Why people are unhappy</h2>
+    <p>The <a href="https://www.reddit.com/r/netflix/comments/1whjv4j/netflix_my_list_change/" target="_blank" rel="noopener">r/netflix thread about the change</a> has been running for three weeks. The complaints come back to the same few things:</p>
+    <ul>
+      <li><strong>A long list cannot be seen at once.</strong> With a hundred titles saved, a row that shows seven means a lot of clicking to find anything.</li>
+      <li><strong>Sideways scrolling is awkward on a computer</strong>, with a touchpad or a mouse, and harder still for people with limited hand movement. Some have filed it with Netflix as an accessibility problem.</li>
+      <li><strong>It is harder to see what is leaving.</strong> People used the full page to spot titles about to leave Netflix and watch them first.</li>
+      <li><strong>My List now shares a page with other rows</strong>, such as trailers you have watched, which people did not ask to see there.</li>
+    </ul>
+    <p>Several people say they have thought about cancelling over it. People who contacted Netflix's support report being told the feedback would be passed on, and that there is no setting to switch back.</p>
+
+    <h2>Your options</h2>
+    <p>As of October 6, 2026, Netflix has not brought the old page back. On a computer, you have three ways to work with a long list:</p>
+    <ol>
+      <li><strong>Use the row and search.</strong> Scroll the My List row with its arrows, or search Netflix for a title you know you saved.</li>
+      <li><strong>A userscript.</strong> People in the thread have shared scripts that lay the row out as a grid. They need a userscript manager such as Tampermonkey, and you are trusting whoever wrote the script with your Netflix page.</li>
+      <li><strong>A browser extension.</strong> Extensions from the Chrome Web Store can show the whole list. Mine is one of them, described below, and there are others.</li>
+    </ol>
+
+    <h2>The one I built: TidyWL for Netflix</h2>
+    <p>I built TidyWL for Netflix (on the Chrome Web Store as <em>Watch Later Tidy for Netflix</em>) before this change, because Netflix's My List already had no folders, no search and no way to remove more than one title at a time. Since the change it also does the thing people are asking for: press Alt+L on any Netflix page, and every title on your My List appears as a card in one grid.</p>
+
+    <figure class="nf-shot">
+      <img src="/assets/netflix-guide-my-list-grid.webp"
+           alt="The TidyWL for Netflix dashboard open over Netflix's My Netflix page, showing a My List of 161 titles as a grid of cards, each with its IMDb rating, year, runtime and genres, beside a panel counting 10 titles leaving soon."
+           width="1568" height="756" loading="lazy" decoding="async">
+      <figcaption class="nf-shot-caption">The same list in TidyWL for Netflix: 161 titles in one grid, with what is leaving soon counted on the left.</figcaption>
+    </figure>
+
+    <p>Each card carries the IMDb rating, the year, the runtime and the genres. Sync marks the titles Netflix is about to remove, with Netflix's own last-day sentence, so the "what's leaving" check is one click. You can filter by genre, type, rating, runtime or whether you have watched it, and sort by rating, runtime, year or title. All of that is free, with no account. It runs in Chrome on a computer, not on phones or TVs, and it is not made by or affiliated with Netflix.</p>
+    <p><strong>Step by step:</strong> <a href="/netflix/blog/see-your-whole-netflix-my-list/">How to see your whole Netflix My List again</a>.</p>
+
+    <p><a href="/netflix/blog/">← All guides and articles</a></p>
+  </div>
+</section>
