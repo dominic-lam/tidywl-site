@@ -161,7 +161,9 @@
     "musicCategory": "Music",
     "channelIdPath":         ["videoDetails", "channelId"],
     "channelNamePath":       ["microformat", "playerMicroformatRenderer", "ownerChannelName"],
-    "shortsEligiblePath":    ["microformat", "playerMicroformatRenderer", "isShortsEligible"]
+    "shortsEligiblePath":    ["microformat", "playerMicroformatRenderer", "isShortsEligible"],
+    "publishDatePath":       ["microformat", "playerMicroformatRenderer", "publishDate"],
+    "viewCountPath":         ["videoDetails", "viewCount"]
   },
   "transcriptResponse": {
     "segmentsPath": [
