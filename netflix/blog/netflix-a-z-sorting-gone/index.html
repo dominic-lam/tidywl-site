@@ -31,7 +31,7 @@ og_image: /assets/netflix-landing-hidden-genres.webp
   "@type": "BlogPosting",
   "headline": "Where did Netflix's A–Z sorting go?",
   "description": {{ page.description | jsonify }},
-  "datePublished": "2026-09-23",
+  "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
   "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
   "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
   "publisher": { "@id": "{{ site.url }}/#organization" },
@@ -44,7 +44,7 @@ og_image: /assets/netflix-landing-hidden-genres.webp
   <p class="section-label">Article</p>
   <h1 class="blog-title">Where did Netflix's A–Z sorting go?</h1>
   <p class="blog-subtitle">Netflix's website dropped A–Z from its category pages in May 2026, and My List has no sort on a computer. Here is what still works.</p>
-  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-09-23">September 23, 2026</time></p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
 
   <div class="post-body">
     <h2>What changed in May 2026</h2>

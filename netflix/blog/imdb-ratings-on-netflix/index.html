@@ -32,7 +32,7 @@ og_image: /assets/netflix-landing-badges.webp
   "@type": "BlogPosting",
   "headline": "Why Netflix doesn't show IMDb ratings, and how to see them",
   "description": {{ page.description | jsonify }},
-  "datePublished": "2026-10-03",
+  "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
   "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
   "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
   "publisher": { "@id": "{{ site.url }}/#organization" },
@@ -45,7 +45,7 @@ og_image: /assets/netflix-landing-badges.webp
   <p class="section-label">Article</p>
   <h1 class="blog-title">Why Netflix doesn't show IMDb ratings, and how to see them</h1>
   <p class="blog-subtitle">Netflix has its own thumbs. If you want to know what IMDb thinks, you look it up yourself, one title at a time.</p>
-  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-10-01">October 1, 2026</time></p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
 
   <div class="post-body">
     <h2>The lookup routine</h2>

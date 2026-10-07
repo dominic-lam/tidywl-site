@@ -32,7 +32,7 @@ og_image: /assets/netflix-guide-my-list-grid.jpg
   "@type": "BlogPosting",
   "headline": "How to see what's leaving Netflix from your list",
   "description": {{ page.description | jsonify }},
-  "datePublished": "2026-10-04",
+  "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
   "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
   "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
   "publisher": { "@id": "{{ site.url }}/#organization" },
@@ -45,7 +45,7 @@ og_image: /assets/netflix-guide-my-list-grid.jpg
   <p class="section-label">Article</p>
   <h1 class="blog-title">How to see what's leaving Netflix from your list</h1>
   <p class="blog-subtitle">Netflix does say when a title is leaving, one title at a time. Here is how to see every title on your own list that is about to go.</p>
-  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-10-05">October 5, 2026</time></p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
 
   <div class="post-body">
     <h2>Gone before you got to it</h2>

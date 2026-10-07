@@ -24,7 +24,7 @@ og_image: /assets/netflix-guide-my-list-grid.jpg
   "@type": "BlogPosting",
   "headline": "What happened to Netflix's My List page",
   "description": {{ page.description | jsonify }},
-  "datePublished": "2026-10-06",
+  "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
   "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
   "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
   "publisher": { "@id": "{{ site.url }}/#organization" },
@@ -37,7 +37,7 @@ og_image: /assets/netflix-guide-my-list-grid.jpg
   <p class="section-label">Article</p>
   <h1 class="blog-title">What happened to Netflix's My List page</h1>
   <p class="blog-subtitle">It did not disappear. It became one row on a page called My Netflix, and a lot of people are not happy about it.</p>
-  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-10-06">October 6, 2026</time></p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
 
   <div class="post-body">
     <h2>What changed</h2>

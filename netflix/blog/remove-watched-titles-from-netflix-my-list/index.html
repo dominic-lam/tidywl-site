@@ -30,7 +30,7 @@ og_image: /assets/netflix-landing-bulk-select.webp
   "@type": "BlogPosting",
   "headline": "Why watched titles never leave your Netflix My List",
   "description": {{ page.description | jsonify }},
-  "datePublished": "2026-09-27",
+  "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
   "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
   "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
   "publisher": { "@id": "{{ site.url }}/#organization" },
@@ -43,7 +43,7 @@ og_image: /assets/netflix-landing-bulk-select.webp
   <p class="section-label">Article</p>
   <h1 class="blog-title">Why watched titles never leave your Netflix My List</h1>
   <p class="blog-subtitle">Finishing a film does not take it off your list, and Netflix's website removes one title at a time. So the list only grows.</p>
-  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-09-27">September 27, 2026</time></p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
 
   <div class="post-body">
     <h2>The list that only grows</h2>

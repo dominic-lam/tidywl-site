@@ -31,7 +31,7 @@ og_image: /assets/netflix-landing-tonight.webp
   "@type": "BlogPosting",
   "headline": "Can't decide what to watch on Netflix? Why it happens, and what helps",
   "description": {{ page.description | jsonify }},
-  "datePublished": "2026-10-05",
+  "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
   "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
   "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
   "publisher": { "@id": "{{ site.url }}/#organization" },
@@ -44,7 +44,7 @@ og_image: /assets/netflix-landing-tonight.webp
   <p class="section-label">Article</p>
   <h1 class="blog-title">Can't decide what to watch on Netflix? Why it happens, and what helps</h1>
   <p class="blog-subtitle">The problem is rarely that there is nothing to watch. It is choosing.</p>
-  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-10-03">October 3, 2026</time></p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
 
   <div class="post-body">
     <h2>The evening that goes nowhere</h2>

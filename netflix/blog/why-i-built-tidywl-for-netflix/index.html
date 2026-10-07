@@ -27,7 +27,7 @@ og_image: /assets/netflix-og-image.jpg
   "@type": "BlogPosting",
   "headline": "Why I built TidyWL for Netflix",
   "description": {{ page.description | jsonify }},
-  "datePublished": "2026-10-02",
+  "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
   "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
   "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
   "publisher": { "@id": "{{ site.url }}/#organization" },
@@ -40,7 +40,7 @@ og_image: /assets/netflix-og-image.jpg
   <p class="section-label">Story</p>
   <h1 class="blog-title">Why I built TidyWL for Netflix</h1>
   <p class="blog-subtitle">Three small things about Netflix that cost me time for years, and the Chrome extension I made to fix them.</p>
-  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-09-21">September 21, 2026</time></p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
 
   <div class="post-body">
     <p>I have used Netflix for years, and too many evenings went the same way. I opened it wanting to watch something. I scrolled. I opened a few titles to read about them. I scrolled some more. And a long time later, I still did not know what to watch.</p>

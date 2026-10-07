@@ -34,7 +34,7 @@ faq:
   "@type": "HowTo",
   "name": "How to see your whole Netflix My List again",
   "description": {{ page.description | jsonify }},
-  "datePublished": "2026-10-06",
+  "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
   "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
   "publisher": { "@id": "{{ site.url }}/#organization" },
   "image": "{{ site.url }}/assets/netflix-guide-my-list-grid.jpg",
@@ -55,7 +55,7 @@ faq:
   <p class="section-label">How-to</p>
   <h1 class="blog-title">How to see your whole Netflix My List again</h1>
   <p class="blog-subtitle">Netflix now shows My List as one row you scroll sideways. Here is how to get every title on one screen again.</p>
-  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-10-06">October 6, 2026</time></p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
 
   <div class="post-body">
     <p><strong>The short answer:</strong> there is no known way to bring Netflix's old My List page back. On a computer, the free Chrome extension <strong>TidyWL for Netflix</strong> (listed on the Chrome Web Store as <em>Watch Later Tidy for Netflix</em>) shows every title on your My List at once, as a grid of cards you can filter and sort. Press <strong>Alt+L</strong> on any Netflix page to open it.</p>
