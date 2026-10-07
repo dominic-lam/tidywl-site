@@ -1,0 +1,89 @@
+---
+layout: netflix
+permalink: /netflix/blog/netflix-a-z-sorting-gone/
+title: "Where did Netflix's A–Z sorting go? — TidyWL for Netflix"
+headline: "Where did Netflix's A–Z sorting go?"
+description: "In May 2026 Netflix's website took A–Z and year sorting off its category pages, and My List on a computer has no sort at all. What changed, what still works, and how to sort again."
+nf_kind: article
+date: 2026-09-23
+og_image: /assets/netflix-landing-hidden-genres.webp
+---
+
+<!-- ── ARTICLE: A–Z SORTING ──
+     Dated 2026-09-23 from the extension repo:
+     docs/experiments/paywall-research-2026-09-23.md, section 2, ranks
+     "sorting and control of order" second of what Netflix users ask for, and
+     0.2.0 went live that day (docs/cws-descriptions/README.md) with category
+     sorting and the Hidden menu in it. The May 2026 removal was first recorded
+     2026-09-19 (PROGRESS Session 24; netflix-genre-read-and-taxonomy.md),
+     before the store release, so the later date is used.
+     Sources: the What's on Netflix story and its quote, and the outlets, from
+     docs/reference/research/2026-09-27-netflix-demand-communities.md; threads
+     from docs/outreach/2026-10-03-reddit-threads.md; My List order and the
+     phone app's sort from netflix-mylist-recon.md (2026-08-26); ?so=az from
+     netflix-genre-id-namespace.md (2026-08-31) and
+     netflix-genre-read-and-taxonomy.md (2026-09-19). Netflix removed A–Z from
+     its category pages, not from My List: do not claim the latter. -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Where did Netflix's A–Z sorting go?",
+  "description": {{ page.description | jsonify }},
+  "datePublished": "2026-09-23",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
+  "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
+  "publisher": { "@id": "{{ site.url }}/#organization" },
+  "image": "{{ site.url }}/assets/netflix-landing-hidden-genres.webp",
+  "mainEntityOfPage": "{{ site.url }}{{ page.url }}"
+}
+</script>
+
+<section class="blog-wrap">
+  <p class="section-label">Article</p>
+  <h1 class="blog-title">Where did Netflix's A–Z sorting go?</h1>
+  <p class="blog-subtitle">Netflix's website dropped A–Z from its category pages in May 2026, and My List has no sort on a computer. Here is what still works.</p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-09-23">September 23, 2026</time></p>
+
+  <div class="post-body">
+    <h2>What changed in May 2026</h2>
+    <p>In early May 2026, the sort menu on Netflix's category pages lost its A–Z, Z–A and release-year options on a computer. Netflix did not announce it. <a href="https://www.whats-on-netflix.com/news/netflix-quietly-removes-a-z-and-other-sorting-from-web-ui/" target="_blank" rel="noopener">What's on Netflix reported it</a> as Netflix quietly removing A–Z and other sorting from its website, and at least five other outlets, Tom's Guide among them, covered it within days.</p>
+    <p>People who browse a genre from start to finish noticed straight away. On r/netflix:</p>
+    <ul>
+      <li>One person <a href="https://www.reddit.com/r/netflix/comments/1t3tkta/" target="_blank" rel="noopener">turned to two outside websites</a> to get an alphabetical view back.</li>
+      <li>Someone who kept up with new documentaries by sorting on the newest <a href="https://www.reddit.com/r/netflix/comments/1t4dnap/" target="_blank" rel="noopener">said they now scroll far more</a>.</li>
+      <li>And one person <a href="https://www.reddit.com/r/netflix/comments/1u9k0t5/" target="_blank" rel="noopener">cancelled their subscription over it</a>, gave the missing A–Z as the reason on Netflix's cancel form, and said they might come back if it returned.</li>
+    </ul>
+    <p>One Reddit user, quoted by What's on Netflix, put the general mood in a sentence: "Taking away basic A-Z sorting makes zero sense."</p>
+
+    <h2>My List has no sort on a computer</h2>
+    <p>The May change was about category pages. My List is a separate story, and an older one: on Netflix's website it has no sort control at all.</p>
+    <p>When I took My List apart in August 2026, its order turned out to be Netflix's own ranking, not the order you added things. It seems to weigh how recently you added a title, whether it has a new season, and whether it is about to leave. The website also carries no date added for any title. So a title you saved years ago can sit near the top, and one you saved last week can sink. One person on r/netflix <a href="https://www.reddit.com/r/netflix/comments/1upic7a/" target="_blank" rel="noopener">noticed their list suddenly reshuffled</a>, showing titles they had added years ago, and <a href="https://discussions.apple.com/thread/250106958" target="_blank" rel="noopener">an Apple Community thread from 2019</a> about the order changing at random had 91 "Me too" clicks.</p>
+    <p>Netflix's phone apps are different. Since May 2023 they can sort My List, by date added among other things, and filter it. That update <a href="https://techcrunch.com/2023/05/22/netflix-updates-my-list-feature-so-users-can-find-content-they-have-yet-to-watch" target="_blank" rel="noopener">came to phones only</a>, and <a href="https://help.netflix.com/en/node/10523" target="_blank" rel="noopener">Netflix's help page</a> describes it for the mobile apps.</p>
+
+    <h2>What still works without installing anything</h2>
+    <ul>
+      <li><strong>The phone app, for My List.</strong> If what you want is your list in the order you added it, the Netflix app on your phone can do that.</li>
+      <li><strong>The A–Z grid, if you type its address.</strong> Netflix took the menu away, not the page. A category's address with <code>?so=az</code> on the end, such as <code>netflix.com/<wbr>browse/<wbr>genre/<wbr>11714?so=az</code> for TV Dramas, still opened Netflix's own alphabetical grid when I tried it in August and again in September 2026. It is undocumented, so Netflix could close it at any time.</li>
+      <li><strong>Category codes.</strong> Netflix has far more categories than its genre menu shows, each with a number you can put in that address. Netflix lists some of them itself in <a href="https://www.netflix.com/tudum/articles/netflix-secret-codes-guide" target="_blank" rel="noopener">a guide on Tudum</a>, and plenty of websites list more.</li>
+    </ul>
+
+    <h2>How TidyWL for Netflix handles it</h2>
+    <p>I build TidyWL for Netflix (on the Chrome Web Store as <em>Watch Later Tidy for Netflix</em>), so read this part knowing that.</p>
+    <p>Its Search tab has a <strong>Browse by genre</strong> half. Pick one of Netflix's categories, or one of more than a hundred from a <strong>Hidden</strong> menu of categories Netflix keeps out of its own genre menu, such as Mockumentaries or Satanic Stories. The category opens as a grid you can sort by title, by year or by IMDb rating, with the IMDb rating on each card. Anything you find can go on My List, or straight into a playlist without touching My List at all.</p>
+
+    <figure class="nf-shot">
+      <img src="/assets/netflix-landing-hidden-genres.webp"
+           alt="Browse by genre on Comedies, with the Hidden menu open on 123 categories such as Action Comedy Movies and Comic Book and Superhero Movies, above a grid of film cards with IMDb ratings."
+           width="1600" height="1308" loading="lazy" decoding="async">
+      <figcaption class="nf-shot-caption">Browse by genre, with the Hidden menu open. The category names come from Netflix, in your profile's language.</figcaption>
+    </figure>
+
+    <p>My List gets the same treatment: open it with Alt+L and sort it by IMDb rating, runtime, year, title or type. The one sort it cannot give you is date added, because Netflix's website never says when you added a title. For that, the phone app is still the answer.</p>
+    <p>Two things to know. It sorts inside its own dashboard, laid over the Netflix page, not on Netflix's own pages. And it runs in Chrome on a computer. It is free, with no account, and it is not made by or affiliated with Netflix. <a href="{{ site.data.netflix.store_url }}?utm_source=tidywl-blog&amp;utm_medium=web&amp;utm_campaign=netflix-a-z-sorting-gone" target="_blank" rel="noopener">Add Watch Later Tidy for Netflix to Chrome</a>.</p>
+
+    <p><a href="/netflix/tutorials/">Video tutorials</a></p>
+    <p><a href="/netflix/blog/">← All guides and articles</a></p>
+  </div>
+</section>

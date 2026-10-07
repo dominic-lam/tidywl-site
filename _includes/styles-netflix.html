@@ -273,4 +273,39 @@
     .nf-policy-table th { font-weight: 700; color: var(--text); white-space: nowrap; }
     .nf-policy-table td { color: var(--text-muted); }
     .nf-policy-table code { white-space: nowrap; }
+
+    /* ── VIDEO CARD ──
+       A self-hosted thumbnail that opens the video on YouTube in a new tab.
+       Deliberately not an embed: an iframe would make every visit a request to
+       YouTube, which the privacy policy would then have to name. Thumbnails are
+       /assets/netflix-video-<name>.webp, 960x540, from each video's own cover.
+       Used on /netflix/tutorials/ and in the blog posts; same markup on both. */
+    .nf-video {
+      display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+      gap: 16px; align-items: center;
+      margin: 20px 0; padding: 12px;
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: 12px; text-decoration: none; color: inherit;
+    }
+    .nf-video:hover { border-color: var(--border-strong); }
+    .nf-video:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .nf-video-thumb { position: relative; display: block; }
+    .nf-video-thumb img { display: block; width: 100%; height: auto; border-radius: 8px; }
+    .nf-video-time {
+      position: absolute; right: 6px; bottom: 6px;
+      font-size: 0.75rem; font-weight: 700; line-height: 1;
+      padding: 4px 6px; border-radius: 4px;
+      background: rgba(0, 0, 0, 0.78); color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+    .nf-video-text { display: grid; gap: 4px; min-width: 0; }
+    .nf-video-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent-text);
+    }
+    .nf-video-title { font-weight: 700; color: var(--text); line-height: 1.35; }
+    .nf-video-sub { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+    @media (max-width: 560px) {
+      .nf-video { grid-template-columns: minmax(0, 1fr); }
+    }
   </style>

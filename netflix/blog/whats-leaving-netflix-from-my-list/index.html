@@ -1,0 +1,100 @@
+---
+layout: netflix
+permalink: /netflix/blog/whats-leaving-netflix-from-my-list/
+title: "How to see what's leaving Netflix from your list — TidyWL for Netflix"
+headline: "How to see what's leaving Netflix from your list"
+description: "Titles leave Netflix every month, and the warning is a line on each title. Why things vanish from My List before you get to them, what Netflix shows, and how to see everything on your list that is about to go."
+nf_kind: article
+date: 2026-10-04
+og_image: /assets/netflix-guide-my-list-grid.jpg
+---
+
+<!-- ── ARTICLE: TITLES LEAVING NETFLIX ──
+     Dated 2026-10-04, the day the Leaving soon video it links went up on
+     YouTube (N4tHzNMDuxE, 00:53 PDT), the day after 1.2.0 shipped Leaving soon.
+     Its thread is from docs/outreach/2026-10-05-reddit-replies.md in the
+     extension repo, which re-read with its
+     comments the r/netflixuk thread "Why does Netflix keep removing films I
+     actually want to watch?" (1wgyxty), and dropped r/netflix 1umcme2 because
+     its commenters put that loss down to the account or region, not titles
+     leaving. Not cited here for that reason.
+     Sources: Netflix's own signals from docs/experiments/netflix-leaving-soon.md
+     (2026-09-28); the What's on Netflix articles and "the extension never knows
+     earlier than Netflix does" from 2026-10-02-netflix-viewer-communities.md;
+     the r/netflixindia threads from 2026-10-03-reddit-threads.md; the
+     spreadsheet workaround from 2026-10-03-hearing-from-strangers.md.
+     Leaving soon has been live since 1.2.0, 2026-10-03. Never say Netflix
+     does not tell you what is leaving, or that the extension warns sooner. -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to see what's leaving Netflix from your list",
+  "description": {{ page.description | jsonify }},
+  "datePublished": "2026-10-04",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
+  "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
+  "publisher": { "@id": "{{ site.url }}/#organization" },
+  "image": "{{ site.url }}/assets/netflix-guide-my-list-grid.jpg",
+  "mainEntityOfPage": "{{ site.url }}{{ page.url }}"
+}
+</script>
+
+<section class="blog-wrap">
+  <p class="section-label">Article</p>
+  <h1 class="blog-title">How to see what's leaving Netflix from your list</h1>
+  <p class="blog-subtitle">Netflix does say when a title is leaving, one title at a time. Here is how to see every title on your own list that is about to go.</p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-10-05">October 5, 2026</time></p>
+
+  <div class="post-body">
+    <h2>Gone before you got to it</h2>
+    <p>Titles leave Netflix every month, and which ones depends on the country you watch in. Most of the time you would not notice. It stings when it is something you saved to watch later.</p>
+    <p>In September 2026, <a href="https://www.reddit.com/r/netflixuk/comments/1wgyxty/" target="_blank" rel="noopener">a thread on r/netflixuk</a> asked why Netflix keeps removing the films people actually want to watch, and drew dozens of replies. Its author said they usually only notice "when Netflix tells me I have four days left." Others have posted on r/netflixindia about <a href="https://www.reddit.com/r/netflixindia/comments/1spcjdj/" target="_blank" rel="noopener">a comfort show leaving</a>, or to <a href="https://www.reddit.com/r/netflixindia/comments/1sxund3/" target="_blank" rel="noopener">warn everyone of a film's last day</a>.</p>
+    <p>And when Netflix turned the My List page into a single row in September 2026, one of the things people said they missed most was spotting what was about to leave.</p>
+
+    <h2>What Netflix shows you</h2>
+    <p>Netflix does warn you, in its own way. When I looked at what its website carries for a leaving title, in late September 2026, there were two signs:</p>
+    <ul>
+      <li><strong>A sentence on the title</strong>, such as "Last day to watch on Netflix: October 5", which you see when you open the title's details.</li>
+      <li><strong>A "Leaving soon" badge</strong> printed onto the artwork of some leaving titles.</li>
+    </ul>
+    <p>There was no date anywhere apart from that sentence. Netflix also ran a category of titles leaving soon for a while, but <a href="https://www.whats-on-netflix.com/leaving-soon/netflix-discontinues-leaving-soon-code/" target="_blank" rel="noopener">What's on Netflix reported in June 2026</a> that Netflix had dropped its "Last Chance to Watch" code after less than a year.</p>
+    <p>What I have not found on Netflix's website is one place that shows only the titles on <em>your</em> list that are leaving. You find out title by title, if you happen to look at the right one in time.</p>
+
+    <h2>The workarounds</h2>
+    <ul>
+      <li><strong>Monthly leaving lists.</strong> What's on Netflix publishes everything leaving each month, sorted by date, such as <a href="https://www.whats-on-netflix.com/leaving-soon/whats-leaving-netflix-october-2026/" target="_blank" rel="noopener">its October 2026 list</a>, and several other outlets run their own. Then you check it against your list by hand. Bear in mind what leaves depends on your country.</li>
+      <li><strong>Open your saved titles one by one</strong> and look for the last-day sentence.</li>
+      <li><strong>Keep your own record.</strong> One person described keeping a spreadsheet of their queue because titles kept disappearing. It works, as long as you keep it up.</li>
+    </ul>
+
+    <h2>How TidyWL for Netflix handles it</h2>
+    <p>I build TidyWL for Netflix (on the Chrome Web Store as <em>Watch Later Tidy for Netflix</em>), so weigh this part accordingly.</p>
+    <p>Press Sync in the dashboard and it marks every title in your My List that Netflix is about to remove, with Netflix's own sentence under it, such as "Last day to watch on Netflix: October 5". One filter shows only those titles. The toolbar button keeps count too: its red number shows how many started leaving since you last looked, and its popup lists them with their pictures. All of that is free.</p>
+
+    <figure class="nf-shot">
+      <img src="/assets/netflix-guide-my-list-grid.webp"
+           alt="The TidyWL for Netflix dashboard open over Netflix's My Netflix page, showing a My List of 161 titles as a grid of cards, each with its IMDb rating, year, runtime and genres, beside a panel counting 10 titles leaving soon."
+           width="1568" height="756" loading="lazy" decoding="async">
+      <figcaption class="nf-shot-caption">A My List of 161 titles, with the ones leaving soon counted on the left.</figcaption>
+    </figure>
+
+    <p>With Pro, the dashboard also tells you when a title starts leaving, and Tonight gives a leaving title a small nudge, so it is more likely to come up while you can still watch it.</p>
+    <p>Three honest limits:</p>
+    <ul>
+      <li><strong>It knows what Netflix says, no sooner.</strong> The sentence is Netflix's own, read at Sync, so it never knows earlier than Netflix does. There is no pop-up notification on your computer.</li>
+      <li><strong>It is as of your last Sync.</strong> Netflix changes its list daily, so Sync again every few days to keep it current.</li>
+      <li><strong>It shows what Netflix says for your country</strong>, because that is where your list is.</li>
+    </ul>
+    <p>It runs in Chrome on a computer, needs no account, and is not made by or affiliated with Netflix. <a href="{{ site.data.netflix.store_url }}?utm_source=tidywl-blog&amp;utm_medium=web&amp;utm_campaign=whats-leaving-netflix-from-my-list" target="_blank" rel="noopener">Add Watch Later Tidy for Netflix to Chrome</a>.</p>
+
+    <a class="nf-video" href="https://youtu.be/N4tHzNMDuxE" target="_blank" rel="noopener">
+      <span class="nf-video-thumb"><img src="/assets/netflix-video-leaving-soon.webp" alt="Video cover reading What's leaving your list?, beside the popup listing titles leaving Netflix, each with Netflix's own last-day sentence." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">0:58</span></span>
+      <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">What's Leaving Netflix From Your List?</span><span class="nf-video-sub">One Sync, and every title on your list that is leaving, with its last day.</span></span>
+    </a>
+
+    <p><a href="/netflix/tutorials/">Video tutorials</a></p>
+    <p><a href="/netflix/blog/">← All guides and articles</a></p>
+  </div>
+</section>

@@ -1,0 +1,971 @@
+---
+layout: netflix
+permalink: /netflix/tutorials/
+title: "Tutorials — TidyWL for Netflix"
+description: "How to use every part of TidyWL for Netflix: the My List dashboard, IMDb ratings, hidden categories, playlists, Leaving soon, and Pro's Tonight and Undo."
+last_modified_at: 2026-10-06
+faq:
+  - q: "Where do I open the TidyWL for Netflix dashboard?"
+    a: "Open netflix.com in Chrome on a computer, choose your profile, and press Alt+L on any browse page, such as the home page (Option+L on a Mac). Or click the extension's icon in the browser toolbar and press Open dashboard. It does not open on Netflix's Who's watching? screen, so pick a profile first."
+  - q: "Why does the dashboard show a title Netflix no longer has?"
+    a: "The dashboard shows My List as of your last Sync. Opening it asks Netflix for nothing, so anything that changed on Netflix since then stays as it was until you press Sync. When your last Sync is more than a day old, a line above the grid says so and offers Sync now."
+  - q: "Does removing a title here remove it from Netflix?"
+    a: "Yes. TidyWL works on your real My List, so a title you remove leaves My List on Netflix, on every device, because it is the same list. Copying a title into a playlist never changes Netflix. Move does, because it removes the title from My List after adding it to the playlist."
+  - q: "Does it work on a phone or a TV?"
+    a: "No. It is a Chrome extension, so it runs in Chrome on a computer. Chrome for Android cannot run extensions, and neither can Netflix's TV apps. With Pro, your playlists can be read on your phone at tidywl.com/netflix/app, but they are edited on your computer."
+  - q: "Is my list sent anywhere?"
+    a: "Your list, your watch state, your searches, your removal history and your stats stay in your browser. Your playlists do too, unless you have Pro and switch on Sync playlists to your phone and other browsers. Then that profile's playlists, with each title's name, year and picture link, and the profile's name, go to tidywl.com. Chrome's own sync also carries your playlists to your other signed-in Chrome browsers, through Google. Separately, the extension sends tidywl.com a usage report of counts tied to a random install id, never a title, a search term, a category or a profile. For the IMDb ratings, Netflix's numeric title ids, and the name of a title they cannot match, go to Wikidata, IMDb and TidyWL's ratings table, with nothing that identifies you. With Pro, your key goes to tidywl.com to be checked. The privacy policy lists every request."
+  - q: "What is free, and what does Pro add?"
+    a: "Free, with no account: the dashboard over My List with its filters, sorts and genre breakdown, IMDb ratings on Netflix's own pages, Leaving soon, search and the hidden categories, the hover panel, five playlists, bulk remove with the exact list shown first, and export and import. Pro adds Tonight, Undo for 90 days, Pin, clean-up rules, Stats, up to 50 playlists per profile, mobile sync, and support answered first. Pro starts with 7 days free, card required, then costs $3.99 a month or $29.99 a year, in US dollars before tax."
+  - q: "Why do some titles have no IMDb rating?"
+    a: "A title with fewer than 100 votes on IMDb gets no rating, because a thin rating misleads more than it helps. A title TidyWL cannot match to IMDb gets none either. In the dashboard, the Filter menu's Unrated choice shows them."
+---
+
+<!-- ── TUTORIALS, TidyWL for Netflix ──
+     Added 2026-10-06, modelled on /tutorials/ (the Watch Later product's).
+     Every button, tab, menu item and label quoted below was copied from the
+     extension's src/ (tidywl-netflix, version 1.2.x). An icon button's name is
+     the first part of its tooltip. Category names Netflix supplies are not
+     quoted, except the two the approved store description names. Claims about
+     free vs Pro, prices and privacy follow CWS-DESCRIPTION-v1.2.2.md.
+
+     STABLE IDS. The extension may deep-link to any of these. Rename one only
+     with a redirect plan, and keep the ItemList below in step:
+       install, layout, sync,
+       cards, filter, sort, genres, leaving-soon, hover-preview, select,
+       remove, export-import,
+       imdb-ratings,
+       search, hidden-categories, result-details, add-from-search,
+       playlists, move-copy, manage-playlist, playlist-limits,
+       toolbar-popup,
+       pro, tonight, undo, pin, clean-up-rules (rule-watched,
+       rule-six-months), stats, mobile-sync, support,
+       shortcuts, troubleshooting
+     FAQ items: q-open, q-stale, q-remove, q-devices, q-privacy, q-free,
+       q-unrated -->
+
+<div class="tut-page">
+
+  <section class="tut-hero">
+    <p class="section-label">Tutorials</p>
+    <h1>How to use <span class="em">every part</span> of TidyWL for Netflix</h1>
+    <p class="tagline">One short guide per feature, in the order you would meet them. Written against version 1.2. Every button name below is the name on the button, or the first words of its tooltip.</p>
+    <p class="tut-legend"><span class="tut-pill">Pro</span> marks a feature that needs TidyWL Pro for Netflix. Everything else is free.</p>
+  </section>
+
+  <section class="tut-contents">
+    <div class="section-inner">
+      <nav class="tut-toc" aria-label="Tutorials">
+        <div class="tut-toc-group">
+          <p class="tut-toc-head">Getting started</p>
+          <ul>
+            <li><a href="#install">Install and open the dashboard</a></li>
+            <li><a href="#layout">Find your way around</a></li>
+            <li><a href="#sync">Sync your list once</a></li>
+          </ul>
+        </div>
+        <div class="tut-toc-group">
+          <p class="tut-toc-head">My List</p>
+          <ul>
+            <li><a href="#cards">Read a title card</a></li>
+            <li><a href="#filter">Filter</a></li>
+            <li><a href="#sort">Sort</a></li>
+            <li><a href="#genres">By genre</a></li>
+            <li><a href="#leaving-soon">Leaving soon</a></li>
+            <li><a href="#hover-preview">Details on hover</a></li>
+            <li><a href="#select">Select titles</a></li>
+            <li><a href="#remove">Remove in one go</a></li>
+            <li><a href="#export-import">Export and import</a></li>
+          </ul>
+        </div>
+        <div class="tut-toc-group">
+          <p class="tut-toc-head">On Netflix's pages</p>
+          <ul>
+            <li><a href="#imdb-ratings">IMDb ratings</a></li>
+            <li><a href="#toolbar-popup">The toolbar button</a></li>
+          </ul>
+        </div>
+        <div class="tut-toc-group">
+          <p class="tut-toc-head">Search and browse</p>
+          <ul>
+            <li><a href="#search">Search Netflix</a></li>
+            <li><a href="#hidden-categories">Hidden categories</a></li>
+            <li><a href="#result-details">Details and ratings</a></li>
+            <li><a href="#add-from-search">Add what you find</a></li>
+          </ul>
+        </div>
+        <div class="tut-toc-group">
+          <p class="tut-toc-head">Playlists</p>
+          <ul>
+            <li><a href="#playlists">Make a playlist</a></li>
+            <li><a href="#move-copy">Move or copy</a></li>
+            <li><a href="#manage-playlist">Inside a playlist</a></li>
+            <li><a href="#playlist-limits">Profiles and browsers</a></li>
+          </ul>
+        </div>
+        <div class="tut-toc-group">
+          <p class="tut-toc-head">TidyWL Pro</p>
+          <ul>
+            <li><a href="#pro">Start Pro</a></li>
+            <li><a href="#tonight">Tonight</a></li>
+            <li><a href="#undo">Undo a removal</a></li>
+            <li><a href="#pin">Pin a title</a></li>
+            <li><a href="#clean-up-rules">Clean-up rules</a></li>
+            <li><a href="#stats">Stats</a></li>
+            <li><a href="#mobile-sync">Mobile sync</a></li>
+            <li><a href="#support">Support</a></li>
+          </ul>
+        </div>
+        <div class="tut-toc-group">
+          <p class="tut-toc-head">Reference</p>
+          <ul>
+            <li><a href="#shortcuts">Keyboard shortcuts</a></li>
+            <li><a href="#troubleshooting">If something looks wrong</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ══ GETTING STARTED ══ -->
+  <section class="tut-band">
+    <div class="section-inner">
+      <p class="section-label">Getting started</p>
+
+      <article class="tut" id="install">
+        <h2>Install TidyWL for Netflix and open the dashboard</h2>
+        <p class="tut-where">Netflix in Chrome on a computer → <kbd>Alt</kbd>+<kbd>L</kbd>, or the extension's icon in the toolbar</p>
+        <ol class="tut-steps">
+          <li><a href="{{ site.data.netflix.store_url }}?utm_source=tidywl-tutorials&amp;utm_medium=web&amp;utm_campaign=tutorials" target="_blank" rel="noopener">Add it to Chrome from the Chrome Web Store</a>. It is free and there is no account to make. In the store and in Chrome's extension list, its name starts with <b class="ui">Watch Later Tidy for Netflix</b>.</li>
+          <li>Open netflix.com in Chrome and choose your profile.</li>
+          <li>On any browse page, such as the home page, press <kbd>Alt</kbd>+<kbd>L</kbd>. On a Mac that is <kbd>Option</kbd>+<kbd>L</kbd>. The dashboard opens over the Netflix page.</li>
+          <li>Or click the extension's icon in the browser toolbar and press <b class="ui">Open dashboard</b>, or <b class="ui">Dashboard</b> when the popup shows that one. From a tab that is not Netflix, the button opens Netflix first.</li>
+        </ol>
+        <p class="tut-note">To close the dashboard, click the <b class="ui">×</b> in its top-right corner, press <kbd>Esc</kbd>, or press <kbd>Alt</kbd>+<kbd>L</kbd> again. If you removed anything from My List, the Netflix page behind it reloads so it matches.</p>
+        <p class="tut-note tut-note--warn">It does not open on Netflix's "Who's watching?" screen. There, Netflix still answers for whichever profile was used last, so the dashboard would show the wrong person's list. Pick a profile first.</p>
+        <p class="tut-note">There is no password, no API key and no sign-in. TidyWL uses the Netflix session you are already signed in with.</p>
+      </article>
+
+      <article class="tut" id="layout">
+        <h2>Find your way around the dashboard</h2>
+        <p class="tut-where">The panel that opens over the Netflix page</p>
+        <ul class="tut-list">
+          <li><b class="ui">The header</b> carries three tabs, <b class="ui">My List</b>, <b class="ui">Search</b> and <b class="ui">Playlists</b>. On the right sit <b class="ui">Tonight</b> with its Pro pill, your plan badge (<b class="ui">Free</b> or <b class="ui">Pro</b>), a bell, <b class="ui">About</b>, <b class="ui">Full page</b> and the close ×.</li>
+          <li><b class="ui">The sidebar</b> on My List holds the <b class="ui">Titles</b> card, <b class="ui">Last Synced</b> with the <b class="ui">Sync</b> button, a <b class="ui">Leaving soon</b> card when something is leaving, <b class="ui">Show Watch State</b>, <b class="ui">Stats</b>, and below them the <b class="ui">By Genre</b> breakdown.</li>
+          <li><b class="ui">The toolbar</b> above the grid groups its icons under small titles: <b class="ui">Find</b>, <b class="ui">Pro tools</b>, <b class="ui">Select &amp; move</b> and <b class="ui">Export, import &amp; open</b>, then the red bin on its own. Hover an icon to see its name. That name is what these tutorials use.</li>
+          <li><b class="ui">The grid</b> below is your list, one card per title.</li>
+        </ul>
+        <p class="tut-note">Hover the edge between the sidebar and the grid and a small round handle appears (<b class="ui">Hide breakdown</b>). It folds the sidebar down to a narrow strip that still carries <b class="ui">Sync</b>. On a narrow window the sidebar sits above the grid instead.</p>
+        <p class="tut-note"><b class="ui">Full page</b> makes the dashboard fill the browser window, and it remembers that choice next time.</p>
+        <a class="nf-video" href="https://youtu.be/x_9iXBpwOnc" target="_blank" rel="noopener">
+          <span class="nf-video-thumb"><img src="/assets/netflix-video-overview.webp" alt="Video cover reading Stop scrolling. Start watching, beside the dashboard filtered to movies rated 7 and up on IMDb." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">2:18</span></span>
+          <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">How I Stopped Wasting Time Picking a Netflix Movie</span><span class="nf-video-sub">The dashboard from start to finish: a long My List, filtered and sorted into playlists for movie nights.</span></span>
+        </a>
+      </article>
+
+      <article class="tut" id="sync">
+        <h2>Sync your list once</h2>
+        <p class="tut-where">My List sidebar → <b class="ui">Last Synced</b> → <b class="ui">Sync</b></p>
+        <ol class="tut-steps">
+          <li>The first time, the grid reads <em>"Nothing loaded yet."</em> Press <b class="ui">Sync</b>.</li>
+          <li>Sync reads your My List and checks which titles Netflix is about to remove. Then it checks the watch state of your shows, one request per show, which is the slow half, and matches each title to its IMDb rating. The <b class="ui">Show Watch State</b> card counts how many shows are done.</li>
+          <li>From then on the dashboard opens instantly and asks Netflix for nothing. It shows your list as of that Sync.</li>
+        </ol>
+        <p class="tut-note">When your last Sync is more than a day old, a line above the grid reads <em>"Last synced … Netflix may have changed since."</em> with <b class="ui">Sync now</b> and a × to dismiss it.</p>
+        <p class="tut-note">Press <b class="ui">Sync</b> again after you add or remove titles on Netflix itself, and every few days for <a href="#leaving-soon">Leaving soon</a>, because Netflix changes what is leaving daily.</p>
+        <p class="tut-note">Each Netflix profile keeps its own list, playlists, pins and history.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ══ MY LIST ══ -->
+  <section class="tut-band tut-band--alt">
+    <div class="section-inner">
+      <p class="section-label">My List</p>
+      <p class="tut-band-note">Netflix's website now shows My List as one row you scroll sideways. The <b class="ui">My List</b> tab shows every title at once. <a href="/netflix/blog/see-your-whole-netflix-my-list/">How to see your whole Netflix My List again</a> is the short version of this section.</p>
+
+      <article class="tut" id="cards">
+        <h2>Read a title card</h2>
+        <p class="tut-where">The grid on the <b class="ui">My List</b> tab</p>
+        <ul class="tut-list">
+          <li><b>The ★ number</b> in the top-right corner of the art is the IMDb rating. Click it to open the title on IMDb.</li>
+          <li><b>The title</b> is a link to the title's page on Netflix.</li>
+          <li><b>The badges</b> under it: <b class="ui">Unavailable</b> when Netflix lists the title but cannot play it, <b class="ui">Original</b>, <b class="ui">Watched</b>, and <b class="ui">Leaving soon</b>. A red bar across the foot of the art means you are partway through.</li>
+          <li><b>The line under the badges</b> gives the year, the runtime or the number of seasons, and the maturity rating. The <b>#</b> number at its end is the title's place in Netflix's own order.</li>
+          <li><b>The genre chips</b> at the bottom each filter the grid to that genre. A <b class="ui">+</b> chip shows the rest.</li>
+          <li><b>On hover</b>, two buttons appear at the art's bottom-right: <b class="ui">Remove</b> (the bin) and the pin. See <a href="#remove">Remove</a> and <a href="#pin">Pin</a>.</li>
+        </ul>
+      </article>
+
+      <article class="tut" id="filter">
+        <h2>Filter My List</h2>
+        <p class="tut-where">Toolbar → <b class="ui">Find</b> → the funnel (<b class="ui">Filter</b>)</p>
+        <ol class="tut-steps">
+          <li>Open <b class="ui">Filter</b>. It holds six groups, one choice in each:
+            <ul>
+              <li><b class="ui">Type</b>: <b class="ui">Shows &amp; movies</b>, <b class="ui">Shows only</b>, <b class="ui">Movies only</b>.</li>
+              <li><b class="ui">Availability</b>: <b class="ui">Any availability</b>, <b class="ui">Playable</b>, <b class="ui">Unavailable</b>, <b class="ui">Leaving soon</b>.</li>
+              <li><b class="ui">Watched</b>: <b class="ui">Any watch state</b>, <b class="ui">Not started</b>, <b class="ui">Partway</b>, <b class="ui">Watched</b>.</li>
+              <li><b class="ui">IMDb rating</b>: <b class="ui">Any rating</b>, <b class="ui">8.0 and up</b>, <b class="ui">7.0 and up</b>, <b class="ui">6.0 and up</b>, <b class="ui">Unrated</b>.</li>
+              <li><b class="ui">Runtime</b>: <b class="ui">Any runtime</b>, <b class="ui">Movies under 90 min</b>, <b class="ui">Movies 90–120 min</b>, <b class="ui">Movies over 120 min</b>.</li>
+              <li><b class="ui">Pins</b>: <b class="ui">Pinned or not</b>, <b class="ui">Pinned</b>, <b class="ui">Not pinned</b>.</li>
+            </ul>
+          </li>
+          <li>The menu stays open while you choose, so you can set type and rating in one go. Click outside it to close it.</li>
+          <li>Each active filter shows as a chip beside the toolbar's search. The × on a chip removes that one; <b class="ui">Clear all</b> removes every one.</li>
+          <li>To find one title by name, click the magnifier (<b class="ui">Search</b>) and type in <b class="ui">Search titles…</b>.</li>
+        </ol>
+        <p class="tut-note">To filter by genre, click a row in <a href="#genres">By Genre</a>, or a genre chip on any card.</p>
+        <p class="tut-note">Every <b class="ui">Runtime</b> choice is for movies, as its label says, so picking one hides every show.</p>
+        <p class="tut-note">Search matches title names, which Netflix gives in your profile's language.</p>
+        <p class="tut-note tut-note--warn">Changing what is shown clears your selection. Filter first, then select.</p>
+      </article>
+
+      <article class="tut" id="sort">
+        <h2>Sort My List</h2>
+        <p class="tut-where">Toolbar → <b class="ui">Find</b> → <b class="ui">Sort</b></p>
+        <ol class="tut-steps">
+          <li>Pick an order: <b class="ui">Netflix's order</b>, <b class="ui">Title A–Z</b>, <b class="ui">Title Z–A</b>, <b class="ui">Newest first</b>, <b class="ui">Oldest first</b>, <b class="ui">Longest first (movies)</b>, <b class="ui">Shortest first (movies)</b> or <b class="ui">IMDb rating</b>.</li>
+          <li>Or, under <b class="ui">Grouped</b>, pick <b class="ui">By type</b>, <b class="ui">By watch state</b> or <b class="ui">By decade</b>. Each group gets a heading with its count, an arrow that folds it shut, and <b class="ui">Select all</b>, which then reads <b class="ui">Clear</b>.</li>
+        </ol>
+        <p class="tut-note">There is no sort by date added. Netflix keeps no date on My List that TidyWL can read, and Netflix's own order is its choice, not the order you added titles.</p>
+        <p class="tut-note">Sorting never clears your selection. Folding a group drops its titles from the selection, so nothing out of sight stays selected.</p>
+      </article>
+
+      <article class="tut" id="genres">
+        <h2>Break My List down by genre</h2>
+        <p class="tut-where">My List sidebar → <b class="ui">By Genre</b></p>
+        <ol class="tut-steps">
+          <li>The breakdown lists the genres in your list, biggest first, each with a bar for how many titles it holds.</li>
+          <li>Click a row to see only that genre. Click it again to drop the filter.</li>
+          <li>The list starts at ten rows. <b class="ui">Show 10 More</b> adds more; <b class="ui">Show Fewer</b> folds it back.</li>
+          <li>The small arrow at the end of a row opens that genre on Netflix's own site, in a new tab.</li>
+        </ol>
+        <p class="tut-note">A title has several genres, so the rows add up to more than the titles in your list. The genre names are Netflix's, in your profile's language.</p>
+      </article>
+
+      <article class="tut" id="leaving-soon">
+        <h2>See what is leaving Netflix</h2>
+        <p class="tut-where">My List sidebar → <b class="ui">Leaving soon</b> · Toolbar → <b class="ui">Filter</b> → <b class="ui">Availability</b> → <b class="ui">Leaving soon</b></p>
+        <ol class="tut-steps">
+          <li>Press <b class="ui">Sync</b>. Sync checks which titles in your list Netflix is about to remove. It asks Netflix once per 100 titles, and only when you press Sync.</li>
+          <li>Each one gets a <b class="ui">Leaving soon</b> badge, with Netflix's own sentence under it, such as <em>"Last day to watch on Netflix: October 5"</em>.</li>
+          <li>The <b class="ui">Leaving soon</b> card in the sidebar counts them and says which Sync the count comes from. Press <b class="ui">Show them</b> to see only those titles, and <b class="ui">Show all</b> to go back.</li>
+          <li>The same filter is in <b class="ui">Filter</b> → <b class="ui">Availability</b> → <b class="ui">Leaving soon</b>, on My List and inside every playlist.</li>
+        </ol>
+        <p class="tut-note tut-note--warn">Leaving soon is as of your last Sync. Netflix changes its list daily, so Sync again every few days to keep it current. If Netflix did not answer the whole check, the card says there may be more.</p>
+        <p class="tut-note">The extension's icon in the browser toolbar lists the same titles. See <a href="#toolbar-popup">the toolbar button</a>.</p>
+        <p class="tut-note"><span class="tut-pill">Pro</span> When you open the dashboard, a line above the grid names any title that has started leaving since, once per title, and <a href="#tonight">Tonight</a> gives leaving titles a small nudge up.</p>
+        <a class="nf-video" href="https://youtu.be/N4tHzNMDuxE" target="_blank" rel="noopener">
+          <span class="nf-video-thumb"><img src="/assets/netflix-video-leaving-soon.webp" alt="Video cover asking What's leaving your list?, beside the toolbar popup listing titles with Netflix's last day to watch each." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">0:58</span></span>
+          <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">What's Leaving Netflix From Your List?</span><span class="nf-video-sub">Leaving soon marks, with Netflix's last day for each title.</span></span>
+        </a>
+      </article>
+
+      <article class="tut" id="hover-preview">
+        <h2>See a title's details without opening it</h2>
+        <p class="tut-where">Any title card, on any tab</p>
+        <ol class="tut-steps">
+          <li>Rest the pointer on a card for a moment. A panel opens beside it with a still, the year, the runtime or seasons, the maturity rating and the synopsis.</li>
+          <li>Under that are rows of chips: <b class="ui">Cast</b>, <b class="ui">Director</b> (or <b class="ui">Creators</b> for a show) and <b class="ui">Genres</b>.</li>
+          <li>Click a person to search Netflix for them on the <b class="ui">Search</b> tab. Click a genre to browse that category.</li>
+        </ol>
+        <p class="tut-note">The panel stays open while the pointer moves from the card onto it, so you can read and select its text. Clicking anywhere else closes it.</p>
+        <p class="tut-note">Each panel costs one request to Netflix, so it waits until the pointer rests, asks about one title at a time, and keeps every answer. Sweeping the pointer across the grid asks for nothing.</p>
+      </article>
+
+      <article class="tut" id="select">
+        <h2>Select titles</h2>
+        <p class="tut-where">The cards · Toolbar → <b class="ui">Select &amp; move</b> → <b class="ui">Select all shown</b></p>
+        <ol class="tut-steps">
+          <li>Click a card, or its checkbox, to select it. Clicking the title link or a button on the art does not.</li>
+          <li>Hold <kbd>Shift</kbd> and click another card to select everything between the two.</li>
+          <li><b class="ui">Select all shown</b> selects every title your filters show, not the whole list. Press it again to clear. <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>A</kbd> does the same.</li>
+          <li>A bar floats over the grid, such as <em>"3 titles selected"</em>, with <b class="ui">Clear</b> to empty the selection.</li>
+        </ol>
+        <p class="tut-note"><b class="ui">Open in tabs</b>, in the <b class="ui">Export, import &amp; open</b> group, opens the selected titles on Netflix: one in front, several behind. Above five, it asks first.</p>
+      </article>
+
+      <article class="tut" id="remove">
+        <h2>Remove titles from My List in one go</h2>
+        <p class="tut-where">Toolbar → the red bin (<b class="ui">Remove selected</b>)</p>
+        <ol class="tut-steps">
+          <li>Select the titles you want gone.</li>
+          <li>Press the red bin. It asks <em>"Remove 12 titles from My List?"</em> and offers <b class="ui">Remove 12</b>, <b class="ui">Cancel</b>, and <b class="ui">Review the 12 titles</b>.</li>
+          <li><b class="ui">Review the 12 titles</b> opens the exact list, each title with a checkbox. Untick anything you want to keep. <b class="ui">Search these titles…</b> finds one in a long list, and <kbd>Shift</kbd>-click unticks a range. The button at the foot carries the number that is left.</li>
+          <li>TidyWL removes them one at a time, with a <b class="ui">Stop</b> button. The summary, <b class="ui">Removed from My List</b>, says what went. If some could not be removed, they stay selected and <b class="ui">Retry</b> runs them again.</li>
+        </ol>
+        <p class="tut-note">To remove one title, hover its card and click the bin on its art (<b class="ui">Remove</b>).</p>
+        <p class="tut-note tut-note--warn">This removes the title from your real My List on Netflix, on every device, because it is the same list. The free version cannot undo it. With Pro, the summary carries <b class="ui">Undo</b>, and <a href="#undo">Removal history</a> keeps what you removed for 90 days.</p>
+        <p class="tut-note">A <a href="#pin">pinned</a> title is never removed. The question says how many pins held back.</p>
+      </article>
+
+      <article class="tut" id="export-import">
+        <h2>Export and import My List</h2>
+        <p class="tut-where">Toolbar → <b class="ui">Export, import &amp; open</b> → <b class="ui">Export</b> (the up arrow) and the down arrow (<b class="ui">Import into My List from a file</b>)</p>
+        <ol class="tut-steps">
+          <li>Filter the list down to what you want, or select titles.</li>
+          <li>Open <b class="ui">Export</b> and pick <b class="ui">Export as CSV (Excel native)</b> or <b class="ui">Export as JSON</b>. With titles selected, the menu offers two groups, <b class="ui">Selected</b> and <b class="ui">Everything shown</b>, each with its count.</li>
+          <li>To add titles to My List from a file, press the down arrow and pick a JSON file TidyWL exported, from My List or from your playlists. You can also drop the file onto the dashboard.</li>
+        </ol>
+        <p class="tut-note">The file stays on your computer. Import is how you move a list to another Netflix profile or account: export it from one, open the dashboard on the other, and import it.</p>
+        <p class="tut-note">Import adds titles at a steady pace and pauses now and then so Netflix keeps answering. Titles already in My List are left alone.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ══ ON NETFLIX'S PAGES ══ -->
+  <section class="tut-band">
+    <div class="section-inner">
+      <p class="section-label">On Netflix's own pages</p>
+
+      <article class="tut" id="imdb-ratings">
+        <h2>IMDb ratings on Netflix's own pages</h2>
+        <p class="tut-where">Netflix's home page, search, and every category</p>
+        <ol class="tut-steps">
+          <li>There is nothing to switch on. With the extension installed, each title's art on Netflix carries an IMDb badge with its rating, in the top-right corner.</li>
+          <li>Hover a badge to see the number of votes.</li>
+          <li>Click it to open the title on IMDb.</li>
+        </ol>
+        <p class="tut-note">A title with fewer than 100 votes on IMDb gets no badge, because a thin rating misleads more than it helps. A title TidyWL cannot match to IMDb gets none either.</p>
+        <p class="tut-note">When IMDb files a season as part of a larger series, the badge shows the series' rating across all its seasons, and its tooltip says so.</p>
+        <p class="tut-note">The big trailer at the top of a browse page gets a badge too. When that title has no rating, it shows <b class="ui">?</b>, and its tooltip says why.</p>
+        <p class="tut-note">The badges ask Netflix nothing. Netflix's numeric ids for the titles on your screen go to TidyWL's ratings table on tidywl.com, which answers with their IMDb ratings. Ids only, with nothing that identifies you. Free.</p>
+        <a class="nf-video" href="https://youtu.be/QEVw8jHcOvw" target="_blank" rel="noopener">
+          <span class="nf-video-thumb"><img src="/assets/netflix-video-imdb-ratings.webp" alt="Video cover reading IMDb ratings right on Netflix, over rows of Netflix posters that each carry an IMDb badge." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">1:29</span></span>
+          <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">How to See IMDb Ratings on Netflix</span><span class="nf-video-sub">The IMDb badges on Netflix's own posters, and what a click on one does.</span></span>
+        </a>
+      </article>
+
+      <article class="tut" id="toolbar-popup">
+        <h2>The toolbar button: what is leaving, at a glance</h2>
+        <p class="tut-where">Browser toolbar → the extension's icon</p>
+        <ol class="tut-steps">
+          <li>A red number on the icon counts the titles in your list that started leaving Netflix since you last opened it, for the Netflix profile you last used in this browser. It shows <b class="ui">9+</b> at most.</li>
+          <li>Click the icon. The popup names whose list it is and when you last synced, such as <em>"As of your Sync today"</em>.</li>
+          <li>It lists the titles that are leaving, new ones first, each with its picture, Netflix's own last-day sentence, and its year, runtime and IMDb rating where known. Click one to open it on Netflix.</li>
+          <li>Opening the popup clears the red number.</li>
+        </ol>
+        <p class="tut-note">Its two buttons change with your list. While something is leaving: <b class="ui">Pick one tonight</b> and <b class="ui">Dashboard</b>. When your last Sync is over 14 days old: <b class="ui">Sync on Netflix</b> and <b class="ui">Dashboard</b>. When nothing is leaving: <b class="ui">Open dashboard</b> and <b class="ui">Tonight</b>. Before your first Sync: <b class="ui">Open dashboard</b> alone. <b class="ui">Pick one tonight</b> and <b class="ui">Tonight</b> open <a href="#tonight">Tonight</a>, which is Pro.</p>
+        <p class="tut-note">Every button works from any tab. Off Netflix, it opens Netflix first. On the "Who's watching?" screen it asks you to pick a profile first.</p>
+        <p class="tut-note">The popup reads only what your last Sync kept. It asks Netflix for nothing, and it counts nothing past 14 days from that Sync.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ══ SEARCH AND BROWSE ══ -->
+  <section class="tut-band tut-band--alt">
+    <div class="section-inner">
+      <p class="section-label">Search and browse</p>
+
+      <article class="tut" id="search">
+        <h2>Search Netflix by title, actor or director</h2>
+        <p class="tut-where">Header → <b class="ui">Search</b> tab → <b class="ui">Search Netflix</b></p>
+        <ol class="tut-steps">
+          <li>Open the <b class="ui">Search</b> tab. It opens on <b class="ui">Search Netflix</b>.</li>
+          <li>Type a title, a person or a genre into the box and press <b class="ui">Search</b>, or <kbd>Enter</kbd>.</li>
+          <li>Results arrive as cards. <b class="ui">Load more</b> at the foot fetches the next set.</li>
+          <li>Use <b class="ui">Sort</b> for <b class="ui">Netflix's order</b>, <b class="ui">Title A–Z</b>, <b class="ui">Title Z–A</b> or <b class="ui">IMDb rating</b>, and <b class="ui">Filter</b> for type, availability, IMDb rating and runtime.</li>
+        </ol>
+        <p class="tut-note">Sorting and filtering here work on the results already loaded. Press <b class="ui">Load more</b> first to include the rest.</p>
+        <p class="tut-note">A card that is already in your list says <b class="ui">In My List</b>, as of your last Sync.</p>
+      </article>
+
+      <article class="tut" id="hidden-categories">
+        <h2>Browse by genre, including the hidden categories</h2>
+        <p class="tut-where">Header → <b class="ui">Search</b> tab → <b class="ui">Browse by genre</b></p>
+        <ol class="tut-steps">
+          <li>Press <b class="ui">Browse by genre</b>, then choose <b class="ui">Films</b> or <b class="ui">TV</b>.</li>
+          <li>Pick a category from the row of chips, which puts the genres you have most of first, or from the <b class="ui">All</b> menu beside them, which lists Netflix's own genres and how many of yours are in each.</li>
+          <li>For the rest, open the dashed <b class="ui">Hidden</b> menu. It holds more than a hundred categories Netflix keeps out of its own genre menu, such as Mockumentaries and Satanic Stories, grouped under Netflix's name for each parent genre. Type in its filter box to find one.</li>
+          <li>Use <b class="ui">Sort</b> to choose <b class="ui">A–Z</b>, <b class="ui">Z–A</b>, <b class="ui">Year</b>, <b class="ui">Suggested</b> or <b class="ui">IMDb rating</b>. <b class="ui">Filter</b> offers type, IMDb rating and runtime.</li>
+          <li><b class="ui">Load more</b> fetches the next set. <b class="ui">On Netflix</b> opens the same category on Netflix's own site.</li>
+        </ol>
+        <p class="tut-note"><b class="ui">A–Z</b>, <b class="ui">Z–A</b>, <b class="ui">Year</b> and <b class="ui">Suggested</b> are Netflix's own orders, read again from Netflix. <b class="ui">IMDb rating</b> reorders what has been read so far, and the status line says so.</p>
+        <p class="tut-note">The open category shows as a chip with an ×. Press it to close the category.</p>
+        <a class="nf-video" href="https://youtu.be/q7TezaZ44Mg" target="_blank" rel="noopener">
+          <span class="nf-video-thumb"><img src="/assets/netflix-video-hidden-categories.webp" alt="Video cover comparing Netflix's short genre menu with the dashboard's much longer Hidden menu of categories." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">1:07</span></span>
+          <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">Netflix Hidden Categories, Sorted A-Z</span><span class="nf-video-sub">The Hidden menu, its filter box, and a category sorted A to Z.</span></span>
+        </a>
+      </article>
+
+      <article class="tut" id="result-details">
+        <h2>Details and ratings on every result</h2>
+        <p class="tut-where">Opens by itself after a search, a category, or <b class="ui">Load more</b></p>
+        <ol class="tut-steps">
+          <li>Netflix's search and category pages leave out much of what a card needs. So after each read, TidyWL asks Netflix for each title's year, runtime, seasons and age rating, behind a progress window such as <em>"Reading details — 16 of 48"</em>.</li>
+          <li>Press <b class="ui">Stop</b> to end early. Titles it did not reach show without those details.</li>
+          <li>It then matches IMDb ratings. Some arrive after the grid is up, and the cards fill in as they land.</li>
+        </ol>
+        <p class="tut-note">Details cost one request to Netflix per title, so they are paced, never asked twice in a session, and never asked for a title in your synced list. A quick read never shows the window at all.</p>
+        <p class="tut-note tut-note--warn">If Netflix starts refusing, TidyWL stops asking for a while and the status line says so, for example <em>"Netflix stopped answering — details are paused for ten minutes"</em>.</p>
+      </article>
+
+      <article class="tut" id="add-from-search">
+        <h2>Add what you find to My List or a playlist</h2>
+        <p class="tut-where">The two buttons on every search and category card · Toolbar → <b class="ui">Add to My List</b> and <b class="ui">Add to playlist</b></p>
+        <ol class="tut-steps">
+          <li>The bookmark on a card (<b class="ui">Add to My List</b>) adds that title to your My List on Netflix. It stays lit while the title is in your list. Pressing a lit one removes it, after asking.</li>
+          <li>The other button (<b class="ui">Add to a playlist</b>) opens <b class="ui">Add to Playlist</b> for that title. Adding to a playlist from here never touches My List.</li>
+          <li>In a category you can select several titles, as on My List, and use <b class="ui">Add to My List</b> or <b class="ui">Add to playlist</b> in the toolbar.</li>
+        </ol>
+        <p class="tut-note">Adding several titles to My List goes at a steady pace, with a count, and pauses now and then so Netflix keeps answering.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ══ PLAYLISTS ══ -->
+  <section class="tut-band">
+    <div class="section-inner">
+      <p class="section-label">Playlists</p>
+
+      <article class="tut" id="playlists">
+        <h2>Make a playlist</h2>
+        <p class="tut-where">Header → <b class="ui">Playlists</b> tab → <b class="ui">New</b></p>
+        <ol class="tut-steps">
+          <li>Open the <b class="ui">Playlists</b> tab and press <b class="ui">New</b> at the top of the sidebar.</li>
+          <li>Type a name under <b class="ui">Playlist name</b> (the box suggests <em>Weekend, With the kids, Background noise</em>) and press <b class="ui">Create</b>.</li>
+          <li>The playlist appears under <b class="ui">Your playlists</b>. Click it to open it.</li>
+        </ol>
+        <p class="tut-note">You can also make one on the way: in <b class="ui">Add to Playlist</b>, press <b class="ui">New playlist</b>, name it and press <b class="ui">Create</b>.</p>
+        <p class="tut-note">A playlist is a name and a list of titles, kept by TidyWL. Netflix never sees it, and making, filling or deleting one changes nothing on Netflix.</p>
+      </article>
+
+      <article class="tut" id="move-copy">
+        <h2>Move or copy titles from My List into a playlist</h2>
+        <p class="tut-where">Toolbar → <b class="ui">Select &amp; move</b> → <b class="ui">Add to playlist</b></p>
+        <ol class="tut-steps">
+          <li>Select titles on the <b class="ui">My List</b> tab, then press <b class="ui">Add to playlist</b>.</li>
+          <li>Under <b class="ui">Save to…</b>, choose a playlist, or press <b class="ui">New playlist</b> to make one.</li>
+          <li>Under <b class="ui">Action</b>, choose <b class="ui">Copy</b> (<em>"Keep titles in My List"</em>) or <b class="ui">Move</b> (<em>"Remove from My List after adding"</em>).</li>
+          <li>Press <b class="ui">Add to Playlist</b>. Copy adds them and says so. Move asks once more, adds them, then removes from My List on Netflix exactly the titles that landed in the playlist, and ends with a summary.</li>
+        </ol>
+        <p class="tut-note tut-note--warn">Copy never changes Netflix. Move does: it is a real removal from My List, on every device.</p>
+        <p class="tut-note">A title the playlist had no room for is never removed. A <a href="#pin">pinned</a> title is copied and stays in My List.</p>
+        <p class="tut-note">Inside a playlist, <b class="ui">Add to another playlist</b> does the same between playlists. There, Move means out of the playlist you are in.</p>
+      </article>
+
+      <article class="tut" id="manage-playlist">
+        <h2>Sort, filter and reorder a playlist</h2>
+        <p class="tut-where">Header → <b class="ui">Playlists</b> tab → a playlist</p>
+        <ol class="tut-steps">
+          <li>Open a playlist from the sidebar. Its name sits at the top with <b class="ui">Rename</b> (the pencil) and <b class="ui">Delete playlist</b> (the bin).</li>
+          <li><b class="ui">Sort</b> offers <b class="ui">Your order</b>, <b class="ui">Title A–Z</b>, <b class="ui">Title Z–A</b>, <b class="ui">Newest first</b>, <b class="ui">Oldest first</b> and <b class="ui">IMDb rating</b>. <b class="ui">Filter</b> has the same groups as My List, without Pins. The magnifier searches the playlist.</li>
+          <li>To reorder, sort by <b class="ui">Your order</b> with no search or filter, then drag a card by its handle. Dragging a selected card moves every selected card. <b class="ui">Move to top</b> and <b class="ui">Move to bottom</b> move the selection in one press.</li>
+          <li><b class="ui">Remove from playlist</b>, the red bin, takes the selected titles out of the playlist.</li>
+        </ol>
+        <p class="tut-note">Removing from a playlist, or deleting one, changes nothing on Netflix. Deleting asks first, and never touches My List.</p>
+        <p class="tut-note">A card that is not in your My List carries <b class="ui">Not in My List</b>.</p>
+      </article>
+
+      <article class="tut" id="playlist-limits">
+        <h2>Playlists, profiles and other browsers</h2>
+        <p class="tut-where">Header → <b class="ui">Playlists</b> tab → <b class="ui">Your playlists</b></p>
+        <ul class="tut-list">
+          <li><b>Each profile has its own playlists.</b> The kids profile never sees yours, and neither can overwrite the other.</li>
+          <li><b>Free makes five playlists</b>, counted across all the profiles in this browser. With <a href="#pro">Pro</a>, up to 50 per profile. Each playlist holds up to 500 titles.</li>
+          <li><b>Your other signed-in Chrome browsers</b> get your playlists through Chrome's own sync, through Google, not through TidyWL.</li>
+          <li><b>To move them anywhere else</b>, such as another browser or another Google account, press the up arrow beside <b class="ui">Your playlists</b> (<b class="ui">Export playlists to a file</b>), tick the ones you want, then press the up arrow again, which now reads <em>"Export 2 playlists to a file"</em>. On the other side, press the down arrow, <b class="ui">Import playlists from a file</b>.</li>
+        </ul>
+        <p class="tut-note">If Pro ends, every playlist you made stays.</p>
+        <p class="tut-note"><span class="tut-pill">Pro</span> <a href="#mobile-sync">Mobile sync</a> keeps your playlists in step across browsers and puts them on your phone.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ══ PRO ══ -->
+  <section class="tut-band tut-band--alt">
+    <div class="section-inner">
+      <p class="section-label">TidyWL Pro for Netflix</p>
+      <p class="tut-band-note">This section covers TidyWL Pro for Netflix: how to start it, then what it adds, each marked <span class="tut-pill">Pro</span>. Pro starts with 7 days free, card required: cancel before day 8 and you pay nothing. Then it is $3.99 a month or $29.99 a year, in US dollars before tax. Every charge has a 14-day full refund. Everything free stays free. See <a href="/netflix/pricing/">pricing</a> and <a href="/netflix/pro/">what Pro does</a>.</p>
+
+      <article class="tut" id="pro">
+        <h2>Start Pro, and use it in more than one browser</h2>
+        <p class="tut-where">Header → the plan badge (<b class="ui">Free</b>) → About's Pro tab</p>
+        <ol class="tut-steps">
+          <li>Click <b class="ui">Free</b> in the dashboard header. It opens About on its Pro tab. Any control marked Pro opens the plans card instead.</li>
+          <li>Press <b class="ui">Upgrade to Pro</b>. Checkout opens on tidywl.com, handled by Paddle.</li>
+          <li>When it is done, Pro switches itself on in that browser. There is no key to copy or paste.</li>
+          <li>The page you land on after paying shows your key. It is not emailed, so keep it somewhere safe.</li>
+          <li>In another browser, open About's Pro tab, press <b class="ui">Have a key?</b>, paste the key, check the name under <b class="ui">Name this browser</b>, and press <b class="ui">Activate</b>.</li>
+        </ol>
+        <p class="tut-note">One key works on up to three browsers. About's Pro tab lists them. <b class="ui">Remove</b> beside one frees it, and <b class="ui">Deactivate</b> releases the browser you are in.</p>
+        <p class="tut-note"><b class="ui">Manage subscription</b> is where you cancel, change your card or see invoices.</p>
+        <p class="tut-note">Lost your key? Paste the Transaction ID from any Paddle receipt, the one that starts with <code>txn_</code>, into the same box. Or use <b class="ui">Find my key</b> on <a href="/netflix/checkout/success/">the key page</a>.</p>
+        <p class="tut-note">Pro is a key, not an account. There is no password, and TidyWL never learns your email. Paddle takes the payment.</p>
+      </article>
+
+      <article class="tut" id="tonight">
+        <h2>Tonight: one pick and two backups from your list <span class="tut-pill">Pro</span></h2>
+        <p class="tut-where">Header → <b class="ui">Tonight</b> · <kbd>Alt</kbd>+<kbd>T</kbd> on any Netflix page · with Pro, the <b class="ui">Pick for me</b> button on Netflix's browse pages</p>
+        <ol class="tut-steps">
+          <li>Open Tonight. Tap a night you have saved, or <b class="ui">Something else</b> to answer three questions, one tap each:
+            <ul>
+              <li><b class="ui">Who's watching?</b>: <b class="ui">Just me</b>, <b class="ui">With a partner</b>, <b class="ui">With friends</b> or <b class="ui">With family</b>. With family, it asks the youngest viewer's age and leaves out anything rated above it.</li>
+              <li><b class="ui">How long have you got?</b>: <b class="ui">Short</b>, <b class="ui">A movie</b> or <b class="ui">Any length</b>.</li>
+              <li><b class="ui">What mood?</b>: <b class="ui">Light</b>, <b class="ui">Gripping</b>, <b class="ui">Thoughtful</b>, <b class="ui">Comfort</b> or <b class="ui">Anything</b>.</li>
+            </ul>
+          </li>
+          <li>Tonight deals one pick and two backups from My List, each with its reason: the IMDb rating, the runtime, the genre that fits.</li>
+          <li>Press <b class="ui">Play</b> to watch the pick. <b class="ui">Make it the pick</b> swaps a backup in. <b class="ui">Not tonight</b> hides a title for seven days. <b class="ui">Re-roll</b> deals three more for the same answers.</li>
+          <li><b class="ui">Save as occasion</b> keeps a night's answers, so next time it is one tap. <b class="ui">Just like last time</b> repeats your last answers.</li>
+        </ol>
+        <p class="tut-note">Your answers and picks hold for the evening. The foot says until when, after <em>"Same picks until"</em>.</p>
+        <p class="tut-note">With <b class="ui">Surprises from outside My List</b> switched on, Tonight also adds titles from outside your list that fit your mood, each marked as a surprise, and never one you have already watched or given a thumbs down. Switch it off to keep to My List.</p>
+        <p class="tut-note"><b class="ui">Later, on my phone</b> keeps the pick at the top of the TidyWL phone app until 5 am. There is no alert: open the phone app and it is there. It needs <a href="#mobile-sync">mobile sync</a>.</p>
+        <p class="tut-note">On a Kids profile, Tonight asks two questions, not three.</p>
+        <a class="nf-video" href="https://youtu.be/cBRgF_wWylQ" target="_blank" rel="noopener">
+          <span class="nf-video-thumb"><img src="/assets/netflix-video-tonight.webp" alt="Video cover reading Tonight's movie, decided, beside Tonight's pick with two backups under it." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">0:45</span></span>
+          <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">What to Watch on Netflix Tonight? Let Your Own List Decide</span><span class="nf-video-sub">Who's watching, how long and the mood, then one pick and two backups.</span></span>
+        </a>
+      </article>
+
+      <article class="tut" id="undo">
+        <h2>Undo a removal, for 90 days <span class="tut-pill">Pro</span></h2>
+        <p class="tut-where">The removal summary's <b class="ui">Undo</b> · Toolbar → <b class="ui">Pro tools</b> → <b class="ui">Removal history</b></p>
+        <ol class="tut-steps">
+          <li>Right after a removal, the summary offers <b class="ui">Undo</b> beside <b class="ui">Done</b>. Press it to put that whole run back. If some titles could not be removed, <b class="ui">Retry</b> takes its place.</li>
+          <li>Later, press <b class="ui">Removal history</b> in the toolbar. It lists what you removed from My List in the last 90 days, newest first.</li>
+          <li>Press <b class="ui">Put back</b> on a title, or <b class="ui">Put back all</b> on a batch. Or tick several and press <b class="ui">Put back</b> at the foot. <b class="ui">Search removed titles…</b> finds one.</li>
+          <li><b class="ui">Forget</b> takes the ticked titles off this list, and <b class="ui">Empty the list</b> clears it. Neither changes Netflix.</li>
+        </ol>
+        <p class="tut-note tut-note--warn">A title you put back goes back on My List, and Netflix puts it at the top.</p>
+        <p class="tut-note">The history is kept on this device. It does not travel to your other browsers.</p>
+      </article>
+
+      <article class="tut" id="pin">
+        <h2>Pin a title so nothing removes it <span class="tut-pill">Pro</span></h2>
+        <p class="tut-where">The pin on a card's art · Toolbar → <b class="ui">Pro tools</b> → <b class="ui">Pin selected</b></p>
+        <ol class="tut-steps">
+          <li>Hover a card on My List. A pin appears at the bottom-right of its art. Click it.</li>
+          <li>Or select several titles and press <b class="ui">Pin selected</b>. When every selected title is already pinned, the same button unpins them.</li>
+          <li>A pinned card keeps its pin showing. Click the pin again to unpin.</li>
+        </ol>
+        <p class="tut-note">A pinned title survives every removal: a bulk remove you run yourself, a single <b class="ui">Remove</b>, the <a href="#clean-up-rules">clean-up rules</a>, and Move, which copies it and leaves it in My List. To remove one, unpin it first.</p>
+        <p class="tut-note">Unpinning never needs Pro, and a pin you already made keeps protecting its title whatever your plan. <b class="ui">Filter</b> → <b class="ui">Pins</b> is free.</p>
+      </article>
+
+      <article class="tut" id="clean-up-rules">
+        <h2>Clean-up rules <span class="tut-pill">Pro</span></h2>
+        <p class="tut-where">Toolbar → <b class="ui">Pro tools</b> → the sparkles (<b class="ui">Clean-up rules</b>)</p>
+        <p>Two rules, each one item in the menu. Both only select: you see the list and can untick anything before a title moves. Both move titles into a playlist rather than just removing them, and neither touches a pinned title.</p>
+
+        <h3 id="rule-watched">Archive what I've watched</h3>
+        <ol class="tut-steps">
+          <li>Open <b class="ui">Clean-up rules</b> and pick <b class="ui">Archive what I've watched…</b>.</li>
+          <li>The list shows every title you have watched. Untick anything you want to keep.</li>
+          <li>Press <b class="ui">Archive</b>. The ticked titles move to a playlist called <b class="ui">Watched</b> and leave My List.</li>
+        </ol>
+
+        <h3 id="rule-six-months">Archive what has waited six months</h3>
+        <ol class="tut-steps">
+          <li>Open <b class="ui">Clean-up rules</b> and pick <b class="ui">Archive what has waited six months…</b>.</li>
+          <li>The list shows titles you never started that have sat in My List for six months or more. Untick anything you want to keep.</li>
+          <li>Press <b class="ui">Archive</b>. The ticked titles move to a playlist called <b class="ui">Someday</b> and leave My List.</li>
+        </ol>
+        <p class="tut-note">Netflix keeps no date on My List, so TidyWL counts six months from the day it first saw each title. When nothing qualifies yet, it says the first date anything could.</p>
+        <p class="tut-note">Leaving My List is a real removal on Netflix, but nothing is lost: the playlist keeps the titles, and any of them can be added back.</p>
+      </article>
+
+      <article class="tut" id="stats">
+        <h2>Stats <span class="tut-pill">Pro</span></h2>
+        <p class="tut-where">My List sidebar → <b class="ui">Stats</b></p>
+        <ol class="tut-steps">
+          <li>The <b class="ui">Stats</b> card shows the hours of film still waiting in your list. Click it.</li>
+          <li>Stats opens with <b class="ui">Film still to watch</b>, <b class="ui">Shows</b>, <b class="ui">Watched</b> and <b class="ui">Never started</b>.</li>
+          <li>Below them, <b class="ui">Added, watched and removed</b> shows what you added against what you watched, month by month.</li>
+        </ol>
+        <p class="tut-note">Netflix keeps no date on My List, so the monthly counts start from your first Sync with Stats in the extension, and grow with each Sync after.</p>
+      </article>
+
+      <article class="tut" id="mobile-sync">
+        <h2>Your playlists on your phone and in your other browsers <span class="tut-pill">Pro</span></h2>
+        <p class="tut-where">Toolbar → <b class="ui">Pro tools</b> → <b class="ui">Sync to mobile</b> · About's Pro tab</p>
+        <ol class="tut-steps">
+          <li>Press <b class="ui">Sync to mobile</b> in the toolbar. It opens About's Pro tab.</li>
+          <li>Turn on <b class="ui">Sync playlists to your phone and other browsers</b>. Do the same in each browser you use, such as Chrome, Brave, another Google account or another computer, with your key active there.</li>
+          <li>Press <b class="ui">Pair a phone</b>. Point your phone's camera at the code, or open tidywl.com/netflix/app on the phone and enter the code shown.</li>
+          <li>The phone shows the playlists of every profile you have synced, box art and all. Tap a title and it opens in the Netflix app.</li>
+        </ol>
+        <p class="tut-note">The phone is read-only. Playlists are edited on your computer.</p>
+        <p class="tut-note tut-note--warn">With the switch on, that profile's playlists, with each title's name, year and picture link, and the profile's name, go to tidywl.com. Only from browsers where you switched it on. Your Pro key never reaches your phone.</p>
+        <p class="tut-note"><b class="ui">Sync now</b> beside the status line syncs at once. Each paired phone is listed under <b class="ui">Phones</b> with <b class="ui">Remove</b>.</p>
+      </article>
+
+      <article class="tut" id="support">
+        <h2>Support answered first <span class="tut-pill">Pro</span></h2>
+        <p class="tut-where">About's Pro tab</p>
+        <p>Questions and feature requests go to <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--/email_off-->, the address About's Pro tab shows, and Pro is answered first. Everyone can write there, and About also has <b class="ui">Join us on Discord</b> and <b class="ui">Thoughts?</b>, which opens an email and copies the address.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ══ REFERENCE ══ -->
+  <section class="tut-band">
+    <div class="section-inner">
+      <p class="section-label">Reference</p>
+
+      <article class="tut" id="shortcuts">
+        <h2>Keyboard shortcuts</h2>
+        <div class="tut-table-wrap">
+          <table class="tut-table">
+            <thead>
+              <tr><th scope="col">Keys</th><th scope="col">What it does</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><kbd>Alt</kbd>+<kbd>L</kbd></td><td>Open or close the dashboard on any Netflix page. <kbd>Option</kbd>+<kbd>L</kbd> on a Mac</td></tr>
+              <tr><td><kbd>Alt</kbd>+<kbd>T</kbd></td><td>Open <a href="#tonight">Tonight</a> on any Netflix page</td></tr>
+              <tr><td><kbd>Esc</kbd></td><td>Close whatever is on top: the search box, a window, a menu, a question, then the dashboard</td></tr>
+              <tr><td><kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>A</kbd></td><td>Select, or clear, every title shown on My List, in a category or in a playlist</td></tr>
+              <tr><td><kbd>Shift</kbd>+click</td><td>Select the range from the last card you clicked</td></tr>
+              <tr><td><kbd>Delete</kbd> or <kbd>Backspace</kbd></td><td>Ask to remove the selected titles, from My List or from the open playlist. It only asks; it never answers for you</td></tr>
+              <tr><td><kbd>↑</kbd> <kbd>↓</kbd> <kbd>Home</kbd> <kbd>End</kbd></td><td>Move through an open menu</td></tr>
+              <tr><td><kbd>R</kbd></td><td>In Tonight: re-roll</td></tr>
+              <tr><td><kbd>W</kbd> <kbd>H</kbd> <kbd>D</kbd></td><td>In Tonight: change who is watching, how long, or the mood</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="tut-note">Shortcuts stand down while you are typing in a text box. Inside the dashboard they also stand down while a question, a window or a menu is open.</p>
+      </article>
+
+      <article class="tut" id="troubleshooting">
+        <h2>If something looks wrong</h2>
+        <ul class="tut-list">
+          <li><b>The dashboard does not match Netflix.</b> It shows your list as of your last Sync. Press <b class="ui">Sync</b>.</li>
+          <li><b>Leaving soon looks out of date, or says there may be more.</b> It is as of your last Sync, and Netflix changes its list daily. Sync again.</li>
+          <li><b><kbd>Alt</kbd>+<kbd>L</kbd> does nothing.</b> On the "Who's watching?" screen, pick a profile first. After the extension updates, a Netflix tab that was already open says <em>"TidyWL for Netflix was updated. Refresh this page to open the dashboard."</em> Refresh it.</li>
+          <li><b>A message says Netflix stopped answering.</b> Netflix sometimes refuses to answer. TidyWL then stops asking for a while rather than keep trying. Wait a few minutes, then Sync or search again.</li>
+          <li><b>Some shows have no watch state.</b> The <b class="ui">Show Watch State</b> card says how many are unchecked. Sync again to fill them in.</li>
+          <li><b>A search or category result has no year or runtime.</b> Its details were not read, because you pressed Stop or Netflix paused the reads. The status line says which. Read the category or search again later.</li>
+          <li><b>A title has no IMDb rating.</b> It has fewer than 100 votes on IMDb, or TidyWL could not match it.</li>
+          <li><b>A playlist is missing.</b> Playlists belong to a profile. Check that the dashboard is open on the profile you made it in.</li>
+        </ul>
+        <p class="tut-note">Still stuck? Email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--/email_off-->.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="tut-faq">
+    <div class="faq">
+      <p class="section-label">Questions</p>
+      <h2 class="section-heading">The things people ask first</h2>
+      <div class="faq-list">
+        <div class="faq-item" id="q-open" aria-expanded="false">
+          <button class="faq-q" type="button">Where do I open the TidyWL for Netflix dashboard?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>Open netflix.com in Chrome on a computer, choose your profile, and press <kbd>Alt</kbd>+<kbd>L</kbd> on any browse page, such as the home page (<kbd>Option</kbd>+<kbd>L</kbd> on a Mac). Or click the extension's icon in the browser toolbar and press <b class="ui">Open dashboard</b>. It does not open on Netflix's Who's watching? screen, so pick a profile first.</p></div>
+        </div>
+        <div class="faq-item" id="q-stale" aria-expanded="false">
+          <button class="faq-q" type="button">Why does the dashboard show a title Netflix no longer has?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>The dashboard shows My List as of your last <a href="#sync">Sync</a>. Opening it asks Netflix for nothing, so anything that changed on Netflix since then stays as it was until you press <b class="ui">Sync</b>. When your last Sync is more than a day old, a line above the grid says so and offers <b class="ui">Sync now</b>.</p></div>
+        </div>
+        <div class="faq-item" id="q-remove" aria-expanded="false">
+          <button class="faq-q" type="button">Does removing a title here remove it from Netflix?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>Yes. TidyWL works on your real My List, so a title you remove leaves My List on Netflix, on every device, because it is the same list. Copying a title into a playlist never changes Netflix. <a href="#move-copy">Move</a> does, because it removes the title from My List after adding it to the playlist.</p></div>
+        </div>
+        <div class="faq-item" id="q-devices" aria-expanded="false">
+          <button class="faq-q" type="button">Does it work on a phone or a TV?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>No. It is a Chrome extension, so it runs in Chrome on a computer. Chrome for Android cannot run extensions, and neither can Netflix's TV apps. With Pro, your playlists can be read on your phone at tidywl.com/netflix/app, but they are edited on your computer. See <a href="#mobile-sync">mobile sync</a>.</p></div>
+        </div>
+        <div class="faq-item" id="q-privacy" aria-expanded="false">
+          <button class="faq-q" type="button">Is my list sent anywhere?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>Your list, your watch state, your searches, your removal history and your stats stay in your browser. Your playlists do too, unless you have Pro and switch on <b class="ui">Sync playlists to your phone and other browsers</b>. Then that profile's playlists, with each title's name, year and picture link, and the profile's name, go to tidywl.com. Chrome's own sync also carries your playlists to your other signed-in Chrome browsers, through Google. Separately, the extension sends tidywl.com a usage report of counts tied to a random install id, never a title, a search term, a category or a profile. For the IMDb ratings, Netflix's numeric title ids, and the name of a title they cannot match, go to Wikidata, IMDb and TidyWL's ratings table, with nothing that identifies you. With Pro, your key goes to tidywl.com to be checked. The <a href="/netflix/privacy/">privacy policy</a> lists every request.</p></div>
+        </div>
+        <div class="faq-item" id="q-free" aria-expanded="false">
+          <button class="faq-q" type="button">What is free, and what does Pro add?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>Free, with no account: the dashboard over My List with its filters, sorts and genre breakdown, IMDb ratings on Netflix's own pages, Leaving soon, search and the hidden categories, the hover panel, five playlists, bulk remove with the exact list shown first, and export and import. Pro adds Tonight, Undo for 90 days, Pin, clean-up rules, Stats, up to 50 playlists per profile, mobile sync, and support answered first. Pro starts with 7 days free, card required, then costs $3.99 a month or $29.99 a year, in US dollars before tax. See <a href="/netflix/pricing/">pricing</a>.</p></div>
+        </div>
+        <div class="faq-item" id="q-unrated" aria-expanded="false">
+          <button class="faq-q" type="button">Why do some titles have no IMDb rating?<span class="plus" aria-hidden="true">+</span></button>
+          <div class="faq-a"><p>A title with fewer than 100 votes on IMDb gets no rating, because a thin rating misleads more than it helps. A title TidyWL cannot match to IMDb gets none either. In the dashboard, the <b class="ui">Filter</b> menu's <b class="ui">Unrated</b> choice shows them.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Machine-readable index of this page. The layout already emits FAQPage
+     (from the `faq` front matter above), Organization and the canonical/OG
+     tags, so this adds only what it does not: the breadcrumb, one ItemList
+     naming every tutorial with its anchor, and one VideoObject per video on
+     the page. Keep the list in step with the sections and the videos. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "TidyWL for Netflix", "item": "{{ site.url }}/netflix/" },
+        { "@type": "ListItem", "position": 2, "name": "Tutorials", "item": "{{ site.url }}/netflix/tutorials/" }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "name": "TidyWL for Netflix tutorials",
+      "description": "Step-by-step guides for every part of TidyWL for Netflix.",
+      "url": "{{ site.url }}/netflix/tutorials/",
+      "itemListOrder": "https://schema.org/ItemListOrderAscending",
+      "numberOfItems": 32,
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1,  "name": "Install TidyWL for Netflix and open the dashboard", "url": "{{ site.url }}/netflix/tutorials/#install" },
+        { "@type": "ListItem", "position": 2,  "name": "Find your way around the dashboard", "url": "{{ site.url }}/netflix/tutorials/#layout" },
+        { "@type": "ListItem", "position": 3,  "name": "Sync your list once", "url": "{{ site.url }}/netflix/tutorials/#sync" },
+        { "@type": "ListItem", "position": 4,  "name": "Read a title card", "url": "{{ site.url }}/netflix/tutorials/#cards" },
+        { "@type": "ListItem", "position": 5,  "name": "Filter My List", "url": "{{ site.url }}/netflix/tutorials/#filter" },
+        { "@type": "ListItem", "position": 6,  "name": "Sort My List", "url": "{{ site.url }}/netflix/tutorials/#sort" },
+        { "@type": "ListItem", "position": 7,  "name": "Break My List down by genre", "url": "{{ site.url }}/netflix/tutorials/#genres" },
+        { "@type": "ListItem", "position": 8,  "name": "See what is leaving Netflix", "url": "{{ site.url }}/netflix/tutorials/#leaving-soon" },
+        { "@type": "ListItem", "position": 9,  "name": "See a title's details without opening it", "url": "{{ site.url }}/netflix/tutorials/#hover-preview" },
+        { "@type": "ListItem", "position": 10, "name": "Select titles", "url": "{{ site.url }}/netflix/tutorials/#select" },
+        { "@type": "ListItem", "position": 11, "name": "Remove titles from My List in one go", "url": "{{ site.url }}/netflix/tutorials/#remove" },
+        { "@type": "ListItem", "position": 12, "name": "Export and import My List", "url": "{{ site.url }}/netflix/tutorials/#export-import" },
+        { "@type": "ListItem", "position": 13, "name": "IMDb ratings on Netflix's own pages", "url": "{{ site.url }}/netflix/tutorials/#imdb-ratings" },
+        { "@type": "ListItem", "position": 14, "name": "The toolbar button: what is leaving, at a glance", "url": "{{ site.url }}/netflix/tutorials/#toolbar-popup" },
+        { "@type": "ListItem", "position": 15, "name": "Search Netflix by title, actor or director", "url": "{{ site.url }}/netflix/tutorials/#search" },
+        { "@type": "ListItem", "position": 16, "name": "Browse by genre, including the hidden categories", "url": "{{ site.url }}/netflix/tutorials/#hidden-categories" },
+        { "@type": "ListItem", "position": 17, "name": "Details and ratings on every result", "url": "{{ site.url }}/netflix/tutorials/#result-details" },
+        { "@type": "ListItem", "position": 18, "name": "Add what you find to My List or a playlist", "url": "{{ site.url }}/netflix/tutorials/#add-from-search" },
+        { "@type": "ListItem", "position": 19, "name": "Make a playlist", "url": "{{ site.url }}/netflix/tutorials/#playlists" },
+        { "@type": "ListItem", "position": 20, "name": "Move or copy titles from My List into a playlist", "url": "{{ site.url }}/netflix/tutorials/#move-copy" },
+        { "@type": "ListItem", "position": 21, "name": "Sort, filter and reorder a playlist", "url": "{{ site.url }}/netflix/tutorials/#manage-playlist" },
+        { "@type": "ListItem", "position": 22, "name": "Playlists, profiles and other browsers", "url": "{{ site.url }}/netflix/tutorials/#playlist-limits" },
+        { "@type": "ListItem", "position": 23, "name": "Start Pro, and use it in more than one browser", "url": "{{ site.url }}/netflix/tutorials/#pro" },
+        { "@type": "ListItem", "position": 24, "name": "Tonight: one pick and two backups from your list (Pro)", "url": "{{ site.url }}/netflix/tutorials/#tonight" },
+        { "@type": "ListItem", "position": 25, "name": "Undo a removal, for 90 days (Pro)", "url": "{{ site.url }}/netflix/tutorials/#undo" },
+        { "@type": "ListItem", "position": 26, "name": "Pin a title so nothing removes it (Pro)", "url": "{{ site.url }}/netflix/tutorials/#pin" },
+        { "@type": "ListItem", "position": 27, "name": "Clean-up rules (Pro)", "url": "{{ site.url }}/netflix/tutorials/#clean-up-rules" },
+        { "@type": "ListItem", "position": 28, "name": "Stats (Pro)", "url": "{{ site.url }}/netflix/tutorials/#stats" },
+        { "@type": "ListItem", "position": 29, "name": "Your playlists on your phone and in your other browsers (Pro)", "url": "{{ site.url }}/netflix/tutorials/#mobile-sync" },
+        { "@type": "ListItem", "position": 30, "name": "Support answered first (Pro)", "url": "{{ site.url }}/netflix/tutorials/#support" },
+        { "@type": "ListItem", "position": 31, "name": "Keyboard shortcuts", "url": "{{ site.url }}/netflix/tutorials/#shortcuts" },
+        { "@type": "ListItem", "position": 32, "name": "If something looks wrong", "url": "{{ site.url }}/netflix/tutorials/#troubleshooting" }
+      ]
+    },
+    {
+      "@type": "VideoObject",
+      "name": "How I Stopped Wasting Time Picking a Netflix Movie",
+      "description": "How the TidyWL for Netflix dashboard turns a long My List into movie nights with filters and playlists.",
+      "thumbnailUrl": "https://tidywl.com/assets/netflix-video-overview.webp",
+      "uploadDate": "2026-09-24T22:48:50-07:00",
+      "duration": "PT2M18S",
+      "contentUrl": "https://www.youtube.com/watch?v=x_9iXBpwOnc",
+      "embedUrl": "https://www.youtube.com/embed/x_9iXBpwOnc"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "How to See IMDb Ratings on Netflix",
+      "description": "How TidyWL for Netflix puts an IMDb rating badge on Netflix's own posters.",
+      "thumbnailUrl": "https://tidywl.com/assets/netflix-video-imdb-ratings.webp",
+      "uploadDate": "2026-10-03T18:27:51-07:00",
+      "duration": "PT1M29S",
+      "contentUrl": "https://www.youtube.com/watch?v=QEVw8jHcOvw",
+      "embedUrl": "https://www.youtube.com/embed/QEVw8jHcOvw"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "Netflix Hidden Categories, Sorted A-Z",
+      "description": "How to browse the categories Netflix keeps out of its own genre menu, sorted A to Z, in TidyWL for Netflix.",
+      "thumbnailUrl": "https://tidywl.com/assets/netflix-video-hidden-categories.webp",
+      "uploadDate": "2026-10-03T22:49:28-07:00",
+      "duration": "PT1M7S",
+      "contentUrl": "https://www.youtube.com/watch?v=q7TezaZ44Mg",
+      "embedUrl": "https://www.youtube.com/embed/q7TezaZ44Mg"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "What's Leaving Netflix From Your List?",
+      "description": "How TidyWL for Netflix marks the titles in your My List that are leaving Netflix, with Netflix's last day for each.",
+      "thumbnailUrl": "https://tidywl.com/assets/netflix-video-leaving-soon.webp",
+      "uploadDate": "2026-10-04T00:53:26-07:00",
+      "duration": "PT58S",
+      "contentUrl": "https://www.youtube.com/watch?v=N4tHzNMDuxE",
+      "embedUrl": "https://www.youtube.com/embed/N4tHzNMDuxE"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "What to Watch on Netflix Tonight? Let Your Own List Decide",
+      "description": "How Tonight in TidyWL for Netflix Pro deals one pick and two backups from your own list for who is watching, how long you have and your mood.",
+      "thumbnailUrl": "https://tidywl.com/assets/netflix-video-tonight.webp",
+      "uploadDate": "2026-10-05T21:48:19-07:00",
+      "duration": "PT45S",
+      "contentUrl": "https://www.youtube.com/watch?v=cBRgF_wWylQ",
+      "embedUrl": "https://www.youtube.com/embed/cBRgF_wWylQ"
+    }
+  ]
+}
+</script>
+
+<style>
+  /* ── TUTORIALS, /netflix/ ──
+     The Watch Later tutorials' block (tutorials/index.html), copied so the two
+     products' guides look the same. Built on the shared tokens and furniture
+     (.section-inner, .section-label, .section-heading, .faq*); the red comes
+     from body.nf's tokens in styles-netflix.html. Everything here is .tut*, so
+     it cannot collide with the landing page. Every guide is its own article
+     with a stable id because the extension may deep-link to one; the video
+     cards are styles-netflix.html's .nf-video. */
+  .tut-page section { padding: 56px 24px; }
+
+  .tut-hero {
+    text-align: center; padding: 72px 24px 24px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .tut-hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
+    letter-spacing: -0.02em; line-height: 1.12; max-width: 760px;
+    margin: 0 auto 18px; text-wrap: balance;
+  }
+  .tut-hero h1 .em { color: var(--accent); }
+  .tut-hero .tagline {
+    font-size: clamp(1.05rem, 2.2vw, 1.2rem); color: var(--text-secondary);
+    max-width: 620px; margin: 0 auto 20px; line-height: 1.55; text-wrap: pretty;
+  }
+  .tut-legend {
+    display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    justify-content: center; max-width: 560px;
+    font-size: 0.88rem; color: var(--text-muted); line-height: 1.55;
+    border: 1px solid var(--border); background: var(--bg-card);
+    border-radius: 10px; padding: 10px 16px; text-wrap: pretty;
+  }
+
+  /* The Pro marker: small, uppercase, white on --accent-fill. Never a link. */
+  .tut-pill {
+    display: inline-block; vertical-align: middle;
+    padding: 2px 7px; border-radius: 5px;
+    background: var(--accent-fill); color: #fff;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+    line-height: 1.5; text-transform: uppercase; white-space: nowrap;
+  }
+  h2 .tut-pill { margin-left: 8px; position: relative; top: -2px; }
+  .tut-note .tut-pill { margin-right: 4px; }
+
+  /* ── CONTENTS ── auto-fit: groups of very different length, side by side. */
+  .tut-contents { padding-top: 8px; padding-bottom: 8px; }
+  .tut-toc {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 20px 24px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px;
+  }
+  .tut-toc-head {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-subtle); margin-bottom: 10px;
+  }
+  .tut-toc ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .tut-toc a {
+    color: var(--text-secondary); font-size: 0.9rem; line-height: 1.45;
+    text-decoration: none; text-wrap: pretty;
+  }
+  .tut-toc a:hover { color: var(--accent-text); }
+  .tut-toc a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  /* ── BANDS ── alternating ground, so long bands do not read as one wall. */
+  .tut-band--alt { background: var(--bg-alt); }
+  .tut-band .section-label { margin-bottom: 24px; }
+  .tut-band-note {
+    max-width: 720px; margin: -12px 0 28px;
+    font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; text-wrap: pretty;
+  }
+  .tut-band-note a, .tut-note a, .tut-list a, .tut-steps a, .tut > p a, .tut-table a {
+    color: inherit; text-decoration: underline;
+    text-decoration-color: var(--border-strong); text-underline-offset: 3px;
+  }
+  .tut-band-note a:hover, .tut-note a:hover, .tut-list a:hover, .tut-steps a:hover, .tut > p a:hover, .tut-table a:hover { color: var(--accent-text); }
+
+  /* ── ONE GUIDE ── */
+  .tut {
+    max-width: 760px;
+    padding: 28px 0;
+    border-top: 1px solid var(--border-subtle);
+    /* A deep link lands with the heading clear of the window's top edge. */
+    scroll-margin-top: 24px;
+  }
+  .tut:first-of-type { border-top: 0; padding-top: 0; }
+  .tut h2 {
+    font-size: clamp(1.25rem, 2.6vw, 1.55rem); font-weight: 700;
+    letter-spacing: -0.015em; line-height: 1.25; margin-bottom: 8px; text-wrap: balance;
+  }
+  .tut h3 {
+    font-size: 1.05rem; font-weight: 700; margin: 28px 0 8px;
+    scroll-margin-top: 24px;
+  }
+  .tut > p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.65; text-wrap: pretty; }
+  .tut > p + p { margin-top: 10px; }
+
+  /* Where the control lives, in one line, before the steps. */
+  .tut-where {
+    font-size: 0.85rem; color: var(--text-muted);
+    margin-bottom: 14px; line-height: 1.5; text-wrap: pretty;
+  }
+  .tut-where .ui { color: var(--text-secondary); }
+
+  /* A UI label, quoted as the extension prints it. Weight, not a box. */
+  .ui { font-weight: 600; color: var(--text); }
+
+  .tut-steps, .tut-list {
+    margin: 14px 0 0; padding-left: 22px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .tut-list { list-style: none; padding-left: 0; }
+  .tut-steps li, .tut-list li {
+    font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; text-wrap: pretty;
+  }
+  .tut-steps li::marker { color: var(--accent); font-weight: 700; }
+  /* A hanging dash by absolute positioning, NOT display:flex on the li: flex
+     makes every inline child its own item and shatters the sentence. */
+  .tut-list > li { position: relative; padding-left: 18px; }
+  .tut-list > li::before {
+    content: "\2013"; color: var(--accent); font-weight: 700;
+    position: absolute; left: 0; top: 0;
+  }
+  /* Nested bullets inside a numbered step: options, not steps of their own. */
+  .tut-steps ul {
+    list-style: disc; margin: 8px 0 0; padding-left: 20px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .tut-steps ul li { font-size: 0.92rem; }
+  .tut-steps ul li::marker { color: var(--text-subtle); }
+
+  .tut-note {
+    margin-top: 14px; padding-left: 14px;
+    border-left: 2px solid var(--border);
+    font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; text-wrap: pretty;
+  }
+  .tut-note--warn { border-left-color: var(--accent); }
+  .tut-note .ui, .tut-list .ui, .tut-steps .ui { color: var(--text-secondary); }
+
+  .tut code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.86em; background: var(--bg-alt);
+    border: 1px solid var(--border-subtle); border-radius: 4px; padding: 1px 5px;
+  }
+  .tut-band--alt .tut code { background: var(--bg-card); }
+
+  .tut-page kbd {
+    display: inline-block;
+    font-family: inherit; font-size: 0.8rem; font-weight: 600;
+    color: var(--text-secondary); background: var(--bg-card);
+    border: 1px solid var(--border); border-bottom-width: 2px;
+    border-radius: 5px; padding: 1px 6px; line-height: 1.5; white-space: nowrap;
+  }
+
+  /* ── SHORTCUTS TABLE ── scrolls sideways inside its wrapper on a phone. */
+  .tut-table-wrap { overflow-x: auto; margin-top: 16px; }
+  .tut-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  .tut-table th, .tut-table td {
+    text-align: left; padding: 11px 12px; vertical-align: top;
+    border-bottom: 1px solid var(--border);
+  }
+  .tut-table th {
+    color: var(--text-secondary); font-weight: 600; font-size: 0.78rem;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .tut-table td { color: var(--text-secondary); line-height: 1.55; }
+  .tut-table td:first-child { white-space: nowrap; }
+
+  .tut-faq { padding-bottom: 40px; }
+  .tut-faq .faq-a p a {
+    text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px;
+  }
+</style>

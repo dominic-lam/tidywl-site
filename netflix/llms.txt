@@ -64,6 +64,21 @@ Around September 15, 2026, Netflix's website replaced the My List page with **My
 - [How to see your whole Netflix My List again](https://tidywl.com/netflix/blog/see-your-whole-netflix-my-list/): the steps, with screenshots of both views
 - [What happened to Netflix's My List page](https://tidywl.com/netflix/blog/what-happened-to-netflix-my-list/): what changed, why people are unhappy, and the options
 
+## Tutorials, videos and the blog
+
+- [Tutorials](https://tidywl.com/netflix/tutorials/): one short guide per feature, in the order a person meets them, with every button named as it appears in the extension.
+- Videos by the developer, each a short demo on YouTube:
+  - [How I Stopped Wasting Time Picking a Netflix Movie](https://www.youtube.com/watch?v=x_9iXBpwOnc) (2:18, 2026-09-24): the dashboard, from a long list to a few movie nights
+  - [How to See IMDb Ratings on Netflix](https://www.youtube.com/watch?v=QEVw8jHcOvw) (1:29, 2026-10-03): the rating badges on Netflix's own posters
+  - [Netflix Hidden Categories, Sorted A-Z](https://www.youtube.com/watch?v=q7TezaZ44Mg) (1:07, 2026-10-03): hidden categories with A to Z sorting
+  - [What's Leaving Netflix From Your List?](https://www.youtube.com/watch?v=N4tHzNMDuxE) (0:58, 2026-10-04): Leaving soon, with Netflix's own last day
+  - [What to Watch on Netflix Tonight?](https://www.youtube.com/watch?v=cBRgF_wWylQ) (0:45, 2026-10-05): Tonight, in Pro
+- The blog, at [tidywl.com/netflix/blog/](https://tidywl.com/netflix/blog/): the developer's story and what Netflix users run into on a computer.
+{%- assign nf_posts = site.pages | where_exp: "p", "p.nf_kind != nil" | sort: "date" | reverse %}
+{%- for p in nf_posts %}
+  - [{{ p.headline | default: p.title }}](https://tidywl.com{{ p.url }}) ({{ p.date | date: "%Y-%m-%d" }}): {{ p.description }}
+{%- endfor %}
+
 ## Requirements
 
 - Chrome on a computer. Chrome for Android has no extension support; with Pro, playlists can be read on a phone.
@@ -82,4 +97,5 @@ Around September 15, 2026, Netflix's website replaced the My List page with **My
 - [Community on Discord](https://discord.gg/4j5u9xd35P): bug reports, feature requests and general chat
 - [Support email](mailto:support@tidywl.com): support@tidywl.com
 - [TidyWL for YouTube](https://tidywl.com/llms.txt): the separate YouTube extension
-- [Guides and articles](https://tidywl.com/netflix/blog/): how-to guides for Netflix's My List
+- [Tutorials](https://tidywl.com/netflix/tutorials/): how to use every feature
+- [Blog](https://tidywl.com/netflix/blog/): the developer's story, articles and how-to guides

@@ -1,0 +1,95 @@
+---
+layout: netflix
+permalink: /netflix/blog/imdb-ratings-on-netflix/
+title: "Why Netflix doesn't show IMDb ratings, and how to see them — TidyWL for Netflix"
+headline: "Why Netflix doesn't show IMDb ratings, and how to see them"
+description: "Netflix shows its own thumbs, not IMDb scores, so people look titles up one at a time. What Netflix offers, the workarounds, and how to put IMDb ratings on Netflix's own pages in Chrome."
+nf_kind: article
+date: 2026-10-03
+og_image: /assets/netflix-landing-badges.webp
+---
+
+<!-- ── ARTICLE: IMDb RATINGS ──
+     Dated 2026-10-03, the day the IMDb video it links went up on YouTube
+     (QEVw8jHcOvw, 18:27 PDT); before that from the extension repo: CHANGELOG 1.1.0, live that day
+     (docs/cws-descriptions/README.md), added IMDb ratings on Netflix's own
+     title cards, the answer this post describes. The underlying finding, that
+     Netflix's website carries its own thumbs and maturity rating and no
+     outside rating or IMDb id, is docs/experiments/imdb-ratings-sources.md
+     (2026-09-01), which predates the store release (2026-09-21), so the
+     release date is used.
+     Sources: the Blind quote from
+     docs/reference/research/2026-09-27-netflix-demand-communities.md; the
+     Reddit threads from docs/outreach/2026-10-03-reddit-threads.md and
+     2026-10-03-hearing-from-strangers.md (the r/netflix thread where the
+     cover-art reply was on top); IMDb's Watch Options and the rival extensions
+     from those two and 2026-10-02-netflix-viewer-communities.md. Never claim a
+     rating on every title: titles under 100 votes get none. -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Why Netflix doesn't show IMDb ratings, and how to see them",
+  "description": {{ page.description | jsonify }},
+  "datePublished": "2026-10-03",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
+  "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
+  "publisher": { "@id": "{{ site.url }}/#organization" },
+  "image": "{{ site.url }}/assets/netflix-landing-badges.webp",
+  "mainEntityOfPage": "{{ site.url }}{{ page.url }}"
+}
+</script>
+
+<section class="blog-wrap">
+  <p class="section-label">Article</p>
+  <h1 class="blog-title">Why Netflix doesn't show IMDb ratings, and how to see them</h1>
+  <p class="blog-subtitle">Netflix has its own thumbs. If you want to know what IMDb thinks, you look it up yourself, one title at a time.</p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-10-01">October 1, 2026</time></p>
+
+  <div class="post-body">
+    <h2>The lookup routine</h2>
+    <p>Plenty of people will not start a film without checking its IMDb rating first. On Netflix that means a routine: spot a title, open a new tab, search IMDb, read the score, come back, and do it again for the next one. One person on Blind summed it up in a post asking Netflix for ratings: <a href="https://www.teamblind.com/post/imdbrotten-tomatoes-rating-filter-in-netflix-7feukawt" target="_blank" rel="noopener">"Hate when i have to go and google movie ratings all the time."</a></p>
+    <p>The same routine comes up again and again on Reddit:</p>
+    <ul>
+      <li>On r/netflix, someone said they <a href="https://www.reddit.com/r/netflix/comments/1tfnsft/" target="_blank" rel="noopener">spent most of their time checking IMDb ratings</a> and ended up watching nothing.</li>
+      <li>On r/netflixindia, one person described <a href="https://www.reddit.com/r/netflixindia/comments/1q7grrv/" target="_blank" rel="noopener">checking IMDb before watching anything</a>, and giving up after nine of the first ten titles they looked up scored low. Another <a href="https://www.reddit.com/r/netflixindia/comments/1sxdsea/" target="_blank" rel="noopener">checks IMDb and Rotten Tomatoes</a> outside Netflix before choosing.</li>
+      <li>On r/imdb, one person <a href="https://www.reddit.com/r/imdb/comments/1r0xtad/" target="_blank" rel="noopener">asked how to find every Netflix series on IMDb</a>, because they could not compare ratings inside Netflix's app. Another hoped Netflix would one day put IMDb ratings on its title pages.</li>
+    </ul>
+
+    <h2>What Netflix shows instead</h2>
+    <p>Netflix has its own thumbs up and thumbs down, and each title's maturity rating. When I went through what Netflix's website actually carries for a title, in September 2026, that was it: no IMDb id and no outside score of any kind, from IMDb, Rotten Tomatoes or anyone else.</p>
+    <p>To be fair, not everyone wants a number. In <a href="https://www.reddit.com/r/netflix/comments/1uxyky9/" target="_blank" rel="noopener">one 2026 r/netflix thread</a> about checking ratings before choosing, the most upvoted reply came from someone who judges a film by its cover, well ahead of the replies describing IMDb-first routines. Ratings are a habit some people have and others do not, and that is fine.</p>
+
+    <h2>The workarounds</h2>
+    <ul>
+      <li><strong>Search each title.</strong> It works. It is just slow, and it is the routine above.</li>
+      <li><strong>Start on IMDb instead.</strong> Since March 2026, people on r/imdb report, <a href="https://www.reddit.com/r/imdb/comments/1s0sqi3/" target="_blank" rel="noopener">IMDb's Watch Options filter includes Netflix</a>, so you can browse IMDb by what is on Netflix and then go and find the title.</li>
+      <li><strong>What's on Netflix's library.</strong> Its <a href="https://www.whats-on-netflix.com/news/whats-on-netflix-library-search-tools-update/" target="_blank" rel="noopener">library pages</a> let you filter Netflix's catalogue by IMDb score.</li>
+      <li><strong>A browser extension.</strong> Several put IMDb ratings on Netflix, including Trim, BingeRated and Sift. Mine is one of them, below.</li>
+    </ul>
+
+    <h2>How TidyWL for Netflix does it</h2>
+    <p>I build TidyWL for Netflix (on the Chrome Web Store as <em>Watch Later Tidy for Netflix</em>), so take this part with that in mind.</p>
+    <p>It puts IMDb ratings on Netflix's own pages. On the home page, in search and in every category, each title's art carries its IMDb rating in the top-right corner. Click the rating and the title opens on IMDb. A title with fewer than 100 votes on IMDb gets no rating, because a thin rating misleads more than it helps.</p>
+
+    <figure class="nf-shot">
+      <img src="/assets/netflix-landing-badges.webp"
+           alt="Three rows of Netflix's own home page, Bingeworthy TV Comedies, 30-Minute Laughs and Doing Crime, Looking Fine, with an IMDb rating badge in the top-right corner of every title's art, such as The Office at 9.0 and Peaky Blinders at 8.7."
+           width="1600" height="564" loading="lazy" decoding="async">
+      <figcaption class="nf-shot-caption">Netflix's own home page with the IMDb ratings added. Click one to open the title on IMDb.</figcaption>
+    </figure>
+
+    <p>Press Alt+L and the dashboard goes further. Every card in My List carries the IMDb rating next to the runtime, the year, the genre and the maturity rating. You can filter to a minimum IMDb rating and sort by it, and the same goes for a search or a category.</p>
+    <p>Where the numbers come from, since it matters: IMDb's public daily ratings file, with Netflix's numeric title ids matched to IMDb through Wikidata. To draw the ratings on Netflix's pages, the extension sends the ids of the titles on your screen to a ratings table on tidywl.com, which answers with their IMDb ratings. Ids only, with nothing that identifies you. The <a href="/netflix/privacy/">privacy policy</a> lists every request.</p>
+    <p>It is free, needs no account, and runs in Chrome on a computer, not on a TV or a phone. It is not made by or affiliated with Netflix or IMDb. <a href="{{ site.data.netflix.store_url }}?utm_source=tidywl-blog&amp;utm_medium=web&amp;utm_campaign=imdb-ratings-on-netflix" target="_blank" rel="noopener">Add Watch Later Tidy for Netflix to Chrome</a>.</p>
+
+    <a class="nf-video" href="https://youtu.be/QEVw8jHcOvw" target="_blank" rel="noopener">
+      <span class="nf-video-thumb"><img src="/assets/netflix-video-imdb-ratings.webp" alt="Video cover reading IMDb ratings right on Netflix, over rows of Netflix's own title cards, each with an IMDb badge in its corner." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">1:29</span></span>
+      <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">How to See IMDb Ratings on Netflix</span><span class="nf-video-sub">The ratings on Netflix's home page, in search and in categories, then filtering My List by them.</span></span>
+    </a>
+
+    <p><a href="/netflix/tutorials/">Video tutorials</a></p>
+    <p><a href="/netflix/blog/">← All guides and articles</a></p>
+  </div>
+</section>

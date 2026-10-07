@@ -1,27 +1,36 @@
 ---
 layout: netflix
 permalink: /netflix/blog/
-title: "Guides and articles — TidyWL for Netflix"
-description: "How-to guides and articles about Netflix's My List on a computer: seeing the whole list again, what Netflix changed, and how TidyWL for Netflix helps."
+title: "Blog — TidyWL for Netflix"
+description: "Why I built TidyWL for Netflix, what Netflix users keep running into on a computer, and how to get around it: A–Z sorting, IMDb ratings, watched titles, what's leaving."
 ---
 
 <!-- ── THE NETFLIX BLOG HUB ──
      Added 2026-10-06. The site's /blog/ is the YouTube product's, with its
      header and its legal line, so this product's guides and articles live
      here instead, as plain pages on the netflix layout. A page shows up below
-     when its front matter carries `nf_kind: guide` or `nf_kind: article`, a
+     when its front matter carries `nf_kind: story`, `guide` or `article`, a
      `date`, and a `description`. -->
 
 <section class="blog-wrap">
-  <h1 class="blog-title">Guides and articles</h1>
-  <p class="blog-subtitle">Netflix's My List on a computer: how to see all of it, and what changed.</p>
+  <h1 class="blog-title">Blog</h1>
+  <p class="blog-subtitle">Why I built TidyWL for Netflix, what Netflix users keep running into, and how to get around it. Step-by-step help for every feature is on the <a href="/netflix/tutorials/">Tutorials</a> page.</p>
 
-  {%- assign guides = site.pages | where: "nf_kind", "guide" | sort: "date" | reverse %}
+  {%- assign stories = site.pages | where: "nf_kind", "story" | sort: "date" | reverse %}
   {%- assign articles = site.pages | where: "nf_kind", "article" | sort: "date" | reverse %}
+  {%- assign guides = site.pages | where: "nf_kind", "guide" | sort: "date" | reverse %}
+  {%- assign groups = "story,article,guide" | split: "," %}
 
-  <h2 class="post-list-title" style="margin-top: 32px">How-to guides</h2>
+  {%- for g in groups %}
+    {%- case g %}
+      {%- when "story" %}{% assign list = stories %}{% assign heading = "The story" %}
+      {%- when "article" %}{% assign list = articles %}{% assign heading = "Articles" %}
+      {%- when "guide" %}{% assign list = guides %}{% assign heading = "How-to guides" %}
+    {%- endcase %}
+    {%- if list.size > 0 %}
+  <h2 class="post-list-title" style="margin-top: 32px">{{ heading }}</h2>
   <ul class="post-list">
-    {%- for p in guides %}
+      {%- for p in list %}
     <li>
       <a href="{{ p.url }}">
         <h3 class="post-list-title">{{ p.headline | default: p.title }}</h3>
@@ -29,19 +38,8 @@ description: "How-to guides and articles about Netflix's My List on a computer: 
         <p class="post-list-excerpt">{{ p.description }}</p>
       </a>
     </li>
-    {%- endfor %}
+      {%- endfor %}
   </ul>
-
-  <h2 class="post-list-title" style="margin-top: 32px">Articles</h2>
-  <ul class="post-list">
-    {%- for p in articles %}
-    <li>
-      <a href="{{ p.url }}">
-        <h3 class="post-list-title">{{ p.headline | default: p.title }}</h3>
-        <p class="post-list-meta"><time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: "%B %-d, %Y" }}</time></p>
-        <p class="post-list-excerpt">{{ p.description }}</p>
-      </a>
-    </li>
-    {%- endfor %}
-  </ul>
+    {%- endif %}
+  {%- endfor %}
 </section>

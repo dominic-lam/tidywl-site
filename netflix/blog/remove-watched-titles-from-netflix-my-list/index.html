@@ -1,0 +1,101 @@
+---
+layout: netflix
+permalink: /netflix/blog/remove-watched-titles-from-netflix-my-list/
+title: "Why watched titles never leave your Netflix My List — TidyWL for Netflix"
+headline: "Why watched titles never leave your Netflix My List"
+description: "Netflix keeps a title on My List after you finish it, and its website removes titles one at a time. Why the list only grows, what Netflix offers, and how to clear what you have watched in one go."
+nf_kind: article
+date: 2026-09-27
+og_image: /assets/netflix-landing-bulk-select.webp
+---
+
+<!-- ── ARTICLE: WATCHED TITLES AND BULK REMOVAL ──
+     Dated 2026-09-27 from the extension repo:
+     docs/reference/netflix-how-to-questions-tidywl-solves.md, written that
+     day, found "clear / delete my list" the deepest how-to phrasing with every
+     ranking answer saying one at a time, and "remove what I've already
+     watched" with no video at all.
+     Sources: Netflix's watch state from docs/experiments/netflix-watch-state.md
+     (2026-08-31); the Viewing activity page from netflix-viewing-activity.md
+     (2026-09-27); the Hacker News quote from paywall-research-2026-09-23.md,
+     section 2; the 2023 phone filters from
+     docs/reference/research/2026-09-27-netflix-demand-communities.md; the
+     r/netflixindia thread from docs/outreach/2026-10-03-reddit-threads.md.
+     Extension claims are from the store description and limited to what was
+     live on this date (0.2.0); Pro launched 2026-09-28, so it is not named. -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Why watched titles never leave your Netflix My List",
+  "description": {{ page.description | jsonify }},
+  "datePublished": "2026-09-27",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
+  "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
+  "publisher": { "@id": "{{ site.url }}/#organization" },
+  "image": "{{ site.url }}/assets/netflix-landing-bulk-select.webp",
+  "mainEntityOfPage": "{{ site.url }}{{ page.url }}"
+}
+</script>
+
+<section class="blog-wrap">
+  <p class="section-label">Article</p>
+  <h1 class="blog-title">Why watched titles never leave your Netflix My List</h1>
+  <p class="blog-subtitle">Finishing a film does not take it off your list, and Netflix's website removes one title at a time. So the list only grows.</p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-09-27">September 27, 2026</time></p>
+
+  <div class="post-body">
+    <h2>The list that only grows</h2>
+    <p>Add a title to My List, watch it, and it stays there. Finishing it does not take it off. And on a computer, Netflix removes titles from My List one at a time: hover over a title, click remove, move on to the next.</p>
+    <p>For a few titles that is fine. After a few years of saving things, it is not. A list that started as "things I want to watch" fills up with things you already watched, and the ones you still mean to see get buried among them.</p>
+
+    <h2>People ask for this constantly</h2>
+    <p>Start typing "how to clear my list on Netflix" into Google and the suggestions fill in with variations, mass deleting and clearing among them. "Netflix remove watched from my list" fills in too. The answers that rank for these all say the same thing: one title at a time. When I looked in September 2026, I could not find a single video showing how to remove only what you have already watched.</p>
+    <p>A commenter on Hacker News explained why their list never shrinks: <a href="https://news.ycombinator.com/item?id=32528453" target="_blank" rel="noopener">"I never prune the list"</a>, because removing one title sent them back to the beginning of it. And on r/netflixindia, someone <a href="https://www.reddit.com/r/netflixindia/comments/1pxmmxg/" target="_blank" rel="noopener">described starting titles they had already watched</a>, and asked for a way to mark what they had seen.</p>
+
+    <h2>Netflix does know what you have watched</h2>
+    <p>This is the frustrating part. When I looked at what Netflix's website carries for the titles on a list, in August 2026, it had a watch status for shows (never watched, started or completed) and how far you got into each film. My List just does not use any of it.</p>
+    <p>Continue Watching is no help here either. Netflix takes a title off that row once you finish it, so a title missing from it could be one you never started or one you completed.</p>
+
+    <h2>What Netflix offers</h2>
+    <ul>
+      <li><strong>On a computer:</strong> remove titles one by one.</li>
+      <li><strong>On a phone:</strong> since 2023, the Netflix apps can <a href="https://techcrunch.com/2023/05/22/netflix-updates-my-list-feature-so-users-can-find-content-they-have-yet-to-watch" target="_blank" rel="noopener">filter My List</a> by Started and Haven't started. That helps you find what you have not begun, but removing is still one title at a time.</li>
+      <li><strong>Viewing activity:</strong> your account's viewing activity page lists what your profile has watched, so you can check a title against it by hand.</li>
+    </ul>
+
+    <h2>The other workarounds</h2>
+    <ul>
+      <li><strong>Do it by hand, a little at a time.</strong> Ten titles a night gets there eventually.</li>
+      <li><strong>Auto-clickers and scripts.</strong> The only "all at once" answers I found were an auto-clicker video from 2019 and a script you paste into the browser's console, whose comments say it stopped working in 2023. Pasting a stranger's code into a page where you are signed in is a risk worth taking seriously anyway.</li>
+    </ul>
+
+    <h2>How TidyWL for Netflix handles it</h2>
+    <p>I build TidyWL for Netflix (on the Chrome Web Store as <em>Watch Later Tidy for Netflix</em>), so weigh this part with that in mind. It uses the watch state Netflix already has.</p>
+    <ol>
+      <li><strong>Sync once.</strong> Open the dashboard with Alt+L on any Netflix page and press Sync. It reads your list and whether you have watched each title, for films and for shows.</li>
+      <li><strong>Filter to what you have watched.</strong> The Filter menu narrows My List by whether you have already watched it, alongside genre, type, IMDb rating and runtime.</li>
+      <li><strong>Tick and review.</strong> Tick as many titles as you like, then review the exact list before anything happens.</li>
+      <li><strong>Clear them in one run</strong>, with a receipt when it is done.</li>
+    </ol>
+
+    <figure class="nf-shot">
+      <img src="/assets/netflix-landing-bulk-select.webp"
+           alt="The dashboard with four titles ticked, Zodiac, Everwood, Breaking Bad and Nobody Wants This, and a bar at the bottom reading 4 titles selected."
+           width="1600" height="1308" loading="lazy" decoding="async">
+      <figcaption class="nf-shot-caption">Ticking titles in the dashboard. Nothing is removed until you have reviewed the list.</figcaption>
+    </figure>
+
+    <p>One thing to be clear about: removing a title here removes it from your My List on Netflix, everywhere, because it is the same list on Netflix's side. If you would like a record first, export the whole list, or just what you filtered down to, as CSV or JSON before you start.</p>
+    <p>It is free, needs no account, runs in Chrome on a computer, and is not made by or affiliated with Netflix. <a href="{{ site.data.netflix.store_url }}?utm_source=tidywl-blog&amp;utm_medium=web&amp;utm_campaign=remove-watched-titles-from-netflix-my-list" target="_blank" rel="noopener">Add Watch Later Tidy for Netflix to Chrome</a>.</p>
+
+    <a class="nf-video" href="https://youtu.be/x_9iXBpwOnc" target="_blank" rel="noopener">
+      <span class="nf-video-thumb"><img src="/assets/netflix-video-overview.webp" alt="Video cover reading Stop scrolling, start watching, beside the dashboard filtered to movies rated 7 and up on IMDb that run 90 to 120 minutes." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">2:18</span></span>
+      <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">How I Stopped Wasting Time Picking a Netflix Movie</span><span class="nf-video-sub">The dashboard and its Filter menu on a real My List.</span></span>
+    </a>
+
+    <p><a href="/netflix/tutorials/">Video tutorials</a></p>
+    <p><a href="/netflix/blog/">← All guides and articles</a></p>
+  </div>
+</section>

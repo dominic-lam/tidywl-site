@@ -1,0 +1,85 @@
+---
+layout: netflix
+permalink: /netflix/blog/why-i-built-tidywl-for-netflix/
+title: "Why I built TidyWL for Netflix — a note from the developer"
+headline: "Why I built TidyWL for Netflix"
+description: "Too much scrolling, IMDb looked up one title at a time, and a My List full of things I had already watched. Why I built a Chrome extension for Netflix, and what it does about each."
+nf_kind: story
+date: 2026-10-02
+og_image: /assets/netflix-og-image.jpg
+---
+
+<!-- ── STORY: WHY I BUILT IT ──
+     Dated 2026-10-02: the day 1.1.0 was read back live on the Chrome Web Store
+     (docs/cws-descriptions/README.md in the extension repo), so the rating
+     badges on Netflix's pages and Tonight, which the story describes, existed
+     on its date. The user asked for the posts' dates to be spread out.
+     The three frustrations are the developer's own words, given 2026-10-06:
+     too much scrolling, IMDb looked up title by title, and years of watched
+     titles still on the list. No anecdote, number or person beyond those.
+     Every claim about the extension is from the approved store description
+     (CWS-DESCRIPTION-v1.2.2.md). Note: the rating badges on Netflix's own
+     pages and Tonight arrived in 1.1.0 (2026-10-01), after this date. -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Why I built TidyWL for Netflix",
+  "description": {{ page.description | jsonify }},
+  "datePublished": "2026-10-02",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
+  "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
+  "publisher": { "@id": "{{ site.url }}/#organization" },
+  "image": "{{ site.url }}/assets/netflix-og-image.jpg",
+  "mainEntityOfPage": "{{ site.url }}{{ page.url }}"
+}
+</script>
+
+<section class="blog-wrap">
+  <p class="section-label">Story</p>
+  <h1 class="blog-title">Why I built TidyWL for Netflix</h1>
+  <p class="blog-subtitle">Three small things about Netflix that cost me time for years, and the Chrome extension I made to fix them.</p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-09-21">September 21, 2026</time></p>
+
+  <div class="post-body">
+    <p>I have used Netflix for years, and too many evenings went the same way. I opened it wanting to watch something. I scrolled. I opened a few titles to read about them. I scrolled some more. And a long time later, I still did not know what to watch.</p>
+    <p>Three things kept wasting that time. So I built a Chrome extension for them. It is called TidyWL for Netflix, and on the Chrome Web Store you will find it as <em>Watch Later Tidy for Netflix</em>.</p>
+
+    <h2>The scrolling</h2>
+    <p>Netflix shows you a picture and a name. To learn anything else about a title, such as how long it is, when it came out or whether it is any good, you have to click into it. So I clicked in, one title after another, and the evening went by while I was still choosing.</p>
+
+    <h2>Looking up IMDb, one title at a time</h2>
+    <p>Netflix has its own thumbs, but I wanted to know what IMDb thought of a title before I started it, and Netflix does not show IMDb ratings. So every title that looked interesting meant a new tab, a search on IMDb, a look at the score, and back to Netflix for the next one.</p>
+
+    <h2>A list full of things I had already watched</h2>
+    <p>My List only grows. After years of adding titles, mine was full of films and shows I had already finished, mixed in with the ones I still meant to see. Netflix's website removes titles one at a time, so clearing them out by hand was never going to happen, and the list got harder to choose from every month.</p>
+
+    <h2>What I built for each one</h2>
+    <p><strong>For the IMDb lookups:</strong> the IMDb rating now sits on Netflix's own pages. On the home page, in search and in every category, a title's picture carries its IMDb rating in the top-right corner. Click the rating and the title opens on IMDb. A title with fewer than 100 votes on IMDb gets no rating, because a rating from a handful of people misleads more than it helps.</p>
+
+    <figure class="nf-shot">
+      <img src="/assets/netflix-landing-badges.webp"
+           alt="Three rows of Netflix's own home page, Bingeworthy TV Comedies, 30-Minute Laughs and Doing Crime, Looking Fine, with an IMDb rating badge in the top-right corner of every title's art, such as The Office at 9.0 and Peaky Blinders at 8.7."
+           width="1600" height="564" loading="lazy" decoding="async">
+      <figcaption class="nf-shot-caption">Netflix's own home page, with the IMDb rating on each title.</figcaption>
+    </figure>
+
+    <p><strong>For the scrolling:</strong> press Alt+L on any Netflix page and your whole My List opens as a grid of cards. Each card carries the IMDb rating, the runtime, the year, the genre and the maturity rating, which are exactly the things I used to click in for. You can filter by genre, type, IMDb rating and runtime, and sort by rating, runtime, year or title.</p>
+    <p><strong>For the watched titles:</strong> press Sync once and it reads which titles on your list you have already watched, for films and for shows. Filter to those, tick them, look over the exact list, and clear them in one go. They come off your My List on Netflix itself, which is the same list on every device, so the review step is there on purpose.</p>
+    <p><strong>For the moment itself</strong>, when you just want something to put on, there is Tonight. You say who is watching, how long you have and what you are in the mood for, and it picks one title from your list and two backups, each with its reason: the IMDb rating, the runtime, the genre that fits. Press Alt+T on any Netflix page. Tonight is part of Pro.</p>
+
+    <a class="nf-video" href="https://youtu.be/x_9iXBpwOnc" target="_blank" rel="noopener">
+      <span class="nf-video-thumb"><img src="/assets/netflix-video-overview.webp" alt="Video cover reading Stop scrolling, start watching, beside the dashboard filtered to movies rated 7 and up on IMDb that run 90 to 120 minutes." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">2:18</span></span>
+      <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">How I Stopped Wasting Time Picking a Netflix Movie</span><span class="nf-video-sub">From a long My List to a short list of films worth watching, in a couple of minutes.</span></span>
+    </a>
+
+    <h2>Free, with an optional Pro</h2>
+    <p>Everything above except Tonight is free, with no account and no sign-in. Pro is optional. It is for the things a browser cannot do by hand, such as Tonight, an Undo for what you remove, and your playlists on your phone. It starts with 7 days free.</p>
+    <p>TidyWL for Netflix runs in Chrome on a computer. It never asks for your Netflix password, it never touches playback, and it is not made by or affiliated with Netflix or IMDb.</p>
+    <p>If your evenings look like mine did, <a href="{{ site.data.netflix.store_url }}?utm_source=tidywl-blog&amp;utm_medium=web&amp;utm_campaign=why-i-built-tidywl-for-netflix" target="_blank" rel="noopener">add Watch Later Tidy for Netflix to Chrome</a>. <a href="/netflix/">Everything it does</a> is on one page.</p>
+
+    <p><a href="/netflix/tutorials/">Video tutorials</a></p>
+    <p><a href="/netflix/blog/">← All guides and articles</a></p>
+  </div>
+</section>

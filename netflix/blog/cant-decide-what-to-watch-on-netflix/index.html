@@ -1,0 +1,105 @@
+---
+layout: netflix
+permalink: /netflix/blog/cant-decide-what-to-watch-on-netflix/
+title: "Can't decide what to watch on Netflix? Why it happens, and what helps — TidyWL for Netflix"
+headline: "Can't decide what to watch on Netflix? Why it happens, and what helps"
+description: "Twenty minutes of scrolling, a few more titles saved to My List, then an old favourite again. Why choosing on Netflix is hard, what Netflix itself tried, and what actually helps."
+nf_kind: article
+date: 2026-10-05
+og_image: /assets/netflix-landing-tonight.webp
+---
+
+<!-- ── ARTICLE: CHOOSING WHAT TO WATCH ──
+     Dated 2026-10-05, the day the Tonight video it links went up on YouTube
+     (cBRgF_wWylQ, 21:48 PDT). Its finding is
+     docs/outreach/2026-10-03-reddit-threads.md in the extension repo, which found the r/netflix
+     thread "Does anyone else struggle to pick something to watch?" (1u2v5t3)
+     the most engaged of the 41 threads it collected.
+     Sources: the other threads from the same file; the Hacker News quote from
+     docs/experiments/paywall-research-2026-09-23.md, section 2, item 4;
+     Netflix's Play Something from
+     docs/reference/research/2026-09-27-simkl-and-netflix-shuffle.md;
+     Watchlist Boosted from 2026-10-02-netflix-viewer-communities.md; the
+     spreadsheet and Trakt workarounds from 2026-10-03-hearing-from-strangers.md.
+     Tonight has been live since 1.1.0, 2026-10-01. "A graveyard of
+     intentions" is deliberately not used: it could not be traced to a source
+     (paywall-research, section 2; MONETIZATION-STRATEGY). -->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Can't decide what to watch on Netflix? Why it happens, and what helps",
+  "description": {{ page.description | jsonify }},
+  "datePublished": "2026-10-05",
+  "dateModified": "{{ page.last_modified_at | default: page.date | date: '%Y-%m-%d' }}",
+  "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
+  "publisher": { "@id": "{{ site.url }}/#organization" },
+  "image": "{{ site.url }}/assets/netflix-landing-tonight.webp",
+  "mainEntityOfPage": "{{ site.url }}{{ page.url }}"
+}
+</script>
+
+<section class="blog-wrap">
+  <p class="section-label">Article</p>
+  <h1 class="blog-title">Can't decide what to watch on Netflix? Why it happens, and what helps</h1>
+  <p class="blog-subtitle">The problem is rarely that there is nothing to watch. It is choosing.</p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="2026-10-03">October 3, 2026</time></p>
+
+  <div class="post-body">
+    <h2>The evening that goes nowhere</h2>
+    <p>You open Netflix wanting to watch something. Twenty minutes later you have saved a few more titles to My List, started none of them, and put on an old show you have already seen.</p>
+    <p>That is not an invented scene. It is how one person described their nights in <a href="https://www.reddit.com/r/netflix/comments/1u2v5t3/" target="_blank" rel="noopener">an r/netflix thread from June 2026</a> about struggling to pick something to watch, and with well over a hundred replies it was the busiest thread on the subject I found. It is far from the only one:</p>
+    <ul>
+      <li>On r/whattowatch, someone described <a href="https://www.reddit.com/r/whattowatch/comments/1wg1881/" target="_blank" rel="noopener">scanning menus for most of an evening</a>, their saved lists included, across several streaming services, and then going to bed.</li>
+      <li>People post their own list and ask strangers to choose for them, <a href="https://www.reddit.com/r/whattowatch/comments/1w9v825/" target="_blank" rel="noopener">on r/whattowatch</a> and <a href="https://www.reddit.com/r/netflixindia/comments/1oo11qs/" target="_blank" rel="noopener">on r/netflixindia</a>.</li>
+      <li>One person on r/netflix wanted to <a href="https://www.reddit.com/r/netflix/comments/1sw9zaz/" target="_blank" rel="noopener">export a very long list into a random picker wheel</a>, just to get past the decision fatigue.</li>
+    </ul>
+    <p>And it is not new. Back in 2023, a Hacker News commenter described <a href="https://news.ycombinator.com/item?id=37942076" target="_blank" rel="noopener">"scrolling through the My List on Netflix for minutes unable to pick anything"</a>.</p>
+
+    <h2>Why My List does not help</h2>
+    <p>My List is meant to be the answer: save it now, watch it later. But a list only helps you choose if it gives you something to choose by. On Netflix's website, My List shows a picture and a name, in <a href="/netflix/blog/netflix-a-z-sorting-gone/">an order Netflix decides</a>. The runtime, the year and anything about whether it is good wait until you click in. And the list <a href="/netflix/blog/remove-watched-titles-from-netflix-my-list/">only ever grows</a>, with titles you have finished still on it. Since September 2026 it is also a single row on a page called My Netflix.</p>
+    <p>So the list gets longer, and choosing from it gets harder.</p>
+
+    <h2>What Netflix itself tried</h2>
+    <p>Netflix has had a go at this. In 2021 it launched a shuffle button, Play Something, later renamed Surprise Me, and <a href="https://www.tomsguide.com/news/netflix-just-killed-a-feature-that-seemed-like-a-great-idea" target="_blank" rel="noopener">removed it in 2023</a>. A Netflix spokesperson told the Wall Street Journal it was dropped for low usage, because members usually open Netflix meaning to watch a particular title or genre, <a href="https://www.androidpolice.com/netflix-killing-shuffle-play-surprise-me/" target="_blank" rel="noopener">as Android Police reported</a>.</p>
+    <p>My reading of that: a random title from the whole catalogue is not what people want. They want help choosing among the things they already saved, for the time and the mood they have tonight. Netflix's phone apps did add filters to My List in 2023, such as movies or shows and started or not, which helps narrow it, but not choose.</p>
+
+    <h2>What helps, with or without an extension</h2>
+    <ul>
+      <li><strong>Decide the frame first.</strong> How long do you have, who is watching, what mood? Then look only at what fits. Opening one genre beats scrolling the home page.</li>
+      <li><strong>Let someone else pick.</strong> A friend, a partner, or a subreddit. People do it every day on r/whattowatch.</li>
+      <li><strong>Keep a short list outside Netflix.</strong> People describe spreadsheets, note apps, IMDb watchlists and Trakt for this. The shorter the list, the easier the choice.</li>
+      <li><strong>Use a tool that reads your list.</strong> Watchlist Boosted, for one, <a href="https://watchlistboosted.com/guides/export-netflix-watchlist" target="_blank" rel="noopener">imports your My List</a> and lets you sort it by rating and filter it by mood.</li>
+    </ul>
+
+    <h2>How TidyWL for Netflix helps</h2>
+    <p>I build TidyWL for Netflix (on the Chrome Web Store as <em>Watch Later Tidy for Netflix</em>), so read this with that in mind. It approaches the problem in two steps.</p>
+    <p><strong>Free: make the list choosable.</strong> Press Alt+L on any Netflix page and your whole My List opens as a grid. Every card carries the IMDb rating, the runtime, the year, the genre and the maturity rating. Filter it down by type, genre, IMDb rating, runtime and whether you have already watched it, then sort what is left by IMDb rating. Keep shortlists as playlists, such as Weekend, Under 90 minutes or With the kids. Five playlists are free.</p>
+
+    <a class="nf-video" href="https://youtu.be/x_9iXBpwOnc" target="_blank" rel="noopener">
+      <span class="nf-video-thumb"><img src="/assets/netflix-video-overview.webp" alt="Video cover reading Stop scrolling, start watching, beside the dashboard filtered to movies rated 7 and up on IMDb that run 90 to 120 minutes." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">2:18</span></span>
+      <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">How I Stopped Wasting Time Picking a Netflix Movie</span><span class="nf-video-sub">The free way: filter a long My List down to a handful worth watching.</span></span>
+    </a>
+
+    <p><strong>Pro: Tonight picks for you.</strong> Say who is watching (just you, a partner, friends or family), how long you have and what you are in the mood for, in three taps. Tonight deals one pick and two backups from your My List, each with its reason: the IMDb rating, the runtime, the genre that fits. With family, it leaves out anything rated above your youngest viewer. Re-roll for three more. "Not tonight" hides a pick for a week, and a title you keep putting off is flagged in My List so you can finally let it go. Unless you switch surprises off, it also offers titles from outside My List that fit your mood, never one you have already watched or given a thumbs down. Press Alt+T on any Netflix page.</p>
+
+    <figure class="nf-shot">
+      <img src="/assets/netflix-landing-tonight.webp"
+           alt="Tonight open over the dashboard, set to Date night: with a partner, a movie, gripping. The pick is The Nice Guys, IMDb 7.4, 2016, 1 hour 56 minutes, with Play, Not tonight and Later, on my phone; the two backups are Law Abiding Citizen at 7.4 and The Sixth Sense at 8.2, a surprise from outside My List."
+           width="1600" height="1308" loading="lazy" decoding="async">
+      <figcaption class="nf-shot-caption">Tonight, set to a date night: one pick and two backups, each with its IMDb rating and runtime.</figcaption>
+    </figure>
+
+    <p>Tonight is part of Pro, which starts with 7 days free, card required: cancel before day 8 and you pay nothing. After that it is $3.99 a month or $29.99 a year. Everything in the free part stays free.</p>
+    <p>It runs in Chrome on a computer, needs no account, and is not made by or affiliated with Netflix. <a href="{{ site.data.netflix.store_url }}?utm_source=tidywl-blog&amp;utm_medium=web&amp;utm_campaign=cant-decide-what-to-watch-on-netflix" target="_blank" rel="noopener">Add Watch Later Tidy for Netflix to Chrome</a>.</p>
+
+    <a class="nf-video" href="https://youtu.be/cBRgF_wWylQ" target="_blank" rel="noopener">
+      <span class="nf-video-thumb"><img src="/assets/netflix-video-tonight.webp" alt="Video cover reading Tonight's movie, decided, beside Tonight showing one pick and two backups." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">0:45</span></span>
+      <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">What to Watch on Netflix Tonight?</span><span class="nf-video-sub">Tonight, part of Pro: three taps, one pick and two backups.</span></span>
+    </a>
+
+    <p><a href="/netflix/tutorials/">Video tutorials</a></p>
+    <p><a href="/netflix/blog/">← All guides and articles</a></p>
+  </div>
+</section>
