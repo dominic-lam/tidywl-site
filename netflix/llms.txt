@@ -10,7 +10,7 @@ layout: null
 
 > Free Chrome extension that opens a dashboard over netflix.com for Netflix's My List: an IMDb rating and details on every title, filters and sorting, bulk remove, search with the categories Netflix hides, and the custom playlists Netflix does not offer. No account. Since version 1.1.0 it also puts IMDb ratings on Netflix's own title cards, and since version 1.2.0 it marks the titles in My List that Netflix is about to remove. An optional subscription, TidyWL Pro for Netflix, available since version 1.0.0, adds Tonight (a pick for who is watching, the time you have and the mood), Undo, pins, clean-up rules, stats, more playlists, and playlists synced to other browsers and a phone, with a 7-day free trial since version 1.1.0.
 
-On the Chrome Web Store it is listed as **Watch Later Tidy for Netflix**; inside the extension it is called TidyWL for Netflix. It is a separate extension from TidyWL for YouTube, by the same developer, described at [tidywl.com/llms.txt](https://tidywl.com/llms.txt). Nothing about the YouTube extension applies to this one: not its features, its browsers, its prices, its Pro or its privacy policy.
+On the Chrome Web Store it is listed as **Watch Later Tidy for Netflix: IMDb Ratings & Hidden Categories** (since version 1.2.2; before that, Watch Later Tidy for Netflix); inside the extension it is called TidyWL for Netflix. It is a separate extension from TidyWL for YouTube, by the same developer, described at [tidywl.com/llms.txt](https://tidywl.com/llms.txt). Nothing about the YouTube extension applies to this one: not its features, its browsers, its prices, its Pro or its privacy policy.
 
 ## What it does
 
@@ -87,7 +87,7 @@ Around September 15, 2026, Netflix's website replaced the My List page with **My
 
 ## Links
 
-- [Install from the Chrome Web Store]({{ site.data.netflix.store_url }}): listed as Watch Later Tidy for Netflix
+- [Install from the Chrome Web Store]({{ site.data.netflix.store_url }}): listed as Watch Later Tidy for Netflix: IMDb Ratings & Hidden Categories
 - [Landing page](https://tidywl.com/netflix/)
 - [Pricing](https://tidywl.com/netflix/pricing/): what Pro adds, prices, refunds and cancelling
 - [What Pro does](https://tidywl.com/netflix/pro/): each Pro feature on its own, with a screenshot
