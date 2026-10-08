@@ -113,6 +113,10 @@ sitemap: false
     .un-pro .un-dots li::before { margin-top: 0.65em; }
     .un-pro .un-btn { align-self: flex-start; background: var(--bg-card); }
     .un-pro-never { padding-top: 12px; border-top: 1px solid var(--highlight-border); font-size: 0.8125rem; line-height: 1.5; color: var(--text-muted); }
+    .un-pro-part { display: flex; flex-direction: column; gap: 14px; }
+    .un-pro-part[hidden], .un-pro-never[hidden] { display: none; }
+    .un-pro h2:focus, .un-pro-never:focus { outline: none; }
+    .un-pro .un-btn[aria-pressed="true"] { border-color: var(--accent-text); background: var(--ghost-hover-bg); }
 
     .un-foot { border-top: 1px solid var(--border-subtle); padding-top: 32px; padding-bottom: 36px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
     .un-foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 8px; }
@@ -411,25 +415,37 @@ sitemap: false
         </section>
       </div>
 
-      <aside class="un-pro" aria-labelledby="un-pro-title">
+      <!-- The card asks first (2026-10-08): leading with "Email to cancel" drew a
+           cancel request from someone who had never subscribed. Without script it
+           shows everything, as it did before. -->
+      <aside class="un-pro" aria-labelledby="un-pro-eyebrow">
         <div class="un-pro-card">
           <div class="un-pro-top">
             <span class="un-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
             </span>
-            <p class="un-eyebrow">If you pay for Pro</p>
+            <p class="un-eyebrow" id="un-pro-eyebrow">TidyWL Pro</p>
           </div>
-          <h2 id="un-pro-title">Removing the extension doesn't cancel your subscription.</h2>
-          <p class="un-pro-text">To cancel, email <a class="un-tlink" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">support@tidywl.com</a>. The Manage subscription button lived in the extension, so it went with it. Pro keeps working until the end of the period you paid for.</p>
-          <ul class="un-dots">
-            <li><span>On the free trial? Cancel before it ends and you're not charged.</span></li>
-            <li><span>Charged in the last 14 days? Every charge can be refunded in full. Same email.</span></li>
-          </ul>
-          <a class="un-btn" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            Email to cancel
-          </a>
-          <p class="un-pro-never">Never subscribed? There's nothing to do here.</p>
+          <div class="un-pro-part" id="un-pro-ask" hidden>
+            <h2>Did you pay for Pro?</h2>
+            <div class="un-btns">
+              <button type="button" class="un-btn" data-pro="yes">Yes, I pay for Pro</button>
+              <button type="button" class="un-btn" data-pro="no">No</button>
+            </div>
+          </div>
+          <div class="un-pro-part" id="un-pro-yes">
+            <h2 id="un-pro-title" tabindex="-1">Removing the extension doesn't cancel your subscription.</h2>
+            <p class="un-pro-text">To cancel, email <a class="un-tlink" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">support@tidywl.com</a>. The Manage subscription button lived in the extension, so it went with it. Pro keeps working until the end of the period you paid for.</p>
+            <ul class="un-dots">
+              <li><span>On the free trial? Cancel before it ends and you're not charged.</span></li>
+              <li><span>Charged in the last 14 days? Every charge can be refunded in full. Same email.</span></li>
+            </ul>
+            <a class="un-btn" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              Email to cancel
+            </a>
+          </div>
+          <p class="un-pro-never" id="un-pro-no" tabindex="-1">Never subscribed? There's nothing to do here.</p>
         </div>
       </aside>
     </div>
@@ -449,6 +465,29 @@ sitemap: false
 </div>
 
 <script>
+  (function () {
+    // The Pro card asks before it tells anyone to email (2026-10-08). Without
+    // script the question stays hidden and the card shows everything.
+    var ask = document.getElementById('un-pro-ask');
+    var yes = document.getElementById('un-pro-yes');
+    var no = document.getElementById('un-pro-no');
+    var answers = ask.querySelectorAll('[data-pro]');
+    no.textContent = "Then there's nothing to cancel. You're all set.";
+    no.setAttribute('aria-live', 'polite');
+    ask.hidden = false;
+    yes.hidden = true;
+    no.hidden = true;
+    answers.forEach(function (btn) {
+      btn.setAttribute('aria-pressed', 'false');
+      btn.addEventListener('click', function () {
+        var paid = btn.getAttribute('data-pro') === 'yes';
+        answers.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+        yes.hidden = !paid;
+        no.hidden = paid;
+      });
+    });
+  })();
+
   (function () {
     // The answer goes out on the click, so a visitor who closes the tab at once
     // still counts. Every send carries the same per-visit id, so the server keeps
