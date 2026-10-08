@@ -1,17 +1,35 @@
 ---
-layout: netflix
+layout: null
 permalink: /netflix/removed/
 title: "Removed · TidyWL for Netflix"
 description: "TidyWL for Netflix has been removed from Chrome. One question, from the person who makes it: what made you remove it?"
-robots: noindex
 sitemap: false
-hide_cta: true
 ---
 {%- assign store = site.data.netflix.store_url -%}
 {%- assign trial = site.data.netflix.trial_days | default: 7 -%}
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }}</title>
+  <meta name="description" content="{{ page.description }}">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+  <link rel="icon" type="image/png" href="/assets/netflix-icon128.png">
+
+  {% include fonts.html %}
+  {% include theme-init.html %}
+  {% include styles.html %}
+  {% include styles-netflix.html %}
+</head>
+<body class="nf">
+
 <!-- ── REMOVED, TidyWL for Netflix ──
-     Built 2026-10-04 for 1.2.1. Chrome opens this page in a new tab right after
+     Built 2026-10-04 for 1.2.1. Restyled to match the YouTube uninstall page
+     (uninstall/index.html) in October 2026: its own quiet header and footer,
+     reasons as cards, the reply as a message from Dominic, Pro on the right. Chrome opens this page in a new tab right after
      someone removes the extension (chrome.runtime.setUninstallURL in the
      extension's service worker), so the extension is already gone when it
      loads. It is the one place a stranger who left can say why.
@@ -42,53 +60,42 @@ hide_cta: true
      whether it reaches into a script or a mailto subject. -->
 
 <div class="nfr">
-  <div class="nfr-col">
 
-    <!-- B4a. Above the question, only when the link says trial or pro. -->
-    <div class="nfr-notice" id="nfr-notice-trial" hidden>
-      <h2 class="nfr-notice-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
-        Your Pro trial is still running
-      </h2>
-      <p>Removing the extension didn't cancel it. <strong>Cancel before your {{ trial }} days are up and you pay nothing.</strong></p>
-      <p>Email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from the address you paid with, or include the Transaction ID from your Paddle receipt, so I can find it.</p>
-      <div class="nfr-actions">
-        <!--email_off--><a class="nfr-btn-outline" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20for%20Netflix%20Pro%20trial">Email to cancel my trial</a><!--email_on-->
-      </div>
-      <p class="nfr-small">Or <a href="{{ store }}" target="_blank" rel="noopener">add TidyWL back</a> and use <strong>Manage subscription</strong> under About → Pro.</p>
-    </div>
+  <header class="nfr-wrap nfr-head">
+    <a class="nfr-home" href="/netflix/" aria-label="TidyWL for Netflix home">
+      <img src="/assets/netflix-icon128.png" alt="" width="28" height="28">
+      <span>TidyWL for Netflix</span>
+    </a>
+  </header>
 
-    <div class="nfr-notice" id="nfr-notice-pro" hidden>
-      <h2 class="nfr-notice-title">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
-        Your Pro subscription is still active
-      </h2>
-      <p>Removing the extension didn't cancel it, and it renews until you do. <strong>To cancel, email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from the address you paid with.</strong> Pro runs to the end of the period you paid for.</p>
-      <p>Charged in the last 14 days? Ask, and it's refunded in full, no questions.</p>
-      <p>If you switched on sync, your playlists stay on tidywl.com until 90 days after the subscription ends.</p>
-      <div class="nfr-actions">
-        <!--email_off--><a class="nfr-btn-outline" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20for%20Netflix%20Pro%20subscription">Email to cancel</a><!--email_on-->
-        <a href="/netflix/refunds/" target="_blank" rel="noopener">Refund policy</a>
-      </div>
-      <p class="nfr-small">Or <a href="{{ store }}" target="_blank" rel="noopener">add TidyWL back</a> and use <strong>Manage subscription</strong> under About → Pro.</p>
-    </div>
+  <main class="nfr-wrap nfr-main">
+    <div class="nfr-cols">
+      <div class="nfr-flow">
 
     <!-- The question. Replaced in place by #nfr-thanks after Send. -->
     <div id="nfr-ask">
-      <p class="nfr-eyebrow">TidyWL for Netflix has been removed from Chrome.</p>
-      <h1 class="nfr-title">What made you remove it?</h1>
-      <p class="nfr-lead">Pick one reason and press Send. That's all. If it's something TidyWL already does, the answer shows up right here.</p>
-      <p class="nfr-founder">I'm Dominic, and I make TidyWL on my own. I read every answer.</p>
+      <div class="nfr-intro" id="nfr-intro">
+        <p class="nfr-eyebrow">Extension removed</p>
+        <h1 class="nfr-title" id="nfr-title" tabindex="-1">What made you remove it?</h1>
+        <p class="nfr-lead">Pick one reason, then press Send. If it's something TidyWL already does, the answer shows up right here.</p>
+        <p class="nfr-founder">I'm Dominic, and I make TidyWL on my own. I read every answer.</p>
+      </div>
 
       <form id="nfr-form" novalidate autocomplete="off">
         <fieldset class="nfr-reasons">
           <legend class="sr-only">What made you remove it? Pick one.</legend>
+          <button type="button" class="nfr-change" id="nfr-change" hidden>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+            Change answer
+          </button>
 
           <!-- 1. lost -->
           <div class="nfr-reason" data-reason="lost">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="lost">
-              <span class="nfr-reason-label">I couldn't find how to open it.</span>
+              <span class="nfr-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+<span class="nfr-reason-label">I couldn't find how to open it.</span>
+              <svg class="nfr-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </label>
             <div class="nfr-reason-body" hidden>
               <div class="nfr-fixcopy" data-fix="lost">
@@ -132,7 +139,9 @@ hide_cta: true
           <div class="nfr-reason" data-reason="missing">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="missing">
-              <span class="nfr-reason-label">It was missing something I wanted.</span>
+              <span class="nfr-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span>
+<span class="nfr-reason-label">It was missing something I wanted.</span>
+              <svg class="nfr-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </label>
             <div class="nfr-reason-body" hidden>
               <fieldset class="nfr-chips">
@@ -192,7 +201,9 @@ hide_cta: true
           <div class="nfr-reason" data-reason="broken" data-ask="What were you doing when it went wrong?">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="broken">
-              <span class="nfr-reason-label">Something didn't work.</span>
+              <span class="nfr-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+<span class="nfr-reason-label">Something didn't work.</span>
+              <svg class="nfr-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </label>
             <div class="nfr-reason-body" hidden>
               <p class="nfr-fix-title">Sorry about that.</p>
@@ -206,7 +217,9 @@ hide_cta: true
           <div class="nfr-reason" data-reason="clutter">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="clutter">
-              <span class="nfr-reason-label">It got in the way on Netflix's pages.</span>
+              <span class="nfr-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></span>
+<span class="nfr-reason-label">It got in the way on Netflix's pages.</span>
+              <svg class="nfr-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </label>
             <div class="nfr-reason-body" hidden>
               <fieldset class="nfr-chips">
@@ -241,7 +254,9 @@ hide_cta: true
           <div class="nfr-reason" data-reason="device">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="device">
-              <span class="nfr-reason-label">I watch Netflix on a TV or phone, not in Chrome.</span>
+              <span class="nfr-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg></span>
+<span class="nfr-reason-label">I watch Netflix on a TV or phone, not in Chrome.</span>
+              <svg class="nfr-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </label>
             <div class="nfr-reason-body" hidden>
               <p>Fair. TidyWL only runs in Chrome on a computer, and Chrome on a phone can't run extensions.</p>
@@ -262,7 +277,9 @@ hide_cta: true
           <div class="nfr-reason" data-reason="pro">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="pro">
-              <span class="nfr-reason-label">The part I wanted was in Pro.</span>
+              <span class="nfr-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><path d="M7.5 7.5h.01"/></svg></span>
+<span class="nfr-reason-label">The part I wanted was in Pro.</span>
+              <svg class="nfr-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </label>
             <div class="nfr-reason-body" hidden>
               <p>Tonight, Undo, Pin, clean-up rules, stats, playlists on a phone and more than five playlists are Pro. Everything else stays free. <a href="/netflix/pricing/" target="_blank" rel="noopener">What Pro adds and costs&nbsp;<span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a></p>
@@ -286,7 +303,9 @@ hide_cta: true
           <div class="nfr-reason" data-reason="privacy">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="privacy">
-              <span class="nfr-reason-label">I wasn't comfortable with what it could access.</span>
+              <span class="nfr-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+<span class="nfr-reason-label">I wasn't comfortable with what it could access.</span>
+              <svg class="nfr-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </label>
             <div class="nfr-reason-body" hidden>
               <p>Plainly: TidyWL never asks for your Netflix password and never touches video. Your list, watch state and searches stay in your browser.</p>
@@ -308,7 +327,9 @@ hide_cta: true
           <div class="nfr-reason" data-reason="language" data-ask="Which language would you want it in?" hidden>
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="language">
-              <span class="nfr-reason-label">It wasn't in my language.</span>
+              <span class="nfr-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+<span class="nfr-reason-label">It wasn't in my language.</span>
+              <svg class="nfr-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </label>
             <div class="nfr-reason-body" hidden>
               <p class="nfr-fix-title">Sorry about that.</p>
@@ -321,11 +342,20 @@ hide_cta: true
           <div class="nfr-reason" data-reason="done">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="done">
-              <span class="nfr-reason-label">It did what I needed. I'm done.</span>
+              <span class="nfr-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+<span class="nfr-reason-label">It did what I needed. I'm done.</span>
+              <svg class="nfr-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </label>
             <div class="nfr-reason-body" hidden>
               <p class="nfr-fix-title">Glad it did the job.</p>
-              <p>Your Netflix list stays as you left it.</p>
+              <p>Your Netflix list stays as you left it. Playlists you made were stored in this browser, so they left with the extension.</p>
+              <div class="nfr-rate">
+                <p>If it saved you time, a rating helps the next person find it.</p>
+                <a class="nfr-btn-outline" href="{{ store }}/reviews" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                  Rate us on the Chrome Web Store<span class="sr-only"> (opens in a new tab)</span>
+                </a>
+              </div>
               <fieldset class="nfr-chips">
                 <legend class="nfr-q">What did you use it for? <span class="nfr-hint">Tap any, optional</span></legend>
                 <div class="nfr-chip-row">
@@ -341,6 +371,11 @@ hide_cta: true
             </div>
           </div>
         </fieldset>
+
+        <p class="nfr-pick-note">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Nothing is sent until you press Send. No name, no install ID. <a href="/netflix/privacy/#removed" target="_blank" rel="noopener">Privacy</a></span>
+        </p>
 
         <!-- The one text box. It lives here until a reason is chosen, then
              moves into that reason and takes its question as its label. -->
@@ -387,6 +422,16 @@ hide_cta: true
         <span class="nfr-recap-text" id="nfr-recap-text" hidden></span>
       </p>
 
+      <!-- Only for "It did what I needed", since the reply with this button is gone after Send. -->
+      <div class="nfr-card nfr-rate" id="nfr-rate-thanks" hidden>
+        <h2 class="nfr-card-title">If it saved you time</h2>
+        <p>A rating helps the next person find it.</p>
+        <a class="nfr-btn-outline" href="{{ store }}/reviews" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+          Rate us on the Chrome Web Store<span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      </div>
+
       <!-- B6b: the way back carries the fix, when there was one. -->
       <div class="nfr-card nfr-back" id="nfr-back-fix" hidden>
         <div class="nfr-fixes" id="nfr-back-fixes"></div>
@@ -426,26 +471,88 @@ hide_cta: true
       <p class="nfr-quiet">A question or a bug? <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> · <a href="https://discord.gg/4j5u9xd35P" target="_blank" rel="noopener">Discord</a></p>
     </div>
 
-    <!-- B4b, kept for everyone: the one safeguard for a subscriber whose link
-         carried no plan. Its cancel line hides when the notice above shows. -->
-    <aside class="nfr-know" aria-labelledby="nfr-know-title">
-      <h2 class="nfr-know-title" id="nfr-know-title">Good to know</h2>
-      <p>Removing TidyWL didn't change your Netflix account or your My List.</p>
-      <details class="nfr-know-cancel" id="nfr-know-cancel">
-        <summary>Had Pro or a trial? Removing the extension doesn't cancel it. <span class="nfr-link">How to cancel</span></summary>
-        <p>Email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from the address you paid with. A trial cancelled before day {{ trial | plus: 1 }} costs nothing, and any charge from the last 14 days is refunded in full.</p>
-      </details>
-    </aside>
+      </div>
 
-  </div>
+      <aside class="nfr-side" aria-labelledby="nfr-pro-title">
+        <div class="nfr-pro-card" id="nfr-pro-default">
+          <div class="nfr-pro-top">
+            <span class="nfr-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+            <p class="nfr-eyebrow">If you pay for Pro</p>
+          </div>
+          <h2 id="nfr-pro-title">Removing the extension doesn't cancel it.</h2>
+          <p>Email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from the address you paid with. A trial cancelled before day {{ trial | plus: 1 }} costs nothing, and any charge from the last 14 days is refunded in full.</p>
+          <div class="nfr-actions">
+            <!--email_off--><a class="nfr-btn-outline" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20for%20Netflix%20Pro%20subscription">Email to cancel</a><!--email_on-->
+          </div>
+          <p class="nfr-pro-never">Never subscribed? There's nothing to do here. Removing TidyWL didn't change your Netflix account or your My List.</p>
+        </div>
+
+        <!-- B4a. Only when the link says trial or pro; it replaces the card above. -->
+    <div class="nfr-notice" id="nfr-notice-trial" hidden>
+      <h2 class="nfr-notice-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
+        Your Pro trial is still running
+      </h2>
+      <p>Removing the extension didn't cancel it. <strong>Cancel before your {{ trial }} days are up and you pay nothing.</strong></p>
+      <p>Email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from the address you paid with, or include the Transaction ID from your Paddle receipt, so I can find it.</p>
+      <div class="nfr-actions">
+        <!--email_off--><a class="nfr-btn-outline" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20for%20Netflix%20Pro%20trial">Email to cancel my trial</a><!--email_on-->
+      </div>
+      <p class="nfr-small">Or <a href="{{ store }}" target="_blank" rel="noopener">add TidyWL back</a> and use <strong>Manage subscription</strong> under About → Pro.</p>
+    </div>
+
+    <div class="nfr-notice" id="nfr-notice-pro" hidden>
+      <h2 class="nfr-notice-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></svg>
+        Your Pro subscription is still active
+      </h2>
+      <p>Removing the extension didn't cancel it, and it renews until you do. <strong>To cancel, email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from the address you paid with.</strong> Pro runs to the end of the period you paid for.</p>
+      <p>Charged in the last 14 days? Ask, and it's refunded in full, no questions.</p>
+      <p>If you switched on sync, your playlists stay on tidywl.com until 90 days after the subscription ends.</p>
+      <div class="nfr-actions">
+        <!--email_off--><a class="nfr-btn-outline" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20for%20Netflix%20Pro%20subscription">Email to cancel</a><!--email_on-->
+        <a href="/netflix/refunds/" target="_blank" rel="noopener">Refund policy</a>
+      </div>
+      <p class="nfr-small">Or <a href="{{ store }}" target="_blank" rel="noopener">add TidyWL back</a> and use <strong>Manage subscription</strong> under About → Pro.</p>
+    </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="nfr-wrap nfr-foot">
+    <nav aria-label="Footer">
+      <a href="/netflix/privacy/">Privacy</a>
+      <a href="/netflix/terms/">Terms</a>
+      <a href="/netflix/refunds/">Refunds</a>
+      <a href="/netflix/pricing/">Pricing</a>
+      <a href="https://discord.gg/4j5u9xd35P" target="_blank" rel="noopener">Discord community</a>
+    </nav>
+    <p class="nfr-legal">TidyWL for Netflix is an independent extension and is not affiliated with, endorsed by or sponsored by Netflix. Netflix is a trademark of Netflix, Inc.</p>
+    <p class="nfr-copy">© 2026 TidyWL</p>
+  </footer>
 </div>
 
 <style>
   /* ── REMOVED ──
      One column (B1a), the site's tokens throughout, so the light and dark
      themes and the manual toggle need nothing of their own here. */
-  .nfr { padding: 40px 24px 80px; }
-  .nfr-col { max-width: 620px; margin: 0 auto; }
+  .nfr { min-height: 100vh; display: flex; flex-direction: column; }
+  .nfr-wrap { width: 100%; max-width: 1040px; margin: 0 auto; padding-left: clamp(16px, 4vw, 24px); padding-right: clamp(16px, 4vw, 24px); }
+  .nfr-head { padding-top: 20px; display: flex; align-items: center; }
+  .nfr-home { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em; }
+  .nfr-home img { display: block; width: 28px; height: 28px; border-radius: 6px; }
+  .nfr-main { flex: 1 0 auto; padding-top: clamp(28px, 5vw, 56px); padding-bottom: clamp(48px, 7vw, 88px); }
+  .nfr-cols { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px; }
+  .nfr-flow { flex: 999 1 560px; min-width: 0; }
+  .nfr-side { flex: 1 1 320px; min-width: 0; max-width: 36rem; display: flex; flex-direction: column; gap: 16px; }
+  /* A subscriber's notice is money; on a narrow screen it goes first. */
+  @media (max-width: 919px) { .nfr-cols.has-plan .nfr-side { order: -1; } }
+  .nfr-foot { border-top: 1px solid var(--border-subtle); padding-top: 32px; padding-bottom: 36px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+  .nfr-foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 8px; }
+  .nfr-foot nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; font-size: 0.9rem; color: var(--text-muted); transition: color 0.2s; }
+  .nfr-foot nav a:hover { color: var(--text); }
+  .nfr-legal { max-width: 620px; font-size: 0.78rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
+  .nfr-copy { font-size: 0.8rem; color: var(--text-muted); }
   /* `hidden` must win over every display rule below. */
   .nfr [hidden] { display: none !important; }
 
@@ -456,7 +563,7 @@ hide_cta: true
     outline: 2px solid var(--accent-fill); outline-offset: 2px;
   }
 
-  .nfr-eyebrow { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; }
+  .nfr-eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-text); margin-bottom: 10px; }
   .nfr-title {
     font-size: clamp(1.9rem, 5vw, 2.5rem); font-weight: 800;
     letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 14px; text-wrap: balance;
@@ -469,37 +576,52 @@ hide_cta: true
   .nfr-small { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; }
   .nfr-hint { font-weight: 400; font-size: 0.8rem; color: var(--text-muted); margin-left: 2px; }
 
-  /* ── The reasons ── */
-  .nfr-reasons { border: 0; min-width: 0; display: grid; gap: 10px; }
-  .nfr-reason {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
-    transition: border-color 0.15s;
+  /* ── The reasons ──
+     Cards in a grid. Once one is chosen the grid becomes a short thread:
+     "Change answer" on the left, the choice as a bubble on the right, then
+     Dominic's reply, which is the reason's body. The radios stay real, hidden
+     only to the eye, so the keyboard and a restored form still work. */
+  .nfr-reasons { border: 0; min-width: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); gap: 10px; }
+  .nfr-reason { position: relative; display: block; min-width: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; transition: border-color 0.2s; }
+  .nfr-reason:hover { border-color: var(--ghost-hover-border); }
+  .nfr-reason-head { display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 12px 14px; cursor: pointer; font-size: 0.9375rem; font-weight: 600; line-height: 1.35; color: var(--text); }
+  .nfr-reason-head input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+  .nfr-reason:has(input:focus-visible) { outline: 2px solid var(--accent-fill); outline-offset: 2px; }
+  .nfr-reason-label { flex: 1; min-width: 0; }
+  .nfr-icon { flex: none; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--feature-icon-bg); color: var(--accent); }
+  .nfr-icon svg, .nfr-chev, .nfr-change svg, .nfr-pick-note svg, .nfr-btn-outline svg { display: block; flex: none; }
+  .nfr-chev { color: var(--text-muted); }
+  .nfr-pick-note { display: flex; align-items: flex-start; gap: 8px; margin-top: 20px; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
+  .nfr-pick-note svg { margin-top: 2px; }
+
+  .nfr-change { display: none; align-items: center; gap: 6px; min-height: 44px; padding: 10px 4px; background: transparent; border: 0; color: var(--text-muted); font-size: 0.9375rem; font-weight: 600; cursor: pointer; }
+  .nfr-change:hover { color: var(--text); }
+  .is-answering .nfr-pick-note { display: none; }
+  .is-answering .nfr-reasons { grid-template-columns: auto 1fr; align-items: center; gap: 0 12px; row-gap: 28px; }
+  .is-answering .nfr-change { display: inline-flex; grid-column: 1; grid-row: 1; justify-self: start; }
+  .is-answering .nfr-reason { display: contents; }
+  .is-answering .nfr-reason:not(.is-chosen) { display: none; }
+  .is-answering .nfr-reason-head {
+    grid-column: 2; grid-row: 1; justify-self: end; min-height: 0; max-width: 100%;
+    padding: 10px 16px 10px 12px; cursor: default;
+    background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px 14px 4px 14px;
   }
-  .nfr-reason:hover { border-color: var(--border-strong); }
-  .nfr-reason.is-chosen { border-color: var(--accent); background: var(--highlight-bg); }
-  .nfr-reason-head {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 13px 16px; cursor: pointer;
-    font-size: 1rem; line-height: 1.45; color: var(--text);
-  }
-  .nfr-reason-head input {
-    -webkit-appearance: none; appearance: none; flex: none;
-    width: 20px; height: 20px; margin: 1px 0 0;
-    border: 2px solid var(--border-strong); border-radius: 50%;
-    background: transparent; cursor: pointer;
-  }
-  .nfr-reason-head input:checked {
-    border-color: var(--accent);
-    background: radial-gradient(circle, var(--accent) 0 4.5px, transparent 5px);
-  }
-  .nfr-reason.is-chosen .nfr-reason-label { font-weight: 600; }
-  .nfr-reason-body { padding: 0 16px 18px 48px; animation: nfr-in 0.18s ease-out; }
+  .is-answering .nfr-reason-head .nfr-icon { width: auto; height: auto; background: none; border-radius: 0; }
+  .is-answering .nfr-chev { display: none; }
+  .is-answering .nfr-reason-body { grid-column: 1 / -1; }
+
+  /* The reply: Dominic's mark, a byline, then the reason's own copy. */
+  .nfr-reason-body { position: relative; padding: 0 0 0 54px; animation: nfr-in 0.24s ease-out; }
+  .nfr-reason-body::after { content: ""; position: absolute; left: 0; top: 0; width: 40px; height: 40px; border-radius: 10px; background: url(/assets/netflix-icon128.png) center / cover; }
+  .nfr-reason-body::before { content: "Dominic, who builds TidyWL"; display: block; margin-bottom: 8px; font-size: 0.8125rem; font-weight: 600; line-height: 1.4; color: var(--text-muted); }
   .nfr-reason-body > * + * { margin-top: 14px; }
   .nfr-reason-body p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; text-wrap: pretty; }
   .nfr-reason-body .nfr-small { font-size: 0.85rem; color: var(--text-muted); }
-  .nfr .nfr-fix-title { font-weight: 700; color: var(--text); }
-  .nfr-reason-body > .nfr-fix-title + p { margin-top: 4px; }
+  .nfr .nfr-fix-title { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); text-wrap: balance; }
+  .nfr-reason-body > .nfr-fix-title + p { margin-top: 8px; }
   .nfr-fixcopy > * + * { margin-top: 10px; }
+  .nfr-rate { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .nfr-rate > p { margin: 0; }
 
   /* A control's name in the dashboard, so it reads as something to click. */
   .nfr-ui {
@@ -594,6 +716,10 @@ hide_cta: true
 
   /* ── The text box ── */
   .nfr-text-home > .nfr-text { margin-top: 20px; }
+  .nfr-text { padding: 22px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
+  .nfr-text-slot .nfr-text { padding: 0; background: none; border: 0; }
+  /* Before a reason is chosen there is nothing to send. */
+  form:not(.is-answering) .nfr-text-home, form:not(.is-answering) .nfr-send-row { display: none; }
   .nfr-text-label { display: block; font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
   .nfr-text textarea {
     display: block; width: 100%; min-height: 92px; resize: vertical;
@@ -614,14 +740,19 @@ hide_cta: true
   }
 
   /* ── The subscription notice (B4a) ── */
-  .nfr-notice {
-    margin-bottom: 36px; padding: 20px 22px;
-    background: var(--highlight-bg); border: 1px solid var(--highlight-border); border-radius: 14px;
+  .nfr-notice, .nfr-pro-card {
+    padding: 22px; display: flex; flex-direction: column; gap: 14px;
+    background: var(--highlight-bg); border: 1px solid var(--highlight-border); border-radius: 12px;
   }
-  .nfr-notice-title { display: flex; align-items: flex-start; gap: 10px; font-size: 1.08rem; font-weight: 700; margin-bottom: 10px; }
+  .nfr-notice > p, .nfr-pro-card > p { font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.6; text-wrap: pretty; }
+  .nfr-notice > * + *, .nfr-pro-card > * + * { margin-top: 0; }
+  .nfr-pro-card h2 { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; text-wrap: balance; }
+  .nfr-pro-top { display: flex; align-items: center; gap: 12px; }
+  .nfr-pro-top .nfr-eyebrow { margin: 0; }
+  .nfr-pro-card .nfr-actions { margin: 0; }
+  .nfr-pro-never { padding-top: 12px; border-top: 1px solid var(--highlight-border); font-size: 0.8125rem !important; color: var(--text-muted) !important; }
+  .nfr-notice-title { display: flex; align-items: flex-start; gap: 10px; font-size: 1.125rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; }
   .nfr-notice-title svg { width: 20px; height: 20px; flex: none; margin-top: 3px; color: var(--accent-text); }
-  .nfr-notice p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; text-wrap: pretty; }
-  .nfr-notice p + p { margin-top: 8px; }
   .nfr-notice strong { color: var(--text); }
   .nfr-notice .nfr-small { font-size: 0.85rem; color: var(--text-muted); }
   .nfr-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin: 16px 0 12px; }
@@ -671,20 +802,6 @@ hide_cta: true
   .nfr-email-done:focus:not(:focus-visible) { outline: none; }
   .nfr-quiet { margin-top: 18px; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
 
-  /* ── Good to know (B4b) ── */
-  .nfr-know { margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--border-subtle); }
-  .nfr-know-title {
-    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--text-muted); margin-bottom: 10px;
-  }
-  .nfr-know p, .nfr-know summary { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
-  .nfr-know summary { margin-top: 6px; cursor: pointer; list-style: none; }
-  .nfr-know summary::-webkit-details-marker { display: none; }
-  .nfr-know details p {
-    margin-top: 8px; padding: 12px 14px; color: var(--text-secondary);
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
-  }
-
   @keyframes nfr-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
   @media (prefers-reduced-motion: reduce) {
     .nfr-reason-body, .nfr-thanks { animation: none; }
@@ -692,11 +809,8 @@ hide_cta: true
 
   /* Phone: the same page, a 16px gutter, Send full width. */
   @media (max-width: 640px) {
-    .nfr { padding: 24px 16px 56px; }
-    .nfr-reason-head { padding: 13px 14px; }
-    .nfr-reason-body { padding: 0 14px 16px; }
     .nfr-send-row { flex-direction: column; align-items: stretch; gap: 12px; }
-    .nfr-notice, .nfr-card { padding: 18px 16px; }
+    .nfr-notice, .nfr-pro-card, .nfr-card { padding: 18px 16px; }
     .nfr-email-send { flex: 1 1 100%; }
     .nfr-tb-tiles { display: none; }
     .nfr-tb-pop { flex: 1; width: auto; margin-left: 24px; }
@@ -730,7 +844,8 @@ hide_cta: true
 
     if (plan != null) {
       $('#nfr-notice-' + plan).hidden = false;
-      $('#nfr-know-cancel').hidden = true;
+      $('#nfr-pro-default').hidden = true;
+      $('.nfr-cols').classList.add('has-plan');
     }
 
     // "It wasn't in my language", only for a browser that isn't English.
@@ -747,7 +862,9 @@ hide_cta: true
     const textWrap = $('#nfr-text-wrap');
     const textarea = $('#nfr-text');
     const items = $$('.nfr-reason');
+    const changeBtn = $('#nfr-change');
     let busy = false;
+    let wasAnswering = false;
 
     const chosenItem = () => items.find((item) => !item.hidden && $('input[type="radio"]', item).checked) || null;
     const tickedChips = (item) => $$('input[type="checkbox"]:checked', item);
@@ -790,7 +907,23 @@ hide_cta: true
       }
       placeText(chosen);
       send.disabled = !canSend();
+
+      const answering = chosen != null;
+      form.classList.toggle('is-answering', answering);
+      $('#nfr-intro').hidden = answering;
+      changeBtn.hidden = !answering;
+      if (answering !== wasAnswering) {
+        wasAnswering = answering;
+        window.scrollTo(0, 0);
+      }
     }
+
+    changeBtn.addEventListener('click', () => {
+      const chosen = chosenItem();
+      if (chosen != null) $('input[type="radio"]', chosen).checked = false;
+      sync();
+      $('#nfr-title').focus({ preventScroll: true });
+    });
 
     form.addEventListener('change', (event) => {
       if (event.target.matches('input[type="radio"], input[type="checkbox"]')) sync();
@@ -886,6 +1019,7 @@ hide_cta: true
         $('#nfr-back-quiet').hidden = false;
       }
 
+      $('#nfr-rate-thanks').hidden = answer.reason !== 'done';
       if (id == null) $('#nfr-email').hidden = true;
       answerId = id;
 
