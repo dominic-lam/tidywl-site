@@ -89,7 +89,7 @@ sitemap: false
             Change answer
           </button>
 
-          <!-- 1. done: first, the user's call 2026-10-08, so the rating ask is the first thing seen -->
+          <!-- 1. done: first (the user's call, 2026-10-08), so the rating ask is the first thing seen -->
           <div class="nfr-reason" data-reason="done">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="done">
@@ -117,9 +117,12 @@ sitemap: false
                   <label class="nfr-chip"><input type="checkbox" value="ratings"><span>The IMDb ratings on Netflix's posters</span></label>
                   <label class="nfr-chip"><input type="checkbox" value="other" data-ask="What else did you use it for?"><span>Something else</span></label>
                 </div>
-      
+              </fieldset>
+              <div class="nfr-text-slot"></div>
+            </div>
+          </div>
 
-          <!-- 1. lost -->
+          <!-- 2. lost -->
           <div class="nfr-reason" data-reason="lost">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="lost">
@@ -165,7 +168,7 @@ sitemap: false
             </div>
           </div>
 
-          <!-- 2. missing: the question first, since the fix depends on the chip -->
+          <!-- 3. missing: the question first, since the fix depends on the chip -->
           <div class="nfr-reason" data-reason="missing">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="missing">
@@ -227,7 +230,7 @@ sitemap: false
             </div>
           </div>
 
-          <!-- 3. broken: the one reason that needs words -->
+          <!-- 4. broken: the one reason that needs words -->
           <div class="nfr-reason" data-reason="broken" data-ask="What were you doing when it went wrong?">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="broken">
@@ -243,7 +246,7 @@ sitemap: false
             </div>
           </div>
 
-          <!-- 4. clutter: the question first, since the fix depends on the chip -->
+          <!-- 5. clutter: the question first, since the fix depends on the chip -->
           <div class="nfr-reason" data-reason="clutter">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="clutter">
@@ -280,7 +283,7 @@ sitemap: false
             </div>
           </div>
 
-          <!-- 5. device -->
+          <!-- 6. device -->
           <div class="nfr-reason" data-reason="device">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="device">
@@ -303,7 +306,7 @@ sitemap: false
             </div>
           </div>
 
-          <!-- 6. pro -->
+          <!-- 7. pro -->
           <div class="nfr-reason" data-reason="pro">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="pro">
@@ -329,7 +332,7 @@ sitemap: false
             </div>
           </div>
 
-          <!-- 7. privacy -->
+          <!-- 8. privacy -->
           <div class="nfr-reason" data-reason="privacy">
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="privacy">
@@ -353,7 +356,7 @@ sitemap: false
             </div>
           </div>
 
-          <!-- 8. language: only when the browser isn't English (Q5) -->
+          <!-- 9. language: only when the browser isn't English (Q5) -->
           <div class="nfr-reason" data-reason="language" data-ask="Which language would you want it in?" hidden>
             <label class="nfr-reason-head">
               <input type="radio" name="reason" value="language">
@@ -367,10 +370,7 @@ sitemap: false
               <div class="nfr-text-slot"></div>
             </div>
           </div>
-        </fieldset>
-              <div class="nfr-text-slot"></div>
-            </div>
-          </div>
+
         </fieldset>
 
         <p class="nfr-pick-note">
