@@ -1,6 +1,20 @@
 {
   "announcements": [
     {
+      "id": "v2.4.0-release",
+      "title": "What's New in v2.4.0",
+      "bullets": [
+        "Sorting by published date works in every language. Outside the US, YouTube shortens dates to “2 wk ago” and “1 yr ago”, and those videos used to sink to the bottom. The sort now uses each video's exact publish date.",
+        "Sorting by views works when YouTube isn't in English: counts like “1,2 M” are no longer misread.",
+        "Private and deleted videos are grouped as Private / Deleted in every language, instead of landing under Channel Unavailable.",
+        "Press Sync once to pick up the exact dates and view counts. That first Sync takes a little longer; later ones only ask about new videos.",
+        "New: a link to Watch Later Tidy for Netflix, a dashboard for your Netflix My List, under the name at the top of the dashboard and in About. Not on Firefox, where the Netflix extension isn't available."
+      ],
+      "type": "info",
+      "created_at": "2026-10-08",
+      "expires_at": "2027-01-08"
+    },
+    {
       "id": "2026-09-30-pro-trial",
       "display": "modal",
       "size": "small",
