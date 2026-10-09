@@ -1,6 +1,19 @@
 {
   "announcements": [
     {
+      "id": "v2.5.0-release",
+      "title": "What's New in v2.5.0",
+      "bullets": [
+        "The Move confirmation names the playlist your videos are going to and puts the count on its button.",
+        "Add to Playlist's button says what it will do: “Copy 12 videos” or “Move 12 videos”.",
+        "If you installed before 2.5.0, nothing changes: removing videos stays unlimited. That perk lives in this install, so removing the extension and adding it again would put you on the new limit. Worth a thought before you uninstall.",
+        "Installs made from 2.5.0 on can remove up to 1,000 hand-picked videos for free every 30 days. Emptying a whole list, deleting a single video, removing likes and copying never count, and the dashboard shows how many are left and when they come back. Pro has no limit."
+      ],
+      "type": "info",
+      "created_at": "2026-10-09",
+      "expires_at": "2027-01-09"
+    },
+    {
       "id": "v2.4.0-release",
       "title": "What's New in v2.4.0",
       "bullets": [
@@ -38,7 +51,7 @@
       },
       "type": "info",
       "created_at": "2026-09-30",
-      "expires_at": "2026-10-31"
+      "expires_at": "2026-10-09T18:00:00Z"
     },
     {
       "id": "v2.3.0-release",
