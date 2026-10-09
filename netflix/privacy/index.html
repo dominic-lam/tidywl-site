@@ -52,6 +52,19 @@ last_modified_at: 2026-09-28
        loads as it does on its own rows. Nothing new is sent anywhere but
        Netflix, and nothing new is stored.
 
+     Drafted 2026-10-08 for 1.3.1 (extension main at c1f8ef8) on branch
+     draft/netflix-1.3.1-release, stacked on 1.3.0's, to merge the day 1.3.1 is
+     approved: request 1 is checked on more occasions (remote-config.js →
+     refreshSoon, at most every ten minutes a tab, still at most once an hour),
+     and it can now correct the values the extension uses with Netflix
+     (config/README.md in the extension repo; page-context.js configFor() and
+     netflix-selectors.js check each one). On release day, add above 1.3.0's line:
+       Updated <day> October 2026 for version 1.3.1: the public settings file,
+       request 1, can now correct the names, ids and settings the extension uses
+       with Netflix, so a Netflix change can be fixed without a new version, and
+       it is checked while you use Netflix rather than only when you open the
+       dashboard, still at most once an hour. Nothing new is sent or stored.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -360,13 +373,22 @@ last_modified_at: 2026-09-28
     <h3>1. A public settings file, from tidywl.com</h3>
     <p>
       The extension fetches <code>https://tidywl.com/config/netflix-config-v1.json</code> when you open the dashboard
-      or press Sync, and, from version 1.1.0, the first time a Netflix page shows title cards after it loads — at
-      most once an hour in all, and it never waits for it. It holds a handful of values, such as the support
+      or press Sync; from version 1.1.0, the first time a Netflix page shows title cards after it loads; and, from
+      version 1.3.1, while you use Netflix with it, each tab looking at most every ten minutes at how old its copy
+      is. It is fetched at most once an hour in all, and the extension never waits for it. It holds a handful of values, such as the support
       links shown in the About dialog and the Pro prices on the upgrade card, so that small things can be corrected
       without shipping a new version. From version 1.1.0 it can also switch IMDb ratings off: while it does,
       requests 2, 3, 4 and 8 are not made, the badges come off Netflix's cards, and the dashboard hides the ratings
       it saved. It can switch Tonight's reading of your viewing history off the same way, and correct the address
       that reading uses on netflix.com if Netflix moves it — never to anywhere outside netflix.com.
+    </p>
+    <p>
+      From version 1.3.1 it can also correct the names, ids and settings the extension uses with Netflix, the ones a
+      Netflix update can change, so that a break like the one that stopped Search on 8 October 2026 can be fixed
+      without a new version. These corrections are bounded in the extension's code: they can only point at
+      netflix.com, they never choose which titles are added to or removed from your list, and a value that fails its
+      check is ignored in favour of the built-in one. The file carries none of them except while Netflix has broken
+      something.
     </p>
     <p>
       The request carries no identifier and no payload; every install receives the same bytes. Nothing in the file is
