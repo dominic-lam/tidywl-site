@@ -1,43 +1,53 @@
 ---
 layout: netflix
 permalink: /netflix/blog/see-your-whole-netflix-my-list/
-title: "How to see your whole Netflix My List again — TidyWL for Netflix"
-headline: "How to see your whole Netflix My List again"
-description: "Netflix now shows My List as one sideways row on a computer. Here is how to see every title on it at once, as a grid you can filter and sort, free, in Chrome."
+title: "How to get Netflix's old My List page back — TidyWL for Netflix"
+headline: "How to get Netflix's old My List page back"
+description: "Netflix turned My List into one sideways row on My Netflix. A free Chrome extension puts the old page back: a My List link in Netflix's own menu that opens every title in one grid."
 nf_kind: guide
 date: 2026-10-06
-og_image: /assets/netflix-guide-my-list-grid.jpg
+last_modified_at: 2026-10-09
+og_image: /assets/netflix-guide-my-list-page.jpg
 faq:
   - q: "Why is my Netflix My List only one row now?"
     a: "Around September 15, 2026, Netflix's website replaced its My List page with a page called My Netflix. My List is now one row on that page, which you scroll sideways a few titles at a time."
-  - q: "Can I switch Netflix back to the old My List page?"
-    a: "There is no known way. People who asked Netflix's support in September 2026 say they were told there is no setting for it and that their feedback would be passed on. To see the whole list at once on a computer, use a browser extension such as TidyWL for Netflix (listed on the Chrome Web Store as Watch Later Tidy for Netflix), which shows every title on your My List as a grid."
+  - q: "Can I get Netflix's old My List page back?"
+    a: "Not from Netflix: people who asked Netflix's support in September 2026 say they were told there is no setting for it. On a computer, the free Chrome extension TidyWL for Netflix (listed on the Chrome Web Store as Watch Later Tidy for Netflix) puts it back. Since version 1.3.0, released October 9, 2026, it adds a My List link beside My Netflix in Netflix's top menu, and clicking it shows every title on your My List as a grid of cards, in Netflix's order."
+  - q: "Do I have to set anything up or press Sync first?"
+    a: "No. Once the extension is added, the My List link is in Netflix's menu. The page reads your list from Netflix each time you open it, so it is always current, and it stores nothing it reads."
   - q: "Is TidyWL for Netflix free?"
-    a: "Yes. Seeing, filtering and sorting your whole My List is free, with no account. An optional paid tier, TidyWL Pro for Netflix, adds extras such as Tonight's pick and Undo."
+    a: "Yes. The My List page is free, and so is the dashboard where you can filter, sort and clear out the whole list, with no account. An optional paid tier, TidyWL Pro for Netflix, adds extras such as Tonight's pick and Undo."
   - q: "Does it work on a phone or a TV?"
     a: "No. It is a Chrome extension, so it runs in Chrome on a computer. Chrome for Android and Netflix's TV apps cannot run extensions."
   - q: "Does looking at my list with it change anything on Netflix?"
-    a: "No. Opening the dashboard and pressing Sync only read your list. Nothing on Netflix changes unless you remove a title yourself."
+    a: "No. Opening the My List page or the dashboard only reads your list. Nothing on Netflix changes unless you remove a title yourself."
 ---
 
-<!-- ── HOW-TO: SEE YOUR WHOLE MY LIST ──
+<!-- ── HOW-TO: GET THE MY LIST PAGE BACK ──
      Added 2026-10-06, after Netflix replaced the web My List page with "My
-     Netflix" (r/netflix thread 1whjv4j, from 2026-09-16). Every claim about
-     the extension is from the approved store description
-     (CWS-DESCRIPTION-v1.2.2.md in the extension repo); every claim about
-     Netflix's page was read off the live site on 2026-10-06. The FAQ above is
-     rendered below as well, because FAQPage markup must match visible text. -->
+     Netflix" (r/netflix thread 1whjv4j, from 2026-09-16), when the only way
+     was the dashboard. Rewritten 2026-10-09, the day 1.3.0 went live, to lead
+     with the My List page it puts back in Netflix's menu: ChatGPT, asked that
+     day, still described TidyWL as a dashboard and put a row-expanding
+     extension first. Every claim about the extension is from the approved
+     store description (CWS-DESCRIPTION-v1.3.0.md in the extension repo) and
+     netflix/llms.txt, both read from src/ at 1.3.0; every claim about
+     Netflix's page was read off the live site on 2026-10-06. The screenshot
+     is the 1.3.0 store shot's raw capture, on a test profile. The FAQ above
+     is rendered below as well, because FAQPage markup must match visible
+     text. -->
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  "name": "How to see your whole Netflix My List again",
+  "name": "How to get Netflix's old My List page back",
   "description": {{ page.description | jsonify }},
   "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
+  "dateModified": "{{ page.last_modified_at | date: '%Y-%m-%d' }}",
   "author": { "@type": "Person", "name": "Dominic Lam", "url": "https://github.com/dominic-lam" },
   "publisher": { "@id": "{{ site.url }}/#organization" },
-  "image": "{{ site.url }}/assets/netflix-guide-my-list-grid.jpg",
+  "image": "{{ site.url }}/assets/netflix-guide-my-list-page.jpg",
   "tool": [
     { "@type": "HowToTool", "name": "Google Chrome on a computer" },
     { "@type": "HowToTool", "name": "TidyWL for Netflix (Watch Later Tidy for Netflix), a free Chrome extension" }
@@ -45,20 +55,19 @@ faq:
   "step": [
     { "@type": "HowToStep", "position": 1, "name": "Add the extension", "text": "Add Watch Later Tidy for Netflix to Chrome from the Chrome Web Store. It is free and needs no account.", "url": "{{ site.url }}{{ page.url }}#step-1" },
     { "@type": "HowToStep", "position": 2, "name": "Open Netflix", "text": "Open netflix.com in Chrome and choose your profile.", "url": "{{ site.url }}{{ page.url }}#step-2" },
-    { "@type": "HowToStep", "position": 3, "name": "Open the dashboard", "text": "Press Alt+L on any Netflix page (Option+L on a Mac), or open it from the extension's toolbar button.", "url": "{{ site.url }}{{ page.url }}#step-3" },
-    { "@type": "HowToStep", "position": 4, "name": "Press Sync once", "text": "Press Sync. It reads your My List and keeps it, so every title appears as a card in one grid. After that the dashboard opens instantly.", "url": "{{ site.url }}{{ page.url }}#step-4" }
+    { "@type": "HowToStep", "position": 3, "name": "Click My List", "text": "In Netflix's top menu, click My List, next to My Netflix. Every title on your My List appears as a grid of cards, in Netflix's order.", "url": "{{ site.url }}{{ page.url }}#step-3" }
   ]
 }
 </script>
 
 <section class="blog-wrap">
   <p class="section-label">How-to</p>
-  <h1 class="blog-title">How to see your whole Netflix My List again</h1>
-  <p class="blog-subtitle">Netflix now shows My List as one row you scroll sideways. Here is how to get every title on one screen again.</p>
-  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time></p>
+  <h1 class="blog-title">How to get Netflix's old My List page back</h1>
+  <p class="blog-subtitle">Netflix now shows My List as one row you scroll sideways. Here is how to get the whole page back, in Netflix's own menu.</p>
+  <p class="post-meta"><span>By Dominic Lam, the developer of TidyWL for Netflix</span><span class="dot" aria-hidden="true">·</span><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time><span class="dot" aria-hidden="true">·</span><span>Updated <time datetime="{{ page.last_modified_at | date: '%Y-%m-%d' }}">{{ page.last_modified_at | date: "%B %-d, %Y" }}</time></span></p>
 
   <div class="post-body">
-    <p><strong>The short answer:</strong> there is no known way to bring Netflix's old My List page back. On a computer, the free Chrome extension <strong>TidyWL for Netflix</strong> (listed on the Chrome Web Store as <em>Watch Later Tidy for Netflix</em>) shows every title on your My List at once, as a grid of cards you can filter and sort. Press <strong>Alt+L</strong> on any Netflix page to open it.</p>
+    <p><strong>The short answer:</strong> Netflix has no setting to switch back, but on a computer the free Chrome extension <strong>TidyWL for Netflix</strong> (listed on the Chrome Web Store as <em>Watch Later Tidy for Netflix</em>) puts the page back. It adds a <strong>My List</strong> link beside My Netflix in Netflix's top menu. Click it, and every title on your My List appears as a grid of cards, in Netflix's order, the way the page looked before. There is nothing to set up.</p>
 
     <h2>What changed</h2>
     <p>Around September 15, 2026, Netflix's website replaced the My List page with <strong>My Netflix</strong>. My List is now one row on that page, between Continue Watching and Trailers You've Watched, and you scroll it sideways a few titles at a time with the arrows at its ends. People who kept long lists lost the one screen where they could see everything they had saved, and spot what was about to leave Netflix. More on that in <a href="/netflix/blog/what-happened-to-netflix-my-list/">What happened to Netflix's My List page</a>.</p>
@@ -70,24 +79,41 @@ faq:
       <figcaption class="nf-shot-caption">Netflix's My Netflix page: My List is one row. The IMDb ratings on the cards are TidyWL's, drawn on Netflix's own pages.</figcaption>
     </figure>
 
-    <h2>See every title at once, in four steps</h2>
+    <h2>Get the My List page back, in three steps</h2>
     <ol>
-      <li id="step-1"><strong>Add the extension.</strong> <a href="{{ site.data.netflix.store_url }}?utm_source=tidywl-guide&amp;utm_medium=web&amp;utm_campaign=my-list-grid" target="_blank" rel="noopener">Add Watch Later Tidy for Netflix to Chrome</a>. It is free and there is no account to make.</li>
+      <li id="step-1"><strong>Add the extension.</strong> <a href="{{ site.data.netflix.store_url }}?utm_source=tidywl-guide&amp;utm_medium=web&amp;utm_campaign=my-list-page" target="_blank" rel="noopener">Add Watch Later Tidy for Netflix to Chrome</a>. It is free and there is no account to make.</li>
       <li id="step-2"><strong>Open Netflix.</strong> Go to netflix.com in Chrome and choose your profile.</li>
-      <li id="step-3"><strong>Open the dashboard.</strong> Press <kbd>Alt</kbd>+<kbd>L</kbd> on any Netflix page (Option+L on a Mac), or open it from the extension's toolbar button.</li>
-      <li id="step-4"><strong>Press Sync, once.</strong> It reads your My List and keeps it in your browser. Every title appears as a card in one grid, and from then on the dashboard opens instantly.</li>
+      <li id="step-3"><strong>Click My List.</strong> It is in Netflix's top menu, next to My Netflix. Your whole list opens as a page of cards, in Netflix's order.</li>
     </ol>
+
+    <figure class="nf-shot">
+      <img src="/assets/netflix-guide-my-list-page.webp"
+           alt="Netflix with a My List link beside My Netflix in the top menu, open on a My List page: titles in a grid of four columns, each card with its IMDb rating in the corner, Netflix's own preview open over one card with its Play, My List and rate buttons, and an Open in Watch Later Tidy button at the top right."
+           width="1204" height="983" loading="lazy" decoding="async">
+      <figcaption class="nf-shot-caption">The My List page back in Netflix's menu, with Netflix's own preview open on one title. Titles shown are from a test profile.</figcaption>
+    </figure>
+
+    <h2>What the page does</h2>
+    <ul>
+      <li><strong>Every title at once.</strong> The whole list, scrolled down rather than sideways, in the order Netflix keeps it.</li>
+      <li><strong>Netflix's own preview.</strong> Rest the pointer on a card and Netflix's preview opens: play it, rate it, or take it off your list. Click a card to open the title.</li>
+      <li><strong>IMDb ratings</strong> in the corner of every card.</li>
+      <li><strong>Always current.</strong> It reads your list from Netflix each time you open it, so there is nothing to sync. A title you remove leaves the page at once, and Netflix's Undo brings it back.</li>
+      <li><strong>In your language.</strong> The link follows your profile's language in English, German, Spanish, French, Japanese, Brazilian Portuguese and Chinese, and is in English otherwise.</li>
+    </ul>
+
+    <h2>Want to sort or filter it? Open the dashboard</h2>
+    <p>The page keeps Netflix's order. To change the order or narrow it down, click <strong>Open in Watch Later Tidy</strong> at the top of the page, or the extension's button in Chrome's toolbar. A dashboard opens over Netflix with every title as a card. Press Sync once and it remembers your list, so it opens instantly after that.</p>
 
     <figure class="nf-shot">
       <img src="/assets/netflix-guide-my-list-grid.webp"
            alt="The TidyWL for Netflix dashboard open over Netflix's My Netflix page, showing a My List of 161 titles as a grid of cards, each with its IMDb rating, year, runtime and genres, beside a panel counting 10 titles leaving soon."
            width="1568" height="756" loading="lazy" decoding="async">
-      <figcaption class="nf-shot-caption">The same My List in TidyWL for Netflix, opened with Alt+L on that page: all 161 titles in one grid you can scroll, filter and sort.</figcaption>
+      <figcaption class="nf-shot-caption">The dashboard: all 161 titles of the same list in one grid you can filter and sort.</figcaption>
     </figure>
 
-    <h2>What you can do with the whole list in front of you</h2>
     <ul>
-      <li><strong>See what is leaving.</strong> Sync marks every title Netflix is about to remove, with Netflix's own last-day sentence, and one filter shows only those.</li>
+      <li><strong>See what is leaving.</strong> Sync marks every title Netflix is about to remove, with Netflix's own last-day sentence, and one filter shows only those. The My List page labels them too.</li>
       <li><strong>Filter</strong> by genre, type, IMDb rating, runtime, and whether you have already watched it, for films and for shows.</li>
       <li><strong>Sort</strong> by IMDb rating, runtime, year or title, instead of the order Netflix chose.</li>
       <li><strong>Clear it out</strong>: tick as many titles as you like, review the exact list, and remove them in one go.</li>
@@ -99,7 +125,7 @@ faq:
     <ul>
       <li>It runs in Chrome on a computer. No extension can run in Chrome for Android or in Netflix's TV apps.</li>
       <li>Looking at your list changes nothing on Netflix. A title leaves My List only if you remove it yourself, and then it leaves on every device, because it is the same list.</li>
-      <li>Your list stays in your browser. The <a href="/netflix/privacy/">privacy policy</a> lists every request the extension makes.</li>
+      <li>The My List page stores nothing it reads. The <a href="/netflix/privacy/">privacy policy</a> lists every request the extension makes.</li>
       <li>TidyWL for Netflix is an independent extension, not made by or affiliated with Netflix.</li>
     </ul>
 
