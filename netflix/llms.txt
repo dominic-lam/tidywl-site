@@ -74,6 +74,7 @@ Around September 15, 2026, Netflix's website replaced the My List page with **My
   - [Netflix Hidden Categories, Sorted A-Z](https://www.youtube.com/watch?v=q7TezaZ44Mg) (1:07, 2026-10-03): hidden categories with A to Z sorting
   - [What's Leaving Netflix From Your List?](https://www.youtube.com/watch?v=N4tHzNMDuxE) (0:58, 2026-10-04): Leaving soon, with Netflix's own last day
   - [What to Watch on Netflix Tonight?](https://www.youtube.com/watch?v=cBRgF_wWylQ) (0:45, 2026-10-05): Tonight, in Pro
+  - [Netflix My List Is One Row Now? Get the Original My List Back](https://www.youtube.com/watch?v=Xa_SKD0OcRI) (1:13, 2026-10-09): Netflix's original My List page, rebuilt and back in Netflix's menu, then sorted in the dashboard
 - The blog, at [tidywl.com/netflix/blog/](https://tidywl.com/netflix/blog/): the developer's story and what Netflix users run into on a computer.
 {%- assign nf_posts = site.pages | where_exp: "p", "p.nf_kind != nil" | sort: "date" | reverse %}
 {%- for p in nf_posts %}

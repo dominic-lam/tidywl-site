@@ -2,8 +2,8 @@
 layout: netflix
 permalink: /netflix/tutorials/
 title: "Tutorials — TidyWL for Netflix"
-description: "How to use every part of TidyWL for Netflix: the My List dashboard, IMDb ratings, hidden categories, playlists, Leaving soon, and Pro's Tonight and Undo."
-last_modified_at: 2026-10-06
+description: "How to use every part of TidyWL for Netflix: Netflix's original My List page, the My List dashboard, IMDb ratings, hidden categories, playlists, Leaving soon, and Pro's Tonight and Undo."
+last_modified_at: 2026-10-09
 faq:
   - q: "Where do I open the TidyWL for Netflix dashboard?"
     a: "Open netflix.com in Chrome on a computer, choose your profile, and press Alt+L on any browse page, such as the home page (Option+L on a Mac). Or click the extension's icon in the browser toolbar and press Open dashboard. It does not open on Netflix's Who's watching? screen, so pick a profile first."
@@ -34,7 +34,7 @@ faq:
        install, layout, sync,
        cards, filter, sort, genres, leaving-soon, hover-preview, select,
        remove, export-import,
-       imdb-ratings,
+       my-list-page (added 2026-10-09, for 1.3.0), imdb-ratings,
        search, hidden-categories, result-details, add-from-search,
        playlists, move-copy, manage-playlist, playlist-limits,
        toolbar-popup,
@@ -81,6 +81,7 @@ faq:
         <div class="tut-toc-group">
           <p class="tut-toc-head">On Netflix's pages</p>
           <ul>
+            <li><a href="#my-list-page">The original My List page</a></li>
             <li><a href="#imdb-ratings">IMDb ratings</a></li>
             <li><a href="#toolbar-popup">The toolbar button</a></li>
           </ul>
@@ -182,7 +183,7 @@ faq:
   <section class="tut-band tut-band--alt">
     <div class="section-inner">
       <p class="section-label">My List</p>
-      <p class="tut-band-note">Netflix's website now shows My List as one row you scroll sideways. Since version 1.3.0 a <b class="ui">My List</b> link in Netflix's own menu puts the whole page back, and the dashboard's <b class="ui">My List</b> tab shows every title at once too. <a href="/netflix/blog/see-your-whole-netflix-my-list/">How to get Netflix's old My List page back</a>.</p>
+      <p class="tut-band-note">Netflix's website now shows My List as one row you scroll sideways. Since version 1.3.0 a <b class="ui">My List</b> link in Netflix's own menu puts the original page back (<a href="#my-list-page">how</a>), and the dashboard's <b class="ui">My List</b> tab shows every title at once too. <a href="/netflix/blog/see-your-whole-netflix-my-list/">How to get Netflix's old My List page back</a>.</p>
 
       <article class="tut" id="cards">
         <h2>Read a title card</h2>
@@ -318,6 +319,23 @@ faq:
   <section class="tut-band">
     <div class="section-inner">
       <p class="section-label">On Netflix's own pages</p>
+
+      <article class="tut" id="my-list-page">
+        <h2>Open Netflix's original My List page</h2>
+        <p class="tut-where">Netflix's top menu → <b class="ui">My List</b>, next to My Netflix</p>
+        <ol class="tut-steps">
+          <li>There is nothing to switch on. With the extension installed, Netflix's top menu has a <b class="ui">My List</b> link again, beside My Netflix. If a Netflix tab was already open when you added the extension, refresh it first.</li>
+          <li>Click it. The original My List page opens, rebuilt: every title on one page, in Netflix's order, scrolled down rather than sideways.</li>
+          <li>Rest the pointer on a card for Netflix's own preview, with Play, the My List button and rating. Click a card to open the title.</li>
+          <li>To sort or filter the list, press <b class="ui">Open in Watch Later Tidy</b> at the top of the page. The dashboard opens over it.</li>
+        </ol>
+        <p class="tut-note">The page reads your list from Netflix each time it opens, so it needs no Sync and stores nothing it reads. A title you take off your list there leaves the page at once, and Netflix's Undo brings it back.</p>
+        <p class="tut-note">Each card carries its IMDb rating, and a title your last Sync found leaving Netflix carries a <b class="ui">Leaving soon</b> label. Free, since version 1.3.0.</p>
+        <a class="nf-video" href="https://youtu.be/Xa_SKD0OcRI" target="_blank" rel="noopener">
+          <span class="nf-video-thumb"><img src="/assets/netflix-video-my-list-page.webp" alt="Video cover reading Netflix My List is back, beside the rebuilt My List page with the My List link lit in Netflix's menu." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">1:13</span></span>
+          <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">Netflix My List Is One Row Now? Get the Original My List Back</span><span class="nf-video-sub">The My List link back in Netflix's menu, the original page, and sorting it in the dashboard.</span></span>
+        </a>
+      </article>
 
       <article class="tut" id="imdb-ratings">
         <h2>IMDb ratings on Netflix's own pages</h2>
@@ -706,7 +724,7 @@ faq:
       "description": "Step-by-step guides for every part of TidyWL for Netflix.",
       "url": "{{ site.url }}/netflix/tutorials/",
       "itemListOrder": "https://schema.org/ItemListOrderAscending",
-      "numberOfItems": 32,
+      "numberOfItems": 33,
       "itemListElement": [
         { "@type": "ListItem", "position": 1,  "name": "Install TidyWL for Netflix and open the dashboard", "url": "{{ site.url }}/netflix/tutorials/#install" },
         { "@type": "ListItem", "position": 2,  "name": "Find your way around the dashboard", "url": "{{ site.url }}/netflix/tutorials/#layout" },
@@ -720,26 +738,27 @@ faq:
         { "@type": "ListItem", "position": 10, "name": "Select titles", "url": "{{ site.url }}/netflix/tutorials/#select" },
         { "@type": "ListItem", "position": 11, "name": "Remove titles from My List in one go", "url": "{{ site.url }}/netflix/tutorials/#remove" },
         { "@type": "ListItem", "position": 12, "name": "Export and import My List", "url": "{{ site.url }}/netflix/tutorials/#export-import" },
-        { "@type": "ListItem", "position": 13, "name": "IMDb ratings on Netflix's own pages", "url": "{{ site.url }}/netflix/tutorials/#imdb-ratings" },
-        { "@type": "ListItem", "position": 14, "name": "The toolbar button: what is leaving, at a glance", "url": "{{ site.url }}/netflix/tutorials/#toolbar-popup" },
-        { "@type": "ListItem", "position": 15, "name": "Search Netflix by title, actor or director", "url": "{{ site.url }}/netflix/tutorials/#search" },
-        { "@type": "ListItem", "position": 16, "name": "Browse by genre, including the hidden categories", "url": "{{ site.url }}/netflix/tutorials/#hidden-categories" },
-        { "@type": "ListItem", "position": 17, "name": "Details and ratings on every result", "url": "{{ site.url }}/netflix/tutorials/#result-details" },
-        { "@type": "ListItem", "position": 18, "name": "Add what you find to My List or a playlist", "url": "{{ site.url }}/netflix/tutorials/#add-from-search" },
-        { "@type": "ListItem", "position": 19, "name": "Make a playlist", "url": "{{ site.url }}/netflix/tutorials/#playlists" },
-        { "@type": "ListItem", "position": 20, "name": "Move or copy titles from My List into a playlist", "url": "{{ site.url }}/netflix/tutorials/#move-copy" },
-        { "@type": "ListItem", "position": 21, "name": "Sort, filter and reorder a playlist", "url": "{{ site.url }}/netflix/tutorials/#manage-playlist" },
-        { "@type": "ListItem", "position": 22, "name": "Playlists, profiles and other browsers", "url": "{{ site.url }}/netflix/tutorials/#playlist-limits" },
-        { "@type": "ListItem", "position": 23, "name": "Start Pro, and use it in more than one browser", "url": "{{ site.url }}/netflix/tutorials/#pro" },
-        { "@type": "ListItem", "position": 24, "name": "Tonight: one pick and two backups from your list (Pro)", "url": "{{ site.url }}/netflix/tutorials/#tonight" },
-        { "@type": "ListItem", "position": 25, "name": "Undo a removal, for 90 days (Pro)", "url": "{{ site.url }}/netflix/tutorials/#undo" },
-        { "@type": "ListItem", "position": 26, "name": "Pin a title so nothing removes it (Pro)", "url": "{{ site.url }}/netflix/tutorials/#pin" },
-        { "@type": "ListItem", "position": 27, "name": "Clean-up rules (Pro)", "url": "{{ site.url }}/netflix/tutorials/#clean-up-rules" },
-        { "@type": "ListItem", "position": 28, "name": "Stats (Pro)", "url": "{{ site.url }}/netflix/tutorials/#stats" },
-        { "@type": "ListItem", "position": 29, "name": "Your playlists on your phone and in your other browsers (Pro)", "url": "{{ site.url }}/netflix/tutorials/#mobile-sync" },
-        { "@type": "ListItem", "position": 30, "name": "Support answered first (Pro)", "url": "{{ site.url }}/netflix/tutorials/#support" },
-        { "@type": "ListItem", "position": 31, "name": "Keyboard shortcuts", "url": "{{ site.url }}/netflix/tutorials/#shortcuts" },
-        { "@type": "ListItem", "position": 32, "name": "If something looks wrong", "url": "{{ site.url }}/netflix/tutorials/#troubleshooting" }
+        { "@type": "ListItem", "position": 13, "name": "Open Netflix's original My List page", "url": "{{ site.url }}/netflix/tutorials/#my-list-page" },
+        { "@type": "ListItem", "position": 14, "name": "IMDb ratings on Netflix's own pages", "url": "{{ site.url }}/netflix/tutorials/#imdb-ratings" },
+        { "@type": "ListItem", "position": 15, "name": "The toolbar button: what is leaving, at a glance", "url": "{{ site.url }}/netflix/tutorials/#toolbar-popup" },
+        { "@type": "ListItem", "position": 16, "name": "Search Netflix by title, actor or director", "url": "{{ site.url }}/netflix/tutorials/#search" },
+        { "@type": "ListItem", "position": 17, "name": "Browse by genre, including the hidden categories", "url": "{{ site.url }}/netflix/tutorials/#hidden-categories" },
+        { "@type": "ListItem", "position": 18, "name": "Details and ratings on every result", "url": "{{ site.url }}/netflix/tutorials/#result-details" },
+        { "@type": "ListItem", "position": 19, "name": "Add what you find to My List or a playlist", "url": "{{ site.url }}/netflix/tutorials/#add-from-search" },
+        { "@type": "ListItem", "position": 20, "name": "Make a playlist", "url": "{{ site.url }}/netflix/tutorials/#playlists" },
+        { "@type": "ListItem", "position": 21, "name": "Move or copy titles from My List into a playlist", "url": "{{ site.url }}/netflix/tutorials/#move-copy" },
+        { "@type": "ListItem", "position": 22, "name": "Sort, filter and reorder a playlist", "url": "{{ site.url }}/netflix/tutorials/#manage-playlist" },
+        { "@type": "ListItem", "position": 23, "name": "Playlists, profiles and other browsers", "url": "{{ site.url }}/netflix/tutorials/#playlist-limits" },
+        { "@type": "ListItem", "position": 24, "name": "Start Pro, and use it in more than one browser", "url": "{{ site.url }}/netflix/tutorials/#pro" },
+        { "@type": "ListItem", "position": 25, "name": "Tonight: one pick and two backups from your list (Pro)", "url": "{{ site.url }}/netflix/tutorials/#tonight" },
+        { "@type": "ListItem", "position": 26, "name": "Undo a removal, for 90 days (Pro)", "url": "{{ site.url }}/netflix/tutorials/#undo" },
+        { "@type": "ListItem", "position": 27, "name": "Pin a title so nothing removes it (Pro)", "url": "{{ site.url }}/netflix/tutorials/#pin" },
+        { "@type": "ListItem", "position": 28, "name": "Clean-up rules (Pro)", "url": "{{ site.url }}/netflix/tutorials/#clean-up-rules" },
+        { "@type": "ListItem", "position": 29, "name": "Stats (Pro)", "url": "{{ site.url }}/netflix/tutorials/#stats" },
+        { "@type": "ListItem", "position": 30, "name": "Your playlists on your phone and in your other browsers (Pro)", "url": "{{ site.url }}/netflix/tutorials/#mobile-sync" },
+        { "@type": "ListItem", "position": 31, "name": "Support answered first (Pro)", "url": "{{ site.url }}/netflix/tutorials/#support" },
+        { "@type": "ListItem", "position": 32, "name": "Keyboard shortcuts", "url": "{{ site.url }}/netflix/tutorials/#shortcuts" },
+        { "@type": "ListItem", "position": 33, "name": "If something looks wrong", "url": "{{ site.url }}/netflix/tutorials/#troubleshooting" }
       ]
     },
     {
@@ -791,6 +810,16 @@ faq:
       "duration": "PT45S",
       "contentUrl": "https://www.youtube.com/watch?v=cBRgF_wWylQ",
       "embedUrl": "https://www.youtube.com/embed/cBRgF_wWylQ"
+    },
+    {
+      "@type": "VideoObject",
+      "name": "Netflix My List Is One Row Now? Get the Original My List Back",
+      "description": "How TidyWL for Netflix rebuilds Netflix's original My List page and puts its link back in Netflix's menu, then sorts and filters the list in the dashboard.",
+      "thumbnailUrl": "https://tidywl.com/assets/netflix-video-my-list-page.webp",
+      "uploadDate": "2026-10-09T19:06:18-07:00",
+      "duration": "PT1M13S",
+      "contentUrl": "https://www.youtube.com/watch?v=Xa_SKD0OcRI",
+      "embedUrl": "https://www.youtube.com/embed/Xa_SKD0OcRI"
     }
   ]
 }
