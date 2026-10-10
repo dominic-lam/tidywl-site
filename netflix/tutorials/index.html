@@ -16,7 +16,7 @@ faq:
   - q: "Is my list sent anywhere?"
     a: "Your list, your watch state, your searches, your removal history and your stats stay in your browser. Your playlists do too, unless you have Pro and switch on Sync playlists to your phone and other browsers. Then that profile's playlists, with each title's name, year and picture link, and the profile's name, go to tidywl.com. Chrome's own sync also carries your playlists to your other signed-in Chrome browsers, through Google. Separately, the extension sends tidywl.com a usage report of counts tied to a random install id, never a title, a search term, a category or a profile. For the IMDb ratings, Netflix's numeric title ids, and the name of a title they cannot match, go to Wikidata, IMDb and TidyWL's ratings table, with nothing that identifies you. With Pro, your key goes to tidywl.com to be checked. The privacy policy lists every request."
   - q: "What is free, and what does Pro add?"
-    a: "Free, with no account: the dashboard over My List with its filters, sorts and genre breakdown, IMDb ratings on Netflix's own pages, Leaving soon, search and the hidden categories, the hover panel, five playlists, bulk remove with the exact list shown first, and export and import. Pro adds Tonight, Undo for 90 days, Pin, clean-up rules, Stats, up to 50 playlists per profile, mobile sync, and support answered first. Pro starts with 7 days free, card required, then costs $3.99 a month or $29.99 a year, in US dollars before tax."
+    a: "Free, with no account: the dashboard over My List with its filters, sorts and genre breakdown, IMDb ratings on Netflix's own pages, Leaving soon, search and the hidden categories, Netflix's own preview on hover, five playlists, bulk remove with the exact list shown first, and export and import. Pro adds Tonight, Undo for 90 days, Pin, clean-up rules, Stats, up to 50 playlists per profile, mobile sync, and support answered first. Pro starts with 7 days free, card required, then costs $3.99 a month or $29.99 a year, in US dollars before tax."
   - q: "Why do some titles have no IMDb rating?"
     a: "A title with fewer than 100 votes on IMDb gets no rating, because a thin rating misleads more than it helps. A title TidyWL cannot match to IMDb gets none either. In the dashboard, the Filter menu's Unrated choice shows them."
 ---
@@ -24,7 +24,8 @@ faq:
 <!-- ── TUTORIALS, TidyWL for Netflix ──
      Added 2026-10-06, modelled on /tutorials/ (the Watch Later product's).
      Every button, tab, menu item and label quoted below was copied from the
-     extension's src/ (tidywl-netflix, version 1.2.x). An icon button's name is
+     extension's src/ (tidywl-netflix, version 1.2.x; the my-list-page and
+     hover-preview guides against 1.3.0, 2026-10-09). An icon button's name is
      the first part of its tooltip. Category names Netflix supplies are not
      quoted, except the two the approved store description names. Claims about
      free vs Pro, prices and privacy follow CWS-DESCRIPTION-v1.2.2.md.
@@ -49,7 +50,7 @@ faq:
   <section class="tut-hero">
     <p class="section-label">Tutorials</p>
     <h1>How to use <span class="em">every part</span> of TidyWL for Netflix</h1>
-    <p class="tagline">One short guide per feature, in the order you would meet them. Written against version 1.2. Every button name below is the name on the button, or the first words of its tooltip.</p>
+    <p class="tagline">One short guide per feature, in the order you would meet them. Written against version 1.3. Every button name below is the name on the button, or the first words of its tooltip.</p>
     <p class="tut-legend"><span class="tut-pill">Pro</span> marks a feature that needs TidyWL Pro for Netflix. Everything else is free.</p>
   </section>
 
@@ -265,14 +266,16 @@ faq:
 
       <article class="tut" id="hover-preview">
         <h2>See a title's details without opening it</h2>
-        <p class="tut-where">Any title card, on any tab</p>
+        <p class="tut-where">The picture on any title card, on any tab</p>
         <ol class="tut-steps">
-          <li>Rest the pointer on a card for a moment. A panel opens beside it with a still, the year, the runtime or seasons, the maturity rating and the synopsis.</li>
-          <li>Under that are rows of chips: <b class="ui">Cast</b>, <b class="ui">Director</b> (or <b class="ui">Creators</b> for a show) and <b class="ui">Genres</b>.</li>
-          <li>Click a person to search Netflix for them on the <b class="ui">Search</b> tab. Click a genre to browse that category.</li>
+          <li>Rest the pointer on a card's picture for a moment. Netflix's own preview opens over it, the one Netflix shows on its own rows, with Play, ✓ for My List, 👍 to rate, and the arrow for more.</li>
+          <li>Under Netflix's lines, the dashboard adds the synopsis and rows of chips: <b class="ui">Cast</b>, <b class="ui">Director</b> (or <b class="ui">Creators</b> for a show) and <b class="ui">Genres</b>. Click a person to search Netflix for them on the <b class="ui">Search</b> tab. Click a genre to browse that category.</li>
+          <li>Play leaves the dashboard for the player. The arrow opens Netflix's full view of the title over the dashboard; close that view, with its ✕, Escape or a click outside it, and the dashboard is still there.</li>
+          <li>✓ takes the title off My List, on Netflix, and the dashboard reads My List again once Netflix has made the change. On a pinned title it is refused until you unpin it.</li>
         </ol>
-        <p class="tut-note">The panel stays open while the pointer moves from the card onto it, so you can read and select its text. Clicking anywhere else closes it.</p>
-        <p class="tut-note">Each panel costs one request to Netflix, so it waits until the pointer rests, asks about one title at a time, and keeps every answer. Sweeping the pointer across the grid asks for nothing.</p>
+        <p class="tut-note">The buttons on a card's picture, such as the tick box, <b class="ui">Remove</b> and the pin, never open the preview, so they stay easy to click.</p>
+        <p class="tut-note">If Netflix's preview cannot open, the dashboard's own panel opens instead, with a still, the year, the runtime or seasons, the maturity rating, the synopsis and the same chips.</p>
+        <p class="tut-note">A preview asks Netflix about the title, as Netflix's own rows do, so it waits until the pointer rests, opens one title at a time, and keeps every answer. Sweeping the pointer across the grid asks for nothing. Since version 1.3.0; before it, the dashboard's own panel was the only preview.</p>
       </article>
 
       <article class="tut" id="select">
@@ -690,7 +693,7 @@ faq:
         </div>
         <div class="faq-item" id="q-free" aria-expanded="false">
           <button class="faq-q" type="button">What is free, and what does Pro add?<span class="plus" aria-hidden="true">+</span></button>
-          <div class="faq-a"><p>Free, with no account: the dashboard over My List with its filters, sorts and genre breakdown, IMDb ratings on Netflix's own pages, Leaving soon, search and the hidden categories, the hover panel, five playlists, bulk remove with the exact list shown first, and export and import. Pro adds Tonight, Undo for 90 days, Pin, clean-up rules, Stats, up to 50 playlists per profile, mobile sync, and support answered first. Pro starts with 7 days free, card required, then costs $3.99 a month or $29.99 a year, in US dollars before tax. See <a href="/netflix/pricing/">pricing</a>.</p></div>
+          <div class="faq-a"><p>Free, with no account: the dashboard over My List with its filters, sorts and genre breakdown, IMDb ratings on Netflix's own pages, Leaving soon, search and the hidden categories, Netflix's own preview on hover, five playlists, bulk remove with the exact list shown first, and export and import. Pro adds Tonight, Undo for 90 days, Pin, clean-up rules, Stats, up to 50 playlists per profile, mobile sync, and support answered first. Pro starts with 7 days free, card required, then costs $3.99 a month or $29.99 a year, in US dollars before tax. See <a href="/netflix/pricing/">pricing</a>.</p></div>
         </div>
         <div class="faq-item" id="q-unrated" aria-expanded="false">
           <button class="faq-q" type="button">Why do some titles have no IMDb rating?<span class="plus" aria-hidden="true">+</span></button>
