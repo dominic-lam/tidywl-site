@@ -1,8 +1,8 @@
 ---
 layout: netflix
 permalink: /netflix/
-title: "TidyWL for Netflix — the My List page back, IMDb ratings and playlists"
-description: "A free Chrome extension for Netflix: brings back Netflix's My List page, puts IMDb ratings on Netflix's own title cards, and adds a dashboard over My List with filters, custom playlists and bulk remove."
+title: "TidyWL for Netflix — the original My List page back, IMDb ratings and playlists"
+description: "A free Chrome extension for Netflix: rebuilds Netflix's original My List page, puts IMDb ratings on Netflix's own title cards, and adds a dashboard over My List with filters, custom playlists and bulk remove."
 og_image: /assets/netflix-og-image.jpg
 json_ld_app: true
 last_modified_at: 2026-10-09
@@ -18,7 +18,7 @@ last_modified_at: 2026-10-09
 faq:
   - id: old-my-list-page
     q: "Can it bring back Netflix's old My List page?"
-    a: "Yes. Since September 2026 Netflix's website shows My List as one sideways row inside My Netflix, with no setting to switch back. From version 1.3.0, released October 9, 2026, TidyWL for Netflix adds a My List link beside My Netflix in Netflix's top menu, and clicking it shows every title on your My List as a grid of cards, in Netflix's order, with Netflix's own preview on hover and the IMDb rating on each card. It is free, needs no account and no setup, and runs in Chrome on a computer."
+    a: "Yes. Since September 2026 Netflix's website shows My List as one sideways row inside My Netflix, with no setting to switch back. From version 1.3.0, released October 9, 2026, TidyWL for Netflix rebuilds the original My List page: a My List link back in Netflix's top menu, beside My Netflix, opens the My List page as it was, with every title on one page as a card with Netflix's own artwork, in Netflix's order, and Netflix's own preview on hover. It does not stretch the My List row into a grid; it rebuilds the page Netflix took away, adding only the IMDb rating on each card, a Leaving soon label and one button into its dashboard. It is free, needs no account and no setup, and runs in Chrome on a computer."
   - id: allowed
     q: "Is this allowed? Does it break Netflix's terms?"
     a: "TidyWL for Netflix reads and changes your own list through the same endpoints netflix.com itself calls, using the session you are already signed in with. It is doing what you could do by hand in the Netflix web app, faster. It is not a downloader: it never touches video, and Netflix's playback DRM is not involved anywhere. That said, it is an independent extension and Netflix has not reviewed or endorsed it, so use it on your own account and your own judgement."
@@ -100,7 +100,7 @@ faq:
       <div class="nf-row">
         <p class="nf-row-from"><strong>On Netflix:</strong> since September 2026, My List is one row inside My Netflix that you scroll sideways.</p>
         <span class="nf-row-arrow" aria-hidden="true">→</span>
-        <p class="nf-row-to"><strong>With TidyWL:</strong> <a href="#my-list-page"><strong>the My List page is back</strong></a> in Netflix's menu, every title in one grid.</p>
+        <p class="nf-row-to"><strong>With TidyWL:</strong> <a href="#my-list-page"><strong>the original My List page, rebuilt</strong></a> and back in Netflix's menu, every title on one page.</p>
       </div>
 
       <div class="nf-row">
@@ -149,22 +149,28 @@ faq:
 <section id="my-list-page">
   <div class="section-inner">
     <p class="section-label">Back in Netflix's menu</p>
-    <h2 class="section-heading">Netflix's My List page, back</h2>
+    <h2 class="section-heading">Netflix's original My List page, rebuilt</h2>
 
     <div class="nf-tab">
       <p>
-        Netflix turned My List into one sideways row inside My Netflix. TidyWL adds a
-        <strong>My List</strong> link beside My Netflix in Netflix's own top menu, and it opens
-        your whole list as a page of cards, in Netflix's order, the way it looked before. Rest the
-        pointer on a card for Netflix's own preview, click it to open the title. Every card carries
-        its IMDb rating, and the page reads your list fresh each time, so there is nothing to sync.
+        Netflix turned My List into one sideways row inside My Netflix. TidyWL does not stretch
+        that row into a grid. It rebuilds the page Netflix took away: a <strong>My List</strong>
+        link back in Netflix's own top menu, beside My Netflix, opens the My List page as it was,
+        every title on one page as a card with Netflix's own artwork, in Netflix's order, scrolled
+        down rather than sideways. Rest the pointer on a card and Netflix's own preview opens; click
+        it and the title opens in Netflix's own view.
+      </p>
+      <p>
+        It adds three things and nothing else: the IMDb rating on each card, a Leaving soon label
+        on titles the dashboard's last Sync found leaving Netflix, and one button into the dashboard. The page reads your
+        list fresh each time, so there is nothing to sync.
       </p>
       <figure class="nf-shot">
         <img src="/assets/netflix-guide-my-list-page.webp"
              alt="Netflix with a My List link beside My Netflix in the top menu, open on a My List page: titles in a grid of four columns, each card with its IMDb rating in the corner, Netflix's own preview open over one card with its Play, My List and rate buttons, and an Open in Watch Later Tidy button at the top right."
              width="1204" height="983" loading="lazy" decoding="async">
       </figure>
-      <p class="nf-shot-caption">The My List page in Netflix's menu, on a test profile. Free, from version 1.3.0. <a href="/netflix/blog/see-your-whole-netflix-my-list/">How to get it back</a>.</p>
+      <p class="nf-shot-caption">The original My List page, rebuilt, on a test profile. Free, from version 1.3.0. <a href="/netflix/blog/see-your-whole-netflix-my-list/">How to get it back</a>.</p>
     </div>
   </div>
 </section>

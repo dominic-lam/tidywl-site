@@ -185,5 +185,5 @@ TidyWL for Netflix, listed on the Chrome Web Store as Watch Later Tidy for Netfl
 - [TidyWL for Netflix](https://tidywl.com/netflix/): the sibling extension, for Netflix My List
 - [Install TidyWL for Netflix]({{ site.data.netflix.store_url }}): its Chrome Web Store listing
 - [TidyWL for Netflix privacy policy](https://tidywl.com/netflix/privacy/): every request that extension makes
-- [How to get Netflix's old My List page back](https://tidywl.com/netflix/blog/see-your-whole-netflix-my-list/): since Netflix made My List one row in September 2026, TidyWL for Netflix puts the page back in Netflix's menu
+- [How to get Netflix's old My List page back](https://tidywl.com/netflix/blog/see-your-whole-netflix-my-list/): since Netflix made My List one row in September 2026, TidyWL for Netflix rebuilds the original page and puts it back in Netflix's menu
 - [TidyWL for Netflix tutorials](https://tidywl.com/netflix/tutorials/): how to use every feature of that extension
