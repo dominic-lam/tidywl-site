@@ -125,6 +125,24 @@ sitemap: false
     .un-legal { max-width: 620px; font-size: 0.78rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
     .un-copy { font-size: 0.8rem; color: var(--text-muted); }
 
+    /* The record (2026-10-11). The extension keeps the uninstall link's
+       FRAGMENT current with its own lifetime counts, and the page shows them
+       only on the "I finished my cleanup" answer and its thank-you, where the
+       rating ask follows from the number. readRecord() in the script is the
+       one parser; nothing it reads is ever put in a request. */
+    .un-record { display: flex; flex-direction: column; padding: 22px 24px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
+    .un-record[hidden], [data-store][hidden] { display: none; }
+    .un-record-fig { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .un-record-fig:focus { outline: none; }
+    .un-record-num { display: block; font-size: clamp(3rem, 12vw, 4.75rem); font-weight: 800; letter-spacing: -0.045em; line-height: 0.92; color: var(--accent); font-variant-numeric: lining-nums tabular-nums; overflow-wrap: anywhere; }
+    .un-record-label { display: block; font-size: 1.1875rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); text-wrap: balance; }
+    .un-record-more { margin-top: 4px; font-size: 0.9375rem; line-height: 1.5; color: var(--text-secondary); }
+    .un-record-more[hidden] { display: none; }
+    .un-record-src { margin-top: 14px; font-size: 0.8125rem; text-wrap: pretty; }
+    .un-record-rate { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border-subtle); }
+    .un-btn.is-primary { background: var(--accent-fill); border-color: var(--accent-fill); color: #fff; }
+    .un-btn.is-primary:hover { background: var(--accent-fill-hover); border-color: var(--accent-fill-hover); }
+
     .un :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     .un textarea:focus-visible { outline-offset: 1px; }
     .un-reveal { animation: un-in 0.24s ease-out both; }
@@ -233,6 +251,22 @@ sitemap: false
             </div>
           </div>
 
+          <!-- The record: only on the done answer, and only when the link carried
+               a count at or over RECORD_MIN. Filled with textContent by
+               renderRecord(); nothing in it is ever sent. -->
+          <div class="un-record un-reveal" id="un-record" hidden>
+            <p class="un-eyebrow">Your record on this browser</p>
+            <p class="un-record-fig" tabindex="-1">
+              <span class="un-record-num" data-rec="num"></span>
+              <span class="un-record-label" data-rec="label"></span>
+            </p>
+            <p class="un-record-more" data-rec="more" hidden></p>
+            <p class="un-small un-record-src">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>Counted in this browser and carried in this page's link. The page doesn't send it anywhere.</span>
+            </p>
+          </div>
+
           <div class="un-reply un-reveal">
             <img src="/assets/icon128.png" alt="" width="40" height="40">
             <div class="un-reply-body">
@@ -240,26 +274,20 @@ sitemap: false
 
               <div class="un-branch" data-branch="done" hidden>
                 <h2 class="un-h2" tabindex="-1">Then it did its job. Thanks for using it.</h2>
-                <p class="un-p">If it saved you time, a rating helps the next person find it.</p>
-                <div class="un-btns">
-                  <a class="un-btn" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener">
+                <p class="un-p">If it saved you time, a quick rating means a lot to a small app like this one. It's also how the next person finds it.</p>
+                <div class="un-btns" data-rate>
+                  <a class="un-btn" data-store="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
                     Rate on Chrome<span class="sr-only"> (opens in a new tab)</span>
                   </a>
-                  <a class="un-btn" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener">
+                  <a class="un-btn" data-store="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
                     Rate on Firefox<span class="sr-only"> (opens in a new tab)</span>
                   </a>
-                  <a class="un-btn" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
+                  <a class="un-btn" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
                     Rate on Edge<span class="sr-only"> (opens in a new tab)</span>
                   </a>
-                </div>
-                <p class="un-p">If your Watch Later fills up again, it's free to add back, and there's no account to set up.</p>
-                <div class="un-btns">
-                  <a class="un-btn" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
-                  <a class="un-btn" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Add to Firefox</a>
-                  <a class="un-btn" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Add to Edge</a>
                 </div>
               </div>
 
@@ -363,6 +391,38 @@ sitemap: false
         </section>
 
         <section class="un-step un-reveal" id="un-thanks" hidden>
+          <!-- The same record leads the done thank-you, and carries the rating
+               ask that #un-rate-thanks shows when there is no record. -->
+          <div class="un-record" id="un-record-thanks" hidden>
+            <p class="un-eyebrow">Your record on this browser</p>
+            <p class="un-record-fig" tabindex="-1">
+              <span class="un-record-num" data-rec="num"></span>
+              <span class="un-record-label" data-rec="label"></span>
+            </p>
+            <p class="un-record-more" data-rec="more" hidden></p>
+            <p class="un-small un-record-src">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>Counted in this browser and carried in this page's link. The page doesn't send it anywhere.</span>
+            </p>
+            <div class="un-record-rate">
+              <p class="un-p">If it saved you time, a quick rating means a lot to a small app like this one. It's also how the next person finds it.</p>
+              <div class="un-btns" data-rate>
+                <a class="un-btn" data-store="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                  Rate on Chrome<span class="sr-only"> (opens in a new tab)</span>
+                </a>
+                <a class="un-btn" data-store="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                  Rate on Firefox<span class="sr-only"> (opens in a new tab)</span>
+                </a>
+                <a class="un-btn" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                  Rate on Edge<span class="sr-only"> (opens in a new tab)</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
           <div class="un-intro">
             <span class="un-done-mark">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
@@ -382,29 +442,20 @@ sitemap: false
           </div>
 
           <div class="un-again" id="un-rate-thanks" hidden>
-            <p class="un-again-title">If it saved you time, a rating helps the next person find it</p>
-            <div class="un-btns">
-            <a class="un-btn" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener">
+            <p class="un-again-title">If it saved you time, a quick rating means a lot to a small app like this one</p>
+            <div class="un-btns" data-rate>
+            <a class="un-btn" data-store="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
               Rate on Chrome<span class="sr-only"> (opens in a new tab)</span>
             </a>
-            <a class="un-btn" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener">
+            <a class="un-btn" data-store="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
               Rate on Firefox<span class="sr-only"> (opens in a new tab)</span>
             </a>
-            <a class="un-btn" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
+            <a class="un-btn" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
               Rate on Edge<span class="sr-only"> (opens in a new tab)</span>
             </a>
-            </div>
-          </div>
-
-          <div class="un-again">
-            <p class="un-again-title">If you ever need it again</p>
-            <div class="un-btns">
-              <a class="un-btn" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
-              <a class="un-btn" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Add to Firefox</a>
-              <a class="un-btn" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Add to Edge</a>
             </div>
           </div>
 
@@ -525,6 +576,93 @@ sitemap: false
       } catch (e) {}
     }
 
+    // ── The record (2026-10-11) ──
+    // The extension keeps its uninstall link current with its own lifetime
+    // counts in the FRAGMENT, which the browser never sends to a server:
+    //   https://tidywl.com/uninstall/#c=3412&m=120&s=chrome
+    //   c  videos cleaned up: deleted + unliked, the site's own public term
+    //   m  videos moved to another playlist
+    //   s  the store this copy came from: chrome, edge or firefox
+    // Anyone can link here with any fragment, so it is read strictly: a value
+    // is 1 to 9 digits and nothing else, clamped to its cap; a key that is
+    // unknown is skipped; a key that is repeated or malformed counts as absent.
+    // No percent-decoding, so an encoded value is malformed too. Output goes
+    // through textContent only, and nothing read here is ever put in a request.
+    var RECORD_CAPS = { c: 2000000, m: 1000000 };
+    var RECORD_STORES = ['chrome', 'edge', 'firefox'];
+    var RECORD_MIN = 10;
+    var has = Object.prototype.hasOwnProperty;
+
+    function readRecord(hash) {
+      var out = { c: null, m: null, s: null };
+      var raw = typeof hash === 'string' ? hash.replace(/^#/, '') : '';
+      if (raw === '' || raw.length > 200) return out;
+      var values = {};
+      raw.split('&').forEach(function (part) {
+        var eq = part.indexOf('=');
+        if (eq < 1) return;
+        var key = part.slice(0, eq);
+        if (!has.call(out, key)) return;
+        values[key] = has.call(values, key) ? null : part.slice(eq + 1);
+      });
+      Object.keys(RECORD_CAPS).forEach(function (key) {
+        var v = values[key];
+        if (typeof v === 'string' && /^[0-9]{1,9}$/.test(v)) out[key] = Math.min(parseInt(v, 10), RECORD_CAPS[key]);
+      });
+      if (RECORD_STORES.indexOf(values.s) !== -1) out.s = values.s;
+      return out;
+    }
+
+    var number = new Intl.NumberFormat('en-US');
+    function plural(n, one, many) { return n === 1 ? one : many; }
+
+    // What the record says, or null when no count reaches RECORD_MIN. Moves are
+    // never folded into "cleaned up": the site's public figure leaves them out.
+    function recordLines(rec) {
+      var c = rec.c != null && rec.c >= RECORD_MIN ? rec.c : null;
+      var m = rec.m != null && rec.m >= RECORD_MIN ? rec.m : null;
+      if (c != null) {
+        return {
+          num: number.format(c),
+          label: plural(c, 'video', 'videos') + ' cleaned up with TidyWL',
+          more: m == null ? null : 'Plus ' + number.format(m) + ' moved to ' + plural(m, 'another playlist.', 'other playlists.')
+        };
+      }
+      if (m != null) {
+        return { num: number.format(m), label: plural(m, 'video', 'videos') + ' moved to other playlists with TidyWL', more: null };
+      }
+      return null;
+    }
+
+    var record = readRecord(location.hash);
+    var recordCards = [document.getElementById('un-record'), document.getElementById('un-record-thanks')];
+    var rateThanks = document.getElementById('un-rate-thanks');
+
+    function renderRecord() {
+      var lines = recordLines(record);
+      var shown = lines != null && reason === 'done';
+      recordCards.forEach(function (card) {
+        card.querySelector('[data-rec="num"]').textContent = lines ? lines.num : '';
+        card.querySelector('[data-rec="label"]').textContent = lines ? lines.label : '';
+        var more = card.querySelector('[data-rec="more"]');
+        more.textContent = lines && lines.more ? lines.more : '';
+        more.hidden = !(lines && lines.more);
+        card.hidden = !shown;
+      });
+      // On the thank-you, the record card carries the ask; without one, the
+      // old block does, for done only, as before.
+      rateThanks.hidden = reason !== 'done' || shown;
+      // A known store shows its own Rate button only; an unknown one keeps all three.
+      document.querySelectorAll('[data-store]').forEach(function (el) {
+        el.hidden = record.s != null && el.getAttribute('data-store') !== record.s;
+      });
+      // One store and a record: the single Rate button is the ask, so it fills.
+      document.querySelectorAll('[data-rate] [data-store]').forEach(function (el) {
+        el.classList.toggle('is-primary', shown && record.s != null && !el.hidden);
+      });
+      return shown;
+    }
+
     function show(name, focusEl) {
       Object.keys(steps).forEach(function (k) { steps[k].hidden = k !== name; });
       window.scrollTo(0, 0);
@@ -546,6 +684,8 @@ sitemap: false
         if (on) heading = b.querySelector('.un-h2');
       });
       post({ reason: reason });
+      // With a record, focus lands on the number, so a screen reader hears it first.
+      if (renderRecord()) heading = recordCards[0].querySelector('.un-record-fig');
       show('answer', heading);
     }
 
@@ -560,8 +700,16 @@ sitemap: false
       var text = note.value.trim();
       if (!text || reason == null) return;
       post({ reason: reason, text: text });
-      document.getElementById('un-rate-thanks').hidden = reason !== 'done';
-      show('thanks', document.getElementById('un-thanks-title'));
+      var withRecord = renderRecord();
+      show('thanks', withRecord ? recordCards[1].querySelector('.un-record-fig') : document.getElementById('un-thanks-title'));
+    });
+
+    renderRecord();
+    // The extension opens the page once, but a fragment edited by hand is read
+    // again through the same parser.
+    window.addEventListener('hashchange', function () {
+      record = readRecord(location.hash);
+      renderRecord();
     });
   })();
 </script>
