@@ -3,7 +3,7 @@
 # link comes from _data/netflix.yml. This is the one full description of
 # TidyWL for Netflix for assistants: /llms.txt carries two lines and a link
 # here, so the two cannot drift. Every claim was read from the extension's
-# src/ at 1.3.0 or from /netflix/privacy/; change it when either changes.
+# src/ at 1.3.1 or from /netflix/privacy/; change it when either changes.
 layout: null
 ---
 # TidyWL for Netflix
@@ -53,7 +53,7 @@ Undo, pins, the rules, stats and Tonight run in the browser. Pro starts with a 7
 - **Pro sync, only when switched on:** that profile's playlists, with each title's name, type, year and picture link, and the profile's name, go to tidywl.com so other browsers and the phone can show them; so does the one pick sent with Tonight's "Later, on my phone", gone at 5 am. A Pro key goes to tidywl.com to be checked, and never reaches the phone.
 - **A usage report, from version 0.2.0:** a random install id and lifetime counts (titles removed and added, searches run, categories opened, playlists made, days opened, days the rating badges showed (since version 1.2.2), My List size, how often Pro's offer was shown, Tonight's plays and re-rolls, and the like; the privacy policy lists every one) to tidywl.com, only when a count has changed. Never a title, a search term, a category or a profile. There is no switch to turn it off in the extension; uninstalling stops it.
 - **When it is removed, since version 1.2.1:** Chrome opens one page on tidywl.com asking why. Its address carries the version, the browser's language, roughly how long the extension was installed and on how many days its dashboard was opened; none of it reaches tidywl.com unless the person answers and presses Send. An email is asked for only after that, is optional, and is deleted after 60 days.
-- **Five other requests, none identifying an install:** a public settings file from tidywl.com; IMDb's public daily ratings dataset; Netflix's numeric title ids sent to Wikidata to match them to IMDb ids; a title's name sent to IMDb's search and Wikidata's when its id cannot be matched; and, since version 1.1.0, the numeric ids of the Netflix titles on screen sent to tidywl.com's ratings table for the badges.
+- **Five other requests, none identifying an install:** a public settings file from tidywl.com, at most once an hour (since version 1.3.1 it can also correct the names and ids the extension uses with Netflix, so a Netflix change can be fixed without a new version; it can only point at netflix.com and never chooses which titles are added or removed); IMDb's public daily ratings dataset; Netflix's numeric title ids sent to Wikidata to match them to IMDb ids; a title's name sent to IMDb's search and Wikidata's when its id cannot be matched; and, since version 1.1.0, the numeric ids of the Netflix titles on screen sent to tidywl.com's ratings table for the badges.
 - **What it does not do:** it never asks for a Netflix password and never touches, downloads or records video. It runs on netflix.com, and on the one tidywl.com page shown after checkout, to switch Pro on; nowhere else.
 
 Every request and every stored key is listed in the [privacy policy](https://tidywl.com/netflix/privacy/).
