@@ -1,6 +1,20 @@
 {
   "announcements": [
     {
+      "id": "v2.6.0-release",
+      "title": "What's New in v2.6.0",
+      "bullets": [
+        "Removing 4,500 or more videos at once now goes at a steady pace of about 1,000 a minute, so YouTube keeps working normally. The confirmation tells you how long it will take.",
+        "A Move can be stopped, like a delete. The videos it hasn't taken out yet stay selected, so Delete finishes the job.",
+        "Playlists made only of Shorts sync in full. They used to come back with 0 videos.",
+        "Result windows are shorter: a heading, the counts and one line of what to know. A sync says how many videos are new and whether it matches YouTube's count, and offers Sync again when it comes back short.",
+        "Restoring says where your videos land: the top of Watch Later, but by default the end of other playlists."
+      ],
+      "type": "info",
+      "created_at": "2026-10-15",
+      "expires_at": "2027-01-15"
+    },
+    {
       "id": "v2.5.0-release",
       "title": "What's New in v2.5.0",
       "bullets": [
