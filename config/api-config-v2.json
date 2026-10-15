@@ -8,7 +8,8 @@
     "player":         "/youtubei/v1/player?prettyPrint=false",
     "getTranscript":  "/youtubei/v1/get_transcript?prettyPrint=false",
     "removeLike":     "/youtubei/v1/like/removelike?prettyPrint=false",
-    "deletePlaylist": "/youtubei/v1/playlist/delete?prettyPrint=false"
+    "deletePlaylist": "/youtubei/v1/playlist/delete?prettyPrint=false",
+    "next":           "/youtubei/v1/next?prettyPrint=false"
   },
   "constants": {
     "watchLaterBrowseId":       "VLWL",
@@ -69,7 +70,12 @@
     ],
     "ownerNamePaths": [
       ["header", "playlistHeaderRenderer", "ownerText", "runs", 0, "text"]
-    ]
+    ],
+    "shortsGridItemsPaths": [
+      ["contents", "twoColumnBrowseResultsRenderer", "tabs", 0, "tabRenderer", "content", "sectionListRenderer", "contents", 0, "itemSectionRenderer", "contents", 0, "richGridRenderer", "contents"]
+    ],
+    "shortsGridItemPath": ["richItemRenderer", "content", "shortsLockupViewModel"],
+    "shortsGridVideoIdPath": ["onTap", "innertubeCommand", "reelWatchEndpoint", "videoId"]
   },
   "videoFields": {
     "wrapperKey":              "playlistVideoRenderer",
@@ -426,5 +432,31 @@
       "likeStatusEntity",
       "likeStatus"
     ]
+  },
+  "playlistPanel": {
+    "panelPath": ["contents", "twoColumnWatchNextResults", "playlist", "playlist"],
+    "rowsPath": ["contents"],
+    "playlistIdPath": ["playlistId"],
+    "totalVideosPath": ["totalVideos"],
+    "editablePath": ["isEditable"],
+    "titlePath": ["title"],
+    "row": {
+      "wrapperKey": "playlistPanelVideoRenderer",
+      "videoIdPath": ["videoId"],
+      "setVideoIdPath": ["playlistSetVideoId"],
+      "indexPath": ["navigationEndpoint", "watchEndpoint", "index"],
+      "titlePaths": [
+        ["title", "simpleText"],
+        ["title", "runs", 0, "text"]
+      ],
+      "channelNamePath": ["shortBylineText", "runs", 0, "text"],
+      "channelIdPath": ["shortBylineText", "runs", 0, "navigationEndpoint", "browseEndpoint", "browseId"],
+      "durationPath": ["lengthText", "simpleText"],
+      "thumbnailOverlaysPath": ["thumbnailOverlays"],
+      "resumeOverlayKey": "thumbnailOverlayResumePlaybackRenderer",
+      "resumePercentPath": ["percentDurationWatched"],
+      "urlTemplate": "https://www.youtube.com/watch?v={videoId}"
+    },
+    "maxCalls": 80
   }
 }

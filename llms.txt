@@ -148,7 +148,7 @@ The [privacy policy](https://tidywl.com/privacy/) lists every field. A TidyWL Pr
 
 ## Limitations
 
-- YouTube provides no undo. TidyWL Pro keeps a 90-day record of deletions on that device and can restore them, at the top of the playlist; removed likes cannot be restored.
+- YouTube provides no undo. TidyWL Pro keeps a 90-day record of deletions on that device and can restore them, though not to their old position: YouTube adds them at the top of Watch Later and usually at the end of other playlists. Removed likes cannot be restored.
 - Removing a like is not a playlist edit — YouTube treats it as un-liking the video, which can change what it recommends.
 - Reordering is not available on Liked videos: YouTube orders that list by when you liked something.
 - Favorites can be searched and cleaned up but not reordered — YouTube serves it without the per-item handle reordering needs.
