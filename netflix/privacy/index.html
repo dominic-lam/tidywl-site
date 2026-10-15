@@ -120,7 +120,7 @@ last_modified_at: 2026-10-10
            to that day. Proposed wording, for approval:
              Updated <day> <month> 2026 for version 1.4.0: the rating ask, which
              appeared only on a removal's summary, can now also appear once as a
-             band at the top of the dashboard or the My List page, and one new
+             band at the top of the dashboard or in the My List page's heading, and one new
              storage key remembers that it has. The usage report adds four
              counts: the days you opened the My List page, the titles you
              clicked there, and how often a rating was asked for and Rate it
@@ -277,8 +277,8 @@ last_modified_at: 2026-10-10
           <tr><td><code>tidywl_last_profile</code></td><td>From version 1.2.0. The id of the Netflix profile last used in this browser, and when, so the toolbar badge and popup show that profile's list. Never sent.</td></tr>
           <tr><td><code>tidywl_installed_at</code></td><td>From version 1.2.1. When the extension was installed in this browser, so the page Chrome opens after a removal can say roughly how long you had it: under an hour, a day, a week, a month, or longer. Only that rough span ever leaves, and only if you press Send there. Installs from before 1.2.1 have none.</td></tr>
           <tr><td><code>tidywl_playlist_cap_exempt</code></td><td><code>true</code> in a browser that had the extension before version 1.0.0, so it keeps making up to 50 playlists without Pro. Nothing else.</td></tr>
-          <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once a rating ask has been answered or declined, so no rating ask is shown again in this browser: the one on a removal's summary and, from version 1.4.0, the band at the top of the dashboard or the My List page.</td></tr>
-          <tr><td><code>tidywl_rating_band_shown</code></td><td>From version 1.4.0. <code>true</code> once the rating ask at the top of the dashboard or the My List page has been shown, so it appears at most once in this browser, answered or not. Never sent.</td></tr>
+          <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once a rating ask has been answered or declined, so no rating ask is shown again in this browser: the one on a removal's summary and, from version 1.4.0, the band at the top of the dashboard or the strip in the My List page's heading.</td></tr>
+          <tr><td><code>tidywl_rating_band_shown</code></td><td>From version 1.4.0. <code>true</code> once the rating ask at the top of the dashboard or in the My List page's heading has been shown, so it appears at most once in this browser, answered or not. Never sent.</td></tr>
           <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
         </tbody>
       </table>
@@ -563,7 +563,7 @@ last_modified_at: 2026-10-10
           <tr><td>badge_days</td><td>On how many days the IMDb rating badges have shown on Netflix's own pages, ever. It goes up by one at most once a day, like <code>open_days</code>. Not which titles, and not how many badges.</td></tr>
           <tr><td>mylist_days</td><td>On how many days you have opened the My List page the extension puts back in Netflix's menu, ever. It goes up by one at most once a day, like <code>open_days</code>.</td></tr>
           <tr><td>mylist_title_clicks</td><td>How many times you have clicked a title on the My List page to open it. Not which title. Nothing you press inside Netflix's own preview is counted.</td></tr>
-          <tr><td>rating_asks</td><td>How many times the extension has asked you for a rating: on a removal's summary, or at the top of the dashboard or the My List page.</td></tr>
+          <tr><td>rating_asks</td><td>How many times the extension has asked you for a rating: on a removal's summary, at the top of the dashboard, or in the My List page's heading.</td></tr>
           <tr><td>rating_clicks</td><td>How many times you have pressed <em>Rate it</em>, on one of those asks or on the tile in the About window, which opens the extension's page on the Chrome Web Store. Not whether you went on to rate it.</td></tr>
         </tbody>
       </table>
