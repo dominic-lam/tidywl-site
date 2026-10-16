@@ -57,6 +57,25 @@ last_modified_at: 2026-10-10
      unchanged from c1f8ef8. Merged 2026-10-10, the day 1.3.1 went live (05:36
      PDT, the user's report), with its dated line in the meta paragraph below.
 
+     Drafted 2026-10-14 for 1.4.0 on branch draft/netflix-1.4.0, to merge the
+     day 1.4.0 goes live. Written against the contract,
+     docs/claude/PLAN-1.4.0-rating-reach.md in the extension repo (main at
+     1861496), while the build was still being written: NOT read out of src/
+     like the rest of this page. Before merging, check each 1.4.0 claim
+     against src/ at tag v1.4.0 — the second rating band and
+     tidywl_rating_band_shown (ratingBandDue() beside pickReceiptAsk() in
+     storage.js), tidywl_usage_mylist_day and the four counts mylist_days,
+     mylist_title_clicks, rating_asks and rating_clicks (usage-utils.js), and
+     r and n on the removal page's address (buildUninstallUrl() in
+     uninstall-utils.js). One claim is inferred, not in the plan: that the
+     first My List page open of a day asks for a report, as the first badge
+     day does (the plan says only "counted like badge_days"). The Tutorials
+     button in the dashboard's header (plan § 4) is not described: like the
+     About dialog's Discord and Ko-fi tiles it is a link the person opens, not
+     a request the extension makes, and the plan gives it no count. The dated
+     line, privacy_updated and last_modified_at are left for release day; the
+     proposed line is in a comment in the meta paragraph below.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -95,6 +114,21 @@ last_modified_at: 2026-10-10
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
+      <!-- RELEASE DAY, 1.4.0: the dated line goes HERE, above 1.3.1's, once the
+           day is known. On the same day set privacy_updated in
+           _data/netflix.yml and last_modified_at in this page's front matter
+           to that day. Proposed wording, for approval:
+             Updated <day> <month> 2026 for version 1.4.0: the rating ask, which
+             appeared only on a removal's summary, can now also appear once as a
+             band at the top of the dashboard or in the My List page's heading, and one new
+             storage key remembers that it has. The usage report adds four
+             counts: the days you opened the My List page, the titles you
+             clicked there, and how often a rating was asked for and Rate it
+             pressed, with one more storage key to keep the first to once a day.
+             The page that opens when you remove the extension can show how many
+             titles you removed and on how many days you opened the dashboard;
+             those two numbers never leave your browser. Nothing else the
+             extension sends changes. -->
       Updated 10 October 2026 for version 1.3.1: the public settings file, request 1, can now correct the names, ids
       and settings the extension uses with Netflix, so a Netflix change can be fixed without a new version, and it is
       checked while you use Netflix rather than only when you open the dashboard, still at most once an hour. Nothing
@@ -142,9 +176,9 @@ last_modified_at: 2026-10-10
       <li><strong>Your Netflix data stays in your browser.</strong> Your watch state, your searches and, with Pro, the viewing history and thumbs Tonight reads are never sent to us.</li>
       <li><strong>Your playlists stay in your browser too — unless you have Pro and switch sync on.</strong> Then this profile's playlists, with each title's name, year and picture link, and the profile's name, go to our server, so your other browsers and your phone can show them. So does a title you send to your phone from Tonight. Only from browsers where you switched it on. Never for a free install.</li>
       <li><strong>If you buy Pro, your licence key goes to tidywl.com.</strong> It switches Pro on and is checked again when you open the dashboard, at most once every 15 minutes. Paddle takes the payment; your card details and your email never reach us.</li>
-      <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard for the first time in a day, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
+      <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard or the My List page for the first time in a day, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
       <li><strong>There is no switch in the extension to turn this off.</strong> Uninstalling stops it, and records not updated for 12 months are deleted.</li>
-      <li><strong>From version 1.2.1, removing the extension opens one page on tidywl.com, asking why.</strong> Its address carries a few rough facts — the version, your browser's language, how long you had the extension and on how many days you opened it — after a <code>#</code>, which never reaches our server. They are sent only with an answer, if you press Send. Your email is asked for only after that, is optional, and is deleted after 60 days.</li>
+      <li><strong>From version 1.2.1, removing the extension opens one page on tidywl.com, asking why.</strong> Its address carries a few rough facts — the version, your browser's language, how long you had the extension and on how many days you opened it — after a <code>#</code>, which never reaches our server. They are sent only with an answer, if you press Send. From version 1.4.0 it also carries how many titles you removed with the extension and the exact number of days you opened it, which the page can show you and never sends. Your email is asked for only after that, is optional, and is deleted after 60 days.</li>
       <li><strong>There is no account and no sign-in.</strong> A Pro key is not an account: there is no password, and we never learn your email. The usage report's identifier is random, made in your browser, and linked to nothing — not your Netflix account, not a profile, not your email, not a Pro key.</li>
       <li><strong>Five other requests leave your browser, and none of them identifies you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id; for a title its id cannot match, its name sent to IMDb's search and to Wikidata's; and, from version 1.1.0, Netflix's numeric title ids sent to our own ratings table, which answers with each one's IMDb rating. Each one is described in full below.</li>
       <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. Without Pro sync we never see them.</li>
@@ -227,6 +261,7 @@ last_modified_at: 2026-10-10
           <tr><td><code>tidywl_usage</code></td><td>The usage report's other counts, listed field by field below.</td></tr>
           <tr><td><code>tidywl_usage_open_day</code></td><td>The last day the dashboard was counted as opened, so it is counted at most once a day. Never sent.</td></tr>
           <tr><td><code>tidywl_usage_badge_day</code></td><td>From version 1.2.2. The last day the rating badges were counted as shown, so that is counted at most once a day too. Never sent.</td></tr>
+          <tr><td><code>tidywl_usage_mylist_day</code></td><td>From version 1.4.0. The last day the My List page was counted as opened, so that is counted at most once a day too. Never sent.</td></tr>
           <tr><td><code>tidywl_usage_sent</code></td><td>The counts as they stood at the last report that arrived, so an unchanged report is not sent again. Never sent.</td></tr>
           <tr><td><code>tidywl_license_token</code></td><td>Pro only. A sign-in our server gave this browser, good for 24 hours, so a sync does not send your key every time. Never shared between browsers.</td></tr>
           <tr><td><code>tidywl_cloud_sync</code></td><td>Pro only. Whether you switched sync on in this browser — it is off until you do — and when the last sync ran and whether it worked.</td></tr>
@@ -242,7 +277,8 @@ last_modified_at: 2026-10-10
           <tr><td><code>tidywl_last_profile</code></td><td>From version 1.2.0. The id of the Netflix profile last used in this browser, and when, so the toolbar badge and popup show that profile's list. Never sent.</td></tr>
           <tr><td><code>tidywl_installed_at</code></td><td>From version 1.2.1. When the extension was installed in this browser, so the page Chrome opens after a removal can say roughly how long you had it: under an hour, a day, a week, a month, or longer. Only that rough span ever leaves, and only if you press Send there. Installs from before 1.2.1 have none.</td></tr>
           <tr><td><code>tidywl_playlist_cap_exempt</code></td><td><code>true</code> in a browser that had the extension before version 1.0.0, so it keeps making up to 50 playlists without Pro. Nothing else.</td></tr>
-          <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once the rating ask on a removal's summary has been answered or declined, so it is not shown again in this browser.</td></tr>
+          <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once a rating ask has been answered or declined, so no rating ask is shown again in this browser: the one on a removal's summary and, from version 1.4.0, the band at the top of the dashboard or the strip in the My List page's heading.</td></tr>
+          <tr><td><code>tidywl_rating_band_shown</code></td><td>From version 1.4.0. <code>true</code> once the rating ask at the top of the dashboard or in the My List page's heading has been shown, so it appears at most once in this browser, answered or not. Never sent.</td></tr>
           <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
         </tbody>
       </table>
@@ -269,8 +305,8 @@ last_modified_at: 2026-10-10
       deliberately no shared fallback key: an adult profile's list cannot appear under the kids profile on the same
       account, because there is no place for the two to meet. If the extension cannot tell which profile is active,
       it stores nothing. The keys without a profile in their name — the settings copy, the dashboard's size, the IMDb
-      ratings, that file's download time, the badges' ratings, the count of Sync-to-mobile presses, the four usage-report keys, the three
-      Pro keys without one, the note that this browser had the extension before 1.0.0, and the two records of the rating and
+      ratings, that file's download time, the badges' ratings, the count of Sync-to-mobile presses, the six usage-report keys, the three
+      Pro keys without one, the note that this browser had the extension before 1.0.0, and the three records of the rating and
       Ko-fi asks — hold
       nothing that belongs to a profile. The usage counts are added up across every profile that used the extension
       in that browser, and never say which.
@@ -484,7 +520,8 @@ last_modified_at: 2026-10-10
     <p>
       Whenever one of your lifetime counts has changed, the extension sends that identifier and the counts to
       <code>https://tidywl.com/api/netflix/installs</code>. It checks on each Netflix page load, after a Sync, after a
-      removal, the first time you open the dashboard on a given day, and the first time the rating badges show on a given day. The report is exactly this, and nothing else:
+      removal, the first time you open the dashboard on a given day, the first time the rating badges show on a given day,
+      and, from version 1.4.0, the first time you open the My List page on a given day. The report is exactly this, and nothing else:
     </p>
 
     <div class="nf-policy-table-wrap">
@@ -524,6 +561,10 @@ last_modified_at: 2026-10-10
           <tr><td>tonight_rerolls</td><td>How many times you have pressed <em>Re-roll</em>.</td></tr>
           <tr><td>tonight_snoozes</td><td>How many times you have pressed <em>Not tonight</em>. Not on which title.</td></tr>
           <tr><td>badge_days</td><td>On how many days the IMDb rating badges have shown on Netflix's own pages, ever. It goes up by one at most once a day, like <code>open_days</code>. Not which titles, and not how many badges.</td></tr>
+          <tr><td>mylist_days</td><td>On how many days you have opened the My List page the extension puts back in Netflix's menu, ever. It goes up by one at most once a day, like <code>open_days</code>.</td></tr>
+          <tr><td>mylist_title_clicks</td><td>How many times you have clicked a title on the My List page to open it. Not which title. Nothing you press inside Netflix's own preview is counted.</td></tr>
+          <tr><td>rating_asks</td><td>How many times the extension has asked you for a rating: on a removal's summary, at the top of the dashboard, or in the My List page's heading.</td></tr>
+          <tr><td>rating_clicks</td><td>How many times you have pressed <em>Rate it</em>, on one of those asks or on the tile in the About window, which opens the extension's page on the Chrome Web Store. Not whether you went on to rate it.</td></tr>
         </tbody>
       </table>
     </div>
@@ -533,7 +574,9 @@ last_modified_at: 2026-10-10
       it, the report was the identifier and the fourteen above them. <code>badge_days</code> was added in version
       1.2.2, because someone who only
       uses the badges never opens the dashboard, and without it would look like someone who stopped using the
-      extension.
+      extension. The four from <code>mylist_days</code> to <code>rating_clicks</code> were added in version 1.4.0: the
+      My List page, like the badges, is used without opening the dashboard, and the last two show how often a rating
+      is asked for and how often the ask is taken up.
     </p>
 
     <p>
@@ -557,8 +600,8 @@ last_modified_at: 2026-10-10
     <p>
       <strong>Why:</strong> to know how the extension is actually used — how many people open it in a week, which of
       its three tabs they use, how large a My List gets, and whether anyone wants mobile sync enough to press a button
-      for it; and, from version 1.1.0, which of Pro's features people reach for and whether Tonight gets used —
-      which decides what gets built next. Store reviews come from a self-selected few; this is the only other
+      for it; from version 1.1.0, which of Pro's features people reach for and whether Tonight gets used; and, from
+      version 1.4.0, whether the My List page gets used — which decides what gets built next. Store reviews come from a self-selected few; this is the only other
       signal. The numbers are not sold, not shared with anyone, and not used for advertising.
     </p>
 
@@ -660,14 +703,18 @@ last_modified_at: 2026-10-10
          user's answer to Q4 in PLAN-uninstall-page.md there, and the nightly
          job that clears it is tidywl-api's. That Chrome keeps the # intact was
          tested on 2026-10-04 (CONTRACTS-1.2.1.md § 1). Change this with the
-         page, the extension's setUninstallURL call and the API together. -->
+         page, the extension's setUninstallURL call and the API together.
+         From 1.4.0 the address adds r and n, read for display only and never
+         sent (PLAN-1.4.0-rating-reach.md § 3 in the extension repo; the page's
+         script keeps them out of the answer it posts), drafted 2026-10-14 on
+         branch draft/netflix-1.4.0. -->
     <p>
       When you remove TidyWL for Netflix from Chrome, Chrome opens <code>https://tidywl.com/netflix/removed/</code> in
       a new tab and asks what made you remove it. The extension is gone by then: this is not one of its requests.
       While it was installed it gave Chrome the page's address, and Chrome opens it itself. Answering is optional, and
       closing the tab sends nothing.
     </p>
-    <p><strong>What the address carries.</strong> Up to five short fields, after a <code>#</code>:</p>
+    <p><strong>What the address carries.</strong> Up to seven short fields, after a <code>#</code>:</p>
 
     <div class="nf-policy-table-wrap">
       <table class="nf-policy-table">
@@ -680,6 +727,8 @@ last_modified_at: 2026-10-10
           <tr><td>l</td><td>Your browser's language, as two letters, such as <code>en</code>.</td></tr>
           <tr><td>p</td><td><code>trial</code> or <code>pro</code> while a Pro trial or subscription was on; absent otherwise.</td></tr>
           <tr><td>d</td><td>On how many days you opened the dashboard: none, one, or two or more.</td></tr>
+          <tr><td>r</td><td>From version 1.4.0. How many titles you removed from My List with the extension, ever: the usage report's <code>removed</code>. Absent when none.</td></tr>
+          <tr><td>n</td><td>From version 1.4.0. On how many days you opened the dashboard, exactly: the usage report's <code>open_days</code>, where <code>d</code> gives only none, one, or two or more. Absent when none.</td></tr>
         </tbody>
       </table>
     </div>
@@ -688,8 +737,10 @@ last_modified_at: 2026-10-10
       <strong>None of it reaches our server when the page opens.</strong> A browser never sends the part of an address
       after a <code>#</code> to the server it asks for the page; the page's own script reads the fields in your browser.
       The plan, <code>p</code>, goes no further than that: the page reads it to tell a subscriber that removing the
-      extension did not cancel the subscription, and how to cancel, and never sends it anywhere. The other four leave
-      your browser only if you press Send.
+      extension did not cancel the subscription, and how to cancel, and never sends it anywhere. The two counts,
+      <code>r</code> and <code>n</code>, go no further either: if you answer that the extension did what you needed,
+      the page shows them back to you beside its rating button — for example, "You opened it on 12 days and cleared 43
+      titles from My List." — and never sends them anywhere. The other four leave your browser only if you press Send.
     </p>
     <p>
       <strong>What Send stores.</strong> Pressing Send sends your answer, with those four fields, to
@@ -714,7 +765,8 @@ last_modified_at: 2026-10-10
 
     <p>
       <strong>Not stored:</strong> your IP address, which goes only to a rate limiter and is not written down; the usage
-      report's install identifier, which the page never has and the server never asks for; the plan; any cookie. An
+      report's install identifier, which the page never has and the server never asks for; the plan; the two counts;
+      any cookie. An
       answer names nothing about you unless you type it.
     </p>
     <p>

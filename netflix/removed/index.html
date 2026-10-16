@@ -47,6 +47,16 @@ sitemap: false
      age bucket would point at one person. The privacy policy (#removed there)
      says all of this; change it with this page.
 
+     From 1.4.0 (PLAN-1.4.0-rating-reach.md § 3 in the extension repo) the link
+     also carries &r=<titles removed>&n=<days the dashboard was opened>, both
+     lifetime, each left out when 0. Like `p`, they are read for display only:
+     one line beside the Rate button in "It did what I needed", and NEVER put in
+     a request — they are not in `fields`, which is all Send carries. Valid only
+     as ^\d{1,7}$, else absent; a 0 says nothing. Never playlists there: the
+     same reply says they left with the extension. Older versions send neither,
+     and the line stays hidden. Drafted 2026-10-14 on branch
+     draft/netflix-1.4.0, to merge the day 1.4.0 goes live.
+
      EVERY FEATURE CLAIM below was checked against netflix/llms.txt on
      2026-10-04, and the button labels against the extension's src/ (Open
      dashboard: leaving-utils.js; Title A–Z, Leaving soon, Partway, Not
@@ -101,6 +111,8 @@ sitemap: false
               <p class="nfr-fix-title">Glad it did the job.</p>
               <p>Your Netflix list stays as you left it. Playlists you made were stored in this browser, so they left with the extension.</p>
               <div class="nfr-rate">
+                <!-- Filled from the link's r and n (from 1.4.0), display only. -->
+                <p id="nfr-rate-stats" hidden></p>
                 <p>If it saved you time, a rating helps the next person find it.</p>
                 <a class="nfr-btn-outline" href="{{ store }}/reviews" target="_blank" rel="noopener">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
@@ -847,6 +859,25 @@ sitemap: false
       $('#nfr-notice-' + plan).hidden = false;
       $('#nfr-pro-default').hidden = true;
       $('.nfr-cols').classList.add('has-plan');
+    }
+
+    // From 1.4.0: titles removed (r) and days the dashboard was opened (n),
+    // both lifetime. Said back beside the Rate button in "It did what I
+    // needed", and never put in a request, like `p`: they stay out of
+    // `fields`, so Send cannot carry them. A 0 has nothing to say.
+    const count = (key) => {
+      const value = only(raw(key), (v) => /^\d{1,7}$/.test(v));
+      return value == null ? 0 : Number(value);
+    };
+    const counted = (n, one, many) => n.toLocaleString('en-US') + ' ' + (n === 1 ? one : many);
+    const removedTitles = count('r');
+    const openedDays = count('n');
+    const said = [];
+    if (openedDays > 0) said.push('opened it on ' + counted(openedDays, 'day', 'days'));
+    if (removedTitles > 0) said.push('cleared ' + counted(removedTitles, 'title', 'titles') + ' from My List');
+    if (said.length > 0) {
+      $('#nfr-rate-stats').textContent = 'You ' + said.join(' and ') + '.';
+      $('#nfr-rate-stats').hidden = false;
     }
 
     // "It wasn't in my language", only for a browser that isn't English.
