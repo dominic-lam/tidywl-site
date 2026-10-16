@@ -1,6 +1,6 @@
 ---
-title: "Why Isn't My YouTube Watch Later Saving Videos? The Real Reasons (and Why Nobody Tells You)"
-description: "YouTube Watch Later silently fails to save videos for several reasons, and the most common one is a hidden 5,000-video cap. Here's the full list of causes and what to actually do about each."
+title: "YouTube Watch Later Not Working? 6 Reasons It Won't Save"
+description: "Videos not saving to Watch Later? The sneakiest cause is a 5,000-video limit YouTube never warns you about. All six causes, how to spot yours, and each fix."
 date: 2026-04-27
 last_modified_at: 2026-08-29
 # The store links on this page carry this tag (header, footer, text), so the
