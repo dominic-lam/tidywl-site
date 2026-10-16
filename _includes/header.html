@@ -65,10 +65,10 @@
         <a href="https://github.com/dominic-lam/tidywl-site/issues" target="_blank" rel="noopener">Report a bug</a>
       </div>
 
-      <a class="site-nav-cta site-nav-cta--drawer" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Add to Chrome</a>
+      <a class="site-nav-cta site-nav-cta--drawer" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo{% if page.store_campaign %}?utm_source=tidywl-blog&amp;utm_medium=web&amp;utm_campaign={{ page.store_campaign }}{% endif %}" target="_blank" rel="noopener">Add to Chrome</a>
     </nav>
 
-    <a class="site-nav-cta site-nav-cta--bar" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener"><span class="cta-long">Add to Chrome</span><span class="sr-only"> </span><span class="cta-short">Install</span></a>
+    <a class="site-nav-cta site-nav-cta--bar" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo{% if page.store_campaign %}?utm_source=tidywl-blog&amp;utm_medium=web&amp;utm_campaign={{ page.store_campaign }}{% endif %}" target="_blank" rel="noopener"><span class="cta-long">Add to Chrome</span><span class="sr-only"> </span><span class="cta-short">Install</span></a>
 
     {% include theme-toggle.html %}
   </header>
