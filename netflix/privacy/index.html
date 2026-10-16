@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, what leaves it — four public requests, title ids to our ratings table, a usage report, and for Pro a licence check and playlist sync — and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-10-10
+last_modified_at: 2026-10-15
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -72,9 +72,11 @@ last_modified_at: 2026-10-10
      day does (the plan says only "counted like badge_days"). The Tutorials
      button in the dashboard's header (plan § 4) is not described: like the
      About dialog's Discord and Ko-fi tiles it is a link the person opens, not
-     a request the extension makes, and the plan gives it no count. The dated
-     line, privacy_updated and last_modified_at are left for release day; the
-     proposed line is in a comment in the meta paragraph below.
+     a request the extension makes, and the plan gives it no count. Checked
+     2026-10-15 against src/ at tag v1.4.0 (b1453ea): every claim holds, the
+     inferred one included (recordMyListDay() in storage.js asks for a
+     report). Merged that day, the day 1.4.0 went live (09:58 PDT, the user's
+     report), with its dated line in the meta paragraph below.
 
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
@@ -114,21 +116,13 @@ last_modified_at: 2026-10-10
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
-      <!-- RELEASE DAY, 1.4.0: the dated line goes HERE, above 1.3.1's, once the
-           day is known. On the same day set privacy_updated in
-           _data/netflix.yml and last_modified_at in this page's front matter
-           to that day. Proposed wording, for approval:
-             Updated <day> <month> 2026 for version 1.4.0: the rating ask, which
-             appeared only on a removal's summary, can now also appear once as a
-             band at the top of the dashboard or in the My List page's heading, and one new
-             storage key remembers that it has. The usage report adds four
-             counts: the days you opened the My List page, the titles you
-             clicked there, and how often a rating was asked for and Rate it
-             pressed, with one more storage key to keep the first to once a day.
-             The page that opens when you remove the extension can show how many
-             titles you removed and on how many days you opened the dashboard;
-             those two numbers never leave your browser. Nothing else the
-             extension sends changes. -->
+      Updated 15 October 2026 for version 1.4.0: the rating ask, which appeared only on a removal's summary, can now
+      also appear once as a band at the top of the dashboard or in the My List page's heading, and one new storage key
+      remembers that it has. The usage report adds four counts: the days you opened the My List page, the titles you
+      clicked there, and how often a rating was asked for and <em>Rate it</em> pressed, with one more storage key to
+      keep the first to once a day. The page that opens when you remove the extension can show how many titles you
+      removed and on how many days you opened the dashboard; those two numbers never leave your browser. Nothing else
+      the extension sends changes.
       Updated 10 October 2026 for version 1.3.1: the public settings file, request 1, can now correct the names, ids
       and settings the extension uses with Netflix, so a Netflix change can be fixed without a new version, and it is
       checked while you use Netflix rather than only when you open the dashboard, still at most once an hour. Nothing

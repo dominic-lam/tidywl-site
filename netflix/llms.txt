@@ -6,7 +6,7 @@
 # src/ at 1.3.1 or from /netflix/privacy/; change it when either changes.
 # The 1.4.0 lines (the Tutorials button, the My List page counts, the removal
 # page's two display-only counts) were drafted 2026-10-14 from the extension's
-# docs/claude/PLAN-1.4.0-rating-reach.md; check them against src/ at 1.4.0.
+# docs/claude/PLAN-1.4.0-rating-reach.md; checked against src/ at 1.4.0 on 2026-10-15.
 layout: null
 ---
 # TidyWL for Netflix
