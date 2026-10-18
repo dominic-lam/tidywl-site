@@ -39,5 +39,21 @@
       "monthly": "https://tidywl.com/netflix/pricing/?plan=monthly",
       "yearly": "https://tidywl.com/netflix/pricing/?plan=yearly"
     }
-  }
+  },
+  "announcements": [
+    {
+      "id": "2026-10-v1.5.0",
+      "title": "What's new in 1.5.0",
+      "body": [
+        { "text": "IMDb ratings on title cards can now be **switched off**, everywhere or only on My Netflix and My List. You can also pick how the rating badge looks." },
+        { "list": ["Open the extension's toolbar popup", "Press **Settings**, then choose where the ratings show and which look you like"] },
+        { "text": "The dashboard has a new **Settings** group in its toolbar too, with a switch for its own IMDb ratings." },
+        { "text": "Questions or ideas? Ask on [Discord](https://discord.gg/4j5u9xd35P).", "tone": "muted" }
+      ],
+      "button": { "label": "See what's new", "url": "https://tidywl.com/netflix/" },
+      "size": "medium",
+      "created_at": "2026-10-17",
+      "expires_at": "2027-01-18"
+    }
+  ]
 }
