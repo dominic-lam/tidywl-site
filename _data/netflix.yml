@@ -21,7 +21,7 @@ version: 1.4.0
 # netflix/privacy/index.html's front matter, which Liquid cannot fill from
 # here, so bump both by hand when the policy's substance changes — not for a
 # typo, per the freshness rule in CLAUDE.md.
-privacy_updated: 2026-10-15
+privacy_updated: 2026-10-18
 # The day the policy first went live. Rendered as "Published"; never bumped.
 privacy_published: 2026-09-20
 

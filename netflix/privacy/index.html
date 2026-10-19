@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, what leaves it — four public requests, title ids to our ratings table, a usage report, and for Pro a licence check and playlist sync — and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-10-15
+last_modified_at: 2026-10-18
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -99,8 +99,7 @@ last_modified_at: 2026-10-15
      about 48 hours on an install that stops reporting. The netflix_alerts
      table in tidywl-api's schema.sql names no install and nothing writes it
      yet, so it is not described. The dated line, privacy_updated and
-     last_modified_at are left for release day; the proposed line is in a
-     comment in the meta paragraph below.
+     last_modified_at were set on release day, 2026-10-18.
 
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
@@ -141,23 +140,13 @@ last_modified_at: 2026-10-15
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
-      <!-- RELEASE DAY, 1.5.0: the dated line goes HERE, above 1.4.0's, once the
-           day is known. On the same day set privacy_updated in
-           _data/netflix.yml and last_modified_at in this page's front matter
-           to that day. Proposed wording, for approval:
-             Updated <day> <month> 2026 for version 1.5.0: the toolbar popup can
-             now switch the IMDb badges on Netflix's own cards off, everywhere
-             or on My Netflix and My List only, and change their look; the
-             dashboard can hide its own ratings; and the dashboard shows
-             announcements, which arrive inside the settings file it already
-             reads. Four new storage keys hold those choices, the announcements
-             you have read and when the usage report was last asked to go out
-             early. The
-             usage report adds twelve numbers, among them your badge setting
-             and five counts of what failed, and after a failure it can go out
-             at once, at most once every ten minutes; our server keeps the hour
-             of a failure for up to two days. No new request, and nothing new
-             is sent anywhere else. -->
+      Updated 18 October 2026 for version 1.5.0: the toolbar popup can now switch the IMDb badges on Netflix's own
+      cards off, everywhere or on My Netflix and My List only, and change their look; the dashboard can hide its own
+      ratings; and the dashboard shows announcements, which arrive inside the settings file it already reads. Four new
+      storage keys hold those choices, the announcements you have read and when the usage report was last asked to go
+      out early. The usage report adds twelve numbers, among them your badge setting and five counts of what failed,
+      and after a failure it can go out at once, at most once every ten minutes; our server keeps the hour of a
+      failure for up to two days. No new request, and nothing new is sent anywhere else.
       Updated 15 October 2026 for version 1.4.0: the rating ask, which appeared only on a removal's summary, can now
       also appear once as a band at the top of the dashboard or in the My List page's heading, and one new storage key
       remembers that it has. The usage report adds four counts: the days you opened the My List page, the titles you
