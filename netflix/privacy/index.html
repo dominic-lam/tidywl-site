@@ -78,6 +78,30 @@ last_modified_at: 2026-10-15
      report). Merged that day, the day 1.4.0 went live (09:58 PDT, the user's
      report), with its dated line in the meta paragraph below.
 
+     Drafted 2026-10-17 for 1.5.0 on branch draft/netflix-1.5.0, to merge the
+     day 1.5.0 goes live. Read out of src/ at extension main 232220c (1.5.0's
+     changelog and store text on top of the build; no v1.5.0 tag yet): the
+     badge setting and look, tidywl_badge_mode and tidywl_badge_look
+     (imdb-utils.js; rating-badges.js reads no card's id while the setting is
+     off on that page), the dashboard's IMDb switch inside
+     tidywl_dashboard_view (storage.js normalizeDashboardView; it only hides
+     the dashboard's rating tabs, its lookups are unchanged), the announcement
+     feed inside the settings file (remote-config.js readAnnouncements: text
+     and one link, no image, links only to tidywl.com, discord.gg, the Chrome
+     Web Store and ko-fi.com) and tidywl_announcements_read (storage.js), the
+     twelve report fields (usage-utils.js; badge_mode is a gauge like
+     list_size), and the early send after a failure (storage.js
+     recordFailure, tidywl_usage_failure_sent_at, a ten-minute floor, and
+     usageReport.failureSends in remote-config.js readFailureSends). No new
+     fetch() in the service worker, no new permission. The server's failure
+     hours are tidywl-api's netflix.js (5d40bc3, 85bf3a3): one per failure
+     count, cleared nightly once over NETFLIX_STAMP_KEEP_HOURS (24), so up to
+     about 48 hours on an install that stops reporting. The netflix_alerts
+     table in tidywl-api's schema.sql names no install and nothing writes it
+     yet, so it is not described. The dated line, privacy_updated and
+     last_modified_at are left for release day; the proposed line is in a
+     comment in the meta paragraph below.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -102,7 +126,8 @@ last_modified_at: 2026-10-15
        - the storage keys are the ones in src/content-scripts/storage.js,
          src/content-scripts/playlist-storage.js, and, from 1.1.0,
          src/content-scripts/rating-badges.js and
-         src/dashboard/dashboard-tonight-pool.js
+         src/dashboard/dashboard-tonight-pool.js, and, from 1.5.0,
+         src/utils/imdb-utils.js (the badge setting and look)
        - the permissions are manifest.json's
      If any of those files change, this page changes with them. A privacy
      policy that has drifted from the build is worse than none: it is a
@@ -116,6 +141,23 @@ last_modified_at: 2026-10-15
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
+      <!-- RELEASE DAY, 1.5.0: the dated line goes HERE, above 1.4.0's, once the
+           day is known. On the same day set privacy_updated in
+           _data/netflix.yml and last_modified_at in this page's front matter
+           to that day. Proposed wording, for approval:
+             Updated <day> <month> 2026 for version 1.5.0: the toolbar popup can
+             now switch the IMDb badges on Netflix's own cards off, everywhere
+             or on My Netflix and My List only, and change their look; the
+             dashboard can hide its own ratings; and the dashboard shows
+             announcements, which arrive inside the settings file it already
+             reads. Four new storage keys hold those choices, the announcements
+             you have read and when the usage report was last asked to go out
+             early. The
+             usage report adds twelve numbers, among them your badge setting
+             and five counts of what failed, and after a failure it can go out
+             at once, at most once every ten minutes; our server keeps the hour
+             of a failure for up to two days. No new request, and nothing new
+             is sent anywhere else. -->
       Updated 15 October 2026 for version 1.4.0: the rating ask, which appeared only on a removal's summary, can now
       also appear once as a band at the top of the dashboard or in the My List page's heading, and one new storage key
       remembers that it has. The usage report adds four counts: the days you opened the My List page, the titles you
@@ -170,7 +212,7 @@ last_modified_at: 2026-10-15
       <li><strong>Your Netflix data stays in your browser.</strong> Your watch state, your searches and, with Pro, the viewing history and thumbs Tonight reads are never sent to us.</li>
       <li><strong>Your playlists stay in your browser too — unless you have Pro and switch sync on.</strong> Then this profile's playlists, with each title's name, year and picture link, and the profile's name, go to our server, so your other browsers and your phone can show them. So does a title you send to your phone from Tonight. Only from browsers where you switched it on. Never for a free install.</li>
       <li><strong>If you buy Pro, your licence key goes to tidywl.com.</strong> It switches Pro on and is checked again when you open the dashboard, at most once every 15 minutes. Paddle takes the payment; your card details and your email never reach us.</li>
-      <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard or the My List page for the first time in a day, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
+      <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard or the My List page for the first time in a day, and, from version 1.5.0, shortly after something fails, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
       <li><strong>There is no switch in the extension to turn this off.</strong> Uninstalling stops it, and records not updated for 12 months are deleted.</li>
       <li><strong>From version 1.2.1, removing the extension opens one page on tidywl.com, asking why.</strong> Its address carries a few rough facts — the version, your browser's language, how long you had the extension and on how many days you opened it — after a <code>#</code>, which never reaches our server. They are sent only with an answer, if you press Send. From version 1.4.0 it also carries how many titles you removed with the extension and the exact number of days you opened it, which the page can show you and never sends. Your email is asked for only after that, is optional, and is deleted after 60 days.</li>
       <li><strong>There is no account and no sign-in.</strong> A Pro key is not an account: there is no password, and we never learn your email. The usage report's identifier is random, made in your browser, and linked to nothing — not your Netflix account, not a profile, not your email, not a Pro key.</li>
@@ -207,7 +249,9 @@ last_modified_at: 2026-10-15
       Some titles cannot be matched by their id at all, because Wikidata has no Netflix id recorded for them. For
       those, and only those, the extension takes the title's name and year from what the Netflix page has already
       loaded to draw that card — it asks Netflix nothing for it — and searches by name, requests 4 and 3. A click on
-      a badge opens that title's page on imdb.com in a new tab.
+      a badge opens that title's page on imdb.com in a new tab. From version 1.5.0 you can switch the badges off in
+      the toolbar popup's Settings, everywhere or only on the My Netflix page and the My List page; wherever they are
+      off, no card's link is read and no id is sent for the badges.
     </p>
     <p>
       Your search terms go to Netflix, on your own signed-in session, in the same way that typing them into
@@ -247,15 +291,18 @@ last_modified_at: 2026-10-15
           <tr><td><code>tidywl_first_seen_&lt;profile&gt;</code></td><td>The first date this extension saw each title in your list. Netflix does not record when you added something, so this is the extension's own note, and it only starts from your first Sync.</td></tr>
           <tr><td><code>tidywl_imdb</code></td><td>The IMDb id and rating found for each Netflix title, so the lookup is not repeated. This one is not filed per profile, because a title's IMDb rating is the same whoever is watching, and the key holds no indication of whose list a title came from.</td></tr>
           <tr><td><code>tidywl_remote_config</code></td><td>A copy of the public settings file described below.</td></tr>
-          <tr><td><code>tidywl_dashboard_view</code></td><td>Whether you last had the dashboard full-page or as a panel.</td></tr>
+          <tr><td><code>tidywl_dashboard_view</code></td><td>Whether you last had the dashboard full-page or as a panel, and, from version 1.5.0, whether the IMDb ratings show on the dashboard's own cards, which its IMDb switch sets. Hiding them does not change what is looked up.</td></tr>
           <tr><td><code>tidywl_imdb_dump_fetched_at</code></td><td>When IMDb's ratings file was last downloaded, so it is not downloaded again for twelve hours. A timestamp and nothing else.</td></tr>
           <tr><td><code>tidywl_badge_ratings</code></td><td>From version 1.1.0. What the badges on Netflix's own cards show, so a card seen again is not asked about again: for each Netflix title id, its IMDb id, rating and number of votes, whether the rating is the whole series', when it was found, and whether it came from our ratings table or from this browser's own lookups — with, when Wikidata had no match, when it was asked. Each title is asked about again after a day; at most 5,000 are kept. Not filed per profile: it holds the ids of titles Netflix's pages showed in this browser, with no note of which page, row or profile. Never sent.</td></tr>
+          <tr><td><code>tidywl_badge_mode</code></td><td>From version 1.5.0. Where the badges on Netflix's own cards show, as you set it in the toolbar popup: <code>all</code>, <code>lists-off</code> (not on the My Netflix page or the My List page) or <code>off</code>. Absent until you change it, which means <code>all</code>. One setting for the browser, not per profile. Which of the three it is goes in the usage report, as <code>badge_mode</code>.</td></tr>
+          <tr><td><code>tidywl_badge_look</code></td><td>From version 1.5.0. How the badges look, chosen beside that setting: <code>split</code>, the yellow and black tab; <code>meter</code>, the same with a score bar; or <code>pill</code>, a black badge like the dashboard's. One for the browser, not per profile. Never sent.</td></tr>
           <tr><td><code>tidywl_mobile_interest_clicks</code></td><td>A count of how many times you pressed the <em>Sync to mobile</em> button, which opens Pro in the About window, or Pro's offer if you do not have Pro. <strong>Since version 0.2.0 it is sent</strong>, as one of the usage report's counts — it is how the developer learns whether mobile sync is wanted.</td></tr>
           <tr><td><code>tidywl_install_id</code></td><td>The random identifier the usage report carries. Made once, in your browser; linked to nothing.</td></tr>
           <tr><td><code>tidywl_usage</code></td><td>The usage report's other counts, listed field by field below.</td></tr>
           <tr><td><code>tidywl_usage_open_day</code></td><td>The last day the dashboard was counted as opened, so it is counted at most once a day. Never sent.</td></tr>
           <tr><td><code>tidywl_usage_badge_day</code></td><td>From version 1.2.2. The last day the rating badges were counted as shown, so that is counted at most once a day too. Never sent.</td></tr>
           <tr><td><code>tidywl_usage_mylist_day</code></td><td>From version 1.4.0. The last day the My List page was counted as opened, so that is counted at most once a day too. Never sent.</td></tr>
+          <tr><td><code>tidywl_usage_failure_sent_at</code></td><td>From version 1.5.0. When this browser last asked for the usage report to go out early, after something failed, so it asks at most once every ten minutes. A timestamp and nothing else. Never sent.</td></tr>
           <tr><td><code>tidywl_usage_sent</code></td><td>The counts as they stood at the last report that arrived, so an unchanged report is not sent again. Never sent.</td></tr>
           <tr><td><code>tidywl_license_token</code></td><td>Pro only. A sign-in our server gave this browser, good for 24 hours, so a sync does not send your key every time. Never shared between browsers.</td></tr>
           <tr><td><code>tidywl_cloud_sync</code></td><td>Pro only. Whether you switched sync on in this browser — it is off until you do — and when the last sync ran and whether it worked.</td></tr>
@@ -274,6 +321,7 @@ last_modified_at: 2026-10-15
           <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once a rating ask has been answered or declined, so no rating ask is shown again in this browser: the one on a removal's summary and, from version 1.4.0, the band at the top of the dashboard or the strip in the My List page's heading.</td></tr>
           <tr><td><code>tidywl_rating_band_shown</code></td><td>From version 1.4.0. <code>true</code> once the rating ask at the top of the dashboard or in the My List page's heading has been shown, so it appears at most once in this browser, answered or not. Never sent.</td></tr>
           <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
+          <tr><td><code>tidywl_announcements_read</code></td><td>From version 1.5.0. Which of the dashboard's announcements you have read, so the bell's dot and the window that opens once know what is new: their ids only, the newest 200. One list for the browser, not per profile. Never sent.</td></tr>
         </tbody>
       </table>
     </div>
@@ -298,10 +346,10 @@ last_modified_at: 2026-10-15
       <strong>Every key that holds something about your account carries your Netflix profile's id.</strong> There is
       deliberately no shared fallback key: an adult profile's list cannot appear under the kids profile on the same
       account, because there is no place for the two to meet. If the extension cannot tell which profile is active,
-      it stores nothing. The keys without a profile in their name — the settings copy, the dashboard's size, the IMDb
-      ratings, that file's download time, the badges' ratings, the count of Sync-to-mobile presses, the six usage-report keys, the three
-      Pro keys without one, the note that this browser had the extension before 1.0.0, and the three records of the rating and
-      Ko-fi asks — hold
+      it stores nothing. The keys without a profile in their name — the settings copy, the dashboard's view, the IMDb
+      ratings, that file's download time, the badges' ratings, setting and look, the count of Sync-to-mobile presses, the seven usage-report keys, the three
+      Pro keys without one, the note that this browser had the extension before 1.0.0, the three records of the rating and
+      Ko-fi asks, and the announcements you have read — hold
       nothing that belongs to a profile. The usage counts are added up across every profile that used the extension
       in that browser, and never say which.
     </p>
@@ -421,6 +469,15 @@ last_modified_at: 2026-10-15
       something.
     </p>
     <p>
+      From version 1.5.0 it also carries the dashboard's announcements: what is new, listed under the bell in the
+      dashboard's header, and now and then opened once as a window. Each is a title, a few lines of text and perhaps a
+      button; a link in one opens only if you press it, and can only lead to tidywl.com, Discord, the Chrome Web Store
+      or Ko-fi. They are words, never code or pictures, and they come with the file, so they add no request.
+      Which ones you have read stays in your browser. The usage report counts how often such a window opened and how
+      often the button with its link was pressed, never which announcement. The same file can also stop the usage report going out early after a
+      failure, described under request 5.
+    </p>
+    <p>
       The request carries no identifier and no payload; every install receives the same bytes. Nothing in the file is
       executed as code, and the extension works normally with the file deleted, unreachable or malformed — every
       value in it has a built-in default. Like any web request it reaches our host with your IP address, which is
@@ -501,8 +558,11 @@ last_modified_at: 2026-10-15
       Wikidata again about a title it had no match for only after a week.
     </p>
     <p>
-      There is no setting for you to turn ratings off in this version; if that matters to you, say so and it will be
-      added.
+      From version 1.5.0 you can turn the badges off yourself: in the toolbar popup's Settings, <em>Off everywhere</em>
+      stops the badges on Netflix's own cards and every request for their ratings, and <em>Off on My Netflix and My List</em>
+      does the same on those two pages only. The setting does not reach the dashboard or Tonight, which look ratings up
+      as described above whatever it says. The dashboard's IMDb switch hides the ratings on its own cards and changes
+      nothing about how they are looked up.
     </p>
 
     <h3>5. A usage report, to tidywl.com</h3>
@@ -515,7 +575,16 @@ last_modified_at: 2026-10-15
       Whenever one of your lifetime counts has changed, the extension sends that identifier and the counts to
       <code>https://tidywl.com/api/netflix/installs</code>. It checks on each Netflix page load, after a Sync, after a
       removal, the first time you open the dashboard on a given day, the first time the rating badges show on a given day,
-      and, from version 1.4.0, the first time you open the My List page on a given day. The report is exactly this, and nothing else:
+      and, from version 1.4.0, the first time you open the My List page on a given day.
+    </p>
+    <p>
+      <strong>From version 1.5.0 it can also go out shortly after something fails.</strong> When one of the five failure
+      counts in the table below goes up, the extension asks for the report at once instead of waiting for one of those
+      moments, so that a Netflix change that breaks something shows up within minutes. This browser asks that way at
+      most once every ten minutes, so at most 144 times in a day; on a day when nothing fails, never. It is the same
+      report to the same address, with nothing added. The settings file, request 1, can switch this early asking off;
+      that stops only the early asking, and the report then goes at the moments above, as before. The report is
+      exactly this, and nothing else:
     </p>
 
     <div class="nf-policy-table-wrap">
@@ -559,6 +628,18 @@ last_modified_at: 2026-10-15
           <tr><td>mylist_title_clicks</td><td>How many times you have clicked a title on the My List page to open it. Not which title. Nothing you press inside Netflix's own preview is counted.</td></tr>
           <tr><td>rating_asks</td><td>How many times the extension has asked you for a rating: on a removal's summary, at the top of the dashboard, or in the My List page's heading.</td></tr>
           <tr><td>rating_clicks</td><td>How many times you have pressed <em>Rate it</em>, on one of those asks or on the tile in the About window, which opens the extension's page on the Chrome Web Store. Not whether you went on to rate it.</td></tr>
+          <tr><td>badge_mode</td><td>Which setting you chose for the IMDb badges on Netflix's own cards: 0 for on everywhere, 1 for off on My Netflix and My List, 2 for off everywhere. The setting as it stood at the last report, not a total.</td></tr>
+          <tr><td>announce_views</td><td>How many times an announcement has opened as a window on the dashboard. Not which one. Opening the bell's list is not counted.</td></tr>
+          <tr><td>announce_clicks</td><td>How many times you have pressed the button on such a window that opens its link. Not which one, and not <em>Not now</em> or <em>Got it</em>.</td></tr>
+          <tr><td>sync_short</td><td>How many times a Sync finished but left part of its reading undone, and the dashboard said so: watch state it could not finish reading, shows left unchecked, or a Leaving soon check Netflix did not answer in full. At most one per Sync.</td></tr>
+          <tr><td>reads_refused</td><td>How many times Netflix did not answer something the extension asked it to read — My List, a search, a category, the details of their results, watch state, Leaving soon, or the My List page — and the extension told you so. Not what was being read.</td></tr>
+          <tr><td>ops_rejected</td><td>How many times Netflix refused one of the extension's requests outright, as it does when a Netflix update changes what it expects, rather than simply not answering — and the extension told you so. Not which request.</td></tr>
+          <tr><td>removals_failed</td><td>How many titles a removal, a Retry or a Move asked Netflix to take out of My List and Netflix refused, as the removal's summary then says. Not which titles. A title left alone because you pressed Stop is not counted.</td></tr>
+          <tr><td>mylist_page_failed</td><td>How many times the My List page could not show your list and said so.</td></tr>
+          <tr><td>leaving_opens</td><td>How many times you have opened the toolbar popup while it listed titles leaving Netflix.</td></tr>
+          <tr><td>preview_dwells</td><td>How many times resting the pointer on a title in the dashboard asked Netflix about that title: the extension's own preview request, or Netflix's own preview opening on it for the first time on that page. Not which title.</td></tr>
+          <tr><td>badges_rated</td><td>How many titles have shown an IMDb rating badge on Netflix's own pages, each title counted once each time a Netflix page loads. Not which titles.</td></tr>
+          <tr><td>badges_blank</td><td>The same, for titles whose every lookup finished without a rating to show.</td></tr>
         </tbody>
       </table>
     </div>
@@ -570,23 +651,29 @@ last_modified_at: 2026-10-15
       uses the badges never opens the dashboard, and without it would look like someone who stopped using the
       extension. The four from <code>mylist_days</code> to <code>rating_clicks</code> were added in version 1.4.0: the
       My List page, like the badges, is used without opening the dashboard, and the last two show how often a rating
-      is asked for and how often the ask is taken up.
+      is asked for and how often the ask is taken up. The twelve from <code>badge_mode</code> to
+      <code>badges_blank</code> were added in version 1.5.0. Five of them, from <code>sync_short</code> to
+      <code>mylist_page_failed</code>, count failures the extension has already shown you, so that a Netflix change
+      that breaks something is seen within minutes rather than when someone writes in; the others show whether the
+      badge setting, announcements, the popup's Leaving soon list and hover previews get used, and how often a badge
+      finds a rating.
     </p>
 
     <p>
       <strong>Never sent:</strong> a title, a Netflix or IMDb id, what you searched for, a category's name or id, a
       playlist's name or contents, a profile's name, id or how many profiles there are, a rating, your watch state,
-      the time you did anything, the extension's settings, or an IP address the extension has read. The report has no
+      the time you did anything, the extension's settings other than the badge setting in <code>badge_mode</code>, or
+      an IP address the extension has read. The report has no
       field that could hold any of these, and the server refuses a report carrying anything it does not expect, so
       none can be sent by mistake.
     </p>
     <p>
       <strong>Days opened is a number, not a diary.</strong> The report carries how many days, never which days, what
-      time or for how long. The server does note the date each report arrives; see
-      <em>How long anything is kept</em>.
+      time or for how long. The server does note the date each report arrives and, from version 1.5.0, the hour of
+      one in which a failure count went up; see <em>How long anything is kept</em>.
     </p>
     <p>
-      <strong>There is no timer and no install beacon.</strong> A report is sent only when a count has changed. An
+      <strong>There is no timer and no install beacon.</strong> A report is sent only when one of the numbers above has changed. An
       install that has never done anything counted above sends nothing at all, and an install that is idle sends
       nothing while it is idle. If a report cannot be delivered it is not retried or stored; the same counts simply go
       the next time one of the moments above comes round.
@@ -594,8 +681,9 @@ last_modified_at: 2026-10-15
     <p>
       <strong>Why:</strong> to know how the extension is actually used — how many people open it in a week, which of
       its three tabs they use, how large a My List gets, and whether anyone wants mobile sync enough to press a button
-      for it; from version 1.1.0, which of Pro's features people reach for and whether Tonight gets used; and, from
-      version 1.4.0, whether the My List page gets used — which decides what gets built next. Store reviews come from a self-selected few; this is the only other
+      for it; from version 1.1.0, which of Pro's features people reach for and whether Tonight gets used; from
+      version 1.4.0, whether the My List page gets used; and, from version 1.5.0, whether a Netflix change has just
+      broken something — which decides what gets built, and fixed, next. Store reviews come from a self-selected few; this is the only other
       signal. The numbers are not sold, not shared with anyone, and not used for advertising.
     </p>
 
@@ -784,7 +872,7 @@ last_modified_at: 2026-10-15
       <li><strong>The badges' ratings</strong> are asked for again after a day, and at most 5,000 titles are kept.</li>
       <li><strong>Tonight's surprises</strong> are kept for a day. A title put off with <em>Not tonight</em> stays put off for seven days, and the record that you did for thirty. A film you pressed <em>Play</em> on in Tonight leaves its picks for a day. <strong>Your occasions</strong> stay until you delete them.</li>
       <li><strong>Playlists</strong> stay until you delete them, and <strong>pins</strong> until you unpin them.</li>
-      <li><strong>The usage report's record</strong> is kept on our server as described below, and deleted after 12 months without a report.</li>
+      <li><strong>The usage report's record</strong> is kept on our server as described below, and deleted after 12 months without a report. The hour it notes for a failure, from version 1.5.0, is kept for up to two days.</li>
       <li><strong>Pro's copy of your playlists</strong> stays on our server while your subscription is active, updated by each sync. Turning sync off stops that browser sending; it does not delete the copy, because your other browsers and your phone still use it. A deleted playlist leaves only its id and two times. <strong>When a subscription ends, the copy — every profile, playlist and phone under the key — is deleted 90 days later</strong>, so it is still there if you come back within that time.</li>
       <li><strong>Tonight's pick on your phone</strong> is hidden there after 5 am, and deleted from our server by the next sync of any of your browsers on version 1.1.0 or later after that, or after you press <em>Undo</em>.</li>
       <li><strong>A paired phone</strong> stays until you remove it in the extension. An unused pairing code is deleted when the next one is made, and cannot be used after ten minutes in any case.</li>
@@ -794,11 +882,17 @@ last_modified_at: 2026-10-15
     <p>
       <strong>What our server keeps.</strong> One record per install, on a server we run at tidywl.com — a Cloudflare
       Worker with a Cloudflare D1 database, the same one that serves TidyWL for YouTube, in separate tables. It keeps
-      the highest value it has seen for each count and the latest My List size, and three dates — the day only, never a
+      the highest value it has seen for each count, the latest My List size and, from version 1.5.0, the latest badge
+      setting, and three dates — the day only, never a
       time: the day your install's first report arrived, the day its latest one did, and the latest day one of the
       counts for something you did (a sync, a removal, an addition, a search, a category, a playlist, a pin, an import,
-      an export or, from version 1.1.0, Play pressed on one of Tonight's picks) went up. Once a day the server also adds every install's figures up into daily totals — how many
-      installs reported in the last week, how many were new, how many did something — kept in tables that name no
+      an export or, from version 1.1.0, Play pressed on one of Tonight's picks) went up. From version 1.5.0 it also
+      keeps, for each of the five failure counts, the hour (in UTC) of the latest report in which that count went up,
+      so that many installs failing in the same hour can be told apart from one failing now and then. That is the one
+      thing it keeps finer than a day, and not for long: a nightly job clears each such hour once it is more than 24
+      hours old, so it is kept for up to two days, and the counts stay. Once a day the server also adds every install's figures up into daily totals — how many
+      installs reported in the last week, how many were new, how many did something and, from version 1.5.0, how many
+      failures of each kind they had counted — kept in tables that name no
       install, and so kept after the records they were added up from expire. <strong>A record that has not been updated
       for 12 months is deleted</strong>; before deletion its install, removal and addition counts are added to a single
       running total, and after deletion nothing about that install remains.
