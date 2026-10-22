@@ -83,6 +83,7 @@
     var needsChoice = choices.length > 0;
     var choice = null;
     var sentChoice = null;
+    var sentNote = null; // once a note is in, every later choice resends it: the server replaces the whole row
     var choiceSend = 0;
     var noteSending = false;
 
@@ -115,7 +116,9 @@
       var mine = ++choiceSend;
       var picked = choice;
       setStatus('sending');
-      post({ choice: picked }).then(function (ok) {
+      var extra = { choice: picked };
+      if (sentNote != null) extra.note = sentNote;
+      post(extra).then(function (ok) {
         if (mine !== choiceSend) return;
         if (ok) sentChoice = picked;
         setStatus(ok ? 'sent' : 'failed');
@@ -164,6 +167,7 @@
           refreshSend();
           return;
         }
+        sentNote = text;
         // The note carries the answer too, so a note that arrived means the answer did.
         if (needsChoice) {
           choiceSend++;
