@@ -39,6 +39,35 @@ robots: noindex
       <p class="activate-done" id="activate-done">You are done when the badge turns <strong>PRO</strong>.</p>
     </div>
 
+    <!-- One optional question (2026-10-22). It sits after the activation steps
+         and is shown only to someone Paddle just sent here, never to someone
+         finding a lost key. Nothing in it is read by the extension's checkout
+         bridge, which talks to this page by postMessage alone. -->
+    <div class="fq" id="buy-why" hidden>
+      <h2 class="fq-title" id="buy-why-q">What made you buy today?</h2>
+      <p class="fq-sub">Optional, and anonymous. One tap sends it.</p>
+      <div class="fq-choices" role="group" aria-labelledby="buy-why-q">
+        <button type="button" class="fq-choice" data-choice="hit_limit">I hit the free removal limit</button>
+        <button type="button" class="fq-choice" data-choice="pro_feature">I wanted a Pro feature</button>
+        <button type="button" class="fq-choice" data-choice="support">To support the developer</button>
+        <button type="button" class="fq-choice" data-choice="other">Something else</button>
+      </div>
+      <div class="fq-row">
+        <p class="fq-status" data-fq="status" role="status" hidden></p>
+        <button type="button" class="fq-retry" data-fq="retry" hidden>Try again</button>
+      </div>
+      <div data-fq="more" hidden>
+        <label class="fq-label" for="buy-why-note">Anything to add? (optional)</label>
+        <textarea class="fq-note" id="buy-why-note" data-fq="note" rows="3" placeholder="Which feature, or what tipped it."></textarea>
+        <div class="fq-row">
+          <button type="button" class="fq-send" data-fq="send">Send</button>
+          <p class="fq-status" data-fq="note-status" role="status" hidden></p>
+        </div>
+        <p class="fq-done" data-fq="done" tabindex="-1" hidden>Thank you. Your note is in.</p>
+      </div>
+      <p class="fq-small">Sends your answer and anything you type, never your key or your email. <a href="/privacy/#what-you-send-yourself">Privacy</a></p>
+    </div>
+
     <h2>This key is not emailed</h2>
     <p>Copy it somewhere safe or bookmark this page.</p>
     <p>One key works on up to three computers. Deactivate a device from the same panel to free a seat.</p>
@@ -309,5 +338,22 @@ robots: noindex
       box.classList.remove('has-key');
       find.hidden = false;
     }
+  })();
+</script>
+
+{% include feedback-question.html %}
+<script>
+  // "What made you buy today?" (2026-10-22), in its own script so nothing here
+  // can stop the key lookup or the hand-over above. Shown only on the return
+  // from a checkout, which carries `transaction_id` (hosted) or `_ptxn` (the
+  // pricing page); `txn` is Find my key and support links, someone who bought
+  // earlier. It never touches the key, and sends neither the key nor the id.
+  (function () {
+    var root = document.getElementById('buy-why');
+    var params = new URLSearchParams(location.search);
+    var txn = params.get('transaction_id') || params.get('_ptxn');
+    if (!root || !txn || !/^txn_[A-Za-z0-9]{1,64}$/.test(txn) || !window.tidywlFeedbackWire) return;
+    window.tidywlFeedbackWire(root, { source: 'checkout', plan: 'pro', question: 'why_buy' });
+    root.hidden = false;
   })();
 </script>

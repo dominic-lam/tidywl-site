@@ -1,0 +1,167 @@
+<style>
+  /* One optional question with its answers as buttons (2026-10-22): the
+     checkout thank-you's "What made you buy today?" and the /feedback/ page.
+     Both post to /api/feedback and say "Sent" only on a 2xx reply. */
+  .fq { margin: 0 0 36px; padding: 20px 24px 22px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-card); }
+  .fq[hidden], .fq [hidden] { display: none !important; }
+  .fq .fq-title { margin: 0 0 4px; font-size: 1.1rem; font-weight: 700; }
+  .fq-sub { margin: 0 0 14px; font-size: 0.9rem; color: var(--text-muted); }
+  .fq-choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; }
+  .fq-choice, .fq-send, .fq-retry {
+    min-height: 44px;
+    padding: 9px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-align: left;
+  }
+  .fq-choice:hover, .fq-send:hover:not(:disabled), .fq-retry:hover { background: var(--ghost-hover-bg); border-color: var(--ghost-hover-border); }
+  .fq-choice[aria-pressed="true"] { border-color: var(--accent-text); box-shadow: inset 0 0 0 1px var(--accent-text); font-weight: 600; }
+  .fq-choice:focus-visible, .fq-send:focus-visible, .fq-retry:focus-visible, .fq-note:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .fq-send:disabled { opacity: 0.55; cursor: default; }
+  .fq-status { margin: 0 0 12px; font-size: 0.9rem; color: var(--text-muted); }
+  .fq-status[data-state="failed"] { color: var(--accent-text); font-weight: 600; }
+  .fq-status[data-state="sent"] { color: var(--text); font-weight: 600; }
+  .fq-label { display: block; margin: 6px 0 6px; font-weight: 600; }
+  .fq-note {
+    display: block;
+    width: 100%;
+    min-height: 88px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: inherit;
+    font: inherit;
+    line-height: 1.5;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+  .fq-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 10px; }
+  .fq-row .fq-status { margin: 0; }
+  .fq-small { margin: 14px 0 0; font-size: 0.85rem; color: var(--text-muted); }
+  .fq-done { margin: 0; font-weight: 600; }
+</style>
+<script>
+  // Wires one .fq question. `base` is what every send carries: source, plan,
+  // question and, when known, version (the contract: tidywl-api, POST
+  // /api/feedback). Markup it reads, all inside `root`:
+  //   [data-choice]          answer buttons; a tap sends that answer at once
+  //   [data-fq="status"]     what happened to the tap's send
+  //   [data-fq="retry"]      shown when the tap's send failed
+  //   [data-fq="more"]       the note part, revealed after a tap when there are buttons
+  //   [data-fq="note"]       the textarea; [data-fq="send"] sends it with the answer
+  //   [data-fq="note-status"], [data-fq="done"]
+  // Nothing the visitor types is ever put into the page except as a value; every
+  // text the script sets is a fixed string set with textContent.
+  window.tidywlFeedbackWire = function (root, base) {
+    var MAX_NOTE = 2000;
+    var choices = root.querySelectorAll('[data-choice]');
+    var status = root.querySelector('[data-fq="status"]');
+    var retry = root.querySelector('[data-fq="retry"]');
+    var more = root.querySelector('[data-fq="more"]');
+    var note = root.querySelector('[data-fq="note"]');
+    var send = root.querySelector('[data-fq="send"]');
+    var noteStatus = root.querySelector('[data-fq="note-status"]');
+    var done = root.querySelector('[data-fq="done"]');
+    var needsChoice = choices.length > 0;
+    var choice = null;
+    var sentChoice = null;
+    var choiceSend = 0;
+    var noteSending = false;
+
+    function post(extra) {
+      var body = {};
+      Object.keys(base).forEach(function (k) { if (base[k] != null) body[k] = base[k]; });
+      Object.keys(extra).forEach(function (k) { body[k] = extra[k]; });
+      try {
+        return fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          keepalive: true,
+          credentials: 'omit'
+        }).then(function (res) { return res.ok; }, function () { return false; });
+      } catch (e) {
+        return Promise.resolve(false);
+      }
+    }
+
+    function setStatus(state) {
+      if (!status) return;
+      status.setAttribute('data-state', state);
+      status.textContent = state === 'sent' ? 'Sent. Thank you.' : state === 'failed' ? 'Not sent.' : 'Sending…';
+      status.hidden = false;
+      if (retry) retry.hidden = state !== 'failed';
+    }
+
+    function sendChoice() {
+      var mine = ++choiceSend;
+      var picked = choice;
+      setStatus('sending');
+      post({ choice: picked }).then(function (ok) {
+        if (mine !== choiceSend) return;
+        if (ok) sentChoice = picked;
+        setStatus(ok ? 'sent' : 'failed');
+      });
+    }
+
+    function refreshSend() {
+      send.disabled = noteSending || note.value.trim() === '' || (needsChoice && choice == null);
+    }
+
+    choices.forEach(function (btn) {
+      btn.setAttribute('aria-pressed', 'false');
+      btn.addEventListener('click', function () {
+        var value = btn.getAttribute('data-choice');
+        choices.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+        if (more) more.hidden = false;
+        refreshSend();
+        // Tapping the answer already in sends nothing twice.
+        if (value === sentChoice && value === choice) return;
+        choice = value;
+        refreshSend();
+        sendChoice();
+      });
+    });
+    if (retry) retry.addEventListener('click', function () { if (choice != null) sendChoice(); });
+
+    note.setAttribute('maxlength', String(MAX_NOTE));
+    note.addEventListener('input', refreshSend);
+    refreshSend();
+    send.addEventListener('click', function () {
+      var text = note.value.trim().slice(0, MAX_NOTE);
+      if (text === '' || noteSending || (needsChoice && choice == null)) return;
+      noteSending = true;
+      refreshSend();
+      send.textContent = 'Sending…';
+      noteStatus.hidden = true;
+      var extra = { note: text };
+      if (needsChoice) extra.choice = choice;
+      post(extra).then(function (ok) {
+        noteSending = false;
+        send.textContent = 'Send';
+        if (!ok) {
+          noteStatus.setAttribute('data-state', 'failed');
+          noteStatus.textContent = "Your note didn't go through. Check your connection and press Send again.";
+          noteStatus.hidden = false;
+          refreshSend();
+          return;
+        }
+        // The note carries the answer too, so a note that arrived means the answer did.
+        if (needsChoice) {
+          choiceSend++;
+          sentChoice = choice;
+          setStatus('sent');
+        }
+        note.disabled = true;
+        send.hidden = true;
+        done.hidden = false;
+        done.focus({ preventScroll: true });
+      });
+    });
+  };
+</script>

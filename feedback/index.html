@@ -1,0 +1,73 @@
+---
+layout: default
+title: One question
+description: "The page the TidyWL dashboard opens to ask one anonymous question: what Pro is worth to a subscriber, or what a free user wishes it did."
+permalink: /feedback/
+sitemap: false
+robots: noindex
+---
+<section class="blog-wrap">
+  <h1 class="blog-title">One quick question</h1>
+  <p class="blog-subtitle">It goes to Dominic, who builds TidyWL alone, and he reads every answer.</p>
+
+  <div class="post-body">
+    <!-- Opened from the dashboard as /feedback/?plan=pro&v=2.6.1 or ?plan=free&v=…
+         (2026-10-22). A missing or unknown plan gets the free question. -->
+    <div class="fq" id="fb-pro" hidden>
+      <h2 class="fq-title" id="fb-pro-q">How would you feel if Pro went away?</h2>
+      <p class="fq-sub">One tap sends it.</p>
+      <div class="fq-choices" role="group" aria-labelledby="fb-pro-q">
+        <button type="button" class="fq-choice" data-choice="very">Very disappointed</button>
+        <button type="button" class="fq-choice" data-choice="somewhat">Somewhat disappointed</button>
+        <button type="button" class="fq-choice" data-choice="not">Not disappointed</button>
+      </div>
+      <div class="fq-row">
+        <p class="fq-status" data-fq="status" role="status" hidden></p>
+        <button type="button" class="fq-retry" data-fq="retry" hidden>Try again</button>
+      </div>
+      <div data-fq="more" hidden>
+        <label class="fq-label" for="fb-pro-note">What do you use it for most?</label>
+        <textarea class="fq-note" id="fb-pro-note" data-fq="note" rows="3" placeholder="A feature, a job, a habit. One line is plenty."></textarea>
+        <div class="fq-row">
+          <button type="button" class="fq-send" data-fq="send" disabled>Send</button>
+          <p class="fq-status" data-fq="note-status" role="status" hidden></p>
+        </div>
+        <p class="fq-done" data-fq="done" tabindex="-1" hidden>Thank you. Your note is in.</p>
+      </div>
+    </div>
+
+    <div class="fq" id="fb-free">
+      <label class="fq-title fq-label" for="fb-free-note">What's one thing you wish Watch Later Tidy did?</label>
+      <p class="fq-sub">Anything at all, big or small.</p>
+      <textarea class="fq-note" id="fb-free-note" data-fq="note" rows="4" placeholder="The job you'd like it to do, in your own words."></textarea>
+      <div class="fq-row">
+        <button type="button" class="fq-send" data-fq="send" disabled>Send</button>
+        <p class="fq-status" data-fq="note-status" role="status" hidden></p>
+      </div>
+      <p class="fq-done" data-fq="done" tabindex="-1" hidden>Thank you. It's in.</p>
+      <noscript><p class="fq-small">This form needs JavaScript. You can also email <a href="mailto:support@tidywl.com">support@tidywl.com</a>.</p></noscript>
+    </div>
+
+    <p class="privacy-meta">Anonymous: it sends your answer, what you type, whether you're on Free or Pro and the extension's version. Never your key, your install's ID or anything about your YouTube account. It can't reply, so if you'd like an answer, ask on <a href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord</a> or email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--/email_off-->. <a href="/privacy/#what-you-send-yourself">Privacy policy</a></p>
+  </div>
+</section>
+
+{% include feedback-question.html %}
+<script>
+  (function () {
+    var params = new URLSearchParams(location.search);
+    var plan = params.get('plan') === 'pro' ? 'pro' : 'free';
+    // The version is read only when it is dotted digits; anything else is left out.
+    var v = params.get('v');
+    var version = typeof v === 'string' && /^[0-9]{1,5}(\.[0-9]{1,5}){1,3}$/.test(v) ? v : null;
+    var pro = document.getElementById('fb-pro');
+    var free = document.getElementById('fb-free');
+    if (plan === 'pro') {
+      free.hidden = true;
+      pro.hidden = false;
+      window.tidywlFeedbackWire(pro, { source: 'dashboard', plan: 'pro', question: 'pro_survey', version: version });
+    } else {
+      window.tidywlFeedbackWire(free, { source: 'dashboard', plan: 'free', question: 'free_wish', version: version });
+    }
+  })();
+</script>
