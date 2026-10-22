@@ -57,6 +57,19 @@
   //   [data-fq="note-status"], [data-fq="done"]
   // Nothing the visitor types is ever put into the page except as a value; every
   // text the script sets is a fixed string set with textContent.
+  // One random id per page load, sent with every POST: the server keeps one row
+  // per id, so a tap followed by a note, or a changed answer, replaces the first
+  // rather than adding a second. Drawn here, lives only in this tab, and is not
+  // linked to the install.
+  var tidywlAnswerId = (function () {
+    if (window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+    var b = crypto.getRandomValues(new Uint8Array(16));
+    b[6] = (b[6] & 0x0f) | 0x40;
+    b[8] = (b[8] & 0x3f) | 0x80;
+    var h = Array.prototype.map.call(b, function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
+    return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
+  })();
+
   window.tidywlFeedbackWire = function (root, base) {
     var MAX_NOTE = 2000;
     var choices = root.querySelectorAll('[data-choice]');
@@ -74,7 +87,7 @@
     var noteSending = false;
 
     function post(extra) {
-      var body = {};
+      var body = { answerId: tidywlAnswerId };
       Object.keys(base).forEach(function (k) { if (base[k] != null) body[k] = base[k]; });
       Object.keys(extra).forEach(function (k) { body[k] = extra[k]; });
       try {
