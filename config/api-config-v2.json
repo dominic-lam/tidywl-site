@@ -217,6 +217,7 @@
       "yearly": "https://tidywl.com/pricing/?plan=yearly"
     },
     "pricing": {
+      "defaultPeriod": "yearly",
       "regular": {
         "monthly": 4.99,
         "yearly": 47.88

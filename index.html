@@ -1,5 +1,5 @@
 ---
-last_modified_at: 2026-09-18
+last_modified_at: 2026-10-21
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +48,7 @@ last_modified_at: 2026-09-18
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "TidyWL — Watch Later Tidy",
-    "alternateName": "Watch Later Tidy",
+    "alternateName": ["Watch Later Tidy", "Watch Later Tidy for YouTube™ & YouTube Music"],
     "applicationCategory": "BrowserApplication",
     "operatingSystem": "Chrome, Microsoft Edge, Firefox",
     "softwareRequirements": "Google Chrome, Microsoft Edge, or Firefox 153 or newer",
@@ -190,7 +190,15 @@ last_modified_at: 2026-09-18
         "name": "Does TidyWL work in Firefox?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, on Firefox 153 or newer. It is listed in Firefox Add-ons as Watch Later Tidy: click Add to Firefox there and accept Firefox's prompt. It is signed by Mozilla and updates automatically. Firefox for Android is not supported yet."
+          "text": "Yes, on Firefox 153 or newer. It is listed in Firefox Add-ons as Watch Later Tidy for YouTube™ & YouTube Music: click Add to Firefox there and accept Firefox's prompt. It is signed by Mozilla and updates automatically. Firefox for Android is not supported yet."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does TidyWL work with YouTube Music?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Partly. Songs you like on YouTube Music also show up in your Liked videos on youtube.com, so you can unlike them in bulk from there, and the like comes off YouTube Music too. From version 2.6.1, open a playlist on music.youtube.com and press Open Dashboard in the TidyWL popup: it takes you to the same playlist on youtube.com and opens the dashboard there, where you manage it like any other playlist. The dashboard does not run on music.youtube.com itself yet."
         }
       },
       {
@@ -971,7 +979,17 @@ last_modified_at: 2026-09-18
               <span class="plus" aria-hidden="true">+</span>
             </button>
             <div class="faq-a" id="faq-firefox">
-              Yes, on Firefox 153 or newer. It is listed in <a href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Firefox Add-ons</a> as Watch Later Tidy: click Add to Firefox there and accept Firefox's prompt. It is signed by Mozilla and updates automatically. Firefox for Android is not supported yet.
+              Yes, on Firefox 153 or newer. It is listed in <a href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Firefox Add-ons</a> as Watch Later Tidy for YouTube™ &amp; YouTube Music: click Add to Firefox there and accept Firefox's prompt. It is signed by Mozilla and updates automatically. Firefox for Android is not supported yet.
+            </div>
+          </div>
+
+          <div class="faq-item" aria-expanded="false">
+            <button class="faq-q" aria-controls="faq-music">
+              <span>Does TidyWL work with YouTube Music?</span>
+              <span class="plus" aria-hidden="true">+</span>
+            </button>
+            <div class="faq-a" id="faq-music">
+              Partly. Songs you like on YouTube Music also show up in your Liked videos on youtube.com, so you can unlike them in bulk from there, and the like comes off YouTube Music too. From version 2.6.1, open a playlist on music.youtube.com and press Open Dashboard in the TidyWL popup: it takes you to the same playlist on youtube.com and opens the dashboard there, where you manage it like any other playlist. The dashboard does not run on music.youtube.com itself yet.
             </div>
           </div>
 

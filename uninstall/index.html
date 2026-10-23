@@ -71,6 +71,11 @@ sitemap: false
     .un-chip-icon { flex: none; display: flex; color: var(--accent); }
     .un-sent-tick { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8125rem; color: var(--text-muted); }
     .un-sent-tick svg { color: var(--accent-text); }
+    .un-sent-tick[data-state="failed"] { color: var(--accent-text); font-weight: 600; }
+    .un-retry { display: inline; min-height: 0; padding: 0; background: transparent; border: 0; color: var(--text); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+    .un-retry:hover { text-decoration-thickness: 2px; }
+    .un-note-err { flex: 1 1 100%; margin: 0; font-size: 0.8125rem; font-weight: 600; line-height: 1.5; color: var(--accent-text); }
+    .un-retry[hidden], .un-note-err[hidden], .un-sent-tick svg[hidden], .un-small[hidden] { display: none; }
 
     .un-reply { display: flex; align-items: flex-start; gap: 14px; }
     .un-reply > img { flex: none; display: block; width: 40px; height: 40px; border-radius: 10px; }
@@ -244,9 +249,10 @@ sitemap: false
                 <span class="un-chip-icon" id="un-chip-icon"></span>
                 <span id="un-chip-label"></span>
               </div>
-              <span class="un-sent-tick">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                Sent
+              <span class="un-sent-tick" id="un-sent-tick" data-state="sending" role="status">
+                <svg id="un-sent-icon" hidden width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                <span id="un-sent-text">Sending…</span>
+                <button type="button" class="un-retry" id="un-retry" hidden>Try again</button>
               </span>
             </div>
           </div>
@@ -384,10 +390,11 @@ sitemap: false
                 <span>Anonymous: sends your note with the reason, nothing else. Want a reply? Use Discord or email.</span>
               </p>
               <button type="button" class="un-primary" id="un-send" disabled>Send note</button>
+              <p class="un-note-err" id="un-note-err" role="status" hidden></p>
             </div>
           </div>
 
-          <p class="un-small">Or close the tab. Your answer is already in.</p>
+          <p class="un-small" id="un-already" hidden>Or close the tab. Your answer is already in.</p>
         </section>
 
         <section class="un-step un-reveal" id="un-thanks" hidden>
@@ -562,18 +569,47 @@ sitemap: false
     var note = document.getElementById('un-note');
     var sendBtn = document.getElementById('un-send');
     var reason = null;
+    var tick = document.getElementById('un-sent-tick');
+    var tickIcon = document.getElementById('un-sent-icon');
+    var tickText = document.getElementById('un-sent-text');
+    var retryBtn = document.getElementById('un-retry');
+    var already = document.getElementById('un-already');
+    var noteErr = document.getElementById('un-note-err');
 
+    // Resolves true only when the server took it (a 2xx), false on a network
+    // error, a rate limit or any refusal, so the page never says "Sent" for an
+    // answer that did not arrive.
     function post(body) {
       body.id = visit;
       try {
-        fetch(ENDPOINT, {
+        return fetch(ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
           keepalive: true,
           credentials: 'omit'
-        }).catch(function () {});
-      } catch (e) {}
+        }).then(function (res) { return res.ok; }, function () { return false; });
+      } catch (e) {
+        return Promise.resolve(false);
+      }
+    }
+
+    // Only the latest send of the reason may set the tick: picking again while
+    // an earlier send is still out must not let the older answer overwrite it.
+    var reasonSend = 0;
+    function setTick(state) {
+      tick.setAttribute('data-state', state);
+      tickIcon.hidden = state !== 'sent';
+      tickText.textContent = state === 'sent' ? 'Sent' : state === 'failed' ? 'Not sent.' : 'Sending…';
+      retryBtn.hidden = state !== 'failed';
+      already.hidden = state !== 'sent';
+    }
+    function sendReason() {
+      var mine = ++reasonSend;
+      setTick('sending');
+      post({ reason: reason }).then(function (ok) {
+        if (mine === reasonSend) setTick(ok ? 'sent' : 'failed');
+      });
     }
 
     // ── The record (2026-10-11) ──
@@ -677,13 +713,17 @@ sitemap: false
       note.placeholder = btn.getAttribute('data-placeholder');
       note.value = '';
       sendBtn.disabled = true;
+      noteSend++;
+      noteSending = false;
+      sendBtn.textContent = 'Send note';
+      noteErr.hidden = true;
       var heading = null;
       branches.forEach(function (b) {
         var on = b.getAttribute('data-branch') === reason;
         b.hidden = !on;
         if (on) heading = b.querySelector('.un-h2');
       });
-      post({ reason: reason });
+      sendReason();
       // With a record, focus lands on the number, so a screen reader hears it first.
       if (renderRecord()) heading = recordCards[0].querySelector('.un-record-fig');
       show('answer', heading);
@@ -695,13 +735,39 @@ sitemap: false
     document.querySelectorAll('[data-action="change"]').forEach(function (btn) {
       btn.addEventListener('click', function () { show('pick', document.getElementById('un-q')); });
     });
-    note.addEventListener('input', function () { sendBtn.disabled = note.value.trim() === ''; });
+    retryBtn.addEventListener('click', function () {
+      if (reason != null) sendReason();
+    });
+    var noteSending = false;
+    var noteSend = 0;
+    note.addEventListener('input', function () { sendBtn.disabled = noteSending || note.value.trim() === ''; });
+    // The thank-you says the note is in, so it waits for the server to say so.
     sendBtn.addEventListener('click', function () {
       var text = note.value.trim();
-      if (!text || reason == null) return;
-      post({ reason: reason, text: text });
-      var withRecord = renderRecord();
-      show('thanks', withRecord ? recordCards[1].querySelector('.un-record-fig') : document.getElementById('un-thanks-title'));
+      if (!text || reason == null || noteSending) return;
+      noteSending = true;
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'Sending…';
+      noteErr.hidden = true;
+      var mine = ++noteSend;
+      post({ reason: reason, text: text }).then(function (ok) {
+        // The visitor went back and picked an answer meanwhile: that pick has
+        // its own send and its own tick, so leave its screen alone.
+        if (mine !== noteSend || steps.answer.hidden) return;
+        noteSending = false;
+        sendBtn.textContent = 'Send note';
+        sendBtn.disabled = note.value.trim() === '';
+        if (!ok) {
+          noteErr.textContent = "Your note didn't go through. Check your connection and press Send note again.";
+          noteErr.hidden = false;
+          return;
+        }
+        // The note carries the reason too, so a note that arrived means the reason did.
+        reasonSend++;
+        setTick('sent');
+        var withRecord = renderRecord();
+        show('thanks', withRecord ? recordCards[1].querySelector('.un-record-fig') : document.getElementById('un-thanks-title'));
+      });
     });
 
     renderRecord();
