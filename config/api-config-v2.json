@@ -409,6 +409,10 @@
       "sources",
       0,
       "url"
+    ],
+    "firstVideoIdPaths": [
+      ["rendererContext", "commandContext", "onTap", "innertubeCommand", "watchEndpoint", "videoId"],
+      ["itemPlayback", "inlinePlayerData", "onVisible", "innertubeCommand", "watchEndpoint", "videoId"]
     ]
   },
   "editBatchSizes": {
@@ -459,5 +463,12 @@
       "urlTemplate": "https://www.youtube.com/watch?v={videoId}"
     },
     "maxCalls": 80
+  },
+  "removalPace": {
+    "minVideos": 4500,
+    "videosPerMinute": 1000
+  },
+  "feedbackPrompt": {
+    "enabled": true
   }
 }
