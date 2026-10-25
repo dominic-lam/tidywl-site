@@ -234,7 +234,7 @@ sitemap: false
           <div class="un-pick-foot">
             <p class="un-small">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span>A click sends the reason you picked, with this install's random ID, its version and usage counts if your browser shares them. Never your name, account or videos.</span>
+              <span>Opening this page tells us this install was removed, with its random ID, its version and usage counts if your browser shares them. A click adds the reason you picked. Never your name, account or videos.</span>
             </p>
             <div class="un-inline-links" data-reinstall-links>
               <span>Removed it by mistake? Add it back for</span>
@@ -563,8 +563,9 @@ sitemap: false
   })();
 
   (function () {
-    // The answer goes out on the click, so a visitor who closes the tab at once
-    // still counts. Every send carries the same per-visit id, so the server keeps
+    // The reason goes out on the click, so a visitor who closes the tab at once
+    // still counts, and since 2026-10-25 the page has already sent the install's
+    // context when it opened (below), as reason 'none'. Every send carries the same per-visit id, so the server keeps
     // only the last answer of a visit: changing it does not count twice. The id
     // is drawn here and lives only in this tab. Since 2026-10-24 each send also
     // carries the install's context from the link when the link has its random
@@ -870,6 +871,12 @@ sitemap: false
 
     renderRecord();
     renderReinstall();
+    // 2026-10-25: opening the page records the uninstall, as "no reason picked",
+    // when the link holds the install's random id (context() sends nothing
+    // without it). A reason clicked later goes under the same visit id and
+    // replaces it; the server keeps one such row per install, so a reload adds
+    // none. Sent once, never retried, and a failure shows nothing.
+    if (record.i != null) post({ reason: 'none' });
     // The extension opens the page once, but a fragment edited by hand is read
     // again through the same parser.
     window.addEventListener('hashchange', function () {
