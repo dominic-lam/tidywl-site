@@ -176,6 +176,7 @@
         }
         note.disabled = true;
         send.hidden = true;
+        root.setAttribute('data-sent', ''); // /feedback/ swaps its form for the thank-you on this
         done.hidden = false;
         done.focus({ preventScroll: true });
       });

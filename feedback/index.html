@@ -6,14 +6,100 @@ permalink: /feedback/
 sitemap: false
 robots: noindex
 ---
-<section class="blog-wrap">
-  <h1 class="blog-title">One quick question</h1>
-  <p class="blog-subtitle">It goes to Dominic, who builds TidyWL alone, and he reads every answer.</p>
+<style>
+  /* The page the dashboard opens to ask one question (2026-10-24, design B "Warm"):
+     a note from Dominic, the card, a plain list of what is and is not sent. Every rule
+     is scoped to .fb, so the checkout thank-you, which shares feedback-question.html,
+     keeps its own look. */
+  :root { --fb-off-bg: #ece1cf; --fb-off-fg: #6d5d4f; --fb-focus: rgba(198, 40, 40, 0.18); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --fb-off-bg: #38332e; --fb-off-fg: #a89f97; --fb-focus: rgba(255, 122, 112, 0.28); }
+  }
+  :root[data-theme="dark"] { --fb-off-bg: #38332e; --fb-off-fg: #a89f97; --fb-focus: rgba(255, 122, 112, 0.28); }
 
-  <div class="post-body">
-    <!-- Opened from the dashboard as /feedback/?plan=pro&v=2.7.0 or ?plan=free&v=…
-         (2026-10-22). A missing or unknown plan gets the free question. -->
-    <div class="fq" id="fb-pro" hidden>
+  .blog-wrap.fb { max-width: 820px; padding: 40px 24px 72px; display: grid; gap: 24px; }
+  .fb a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
+  .fb a:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; border-radius: 2px; }
+
+  .fb-note { display: grid; gap: 14px; padding: 36px 40px; border: 1px solid var(--highlight-border); border-radius: 20px; background: var(--highlight-bg); }
+  .fb-note h1 { margin: 0; font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+  .fb-note p { margin: 0; max-width: 56ch; font-size: 1.25rem; line-height: 1.55; color: var(--text-secondary); }
+
+  .fb .fq { margin: 0; padding: 36px 40px 40px; border-radius: 20px; }
+  .fb .fq .fq-title { margin: 0 0 8px; font-size: 1.625rem; font-weight: 700; line-height: 1.3; text-wrap: balance; }
+  .fb .fq-sub { margin: 0 0 20px; font-size: 1.125rem; color: var(--text-muted); }
+  .fb .fq-label { margin: 24px 0 8px; font-size: 1.25rem; }
+  .fb .fq-note { min-height: 11.5rem; padding: 16px 18px; border-radius: 12px; font-size: 1.125rem; line-height: 1.55; }
+  .fb .fq-note::placeholder { color: var(--text-muted); opacity: 1; }
+  .fb .fq-note:focus { outline: none; border-color: var(--text); box-shadow: 0 0 0 4px var(--fb-focus); }
+  .fb .fq-row { gap: 16px; margin-top: 18px; }
+  .fb .fq-status { font-size: 1.0625rem; }
+
+  /* Send: solid from the first moment. Disabled is a filled grey, never a ghost. */
+  .fb .fq-send {
+    min-height: 58px; padding: 0 44px;
+    border: 0; border-radius: 10px;
+    background: var(--accent-fill); color: #fff;
+    font-size: 1.1875rem; font-weight: 700; text-align: center;
+    transition: background 0.15s;
+  }
+  .fb .fq-send:hover:not(:disabled) { background: var(--accent-fill-hover); }
+  .fb .fq-send:disabled { background: var(--fb-off-bg); color: var(--fb-off-fg); opacity: 1; cursor: default; }
+  .fb .fq-send:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+
+  /* The Pro survey's three answers */
+  .fb .fq-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0; }
+  .fb .fq-choice { min-height: 68px; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--bg); font-size: 1.125rem; font-weight: 600; line-height: 1.3; text-align: center; }
+  .fb .fq-choice[aria-pressed="true"] { border-color: var(--accent-fill); background: var(--highlight-bg); box-shadow: inset 0 0 0 1px var(--accent-fill); font-weight: 700; }
+  .fb .fq-choices + .fq-row { margin-top: 0; }
+  .fb .fq-choices + .fq-row .fq-status, .fb .fq-choices + .fq-row .fq-retry { margin-top: 16px; }
+  .fb .fq-choice:focus-visible, .fb .fq-retry:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+  .fb .fq-retry { min-height: 48px; padding: 0 20px; font-size: 1.0625rem; font-weight: 600; text-align: center; }
+
+  /* After Send: the form goes, the thank-you takes its place */
+  .fb .fq[data-sent] .fb-form { display: none; }
+  .fb .fq-done { display: grid; justify-items: center; gap: 14px; padding: 28px 0 24px; text-align: center; font-weight: 400; }
+  .fb .fq-done:focus { outline: none; }
+  .fb-tick { display: grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; background: var(--accent-fill); color: #fff; }
+  .fb-tick svg { width: 38px; height: 38px; }
+  .fb-thanks { margin: 6px 0 0; font-size: clamp(1.75rem, 6vw, 2.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; text-wrap: balance; }
+  .fb .fq-done p { margin: 0; max-width: 40ch; font-size: 1.25rem; line-height: 1.5; color: var(--text-secondary); text-wrap: balance; }
+
+  /* What is sent, and what never is */
+  .fb-trust { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .fb-col { min-width: 0; padding: 24px 26px; border: 1px solid var(--border); border-radius: 14px; }
+  .fb-col h2 { margin: 0 0 16px; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  .fb-col ul { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+  .fb-col li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; font-size: 1.0625rem; line-height: 1.45; color: var(--text-secondary); }
+  .fb-col li svg { width: 20px; height: 20px; margin-top: 2px; color: var(--text); }
+  .fb-never li svg { color: var(--accent-text); }
+  .fb-reply { display: grid; gap: 8px; margin: 0; font-size: 1.0625rem; line-height: 1.6; color: var(--text-secondary); }
+  .fb-reply p { margin: 0; }
+
+  @media (max-width: 600px) {
+    .blog-wrap.fb { padding: 24px 16px 56px; gap: 18px; }
+    .fb-note { padding: 24px 22px; }
+    .fb-note p { font-size: 1.125rem; }
+    .fb .fq { padding: 24px 22px 26px; }
+    .fb .fq .fq-title { font-size: 1.4375rem; }
+    .fb .fq-choices { grid-template-columns: 1fr; }
+    .fb .fq-choice { min-height: 60px; }
+    .fb .fq-send { width: 100%; }
+    .fb-trust { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fb .fq-send { transition: none; } }
+</style>
+<section class="blog-wrap fb">
+  <div class="fb-note">
+    <h1>Hi, I'm Dominic.</h1>
+    <p>I build Watch Later Tidy on my own. This one question is how I decide what to fix or build next, so I can make it better for you.</p>
+    <p>Your answer comes straight to me, and I read every one.</p>
+  </div>
+
+  <!-- Opened from the dashboard as /feedback/?plan=pro&v=2.7.0 or ?plan=free&v=…
+       (2026-10-22). A missing or unknown plan gets the free question. -->
+  <div class="fq fb-card" id="fb-pro" hidden>
+    <div class="fb-form">
       <h2 class="fq-title" id="fb-pro-q">How would you feel if Pro went away?</h2>
       <p class="fq-sub">One tap sends it.</p>
       <div class="fq-choices" role="group" aria-labelledby="fb-pro-q">
@@ -27,28 +113,59 @@ robots: noindex
       </div>
       <div data-fq="more" hidden>
         <label class="fq-label" for="fb-pro-note">What do you use it for most?</label>
-        <textarea class="fq-note" id="fb-pro-note" data-fq="note" rows="3" placeholder="A feature, a job, a habit. One line is plenty."></textarea>
+        <textarea class="fq-note" id="fb-pro-note" data-fq="note" rows="4" placeholder="A feature, a job, a habit. One line is plenty."></textarea>
         <div class="fq-row">
           <button type="button" class="fq-send" data-fq="send" disabled>Send</button>
           <p class="fq-status" data-fq="note-status" role="status" hidden></p>
         </div>
-        <p class="fq-done" data-fq="done" tabindex="-1" hidden>Thank you. Your note is in.</p>
       </div>
     </div>
+    <div class="fq-done" data-fq="done" tabindex="-1" hidden>
+      <span class="fb-tick" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <h2 class="fb-thanks">Thank you for your time.</h2>
+      <p>Your note is in, and I read every answer.</p>
+    </div>
+  </div>
 
-    <div class="fq" id="fb-free">
+  <div class="fq fb-card" id="fb-free">
+    <div class="fb-form">
       <label class="fq-title fq-label" for="fb-free-note">What's one thing you wish Watch Later Tidy did?</label>
-      <p class="fq-sub">Anything at all, big or small.</p>
-      <textarea class="fq-note" id="fb-free-note" data-fq="note" rows="4" placeholder="The job you'd like it to do, in your own words."></textarea>
+      <p class="fq-sub">Anything at all, big or small. A sentence is plenty.</p>
+      <textarea class="fq-note" id="fb-free-note" data-fq="note" rows="5" placeholder="The job you'd like it to do, in your own words."></textarea>
       <div class="fq-row">
         <button type="button" class="fq-send" data-fq="send" disabled>Send</button>
         <p class="fq-status" data-fq="note-status" role="status" hidden></p>
       </div>
-      <p class="fq-done" data-fq="done" tabindex="-1" hidden>Thank you. It's in.</p>
       <noscript><p class="fq-small">This form needs JavaScript. You can also email <a href="mailto:support@tidywl.com">support@tidywl.com</a>.</p></noscript>
     </div>
+    <div class="fq-done" data-fq="done" tabindex="-1" hidden>
+      <span class="fb-tick" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <h2 class="fb-thanks">Thank you for your time.</h2>
+      <p>It's in, and I read every answer.</p>
+    </div>
+  </div>
 
-    <p class="privacy-meta">Anonymous: it sends your answer, what you type, whether you're on Free or Pro and the extension's version. Never your key, your install's ID or anything about your YouTube account. It can't reply, so if you'd like an answer, ask on <a href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord</a> or email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--/email_off-->. <a href="/privacy/#what-you-send-yourself">Privacy policy</a></p>
+  <div class="fb-trust" aria-label="What this sends">
+    <div class="fb-col">
+      <h2>What I get</h2>
+      <ul>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Your answer: what you type, or the choice you tap</span></li>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Whether you're on Free or Pro</span></li>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>The extension's version</span></li>
+      </ul>
+    </div>
+    <div class="fb-col fb-never">
+      <h2>What I never get</h2>
+      <ul>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Your key</span></li>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Your install's ID</span></li>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Anything about your YouTube account</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fb-reply">
+    <p>It's anonymous, so I can't reply from here. If you'd like an answer, ask on <a href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord</a> or email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--/email_off-->.</p>
+    <p><a href="/privacy/#what-you-send-yourself">Privacy policy</a></p>
   </div>
 </section>
 
