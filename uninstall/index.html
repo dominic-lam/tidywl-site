@@ -1,7 +1,7 @@
 ---
 layout: null
 title: TidyWL removed
-description: The page the browser opens when TidyWL is removed. One anonymous question about why, a reply to each answer, and how to cancel Pro.
+description: The page the browser opens when TidyWL is removed. One question about why, a reply to each answer, and how to cancel Pro.
 permalink: /uninstall/
 sitemap: false
 ---
@@ -98,6 +98,13 @@ sitemap: false
     .un-help { font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
     .un-card textarea { display: block; width: 100%; min-height: 112px; resize: vertical; padding: 12px 14px; background: var(--un-field); color: var(--text); border: 1px solid var(--border); border-radius: 8px; font: inherit; font-size: 1rem; line-height: 1.55; }
     .un-card textarea::placeholder { color: var(--text-muted); opacity: 1; }
+    /* The optional email (2026-10-24): only under a problem reason, where a
+       reply can help. Smaller label than the note's, same field look. */
+    .un-email { display: flex; flex-direction: column; gap: 6px; }
+    .un-email[hidden] { display: none; }
+    .un-card .un-email label { font-size: 0.9375rem; font-weight: 600; }
+    .un-card input[type="email"] { display: block; width: 100%; min-height: 48px; padding: 12px 14px; background: var(--un-field); color: var(--text); border: 1px solid var(--border); border-radius: 8px; font: inherit; font-size: 1rem; line-height: 1.4; }
+    .un-card input[aria-invalid="true"] { border-color: var(--accent-text); }
     .un-card-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
     .un-note-privacy { flex: 1 1 260px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.5; color: var(--text-muted); }
     .un-note-privacy svg { margin-top: 3px; }
@@ -135,7 +142,8 @@ sitemap: false
        FRAGMENT current with its own lifetime counts, and the page shows them
        only on the "I finished my cleanup" answer and its thank-you, where the
        rating ask follows from the number. readRecord() in the script is the
-       one parser; nothing it reads is ever put in a request. */
+       one parser; since 2026-10-24 what it reads goes with an answer only
+       when the link carries the install's random id (context() below). */
     .un-record { display: flex; flex-direction: column; padding: 22px 24px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
     .un-record[hidden], [data-store][hidden] { display: none; }
     .un-record-fig { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
@@ -150,7 +158,7 @@ sitemap: false
     .un-btn.is-primary:hover { background: var(--accent-fill-hover); border-color: var(--accent-fill-hover); }
 
     .un :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-    .un textarea:focus-visible { outline-offset: 1px; }
+    .un textarea:focus-visible, .un input:focus-visible { outline-offset: 1px; }
     .un-reveal { animation: un-in 0.24s ease-out both; }
     @keyframes un-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
     @media (prefers-reduced-motion: reduce) {
@@ -226,7 +234,7 @@ sitemap: false
           <div class="un-pick-foot">
             <p class="un-small">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span>A click sends only the reason you picked. No name, no email, nothing that identifies you.</span>
+              <span>A click sends the reason you picked, with this install's random ID, its version and usage counts if your browser shares them. Never your name, account or videos.</span>
             </p>
             <div class="un-inline-links" data-reinstall-links>
               <span>Removed it by mistake? Add it back for</span>
@@ -260,7 +268,8 @@ sitemap: false
 
           <!-- The record: only on the done answer, and only when the link carried
                a count at or over RECORD_MIN. Filled with textContent by
-               renderRecord(); nothing in it is ever sent. -->
+               renderRecord(); its counts go with an answer only when the link
+               also carried the install's id, and the src line says which. -->
           <div class="un-record un-reveal" id="un-record" hidden>
             <p class="un-eyebrow">Your record on this browser</p>
             <p class="un-record-fig" tabindex="-1">
@@ -270,7 +279,7 @@ sitemap: false
             <p class="un-record-more" data-rec="more" hidden></p>
             <p class="un-small un-record-src">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span>Counted in this browser and carried in this page's link. The page doesn't send it anywhere.</span>
+              <span data-rec="src">Counted in this browser and carried in this page's link. The page doesn't send it anywhere.</span>
             </p>
           </div>
 
@@ -362,7 +371,7 @@ sitemap: false
 
               <div class="un-branch" data-branch="privacy" hidden>
                 <h2 class="un-h2" tabindex="-1">Here's exactly what left your browser.</h2>
-                <p class="un-p">Your YouTube data (titles, video IDs, channels, playlists, watch history, your Google account) never left it, except links you chose to send to Gemini Notebook. What did go to tidywl.com was a random install ID with usage counts, never which videos, plus a licence check if you had Pro.</p>
+                <p class="un-p">Your YouTube data (titles, video IDs, channels, playlists, watch history, your Google account) never left it, except links you chose to send to Gemini Notebook. What did go to tidywl.com was a random install ID with usage counts, never which videos, plus a licence check if you had Pro. This answer goes with that same ID and counts, when your browser shares them.</p>
                 <p class="un-p">Uninstalling stopped both and removed the copy of your lists it kept in your browser. Records not updated for 12 months are deleted.</p>
                 <div class="un-btns">
                   <a class="un-btn" href="/privacy/" target="_blank" rel="noopener">
@@ -374,7 +383,7 @@ sitemap: false
 
               <div class="un-branch" data-branch="other" hidden>
                 <h2 class="un-h2" tabindex="-1">Then you know something I don't.</h2>
-                <p class="un-p">Tell me below. This form is anonymous, so it can't reply. If you'd like an answer, ask on the <a class="un-tlink" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord</a> or email <a class="un-tlink" href="mailto:support@tidywl.com">support@tidywl.com</a>.</p>
+                <p class="un-p">Tell me below. Leave an email if you'd like a reply, or ask on the <a class="un-tlink" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord</a>.</p>
               </div>
             </div>
           </div>
@@ -385,10 +394,15 @@ sitemap: false
               <p class="un-help" id="un-note-help">Optional. A sentence is plenty.</p>
             </div>
             <textarea id="un-note" rows="4" maxlength="2000" aria-describedby="un-note-help un-note-privacy"></textarea>
+            <div class="un-email" id="un-email-box" hidden>
+              <label for="un-email">Want a reply? Leave an email (optional)</label>
+              <p class="un-help" id="un-email-help">I'll use it once to answer you, then delete it within 30 days.</p>
+              <input type="email" id="un-email" maxlength="254" autocomplete="email" spellcheck="false" aria-describedby="un-email-help un-note-privacy">
+            </div>
             <div class="un-card-foot">
               <p class="un-note-privacy" id="un-note-privacy">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span>Anonymous: sends your note with the reason, nothing else. Want a reply? Use Discord or email.</span>
+                <span>Sends your note and reason with this install's random ID, its version and usage counts (when your browser shares them), and your email if you leave one. Never your videos or account.</span>
               </p>
               <button type="button" class="un-primary" id="un-send" disabled>Send note</button>
               <p class="un-note-err" id="un-note-err" role="status" hidden></p>
@@ -410,7 +424,7 @@ sitemap: false
             <p class="un-record-more" data-rec="more" hidden></p>
             <p class="un-small un-record-src">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span>Counted in this browser and carried in this page's link. The page doesn't send it anywhere.</span>
+              <span data-rec="src">Counted in this browser and carried in this page's link. The page doesn't send it anywhere.</span>
             </p>
             <div class="un-record-rate">
               <p class="un-p">If it saved you time, a quick rating means a lot to a small app like this one. It's also how the next person finds it.</p>
@@ -436,7 +450,7 @@ sitemap: false
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
             </span>
             <h1 class="un-h1" id="un-thanks-title" tabindex="-1">Thank you. That helps.</h1>
-            <p class="un-lede">Your answer and your note are in. They go to Dominic, who builds TidyWL alone. It's anonymous, so there's no way to write back; if you'd like an answer, ask on Discord or email support@tidywl.com.</p>
+            <p class="un-lede">Your answer and your note are in. They go to Dominic, who builds TidyWL alone. <span id="un-thanks-reply">There's no email with them, so if you'd like an answer, ask on Discord or email support@tidywl.com.</span></p>
             <div class="un-btns">
               <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
@@ -551,8 +565,10 @@ sitemap: false
     // The answer goes out on the click, so a visitor who closes the tab at once
     // still counts. Every send carries the same per-visit id, so the server keeps
     // only the last answer of a visit: changing it does not count twice. The id
-    // is drawn here, lives only in this tab, and is not linked to the install.
-    // The route and its rules: tidywl-api src/removed.js.
+    // is drawn here and lives only in this tab. Since 2026-10-24 each send also
+    // carries the install's context from the link when the link has its random
+    // id (context() below), and a note may carry an email under a problem
+    // reason. The route and its rules: tidywl-api src/removed.js.
     var ENDPOINT = '/api/removed';
     var visit = Array.prototype.map.call(crypto.getRandomValues(new Uint8Array(16)), function (b) {
       return ('0' + b.toString(16)).slice(-2);
@@ -576,11 +592,20 @@ sitemap: false
     var retryBtn = document.getElementById('un-retry');
     var already = document.getElementById('un-already');
     var noteErr = document.getElementById('un-note-err');
+    var emailBox = document.getElementById('un-email-box');
+    var email = document.getElementById('un-email');
+    var thanksReply = document.getElementById('un-thanks-reply');
+    // The reasons where a reply can help; the server refuses an email with any
+    // other, so the page never sends one then.
+    var PROBLEM_REASONS = ['load', 'broke', 'slow', 'other'];
+    var EMAIL_SHAPE = /^[^\s@]{1,64}@[^\s@.]+(\.[^\s@.]+)+$/;
 
     // Resolves true only when the server took it (a 2xx), false on a network
     // error, a rate limit or any refusal, so the page never says "Sent" for an
     // answer that did not arrive.
     function post(body) {
+      var ctx = context();
+      Object.keys(ctx).forEach(function (key) { body[key] = ctx[key]; });
       body.id = visit;
       try {
         return fetch(ENDPOINT, {
@@ -616,22 +641,32 @@ sitemap: false
     // ── The record (2026-10-11) ──
     // The extension keeps its uninstall link current with its own lifetime
     // counts in the FRAGMENT, which the browser never sends to a server:
-    //   https://tidywl.com/uninstall/#c=3412&m=120&s=chrome
+    //   https://tidywl.com/uninstall/#c=3412&m=120&s=chrome&v=2.7.0&l=1&a=40&i=<uuid>
     //   c  videos cleaned up: deleted + unliked, the site's own public term
     //   m  videos moved to another playlist
     //   s  the store this copy came from: chrome, edge or firefox
-    // Anyone can link here with any fragment, so it is read strictly: a value
-    // is 1 to 9 digits and nothing else, clamped to its cap; a key that is
-    // unknown is skipped; a key that is repeated or malformed counts as absent.
-    // No percent-decoding, so an encoded value is malformed too. Output goes
-    // through textContent only, and nothing read here is ever put in a request.
-    var RECORD_CAPS = { c: 2000000, m: 1000000 };
+    //   v  the extension's version (2.7.0 on)
+    //   l  1 on an install with the free removal allowance, absent otherwise
+    //   a  whole days since install, on installs made from 2.7.0
+    //   i  the install's random id, the one in its usage report; the extension
+    //      leaves it out on Firefox while the data-collection toggle is off
+    // The extension builds it in tidywl src/service-worker.js uninstallUrlFor(),
+    // with the same caps and patterns as here.
+    // Anyone can link here with any fragment, so it is read strictly: a count
+    // is 1 to 9 digits and nothing else, clamped to its cap; the others must
+    // match their pattern; a key that is unknown is skipped; a key that is
+    // repeated or malformed counts as absent. No percent-decoding, so an
+    // encoded value is malformed too. Output goes through textContent only.
+    // Only what passed here is ever sent, and only with a valid i: context().
+    var RECORD_CAPS = { c: 2000000, m: 1000000, a: 36500 };
     var RECORD_STORES = ['chrome', 'edge', 'firefox'];
+    var RECORD_VERSION = /^[0-9]{1,5}(\.[0-9]{1,5}){0,3}$/;
+    var RECORD_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     var RECORD_MIN = 10;
     var has = Object.prototype.hasOwnProperty;
 
     function readRecord(hash) {
-      var out = { c: null, m: null, s: null };
+      var out = { c: null, m: null, s: null, v: null, l: null, a: null, i: null };
       var raw = typeof hash === 'string' ? hash.replace(/^#/, '') : '';
       if (raw === '' || raw.length > 200) return out;
       var values = {};
@@ -647,6 +682,25 @@ sitemap: false
         if (typeof v === 'string' && /^[0-9]{1,9}$/.test(v)) out[key] = Math.min(parseInt(v, 10), RECORD_CAPS[key]);
       });
       if (RECORD_STORES.indexOf(values.s) !== -1) out.s = values.s;
+      if (typeof values.v === 'string' && RECORD_VERSION.test(values.v)) out.v = values.v;
+      if (values.l === '1') out.l = 1;
+      if (typeof values.i === 'string' && RECORD_ID.test(values.i)) out.i = values.i;
+      return out;
+    }
+
+    // What goes with each answer (2026-10-24): the install's context, and only
+    // when the link carries a valid random id. No id, as on Firefox with its
+    // data-collection toggle off, means no context at all; the counts then
+    // stay on screen only. Every value here already passed readRecord().
+    function context() {
+      if (record.i == null) return {};
+      var out = { install: record.i };
+      if (record.v != null) out.version = record.v;
+      if (record.s != null) out.store = record.s;
+      if (record.c != null) out.cleaned = record.c;
+      if (record.m != null) out.moved = record.m;
+      if (record.l === 1) out.limited = 1;
+      if (record.a != null) out.age_days = record.a;
       return out;
     }
 
@@ -684,6 +738,9 @@ sitemap: false
         var more = card.querySelector('[data-rec="more"]');
         more.textContent = lines && lines.more ? lines.more : '';
         more.hidden = !(lines && lines.more);
+        card.querySelector('[data-rec="src"]').textContent = record.i != null
+          ? "Counted in this browser and carried in this page's link. It goes with your answer, with this install's random ID."
+          : "Counted in this browser and carried in this page's link. The page doesn't send it anywhere.";
         card.hidden = !shown;
       });
       // On the thank-you, the record card carries the ask; without one, the
@@ -713,6 +770,11 @@ sitemap: false
       noteLabel.textContent = btn.getAttribute('data-prompt');
       note.placeholder = btn.getAttribute('data-placeholder');
       note.value = '';
+      // The email field shows under a problem reason only, and starts empty
+      // on every pick, like the note.
+      emailBox.hidden = PROBLEM_REASONS.indexOf(reason) === -1;
+      email.value = '';
+      email.removeAttribute('aria-invalid');
       sendBtn.disabled = true;
       noteSend++;
       noteSending = false;
@@ -742,16 +804,33 @@ sitemap: false
     var noteSending = false;
     var noteSend = 0;
     note.addEventListener('input', function () { sendBtn.disabled = noteSending || note.value.trim() === ''; });
+    email.addEventListener('input', function () { email.removeAttribute('aria-invalid'); });
+    // Enter in the one-line email field sends, as it would in a form.
+    email.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !sendBtn.disabled) { e.preventDefault(); sendBtn.click(); }
+    });
     // The thank-you says the note is in, so it waits for the server to say so.
     sendBtn.addEventListener('click', function () {
       var text = note.value.trim();
       if (!text || reason == null || noteSending) return;
+      // Only under a problem reason, and only a plausible address: a typo is
+      // pointed out rather than dropped, since its owner expects a reply.
+      var address = PROBLEM_REASONS.indexOf(reason) !== -1 && !emailBox.hidden ? email.value.trim() : '';
+      if (address !== '' && (address.length > 254 || !EMAIL_SHAPE.test(address))) {
+        email.setAttribute('aria-invalid', 'true');
+        noteErr.textContent = "That email doesn't look right. Fix it, or clear it to send without one.";
+        noteErr.hidden = false;
+        email.focus();
+        return;
+      }
       noteSending = true;
       sendBtn.disabled = true;
       sendBtn.textContent = 'Sending…';
       noteErr.hidden = true;
       var mine = ++noteSend;
-      post({ reason: reason, text: text }).then(function (ok) {
+      var body = { reason: reason, text: text };
+      if (address !== '') body.email = address;
+      post(body).then(function (ok) {
         // The visitor went back and picked an answer meanwhile: that pick has
         // its own send and its own tick, so leave its screen alone.
         if (mine !== noteSend || steps.answer.hidden) return;
@@ -766,6 +845,9 @@ sitemap: false
         // The note carries the reason too, so a note that arrived means the reason did.
         reasonSend++;
         setTick('sent');
+        thanksReply.textContent = address !== ''
+          ? "He'll write back once, to the email you left."
+          : "There's no email with them, so if you'd like an answer, ask on Discord or email support@tidywl.com.";
         var withRecord = renderRecord();
         show('thanks', withRecord ? recordCards[1].querySelector('.un-record-fig') : document.getElementById('un-thanks-title'));
       });
