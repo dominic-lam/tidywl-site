@@ -465,8 +465,8 @@
     "maxCalls": 80
   },
   "removalPace": {
-    "minVideos": 4500,
-    "videosPerMinute": 1000
+    "minVideos": 4000,
+    "videosPerMinute": 800
   },
   "feedbackPrompt": {
     "enabled": true
