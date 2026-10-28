@@ -1,6 +1,32 @@
 {
   "announcements": [
     {
+      "id": "2026-10-omodo-launch",
+      "display": "modal",
+      "size": "small",
+      "title": "I launched something new: Omodo",
+      "message": "Dominic here, from Watch Later Tidy. I've had so many things sitting in my todo list for years, so I made Omodo, a web app for the one thing you keep putting off. It's new today, so tell me honestly what works and what doesn't: https://discord.gg/sTvjfp4sCk Free until your first win, or for 3 weeks, whichever comes first. Then $9 a month. No card. Try it: https://tidywl.com/omodo/",
+      "body": [
+        {
+          "text": "I've had so many things sitting in my todo list for years, so I made **Omodo**, one small step at a time for the thing you keep putting off."
+        },
+        {
+          "text": "It's new today. Tell me honestly what works and what doesn't, on [Discord](https://discord.gg/sTvjfp4sCk)."
+        },
+        {
+          "text": "Free until your first win, or for 3 weeks, whichever comes first. Then $9 a month. No card.",
+          "tone": "muted"
+        }
+      ],
+      "button": {
+        "label": "Try Omodo",
+        "url": "https://tidywl.com/omodo/"
+      },
+      "type": "info",
+      "created_at": "2026-10-27",
+      "expires_at": "2026-11-10"
+    },
+    {
       "id": "2026-10-netflix-my-list",
       "display": "modal",
       "size": "small",
