@@ -101,6 +101,19 @@ last_modified_at: 2026-10-18
      yet, so it is not described. The dated line, privacy_updated and
      last_modified_at were set on release day, 2026-10-18.
 
+     1.6.0, drafted 2026-10-28 on branch draft/netflix-1.6.0 and read out of
+     code: the netflix_alerts text (tidywl-api src/netflix.js
+     checkNetflixAlerts, sendNetflixHeartbeat, netflixAlertEmail; nothing
+     deletes its rows); tidywl_last_profile ({ guid, at } per install) and
+     tidywl_installed_at (storage.js); the five *_reason fields and their list
+     (usage-utils.js USAGE_FAILURE_REASONS = tidywl-api NETFLIX_FAILURE_REASONS,
+     the upsert keeping the latest rise's reason); the known-issues list
+     (remote-config.js readIssues, no request), tidywl_issues_seen (storage.js,
+     chrome.storage.local, four lists capped at 100), the pop-up (once, reach
+     everyone, not counted) and the Report sheet (dashboard-report.js: mailto
+     or Copy, four facts, sends nothing). The dated line and privacy_updated
+     are NOT set here; they belong to release day.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -201,7 +214,7 @@ last_modified_at: 2026-10-18
       <li><strong>Your Netflix data stays in your browser.</strong> Your watch state, your searches and, with Pro, the viewing history and thumbs Tonight reads are never sent to us.</li>
       <li><strong>Your playlists stay in your browser too — unless you have Pro and switch sync on.</strong> Then this profile's playlists, with each title's name, year and picture link, and the profile's name, go to our server, so your other browsers and your phone can show them. So does a title you send to your phone from Tonight. Only from browsers where you switched it on. Never for a free install.</li>
       <li><strong>If you buy Pro, your licence key goes to tidywl.com.</strong> It switches Pro on and is checked again when you open the dashboard, at most once every 15 minutes. Paddle takes the payment; your card details and your email never reach us.</li>
-      <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard or the My List page for the first time in a day, and, from version 1.5.0, shortly after something fails, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile.</li>
+      <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard or the My List page for the first time in a day, and, from version 1.5.0, shortly after something fails, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile. From version 1.6.0, the counts of what failed also come with a one-word reason from a fixed list, never free text.</li>
       <li><strong>There is no switch in the extension to turn this off.</strong> Uninstalling stops it, and records not updated for 12 months are deleted.</li>
       <li><strong>From version 1.2.1, removing the extension opens one page on tidywl.com, asking why.</strong> Its address carries a few rough facts — the version, your browser's language, how long you had the extension and on how many days you opened it — after a <code>#</code>, which never reaches our server. They are sent only with an answer, if you press Send. From version 1.4.0 it also carries how many titles you removed with the extension and the exact number of days you opened it, which the page can show you and never sends. Your email is asked for only after that, is optional, and is deleted after 60 days.</li>
       <li><strong>There is no account and no sign-in.</strong> A Pro key is not an account: there is no password, and we never learn your email. The usage report's identifier is random, made in your browser, and linked to nothing — not your Netflix account, not a profile, not your email, not a Pro key.</li>
@@ -311,6 +324,7 @@ last_modified_at: 2026-10-18
           <tr><td><code>tidywl_rating_band_shown</code></td><td>From version 1.4.0. <code>true</code> once the rating ask at the top of the dashboard or in the My List page's heading has been shown, so it appears at most once in this browser, answered or not. Never sent.</td></tr>
           <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
           <tr><td><code>tidywl_announcements_read</code></td><td>From version 1.5.0. Which of the dashboard's announcements you have read, so the bell's dot and the window that opens once know what is new: their ids only, the newest 200. One list for the browser, not per profile. Never sent.</td></tr>
+          <tr><td><code>tidywl_issues_seen</code></td><td>From version 1.6.0. What the dashboard has already shown you of the known issues, so a closed notice stays closed until the issue changes and an issue opens as a window only once: four short lists of the issues' ids (and, for the closed notices and the bell's dot, which revision of each), the newest 100 in each. Ids from the settings file only, nothing about you. One record for the browser, not per profile. Never sent.</td></tr>
         </tbody>
       </table>
     </div>
@@ -332,14 +346,17 @@ last_modified_at: 2026-10-18
     </p>
 
     <p>
-      <strong>Every key that holds something about your account carries your Netflix profile's id.</strong> There is
+      <strong>Every key that holds something about your account carries your Netflix profile's id in its name.</strong> There is
       deliberately no shared fallback key: an adult profile's list cannot appear under the kids profile on the same
       account, because there is no place for the two to meet. If the extension cannot tell which profile is active,
       it stores nothing. The keys without a profile in their name — the settings copy, the dashboard's view, the IMDb
       ratings, that file's download time, the badges' ratings, setting and look, the count of Sync-to-mobile presses, the seven usage-report keys, the three
       Pro keys without one, the note that this browser had the extension before 1.0.0, the three records of the rating and
-      Ko-fi asks, and the announcements you have read — hold
-      nothing that belongs to a profile. The usage counts are added up across every profile that used the extension
+      Ko-fi asks, when the extension was installed, the announcements you have read and the known issues you
+      closed or were shown — hold nothing that belongs to a profile, with one exception:
+      <code>tidywl_last_profile</code> holds the id of the Netflix profile last used in this browser, and when, so the
+      toolbar badge and popup know whose list to show. It is one record for the whole browser, not one per profile; it
+      holds no name and no list, and it is never sent. The usage counts are added up across every profile that used the extension
       in that browser, and never say which.
     </p>
 
@@ -465,6 +482,20 @@ last_modified_at: 2026-10-18
       Which ones you have read stays in your browser. The usage report counts how often such a window opened and how
       often the button with its link was pressed, never which announcement. The same file can also stop the usage report going out early after a
       failure, described under request 5.
+    </p>
+    <p>
+      From version 1.6.0 it also carries a list of known issues: which part of the extension is affected, whether we
+      are still looking into it or know the cause, a workaround if there is one and, once it is fixed, what was done
+      and when. Like the announcements it is words only and comes with the file, so it adds no request. The
+      dashboard shows it, and an issue that affects everyone can open once as a window. Which issues you have closed
+      and which have been shown to you stays in your browser, in <code>tidywl_issues_seen</code>. None of it is
+      counted in the usage report.
+    </p>
+    <p>
+      Each known issue has a <em>Report</em> button. It opens a ready-made email to support@tidywl.com in your own
+      mail app, or copies the same text, and the text holds only the issue's title, the extension's version, Chrome's
+      version and your operating system. You read it and send it yourself; the extension sends nothing. The sheet
+      also links to our Discord, which opens only if you press it.
     </p>
     <p>
       The request carries no identifier and no payload; every install receives the same bytes. Nothing in the file is
@@ -629,6 +660,11 @@ last_modified_at: 2026-10-18
           <tr><td>preview_dwells</td><td>How many times resting the pointer on a title in the dashboard asked Netflix about that title: the extension's own preview request, or Netflix's own preview opening on it for the first time on that page. Not which title.</td></tr>
           <tr><td>badges_rated</td><td>How many titles have shown an IMDb rating badge on Netflix's own pages, each title counted once each time a Netflix page loads. Not which titles.</td></tr>
           <tr><td>badges_blank</td><td>The same, for titles whose every lookup finished without a rating to show.</td></tr>
+          <tr><td>sync_short_reason</td><td>Why <code>sync_short</code> last went up, as the number of one word on the list below. Not a total.</td></tr>
+          <tr><td>reads_refused_reason</td><td>The same, for <code>reads_refused</code>.</td></tr>
+          <tr><td>ops_rejected_reason</td><td>The same, for <code>ops_rejected</code>.</td></tr>
+          <tr><td>removals_failed_reason</td><td>The same, for <code>removals_failed</code>.</td></tr>
+          <tr><td>mylist_page_failed_reason</td><td>The same, for <code>mylist_page_failed</code>.</td></tr>
         </tbody>
       </table>
     </div>
@@ -646,6 +682,20 @@ last_modified_at: 2026-10-18
       that breaks something is seen within minutes rather than when someone writes in; the others show whether the
       badge setting, announcements, the popup's Leaving soon list and hover previews get used, and how often a badge
       finds a rating.
+    </p>
+    <p>
+      <strong>From version 1.6.0 the report also says why.</strong> The five from <code>sync_short_reason</code> to
+      <code>mylist_page_failed_reason</code> give, for each failure count, the reason of the latest failure of that
+      kind, so that a count of failures also says why they happened. Each is sent as the number of one word on a fixed
+      list built into the extension, and nothing else: never a title, never an id, never an error message or any other
+      text. The list, in order from 0: <code>unknown</code> (the extension cannot tell), <code>timeout</code> (Netflix
+      did not answer in time), <code>no_answer</code>, <code>server_error</code> (Netflix answered with a server
+      error), <code>rate_limited</code>, <code>signed_out</code>, <code>netflix_error</code> (another error from
+      Netflix), <code>stopped</code> (Netflix stopped answering partway), <code>partial</code> (some titles went
+      unanswered), <code>refused</code> and <code>id_not_found</code> (Netflix refused one of the extension's
+      requests), <code>needs_variable</code> (a request Netflix now expects more from), <code>write_not_found</code>
+      (Netflix's code for removing a title was not found), <code>no_data_layer</code> (Netflix's page had not loaded
+      its data), <code>watch_state</code> and <code>leaving</code> (the part of a Sync that came short).
     </p>
 
     <p>
@@ -862,6 +912,7 @@ last_modified_at: 2026-10-18
       <li><strong>Tonight's surprises</strong> are kept for a day. A title put off with <em>Not tonight</em> stays put off for seven days, and the record that you did for thirty. A film you pressed <em>Play</em> on in Tonight leaves its picks for a day. <strong>Your occasions</strong> stay until you delete them.</li>
       <li><strong>Playlists</strong> stay until you delete them, and <strong>pins</strong> until you unpin them.</li>
       <li><strong>The usage report's record</strong> is kept on our server as described below, and deleted after 12 months without a report. The hour it notes for a failure, from version 1.5.0, is kept for up to two days.</li>
+      <li><strong>Breakage-alert records</strong> are kept, since none names an install: at most six alerts a day and one record a week.</li>
       <li><strong>Pro's copy of your playlists</strong> stays on our server while your subscription is active, updated by each sync. Turning sync off stops that browser sending; it does not delete the copy, because your other browsers and your phone still use it. A deleted playlist leaves only its id and two times. <strong>When a subscription ends, the copy — every profile, playlist and phone under the key — is deleted 90 days later</strong>, so it is still there if you come back within that time.</li>
       <li><strong>Tonight's pick on your phone</strong> is hidden there after 5 am, and deleted from our server by the next sync of any of your browsers on version 1.1.0 or later after that, or after you press <em>Undo</em>.</li>
       <li><strong>A paired phone</strong> stays until you remove it in the extension. An unused pairing code is deleted when the next one is made, and cannot be used after ten minutes in any case.</li>
@@ -879,12 +930,26 @@ last_modified_at: 2026-10-18
       keeps, for each of the five failure counts, the hour (in UTC) of the latest report in which that count went up,
       so that many installs failing in the same hour can be told apart from one failing now and then. That is the one
       thing it keeps finer than a day, and not for long: a nightly job clears each such hour once it is more than 24
-      hours old, so it is kept for up to two days, and the counts stay. Once a day the server also adds every install's figures up into daily totals — how many
+      hours old, so it is kept for up to two days, and the counts stay. From version 1.6.0 it also keeps, for each of
+      the five failure counts, the reason of the latest failure of that kind, as its number on the list above. Once a day the server also adds every install's figures up into daily totals — how many
       installs reported in the last week, how many were new, how many did something and, from version 1.5.0, how many
       failures of each kind they had counted — kept in tables that name no
       install, and so kept after the records they were added up from expire. <strong>A record that has not been updated
       for 12 months is deleted</strong>; before deletion its install, removal and addition counts are added to a single
       running total, and after deletion nothing about that install remains.
+    </p>
+    <p>
+      <strong>Breakage alerts.</strong> When enough different installs report the same kind of failure within a few
+      hours, the server tells the developer, so that a Netflix change that breaks something is fixed in hours rather
+      than weeks. It looks only at the five failure counts above, and only installs first seen before today count.
+      Each decision to alert is one row in a table of its own, and every Monday one more row records that a message
+      saying the alerts still work was sent. A row holds the failure's name (one of the five failure counts, or
+      <code>heartbeat</code>), the first UTC hour of the window it counted, how many different installs it counted,
+      whether it was only noted or also emailed, when it was decided and whether the mail service accepted the
+      email. It names no install and holds no identifier. The email goes to the developer through Cloudflare's email
+      service and says which failure, how many installs and since which hour and, from version 1.6.0, how many of those
+      installs gave each reason; the Monday one gives the week's counts of alerts and of installs that reported. There
+      are at most six alerts a day. The rows are not deleted, because none of them can be traced to an install.
     </p>
     <p>
       The server does not keep request logs, does not read or store the IP address your report arrives from, and has
