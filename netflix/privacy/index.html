@@ -101,18 +101,18 @@ last_modified_at: 2026-10-18
      yet, so it is not described. The dated line, privacy_updated and
      last_modified_at were set on release day, 2026-10-18.
 
-     1.6.0, drafted 2026-10-28 on branch draft/netflix-1.6.0, BEFORE the
-     known-issues code exists. Read out of code: the netflix_alerts text
-     (tidywl-api src/netflix.js checkNetflixAlerts, sendNetflixHeartbeat,
-     netflixAlertEmail; DATABASE.md; nothing deletes its rows) and the two keys
-     the paragraph on keys without a profile left out, tidywl_last_profile
-     ({ guid, at } per install) and tidywl_installed_at (storage.js). Written
-     from docs/claude/PLAN-1.6.0-known-issues.md only, so each must be read
-     against src/ before release: the known-issues list in the settings file,
-     the Report button, the failure reasons, and the storage keys for closed
-     and shown notices. Every spot that is not final carries [[1.6.0 ...]] or
-     VERIFY: grep this file for both before the merge. The dated line and
-     privacy_updated are NOT set here; they belong to release day.
+     1.6.0, drafted 2026-10-28 on branch draft/netflix-1.6.0 and read out of
+     code: the netflix_alerts text (tidywl-api src/netflix.js
+     checkNetflixAlerts, sendNetflixHeartbeat, netflixAlertEmail; nothing
+     deletes its rows); tidywl_last_profile ({ guid, at } per install) and
+     tidywl_installed_at (storage.js); the five *_reason fields and their list
+     (usage-utils.js USAGE_FAILURE_REASONS = tidywl-api NETFLIX_FAILURE_REASONS,
+     the upsert keeping the latest rise's reason); the known-issues list
+     (remote-config.js readIssues, no request), tidywl_issues_seen (storage.js,
+     chrome.storage.local, four lists capped at 100), the pop-up (once, reach
+     everyone, not counted) and the Report sheet (dashboard-report.js: mailto
+     or Copy, four facts, sends nothing). The dated line and privacy_updated
+     are NOT set here; they belong to release day.
 
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
@@ -324,9 +324,7 @@ last_modified_at: 2026-10-18
           <tr><td><code>tidywl_rating_band_shown</code></td><td>From version 1.4.0. <code>true</code> once the rating ask at the top of the dashboard or in the My List page's heading has been shown, so it appears at most once in this browser, answered or not. Never sent.</td></tr>
           <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
           <tr><td><code>tidywl_announcements_read</code></td><td>From version 1.5.0. Which of the dashboard's announcements you have read, so the bell's dot and the window that opens once know what is new: their ids only, the newest 200. One list for the browser, not per profile. Never sent.</td></tr>
-          <!-- [[1.6.0 KEYS]]: one row per key the known-issues code writes. Replace the placeholder with the real
-               key name(s), say what each holds as the code stores it, and check "not per profile" and "Never sent". -->
-          <tr><td><code>[[1.6.0 KEYS: key name(s)]]</code></td><td>From version 1.6.0. Which known issues you have closed and which have been shown to you, so a closed notice stays closed and an issue opens as a window only once. [[1.6.0 KEYS: what exactly is stored, and VERIFY: one list for the browser, not per profile; never sent.]]</td></tr>
+          <tr><td><code>tidywl_issues_seen</code></td><td>From version 1.6.0. What the dashboard has already shown you of the known issues, so a closed notice stays closed until the issue changes and an issue opens as a window only once: four short lists of the issues' ids (and, for the closed notices and the bell's dot, which revision of each), the newest 100 in each. Ids from the settings file only, nothing about you. One record for the browser, not per profile. Never sent.</td></tr>
         </tbody>
       </table>
     </div>
@@ -354,8 +352,8 @@ last_modified_at: 2026-10-18
       it stores nothing. The keys without a profile in their name — the settings copy, the dashboard's view, the IMDb
       ratings, that file's download time, the badges' ratings, setting and look, the count of Sync-to-mobile presses, the seven usage-report keys, the three
       Pro keys without one, the note that this browser had the extension before 1.0.0, the three records of the rating and
-      Ko-fi asks, when the extension was installed, the announcements you have read and [[1.6.0 KEYS: the known issues
-      you closed or were shown]] — hold nothing that belongs to a profile, with one exception:
+      Ko-fi asks, when the extension was installed, the announcements you have read and the known issues you
+      closed or were shown — hold nothing that belongs to a profile, with one exception:
       <code>tidywl_last_profile</code> holds the id of the Netflix profile last used in this browser, and when, so the
       toolbar badge and popup know whose list to show. It is one record for the whole browser, not one per profile; it
       holds no name and no list, and it is never sent. The usage counts are added up across every profile that used the extension
@@ -485,16 +483,13 @@ last_modified_at: 2026-10-18
       often the button with its link was pressed, never which announcement. The same file can also stop the usage report going out early after a
       failure, described under request 5.
     </p>
-    <!-- 1.6.0 VERIFY against src/ before release (drafted from PLAN-1.6.0-known-issues.md): the issues
-         block in remote-config.js (words only, no new request), the pop-up rule (once, only for an issue that
-         reaches everyone), the Report sheet (mailto and Copy text, Discord link, what the text holds), and whether
-         the usage report counts any of it (announce_views and announce_clicks do for announcements). -->
     <p>
       From version 1.6.0 it also carries a list of known issues: which part of the extension is affected, whether we
       are still looking into it or know the cause, a workaround if there is one and, once it is fixed, what was done
       and when. Like the announcements it is words only and comes with the file, so it adds no request. The
       dashboard shows it, and an issue that affects everyone can open once as a window. Which issues you have closed
-      and which have been shown to you stays in your browser, in [[1.6.0 KEYS: names of the storage keys]].
+      and which have been shown to you stays in your browser, in <code>tidywl_issues_seen</code>. None of it is
+      counted in the usage report.
     </p>
     <p>
       Each known issue has a <em>Report</em> button. It opens a ready-made email to support@tidywl.com in your own
