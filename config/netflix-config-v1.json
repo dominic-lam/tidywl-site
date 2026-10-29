@@ -45,20 +45,21 @@
   "announcements": [
     {
       "id": "2026-10-v1.6.0-my-list-page",
-      "title": "The My List page fix is out: update to 1.6.0",
+      "title": "Update to 1.6.0 to fix the My List page",
       "body": [
         {
-          "text": "Since 1.5.0, the My List page sometimes said **Netflix did not answer** instead of showing your titles, when Netflix was slow to load. Nothing in your list was changed or removed."
+          "text": "The My List page sometimes said **Netflix did not answer** instead of showing your titles. Nothing in your list changed.",
+          "tone": "warning"
         },
         {
-          "text": "Version 1.6.0 fixes it, and stops Leaving soon from going stale when Netflix changes its site. Chrome installs it by itself within a few hours. To get it now:"
+          "text": "**1.6.0 fixes it.** Chrome installs it by itself within a few hours. To get it now:"
         },
         {
           "list": [
-            "Open a new tab and go to **chrome://extensions**",
-            "Turn on **Developer mode**, top right",
-            "Press **Update**, top left, then turn Developer mode off again",
-            "Reload your Netflix tab"
+            "Go to **chrome://extensions**",
+            "Turn on **Developer mode** (top right)",
+            "Press **Update** (top left), then switch Developer mode off",
+            "Reload Netflix"
           ]
         },
         {
