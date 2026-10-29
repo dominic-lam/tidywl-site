@@ -609,7 +609,7 @@ last_modified_at: 2026-10-18
       most once every ten minutes, so at most 144 times in a day; on a day when nothing fails, never. It is the same
       report to the same address, with nothing added. The settings file, request 1, can switch this early asking off;
       that stops only the early asking, and the report then goes at the moments above, as before. The report is
-      exactly this, and, from version 1.6.0, the reasons described under the table, and nothing else:
+      exactly this, and nothing else:
     </p>
 
     <div class="nf-policy-table-wrap">
@@ -665,6 +665,11 @@ last_modified_at: 2026-10-18
           <tr><td>preview_dwells</td><td>How many times resting the pointer on a title in the dashboard asked Netflix about that title: the extension's own preview request, or Netflix's own preview opening on it for the first time on that page. Not which title.</td></tr>
           <tr><td>badges_rated</td><td>How many titles have shown an IMDb rating badge on Netflix's own pages, each title counted once each time a Netflix page loads. Not which titles.</td></tr>
           <tr><td>badges_blank</td><td>The same, for titles whose every lookup finished without a rating to show.</td></tr>
+          <tr><td>sync_short_reason</td><td>Why <code>sync_short</code> last went up, as the number of one word on the list below. Not a total.</td></tr>
+          <tr><td>reads_refused_reason</td><td>The same, for <code>reads_refused</code>.</td></tr>
+          <tr><td>ops_rejected_reason</td><td>The same, for <code>ops_rejected</code>.</td></tr>
+          <tr><td>removals_failed_reason</td><td>The same, for <code>removals_failed</code>.</td></tr>
+          <tr><td>mylist_page_failed_reason</td><td>The same, for <code>mylist_page_failed</code>.</td></tr>
         </tbody>
       </table>
     </div>
@@ -683,15 +688,19 @@ last_modified_at: 2026-10-18
       badge setting, announcements, the popup's Leaving soon list and hover previews get used, and how often a badge
       finds a rating.
     </p>
-    <!-- [[1.6.0 REASON LIST]]: drafted before the code. The sentence below holds without the list. Once the
-         extension's list is final (usage-utils.js) and the server's schema is deployed, add the field name(s) to the
-         table above as rows, and optionally a small table here of each word and what it means. VERIFY too: that the
-         server refuses a word that is not on the list, and whether the server keeps the reason or only passes it on
-         (if it keeps it, say so under "What our server keeps" and in "How long anything is kept"). -->
     <p>
-      <strong>From version 1.6.0 the report also says why.</strong> Each of the five failure counts, from
-      <code>sync_short</code> to <code>mylist_page_failed</code>, now comes with one word from a short fixed list built
-      into the extension, the reason it failed, so that a count of failures also says why they happened. It is one of the words on that list and nothing else: never a title, never an id, never free text.
+      <strong>From version 1.6.0 the report also says why.</strong> The five from <code>sync_short_reason</code> to
+      <code>mylist_page_failed_reason</code> give, for each failure count, the reason of the latest failure of that
+      kind, so that a count of failures also says why they happened. Each is sent as the number of one word on a fixed
+      list built into the extension, and nothing else: never a title, never an id, never an error message or any other
+      text. The list, in order from 0: <code>unknown</code> (the extension cannot tell), <code>timeout</code> (Netflix
+      did not answer in time), <code>no_answer</code>, <code>server_error</code> (Netflix answered with a server
+      error), <code>rate_limited</code>, <code>signed_out</code>, <code>netflix_error</code> (another error from
+      Netflix), <code>stopped</code> (Netflix stopped answering partway), <code>partial</code> (some titles went
+      unanswered), <code>refused</code> and <code>id_not_found</code> (Netflix refused one of the extension's
+      requests), <code>needs_variable</code> (a request Netflix now expects more from), <code>write_not_found</code>
+      (Netflix's code for removing a title was not found), <code>no_data_layer</code> (Netflix's page had not loaded
+      its data), <code>watch_state</code> and <code>leaving</code> (the part of a Sync that came short).
     </p>
 
     <p>
@@ -926,7 +935,8 @@ last_modified_at: 2026-10-18
       keeps, for each of the five failure counts, the hour (in UTC) of the latest report in which that count went up,
       so that many installs failing in the same hour can be told apart from one failing now and then. That is the one
       thing it keeps finer than a day, and not for long: a nightly job clears each such hour once it is more than 24
-      hours old, so it is kept for up to two days, and the counts stay. Once a day the server also adds every install's figures up into daily totals — how many
+      hours old, so it is kept for up to two days, and the counts stay. From version 1.6.0 it also keeps, for each of
+      the five failure counts, the reason of the latest failure of that kind, as its number on the list above. Once a day the server also adds every install's figures up into daily totals — how many
       installs reported in the last week, how many were new, how many did something and, from version 1.5.0, how many
       failures of each kind they had counted — kept in tables that name no
       install, and so kept after the records they were added up from expire. <strong>A record that has not been updated
@@ -942,12 +952,10 @@ last_modified_at: 2026-10-18
       <code>heartbeat</code>), the first UTC hour of the window it counted, how many different installs it counted,
       whether it was only noted or also emailed, when it was decided and whether the mail service accepted the
       email. It names no install and holds no identifier. The email goes to the developer through Cloudflare's email
-      service and says no more than the row does: which failure, how many installs and since which hour; the Monday
-      one gives the week's counts of alerts and of installs that reported. There are at most six alerts a day. The
-      rows are not deleted, because none of them can be traced to an install.
+      service and says which failure, how many installs and since which hour and, from version 1.6.0, how many of those
+      installs gave each reason; the Monday one gives the week's counts of alerts and of installs that reported. There
+      are at most six alerts a day. The rows are not deleted, because none of them can be traced to an install.
     </p>
-    <!-- 1.6.0: if the server keeps the failure reasons (tidywl-api, 1.6.0's server step), say so in the paragraph
-         above this one and in "How long anything is kept". -->
     <p>
       The server does not keep request logs, does not read or store the IP address your report arrives from, and has
       no error-tracking service attached. Cloudflare, which fronts the site, rate-limits the endpoint per address at
