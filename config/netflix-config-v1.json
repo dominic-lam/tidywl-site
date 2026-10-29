@@ -57,5 +57,64 @@
       "created_at": "2026-10-17",
       "expires_at": "2027-01-18"
     }
+  ],
+  "issues": [
+    {
+      "id": "2026-10-mylist-page-slow-load",
+      "part": "mylist-page",
+      "status": "fixed",
+      "reach": "some",
+      "title": "The My List page sometimes didn't load",
+      "body": "When Netflix was slow to load, the My List page asked for your list before Netflix was ready, and said \"Netflix did not answer. Try again in a moment.\" instead of showing your titles. Nothing was removed or changed.",
+      "workaround": "Nothing to do: 1.6.0 waits for Netflix before it asks, and Chrome installs it by itself.",
+      "updated": "2026-10-28",
+      "fixed_at": "2026-10-28",
+      "fix": "update",
+      "fixed_in": "1.6.0",
+      "updates": [
+        {
+          "at": "2026-10-28",
+          "text": "Found it: on a slow load the page asked for your list before Netflix had its data ready. Fixed in 1.6.0."
+        }
+      ]
+    },
+    {
+      "id": "2026-10-leaving-soon-2",
+      "part": "leaving",
+      "status": "fixed",
+      "reach": "everyone",
+      "title": "Leaving soon labels stopped updating again",
+      "body": "Netflix changed the same part of its site again, and Sync skipped the check for titles that are leaving Netflix.",
+      "workaround": "Press **Sync** once and the labels catch up.",
+      "started": "2026-10-27",
+      "updated": "2026-10-28",
+      "fixed_at": "2026-10-28",
+      "fix": "settings",
+      "updates": [
+        {
+          "at": "2026-10-28",
+          "text": "Fixed without an update: Sync checks for leaving titles again."
+        }
+      ]
+    },
+    {
+      "id": "2026-10-leaving-soon-1",
+      "part": "leaving",
+      "status": "fixed",
+      "reach": "everyone",
+      "title": "Leaving soon labels stopped updating",
+      "body": "Netflix changed something on its site, and Sync skipped the check for titles that are leaving Netflix. The labels went stale, and the toolbar's \"There may be more\" note did not clear.",
+      "workaround": "Press **Sync** once and the labels catch up.",
+      "started": "2026-10-18",
+      "updated": "2026-10-22",
+      "fixed_at": "2026-10-22",
+      "fix": "settings",
+      "updates": [
+        {
+          "at": "2026-10-22",
+          "text": "Fixed without an update: Sync checks for leaving titles again."
+        }
+      ]
+    }
   ]
 }
