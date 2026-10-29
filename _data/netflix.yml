@@ -14,14 +14,14 @@
 
 published: true
 store_url: https://chromewebstore.google.com/detail/watch-later-tidy-for-netf/gbgdgeamachehbegdghnhpkiebahmafm
-version: 1.4.0
+version: 1.6.0
 
 # The date the privacy policy last changed. A record only: nothing reads it
 # (checked 2026-10-10). The sitemap's date comes from `last_modified_at` in
 # netflix/privacy/index.html's front matter, which Liquid cannot fill from
 # here, so bump both by hand when the policy's substance changes — not for a
 # typo, per the freshness rule in CLAUDE.md.
-privacy_updated: 2026-10-18
+privacy_updated: 2026-10-28
 # The day the policy first went live. Rendered as "Published"; never bumped.
 privacy_published: 2026-09-20
 

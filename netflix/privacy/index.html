@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, what leaves it — four public requests, title ids to our ratings table, a usage report, and for Pro a licence check and playlist sync — and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-10-18
+last_modified_at: 2026-10-28
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -111,8 +111,8 @@ last_modified_at: 2026-10-18
      (remote-config.js readIssues, no request), tidywl_issues_seen (storage.js,
      chrome.storage.local, four lists capped at 100), the pop-up (once, reach
      everyone, not counted) and the Report sheet (dashboard-report.js: mailto
-     or Copy, four facts, sends nothing). The dated line and privacy_updated
-     are NOT set here; they belong to release day.
+     or Copy, four facts, sends nothing). The dated line, privacy_updated and
+     last_modified_at were set on release day, 2026-10-28.
 
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
@@ -153,6 +153,12 @@ last_modified_at: 2026-10-18
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
+      Updated 28 October 2026 for version 1.6.0: the dashboard shows known issues, which arrive inside the settings
+      file it already reads, and one new storage key remembers which of them you have closed or been shown. Each known
+      issue has a Report button that writes an email you read and send yourself; the extension sends nothing. The usage
+      report adds five numbers, the reason of the latest failure of each kind, as one word from a fixed list, and our
+      server keeps it. The breakage alerts our server sends the developer are now described, and so are two storage
+      keys this page had left out. No new request.
       Updated 18 October 2026 for version 1.5.0: the toolbar popup can now switch the IMDb badges on Netflix's own
       cards off, everywhere or on My Netflix and My List only, and change their look; the dashboard can hide its own
       ratings; and the dashboard shows announcements, which arrive inside the settings file it already reads. Four new
