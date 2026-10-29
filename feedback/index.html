@@ -1,16 +1,15 @@
 ---
 layout: default
-title: One question
-description: "The page the TidyWL dashboard opens to ask one anonymous question: what Pro is worth to a subscriber, or what a free user wishes it did."
+title: A quick question
+description: "The page the TidyWL dashboard opens to ask one anonymous question: which feature you would miss most if Watch Later Tidy disappeared tomorrow, or what a Pro subscriber would feel without Pro."
 permalink: /feedback/
 sitemap: false
 robots: noindex
 ---
 <style>
-  /* The page the dashboard opens to ask one question (2026-10-24, design B "Warm"):
-     a note from Dominic, the card, a plain list of what is and is not sent. Every rule
-     is scoped to .fb, so the checkout thank-you, which shares feedback-question.html,
-     keeps its own look. */
+  /* The page the dashboard opens to ask a question (2026-10-24, design B "Warm"; 2026-10-29, one question with a tap and
+     an optional note): a note from Dominic, the card, a plain list of what is and is not sent. Every rule is scoped to
+     .fb, so the checkout thank-you, which shares feedback-question.html, keeps its own look. */
   :root { --fb-off-bg: #ece1cf; --fb-off-fg: #6d5d4f; --fb-focus: rgba(198, 40, 40, 0.18); }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) { --fb-off-bg: #38332e; --fb-off-fg: #a89f97; --fb-focus: rgba(255, 122, 112, 0.28); }
@@ -26,12 +25,19 @@ robots: noindex
   .fb-note p { margin: 0; max-width: 56ch; font-size: 1.25rem; line-height: 1.55; color: var(--text-secondary); }
 
   .fb .fq { margin: 0; padding: 36px 40px 40px; border-radius: 20px; }
-  .fb .fq .fq-title { margin: 0 0 8px; font-size: 1.625rem; font-weight: 700; line-height: 1.3; text-wrap: balance; }
+  .fb .fq .fq-title { display: block; margin: 0 0 8px; font-size: 1.625rem; font-weight: 700; line-height: 1.3; text-wrap: balance; }
+  .fb .fq .fq-title:focus { outline: none; }
   .fb .fq-sub { margin: 0 0 20px; font-size: 1.125rem; color: var(--text-muted); }
+  .fb .fq-why { margin-bottom: 10px; }
   .fb .fq-label { margin: 24px 0 8px; font-size: 1.25rem; }
+  .fb .fq-more-note { margin: 8px 0 4px; }
+  .fb .fq-hint { margin: 0 0 10px; font-size: 1.0625rem; color: var(--text-muted); }
+  .fb .fq-invite { margin: 16px 0 0; font-size: 1.0625rem; color: var(--text-muted); }
   .fb .fq-note { min-height: 11.5rem; padding: 16px 18px; border-radius: 12px; font-size: 1.125rem; line-height: 1.55; }
+  .fb .fq-note.short { min-height: 7.5rem; }
   .fb .fq-note::placeholder { color: var(--text-muted); opacity: 1; }
   .fb .fq-note:focus { outline: none; border-color: var(--text); box-shadow: 0 0 0 4px var(--fb-focus); }
+  .fb .fq-note:disabled { opacity: 0.7; }
   .fb .fq-row { gap: 16px; margin-top: 18px; }
   .fb .fq-status { font-size: 1.0625rem; }
 
@@ -45,9 +51,22 @@ robots: noindex
   }
   .fb .fq-send:hover:not(:disabled) { background: var(--accent-fill-hover); }
   .fb .fq-send:disabled { background: var(--fb-off-bg); color: var(--fb-off-fg); opacity: 1; cursor: default; }
-  .fb .fq-send:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+  .fb .fq-send:focus-visible, .fb .fq-skip:focus-visible, .fb .fq-next:focus-visible, .fb .fq-chip:focus-visible, .fb .fb-more:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
 
-  /* The Pro survey's three answers */
+  /* Skip and Next: quiet, never competing with Send */
+  .fb .fq-skip { min-height: 58px; padding: 0 20px; border: 0; background: transparent; color: var(--text-secondary); font: inherit; font-size: 1.0625rem; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+  .fb .fq-skip:hover { color: var(--text); background: transparent; border: 0; }
+  .fb .fq-next { min-height: 58px; padding: 0 30px; border: 1.5px solid var(--text); border-radius: 10px; background: transparent; color: var(--text); font: inherit; font-size: 1.1875rem; font-weight: 700; text-align: center; cursor: pointer; }
+  .fb .fq-next:hover { background: var(--ghost-hover-bg); }
+
+  /* The tap questions: one tap picks, and a tap already sends */
+  .fb .fq-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+  .fb .fq-chip { min-height: 48px; padding: 10px 16px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--bg); color: inherit; font: inherit; font-size: 1.0625rem; font-weight: 600; line-height: 1.25; text-align: center; cursor: pointer; }
+  .fb .fq-chip:hover { border-color: var(--ghost-hover-border); background: var(--ghost-hover-bg); }
+  .fb .fq-chip[aria-pressed="true"] { border-color: var(--accent-fill); background: var(--highlight-bg); box-shadow: inset 0 0 0 1px var(--accent-fill); font-weight: 700; }
+  .fb .fq-chip[aria-pressed="true"]::before { content: ""; display: inline-block; width: 6px; height: 11px; margin: -3px 10px 0 2px; border: solid currentColor; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+
+  /* The Pro subscriber's three answers */
   .fb .fq-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0; }
   .fb .fq-choice { min-height: 68px; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--bg); font-size: 1.125rem; font-weight: 600; line-height: 1.3; text-align: center; }
   .fb .fq-choice[aria-pressed="true"] { border-color: var(--accent-fill); background: var(--highlight-bg); box-shadow: inset 0 0 0 1px var(--accent-fill); font-weight: 700; }
@@ -56,14 +75,27 @@ robots: noindex
   .fb .fq-choice:focus-visible, .fb .fq-retry:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
   .fb .fq-retry { min-height: 48px; padding: 0 20px; font-size: 1.0625rem; font-weight: 600; text-align: center; }
 
-  /* After Send: the form goes, the thank-you takes its place */
+  /* Progress, shown only from the second question on */
+  .fb-steps { display: flex; gap: 6px; margin: 0 0 10px; }
+  .fb-steps i { flex: 1; height: 6px; border-radius: 3px; background: var(--border); }
+  .fb-steps i.done { background: var(--accent-fill); }
+  .fb-steps i.skip { background: var(--border-strong); }
+  .fb-steps i.now { background: var(--text-muted); }
+  .fb-step-label { margin: 0 0 22px; font-size: 0.9375rem; color: var(--text-muted); }
+
+  /* After Send: the Pro subscriber's form goes, the thank-you takes its place */
   .fb .fq[data-sent] .fb-form { display: none; }
   .fb .fq-done { display: grid; justify-items: center; gap: 14px; padding: 28px 0 24px; text-align: center; font-weight: 400; }
-  .fb .fq-done:focus { outline: none; }
+  .fb .fq-done:focus, .fb .fb-thanks:focus { outline: none; }
   .fb-tick { display: grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; background: var(--accent-fill); color: #fff; }
   .fb-tick svg { width: 38px; height: 38px; }
   .fb-thanks { margin: 6px 0 0; font-size: clamp(1.75rem, 6vw, 2.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; text-wrap: balance; }
   .fb .fq-done p { margin: 0; max-width: 40ch; font-size: 1.25rem; line-height: 1.5; color: var(--text-secondary); text-wrap: balance; }
+  .fb .fq-done .fb-offer { display: grid; justify-items: center; gap: 16px; width: 100%; max-width: 560px; margin-top: 18px; padding: 24px 26px; border: 1px solid var(--border); border-radius: 14px; background: var(--bg-alt); }
+  .fb .fq-done .fb-offer p { max-width: 46ch; font-size: 1.0625rem; color: var(--text-secondary); }
+  .fb .fq-done .fb-offer p strong { color: var(--text); }
+  .fb .fb-more { min-height: 54px; padding: 0 30px; border: 1.5px solid var(--text); border-radius: 10px; background: transparent; color: var(--text); font: inherit; font-size: 1.125rem; font-weight: 700; text-align: center; cursor: pointer; }
+  .fb .fb-more:hover { background: var(--ghost-hover-bg); }
 
   /* What is sent, and what never is */
   .fb-trust { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -76,6 +108,9 @@ robots: noindex
   .fb-reply { display: grid; gap: 8px; margin: 0; font-size: 1.0625rem; line-height: 1.6; color: var(--text-secondary); }
   .fb-reply p { margin: 0; }
 
+  @keyframes fb-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .fb .fq[data-stepped] > :not([hidden]) { animation: fb-in 0.22s ease-out; }
+
   @media (max-width: 600px) {
     .blog-wrap.fb { padding: 24px 16px 56px; gap: 18px; }
     .fb-note { padding: 24px 22px; }
@@ -84,20 +119,31 @@ robots: noindex
     .fb .fq .fq-title { font-size: 1.4375rem; }
     .fb .fq-choices { grid-template-columns: 1fr; }
     .fb .fq-choice { min-height: 60px; }
-    .fb .fq-send { width: 100%; }
+    .fb .fq-row { gap: 6px; }
+    .fb .fq-send, .fb .fq-next { width: 100%; }
+    .fb .fq-skip { width: 100%; text-align: center; }
+    .fb .fq-chips { gap: 8px; }
+    .fb .fq-chip { padding: 10px 14px; font-size: 1rem; }
+    .fb .fq-done .fb-offer { padding: 20px 18px; }
+    .fb .fb-more { width: 100%; }
     .fb-trust { grid-template-columns: 1fr; }
   }
-  @media (prefers-reduced-motion: reduce) { .fb .fq-send { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .fb .fq-send { transition: none; } .fb .fq > :not([hidden]) { animation: none; } }
 </style>
 <section class="blog-wrap fb">
   <div class="fb-note">
     <h1>Hi, I'm Dominic.</h1>
-    <p>I build Watch Later Tidy on my own. This one question is how I decide what to fix or build next, so I can make it better for you.</p>
-    <p>Your answer comes straight to me, and I read every one.</p>
+    <p id="fb-intro-1">I build Watch Later Tidy on my own, and I have one question for you.</p>
+    <p id="fb-intro-2">Your answer comes straight to me, and I read every one.</p>
   </div>
 
   <!-- Opened from the dashboard as /feedback/?plan=pro&v=2.7.0 or ?plan=free&v=…
-       (2026-10-22). A missing or unknown plan gets the free question. -->
+       (2026-10-22); a missing or unknown plan gets the free questions. A Pro
+       subscriber is asked how they would feel without Pro. A free visitor is asked
+       which feature they would miss most (2026-10-29). `from` says which link
+       brought them: nothing for the dashboard card, `review` for a link in a store
+       reply, `pro_card` for the Pro card and `limit_dialog` for the free-limit
+       dialog; the last two are asked what has kept them from Pro first. -->
   <div class="fq fb-card" id="fb-pro" hidden>
     <div class="fb-form">
       <h2 class="fq-title" id="fb-pro-q">How would you feel if Pro went away?</h2>
@@ -128,20 +174,89 @@ robots: noindex
   </div>
 
   <div class="fq fb-card" id="fb-free">
-    <div class="fb-form">
-      <label class="fq-title fq-label" for="fb-free-note">What's one thing you wish Watch Later Tidy did?</label>
-      <p class="fq-sub">Anything at all, big or small. A sentence is plenty.</p>
-      <textarea class="fq-note" id="fb-free-note" data-fq="note" rows="5" placeholder="The job you'd like it to do, in your own words."></textarea>
-      <div class="fq-row">
-        <button type="button" class="fq-send" data-fq="send" disabled>Send</button>
-        <p class="fq-status" data-fq="note-status" role="status" hidden></p>
-      </div>
-      <noscript><p class="fq-small">This form needs JavaScript. You can also email <a href="mailto:support@tidywl.com">support@tidywl.com</a>.</p></noscript>
+    <!-- Progress: only from the second question on (the Pro card and the limit dialog) -->
+    <div data-fq="strip" hidden>
+      <div class="fb-steps" aria-hidden="true"><i></i><i></i></div>
+      <p class="fb-step-label" data-fq="step-label"></p>
     </div>
-    <div class="fq-done" data-fq="done" tabindex="-1" hidden>
+
+    <!-- The one question: a tap, then an optional note. The dashboard card repeats the title word for word.
+         The feature chips are shuffled on every load; the two with data-last stay at the end. -->
+    <div data-q="miss">
+      <h2 class="fq-title" id="fb-miss-q" tabindex="-1">If Watch Later Tidy disappeared tomorrow, what would you miss most?</h2>
+      <p class="fq-sub fq-why">Why I ask: what you'd miss most tells me what to protect and improve first, so your answer helps me decide what to work on next.</p>
+      <p class="fq-sub">Tap one. A tap already sends it.</p>
+      <div class="fq-chips" role="group" aria-labelledby="fb-miss-q" data-shuffle>
+        <button type="button" class="fq-chip" data-choice="bulk_delete" aria-pressed="false">Bulk delete</button>
+        <button type="button" class="fq-chip" data-choice="bulk_unlike" aria-pressed="false">Bulk remove likes</button>
+        <button type="button" class="fq-chip" data-choice="by_channel" aria-pressed="false">By Channel view and grouping</button>
+        <button type="button" class="fq-chip" data-choice="by_topic" aria-pressed="false">By Topic view</button>
+        <button type="button" class="fq-chip" data-choice="search_sort" aria-pressed="false">Search, filter and sort</button>
+        <button type="button" class="fq-chip" data-choice="reorder_move" aria-pressed="false">Reorder, move and copy</button>
+        <button type="button" class="fq-chip" data-choice="playlists" aria-pressed="false">Every playlist, one dashboard</button>
+        <button type="button" class="fq-chip" data-choice="transcripts" aria-pressed="false">Transcript download and export</button>
+        <button type="button" class="fq-chip" data-choice="gemini" aria-pressed="false">Send to Gemini Notebook</button>
+        <button type="button" class="fq-chip" data-choice="other" data-last aria-pressed="false">Something else</button>
+        <button type="button" class="fq-chip" data-choice="none" data-last aria-pressed="false">I wouldn't miss it</button>
+      </div>
+      <p class="fq-invite" data-fq="invite">Something different on your mind, like a bug or an idea? Tap &ldquo;Something else&rdquo; and tell me.</p>
+      <div class="fq-row" style="margin-top:16px">
+        <p class="fq-status" data-fq="status" role="status" hidden></p>
+        <button type="button" class="fq-retry" data-fq="retry" hidden>Try again</button>
+      </div>
+      <div data-fq="more" hidden>
+        <label class="fq-label fq-more-note" for="fb-miss-note" data-fq="note-label"></label>
+        <p class="fq-hint" id="fb-miss-hint" data-fq="note-hint"></p>
+        <textarea class="fq-note short" id="fb-miss-note" data-fq="note" rows="3" aria-describedby="fb-miss-hint"></textarea>
+        <div class="fq-row">
+          <button type="button" class="fq-send" data-fq="send" disabled>Send note</button>
+          <p class="fq-status" data-fq="note-status" role="status" hidden></p>
+        </div>
+      </div>
+      <div class="fq-row" data-fq="nav">
+        <button type="button" class="fq-skip" data-fq="skip">Skip this one</button>
+        <button type="button" class="fq-next" data-fq="next" hidden>Next question</button>
+      </div>
+      <noscript><p class="fq-small">This page needs JavaScript. You can also email <a href="mailto:support@tidywl.com">support@tidywl.com</a>.</p></noscript>
+    </div>
+
+    <!-- The Pro question: a tap and nothing more. Only the Pro card's and the limit dialog's links open it. -->
+    <div data-q="blocker" hidden>
+      <h2 class="fq-title" id="fb-blocker-q" tabindex="-1">What's kept you from getting Pro?</h2>
+      <p class="fq-sub">Tap the closest one. A tap already sends it.</p>
+      <div class="fq-chips" role="group" aria-labelledby="fb-blocker-q">
+        <button type="button" class="fq-chip" data-choice="free_enough" aria-pressed="false">Free is enough for me</button>
+        <button type="button" class="fq-chip" data-choice="too_expensive" aria-pressed="false">Too expensive</button>
+        <button type="button" class="fq-chip" data-choice="pay_once" aria-pressed="false">I'd rather pay once</button>
+        <button type="button" class="fq-chip" data-choice="unclear" aria-pressed="false">Not sure what Pro adds</button>
+        <button type="button" class="fq-chip" data-choice="other" data-last aria-pressed="false">Something else</button>
+      </div>
+      <div class="fq-row" style="margin-top:16px">
+        <p class="fq-status" data-fq="status" role="status" hidden></p>
+        <button type="button" class="fq-retry" data-fq="retry" hidden>Try again</button>
+      </div>
+      <div class="fq-row" data-fq="nav">
+        <button type="button" class="fq-skip" data-fq="skip">Skip this one</button>
+        <button type="button" class="fq-next" data-fq="next" hidden>Next question</button>
+      </div>
+    </div>
+
+    <!-- After the first of two: the thank-you stays; the rest is an offer, not a step -->
+    <div class="fq-done" data-fq="thanks" tabindex="-1" hidden>
       <span class="fb-tick" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-      <h2 class="fb-thanks">Thank you for your time.</h2>
-      <p>It's in, and I read every answer.</p>
+      <h2 class="fb-thanks" tabindex="-1">Thank you for your time.</h2>
+      <p>It's in, and I read every answer. You're done, and you can close this tab.</p>
+      <div class="fb-offer">
+        <p><strong>Got another minute?</strong> One more, optional: what you'd miss most if Watch Later Tidy disappeared tomorrow. It sends on its own, so skipping sends nothing.</p>
+        <button type="button" class="fb-more" data-fq="more-btn">Sure, ask me</button>
+      </div>
+    </div>
+
+    <!-- After the last one -->
+    <div class="fq-done" data-fq="final" tabindex="-1" hidden>
+      <span class="fb-tick" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <h2 class="fb-thanks" tabindex="-1" data-fq="final-h"></h2>
+      <p data-fq="final-p"></p>
     </div>
   </div>
 
@@ -149,9 +264,11 @@ robots: noindex
     <div class="fb-col">
       <h2>What I get</h2>
       <ul>
-        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Your answer: what you type, or the choice you tap</span></li>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>What you tap, and what you type</span></li>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Which link you came from, such as the dashboard or a store reply</span></li>
         <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Whether you're on Free or Pro</span></li>
         <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>The extension's version</span></li>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>That this page was opened, as a count and nothing else</span></li>
       </ul>
     </div>
     <div class="fb-col fb-never">
@@ -177,14 +294,238 @@ robots: noindex
     // The version is read only when it is dotted digits; anything else is left out.
     var v = params.get('v');
     var version = typeof v === 'string' && /^[0-9]{1,5}(\.[0-9]{1,5}){1,3}$/.test(v) ? v : null;
+    // The way in. Only these three marks are read; nothing else is, and no mark means the dashboard card.
+    var from = params.get('from');
+    var source = from === 'review' || from === 'pro_card' || from === 'limit_dialog' ? from : 'dashboard';
+
+    // One visit count per page load (2026-10-29), so the answers can be read against how many people opened the page.
+    // It carries the page's name and nothing else. Sent once, never retried, and a failure shows nothing.
+    try {
+      fetch('/api/feedback/visit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ page: 'feedback' }),
+        keepalive: true,
+        credentials: 'omit'
+      }).catch(function () {});
+    } catch (e) {}
+
     var pro = document.getElementById('fb-pro');
     var free = document.getElementById('fb-free');
     if (plan === 'pro') {
       free.hidden = true;
       pro.hidden = false;
       window.tidywlFeedbackWire(pro, { source: 'dashboard', plan: 'pro', question: 'pro_survey', version: version });
-    } else {
-      window.tidywlFeedbackWire(free, { source: 'dashboard', plan: 'free', question: 'free_wish', version: version });
+      return;
     }
+
+    // --- a free visitor: the feature question, and from the Pro card or the limit dialog the Pro question first ---------
+    var card = free;
+    var forms = { miss: card.querySelector('[data-q="miss"]'), blocker: card.querySelector('[data-q="blocker"]') };
+    var $ = function (sel, root) { return (root || card).querySelector(sel); };
+    var strip = $('[data-fq="strip"]');
+    var segs = strip.querySelectorAll('i');
+    var stepLabel = $('[data-fq="step-label"]');
+    var thanks = $('[data-fq="thanks"]');
+    var fin = $('[data-fq="final"]');
+    var QUESTION = { miss: 'miss_most', blocker: 'pro_blocker' };
+    var order = source === 'pro_card' || source === 'limit_dialog' ? ['blocker', 'miss'] : ['miss'];
+    var NUM = ['', 'One', 'Two'];
+    var HINT = 'Optional. A bug or any other thought can go here too.';
+    // What the note asks depends on the tap: the people who named something they would miss are asked what would make it
+    // better, and the others what would make it worth keeping.
+    var NOTE_COPY = {
+      feature: { label: 'What would make it even better?', hint: HINT, ph: "What's missing, slow or confusing? A line is plenty." },
+      none: { label: 'What would make it worth keeping?', hint: HINT, ph: 'A line is plenty.' },
+      other: { label: "What's on your mind?", hint: 'Optional. A feature you would miss, a bug, an idea, anything.', ph: "What you'd miss, or anything else. A line is plenty." }
+    };
+    var idx = 0;
+    var phase = 'ask';
+    var result = {};
+    var nav = {};   // each tap question: refreshes its Skip and Next buttons
+
+    if (order.length > 1) {
+      document.getElementById('fb-intro-1').textContent = "I build Watch Later Tidy on my own. One question first, and one more if you have a minute.";
+      document.getElementById('fb-intro-2').textContent = 'Your answers come straight to me, and I read every one.';
+    }
+
+    function render(moveFocus) {
+      Object.keys(forms).forEach(function (k) { forms[k].hidden = !(phase === 'ask' && order[idx] === k); });
+      thanks.hidden = phase !== 'thanks';
+      fin.hidden = phase !== 'final';
+      strip.hidden = !(phase === 'ask' && idx > 0);
+      var focusEl = null;
+      if (phase === 'ask') {
+        if (idx > 0) {
+          segs.forEach(function (s, i) {
+            var r = result[order[i]];
+            s.className = r === 'sent' ? 'done' : r === 'skipped' ? 'skip' : i === idx ? 'now' : '';
+          });
+          stepLabel.textContent = 'Question ' + (idx + 1) + ' of ' + order.length + ', optional';
+        }
+        var f = forms[order[idx]];
+        focusEl = f.querySelector('.fq-title');
+        if (nav[order[idx]]) nav[order[idx]]();
+      } else if (phase === 'thanks') {
+        focusEl = thanks.querySelector('.fb-thanks');
+      } else {
+        var n = order.filter(function (k) { return result[k] === 'sent'; }).length;
+        fin.querySelector('.fb-tick').hidden = n === 0;
+        $('[data-fq="final-h"]').textContent = n === 0 ? 'No problem, nothing was sent.' : n > 1 ? "That's everything. Thank you." : 'Thank you for your time.';
+        $('[data-fq="final-p"]').textContent = n === 0 ? 'If something comes to mind later, you can come back to this page.' : n > 1 ? NUM[n] + ' answers are in, and I read every one.' : "It's in, and I read every answer.";
+        focusEl = fin.querySelector('.fb-thanks');
+      }
+      if (moveFocus) card.setAttribute('data-stepped', '');
+      else card.removeAttribute('data-stepped');
+      if (moveFocus && focusEl) {
+        focusEl.focus({ preventScroll: true });
+        if (card.getBoundingClientRect().top < 0) card.scrollIntoView({ block: 'start' });
+      }
+    }
+
+    // The last question ends the page; the first of two goes through the thank-you and its offer.
+    function advance() {
+      phase = idx === order.length - 1 ? 'final' : 'thanks';
+      render(true);
+    }
+
+    // One tap question. A tap sends at once (and again if the tap changes); the optional note, where there is one, sends
+    // the tap with it, because the server replaces the whole row of its answer id.
+    function wireChips(key) {
+      var f = forms[key];
+      var MAX_NOTE = 2000;
+      var chips = f.querySelectorAll('.fq-chip');
+      var status = $('[data-fq="status"]', f);
+      var retry = $('[data-fq="retry"]', f);
+      var more = $('[data-fq="more"]', f);
+      var invite = $('[data-fq="invite"]', f);
+      var note = more && $('[data-fq="note"]', more);
+      var noteLabel = more && $('[data-fq="note-label"]', more);
+      var noteHint = more && $('[data-fq="note-hint"]', more);
+      var noteSend = more && $('[data-fq="send"]', more);
+      var noteStatus = more && $('[data-fq="note-status"]', more);
+      var skip = $('[data-fq="skip"]', f);
+      var next = $('[data-fq="next"]', f);
+      var base = { source: source, plan: 'free', question: QUESTION[key], version: version };
+      var answerId = window.tidywlNewAnswerId();
+      var choice = null;
+      var sentChoice = null;
+      var sentNote = null;
+      var choiceSend = 0;
+      var noteSending = false;
+
+      function send(extra) { return window.tidywlFeedbackPost(base, answerId, extra); }
+
+      nav[key] = function () {
+        var tapped = result[key] === 'sent';
+        skip.hidden = tapped || idx === 0;
+        next.hidden = !tapped;
+        next.textContent = idx === order.length - 1 ? (idx === 0 ? 'Done' : 'Finish') : 'Next question';
+      };
+
+      function setStatus(state) {
+        status.setAttribute('data-state', state);
+        status.textContent = state === 'sent' ? 'Sent. Thank you.' : state === 'failed' ? 'Not sent.' : 'Sending…';
+        status.hidden = false;
+        retry.hidden = state !== 'failed';
+      }
+
+      function sendChoice() {
+        var mine = ++choiceSend;
+        var picked = choice;
+        setStatus('sending');
+        var extra = { choice: picked };
+        if (sentNote != null) extra.note = sentNote;
+        send(extra).then(function (ok) {
+          if (mine !== choiceSend) return;
+          if (ok) { sentChoice = picked; result[key] = 'sent'; }
+          setStatus(ok ? 'sent' : 'failed');
+          nav[key]();
+        });
+      }
+
+      function refreshSend() {
+        if (noteSend) noteSend.disabled = noteSending || note.value.trim() === '' || choice == null;
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          var value = chip.getAttribute('data-choice');
+          chips.forEach(function (x) { x.setAttribute('aria-pressed', String(x === chip)); });
+          if (more) {
+            var copy = NOTE_COPY[value === 'none' || value === 'other' ? value : 'feature'];
+            noteLabel.textContent = copy.label;
+            noteHint.textContent = copy.hint;
+            note.placeholder = copy.ph;
+            more.hidden = false;
+            invite.hidden = true;
+          }
+          // Tapping the answer already in sends nothing twice.
+          if (value === sentChoice && value === choice) { refreshSend(); return; }
+          choice = value;
+          refreshSend();
+          sendChoice();
+        });
+      });
+      retry.addEventListener('click', function () { if (choice != null) sendChoice(); });
+
+      if (more) {
+        note.setAttribute('maxlength', String(MAX_NOTE));
+        note.addEventListener('input', refreshSend);
+        refreshSend();
+        noteSend.addEventListener('click', function () {
+          var text = note.value.trim().slice(0, MAX_NOTE);
+          if (text === '' || noteSending || choice == null) return;
+          noteSending = true;
+          refreshSend();
+          noteSend.textContent = 'Sending…';
+          noteStatus.hidden = true;
+          send({ choice: choice, note: text }).then(function (ok) {
+            noteSending = false;
+            noteSend.textContent = 'Send note';
+            if (!ok) {
+              noteStatus.setAttribute('data-state', 'failed');
+              noteStatus.textContent = "Your note didn't go through. Check your connection and press Send note again.";
+              noteStatus.hidden = false;
+              refreshSend();
+              return;
+            }
+            sentNote = text;
+            // The note carries the tap too, so a note that arrived means the tap did.
+            choiceSend++;
+            sentChoice = choice;
+            result[key] = 'sent';
+            setStatus('sent');
+            note.disabled = true;
+            noteSend.hidden = true;
+            noteStatus.setAttribute('data-state', 'sent');
+            noteStatus.textContent = 'Note sent. Thank you.';
+            noteStatus.hidden = false;
+            nav[key]();
+          });
+        });
+      }
+      skip.addEventListener('click', function () { result[key] = 'skipped'; advance(); });
+      next.addEventListener('click', advance);
+    }
+
+    // The feature chips come in a new order on every load; the chips marked data-last keep their place at the end.
+    function shuffleChips() {
+      var group = forms.miss.querySelector('[data-shuffle]');
+      var all = Array.prototype.slice.call(group.querySelectorAll('.fq-chip'));
+      var rest = all.filter(function (c) { return !c.hasAttribute('data-last'); });
+      var last = all.filter(function (c) { return c.hasAttribute('data-last'); });
+      for (var i = rest.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = rest[i]; rest[i] = rest[j]; rest[j] = t;
+      }
+      rest.concat(last).forEach(function (c) { group.appendChild(c); });
+    }
+
+    wireChips('miss');
+    wireChips('blocker');
+    shuffleChips();
+    $('[data-fq="more-btn"]').addEventListener('click', function () { idx = 1; phase = 'ask'; render(true); });
+    render(false);
   })();
 </script>

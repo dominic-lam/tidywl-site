@@ -48,7 +48,8 @@
 <script>
   // Wires one .fq question. `base` is what every send carries: source, plan,
   // question and, when known, version (the contract: tidywl-api, POST
-  // /api/feedback). Markup it reads, all inside `root`:
+  // /api/feedback). The /feedback/ page's tap questions use tidywlFeedbackPost
+  // above directly, with a flow of their own. Markup it reads, all inside `root`:
   //   [data-choice]          answer buttons; a tap sends that answer at once
   //   [data-fq="status"]     what happened to the tap's send
   //   [data-fq="retry"]      shown when the tap's send failed
@@ -57,18 +58,40 @@
   //   [data-fq="note-status"], [data-fq="done"]
   // Nothing the visitor types is ever put into the page except as a value; every
   // text the script sets is a fixed string set with textContent.
-  // One random id per page load, sent with every POST: the server keeps one row
-  // per id, so a tap followed by a note, or a changed answer, replaces the first
-  // rather than adding a second. Drawn here, lives only in this tab, and is not
-  // linked to the install.
-  var tidywlAnswerId = (function () {
+  // One random id per question per page load, sent with every POST of that
+  // question: the server keeps one row per id, so a tap followed by a note, or a
+  // changed answer, replaces the first rather than adding a second. A page that
+  // asks two questions draws two (an id already stored for another question is
+  // refused). Drawn here, lives only in this tab, and is not linked to the install.
+  function tidywlNewAnswerId() {
     if (window.crypto && typeof crypto.randomUUID === 'function') return crypto.randomUUID();
     var b = crypto.getRandomValues(new Uint8Array(16));
     b[6] = (b[6] & 0x0f) | 0x40;
     b[8] = (b[8] & 0x3f) | 0x80;
     var h = Array.prototype.map.call(b, function (x) { return ('0' + x.toString(16)).slice(-2); }).join('');
     return h.slice(0, 8) + '-' + h.slice(8, 12) + '-' + h.slice(12, 16) + '-' + h.slice(16, 20) + '-' + h.slice(20);
-  })();
+  }
+
+  // One POST to /api/feedback: `base` is what every send of the question carries,
+  // `extra` this send's choice and note. Resolves true only on a 2xx reply.
+  function tidywlFeedbackPost(base, answerId, extra) {
+    var body = { answerId: answerId };
+    Object.keys(base).forEach(function (k) { if (base[k] != null) body[k] = base[k]; });
+    Object.keys(extra).forEach(function (k) { body[k] = extra[k]; });
+    try {
+      return fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        keepalive: true,
+        credentials: 'omit'
+      }).then(function (res) { return res.ok; }, function () { return false; });
+    } catch (e) {
+      return Promise.resolve(false);
+    }
+  }
+  window.tidywlNewAnswerId = tidywlNewAnswerId;
+  window.tidywlFeedbackPost = tidywlFeedbackPost;
 
   window.tidywlFeedbackWire = function (root, base) {
     var MAX_NOTE = 2000;
@@ -80,6 +103,7 @@
     var send = root.querySelector('[data-fq="send"]');
     var noteStatus = root.querySelector('[data-fq="note-status"]');
     var done = root.querySelector('[data-fq="done"]');
+    var answerId = tidywlNewAnswerId();
     var needsChoice = choices.length > 0;
     var choice = null;
     var sentChoice = null;
@@ -88,20 +112,7 @@
     var noteSending = false;
 
     function post(extra) {
-      var body = { answerId: tidywlAnswerId };
-      Object.keys(base).forEach(function (k) { if (base[k] != null) body[k] = base[k]; });
-      Object.keys(extra).forEach(function (k) { body[k] = extra[k]; });
-      try {
-        return fetch('/api/feedback', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-          keepalive: true,
-          credentials: 'omit'
-        }).then(function (res) { return res.ok; }, function () { return false; });
-      } catch (e) {
-        return Promise.resolve(false);
-      }
+      return tidywlFeedbackPost(base, answerId, extra);
     }
 
     function setStatus(state) {
