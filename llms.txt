@@ -195,3 +195,4 @@ TidyWL for Netflix, listed on the Chrome Web Store as Watch Later Tidy for Netfl
 - [TidyWL for Netflix privacy policy](https://tidywl.com/netflix/privacy/): every request that extension makes
 - [How to get Netflix's old My List page back](https://tidywl.com/netflix/blog/see-your-whole-netflix-my-list/): since Netflix made My List one row in September 2026, TidyWL for Netflix rebuilds the original page and puts it back in Netflix's menu
 - [TidyWL for Netflix tutorials](https://tidywl.com/netflix/tutorials/): how to use every feature of that extension
+- [Omodo](https://www.omodo.ai/?from=tidywl-site): a separate web app by the same developer, not part of TidyWL. You type in the goal you keep putting off, and it emails you one small move for it at a time you pick
