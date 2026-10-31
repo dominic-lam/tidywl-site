@@ -6,163 +6,275 @@ permalink: /checkout/success/
 sitemap: false
 robots: noindex
 ---
-<section class="blog-wrap">
-  <h1 class="blog-title" id="key-heading">One more step to turn Pro on</h1>
-  <p class="blog-subtitle" id="key-subtitle">Thank you for buying TidyWL Pro. It stays off until you paste this key into the extension.</p>
+<!-- Redesigned 2026-10-30 ("option B"): a green check and the hero, one panel
+     holding the key and its activation, the question as a note from Dominic,
+     then the key help as a short list. Every id the scripts below read is kept. -->
+<main class="co">
+  <div class="co-hero">
+    <span class="co-ok" id="key-ok" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+    <h1 id="key-heading">One more step to turn Pro on</h1>
+    <p class="co-hero-sub" id="key-subtitle">Thank you for buying TidyWL Pro. It stays off until you paste this key into the extension.</p>
+  </div>
 
-  <div class="post-body">
-    <div class="key-box" id="key-box" aria-live="polite">
-      <div class="key-status" id="key-status">Fetching your key…</div>
-      <div class="key-value" id="key-value" hidden></div>
-      <button type="button" class="key-copy" id="key-copy" aria-label="Copy key" title="Copy key" hidden>
-        <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-        <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-      </button>
-      <form class="key-find" id="key-find" hidden>
-        <label class="key-find-label" for="key-find-txn">Transaction ID from your Paddle receipt</label>
-        <div class="key-find-row">
-          <input class="key-find-input" id="key-find-txn" type="text" placeholder="txn_…" autocomplete="off" spellcheck="false">
-          <button class="key-find-button" type="submit">Find my key</button>
+  <div class="co-panel">
+    <div class="co-panel-key" id="key-box" aria-live="polite">
+      <p class="co-k-label" id="key-status">Fetching your key…</p>
+      <div class="co-keyfield">
+        <span class="co-key-value" id="key-value" hidden></span>
+        <button type="button" class="co-copy" id="key-copy" aria-label="Copy key" title="Copy key" hidden>
+          <svg class="icon-copy" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <svg class="icon-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+          <span id="key-copy-text">Copy</span>
+        </button>
+      </div>
+      <form class="co-find" id="key-find" hidden>
+        <label class="co-find-label" for="key-find-txn">Transaction ID from your Paddle receipt</label>
+        <div class="co-find-row">
+          <input class="co-find-input" id="key-find-txn" type="text" placeholder="txn_…" autocomplete="off" spellcheck="false">
+          <button class="co-find-button" type="submit">Find my key</button>
         </div>
       </form>
     </div>
 
-    <div class="activate-box" id="activate-box">
-      <h2 class="activate-title" id="activate-title">Turn Pro on in the extension</h2>
-      <p class="activate-auto" id="activate-auto" hidden></p>
-      <ol id="activate-steps">
-        <li>Copy the key above.</li>
-        <li>Open YouTube and open the TidyWL dashboard.</li>
-        <li>Click the <strong>ⓘ About</strong> button in the top right.</li>
-        <li>Under <strong>TidyWL Pro</strong>, click <strong>Have a key?</strong>, paste the key and click <strong>Activate</strong>.</li>
-      </ol>
-      <p class="activate-done" id="activate-done">You are done when the badge turns <strong>PRO</strong>.</p>
+    <div class="co-status" id="activate-box">
+      <span class="co-mini-ok" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+      <div class="co-status-body">
+        <h2 class="co-s-title" id="activate-title">Turn Pro on in the extension</h2>
+        <p class="co-auto" id="activate-auto" hidden></p>
+        <ol class="co-steps" id="activate-steps">
+          <li><span>Copy the key above.</span></li>
+          <li><span>Open YouTube and open the TidyWL dashboard.</span></li>
+          <li><span>Click the <strong>ⓘ About</strong> button in the top right.</span></li>
+          <li><span>Under <strong>TidyWL Pro</strong>, click <strong>Have a key?</strong>, paste the key and click <strong>Activate</strong>.</span></li>
+        </ol>
+        <p class="co-done" id="activate-done">You are done when the badge turns <strong>PRO</strong>.</p>
+      </div>
     </div>
-
-    <!-- One optional question (2026-10-22). It sits after the activation steps
-         and is shown only to someone Paddle just sent here, never to someone
-         finding a lost key. Nothing in it is read by the extension's checkout
-         bridge, which talks to this page by postMessage alone. -->
-    <div class="fq" id="buy-why" hidden>
-      <h2 class="fq-title" id="buy-why-q">What made you buy today?</h2>
-      <p class="fq-sub">Optional, and anonymous. One tap sends it.</p>
-      <div class="fq-choices" role="group" aria-labelledby="buy-why-q">
-        <button type="button" class="fq-choice" data-choice="hit_limit">I hit the free removal limit</button>
-        <button type="button" class="fq-choice" data-choice="pro_feature">I wanted a Pro feature</button>
-        <button type="button" class="fq-choice" data-choice="support">To support the developer</button>
-        <button type="button" class="fq-choice" data-choice="other">Something else</button>
-      </div>
-      <div class="fq-row">
-        <p class="fq-status" data-fq="status" role="status" hidden></p>
-        <button type="button" class="fq-retry" data-fq="retry" hidden>Try again</button>
-      </div>
-      <div data-fq="more" hidden>
-        <label class="fq-label" for="buy-why-note">Anything to add? (optional)</label>
-        <textarea class="fq-note" id="buy-why-note" data-fq="note" rows="3" placeholder="Which feature, or what tipped it."></textarea>
-        <div class="fq-row">
-          <button type="button" class="fq-send" data-fq="send">Send</button>
-          <p class="fq-status" data-fq="note-status" role="status" hidden></p>
-        </div>
-        <p class="fq-done" data-fq="done" tabindex="-1" hidden>Thank you. Your note is in.</p>
-      </div>
-      <p class="fq-small">Sends your answer and anything you type, never your key or your email. <a href="/privacy/#what-you-send-yourself">Privacy</a></p>
-    </div>
-
-    <h2>This key is not emailed</h2>
-    <p>Copy it somewhere safe or bookmark this page.</p>
-    <p>One key works on up to three computers. Deactivate a device from the same panel to free a seat.</p>
-
-    <h2>Lost your key?</h2>
-    <p>Every Paddle receipt, the first and each renewal, shows a <strong>Transaction ID</strong> that starts with <code>txn_</code>. Paste it into <strong>Find my key</strong> on <a href="/checkout/success/">this page</a>, or into <strong>Have a key?</strong> in the TidyWL About card, which finds the key and switches Pro on in one step. On a computer where Pro is already on, the About card shows the key too.</p>
-    <p>Anyone holding a Transaction ID can see the key, so keep your receipts to yourself. Still stuck? Email <a href="mailto:support@tidywl.com">support@tidywl.com</a> from the address you paid with.</p>
-
-    <p class="privacy-meta">Fourteen-day full refund on every charge, no questions — <a href="/refunds/">refund policy</a>. Cancel any time from <strong>Manage subscription</strong> in the extension's About card.</p>
   </div>
-</section>
+
+  <!-- One optional question (2026-10-22), as a note from Dominic (2026-10-30).
+       Shown only to someone Paddle just sent here, never to someone finding a
+       lost key. Nothing in it is read by the extension's checkout bridge, which
+       talks to this page by postMessage alone. The email field, the wording per
+       answer and the recap are the shared question's opt-in hooks. -->
+  <div class="co-note" id="buy-why" hidden>
+    <div class="co-by"><img src="/assets/icon128.png" alt="" width="40" height="40"><p class="co-by-name">Dominic, who builds TidyWL</p></div>
+    <div class="co-ask">
+      <div class="co-note-lines">
+        <p>Thank you for buying Pro. I make TidyWL on my own, and it means a lot.</p>
+        <p>If you have a few seconds, I have one question.</p>
+      </div>
+      <h2 class="co-q" id="buy-why-q">What made you buy today?</h2>
+      <p class="co-q-sub">Optional. One tap sends your answer, anonymously.</p>
+      <div class="co-choices" role="group" aria-labelledby="buy-why-q">
+        <button type="button" class="co-choice" data-choice="hit_limit" data-note-label="Anything to add? (optional)" data-note-hint="What were you clearing out when you hit it?">I hit the free removal limit<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+        <button type="button" class="co-choice" data-choice="pro_feature" data-note-label="Which feature was it? (optional)" data-note-hint="Clean-up rules, pins, undo, saved views or the Lineup.">I wanted a Pro feature<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+        <button type="button" class="co-choice" data-choice="support" data-note-label="Anything you would like me to build next? (optional)" data-note-hint="A feature you wish it had.">To support the developer<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+        <button type="button" class="co-choice" data-choice="other" data-note-label="What made you buy? (optional)" data-note-hint="A few words is plenty.">Something else<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></button>
+      </div>
+      <div class="co-row">
+        <p class="co-sent" data-fq="status" role="status" hidden></p>
+        <button type="button" class="co-retry" data-fq="retry" hidden>Try again</button>
+      </div>
+      <div class="co-more" data-fq="more" hidden>
+        <label class="co-f-label" for="buy-why-note" data-fq="note-label">Anything to add? (optional)</label>
+        <textarea class="co-f-note" id="buy-why-note" data-fq="note" rows="3"></textarea>
+        <div class="co-email">
+          <label class="co-f-label-sm" for="buy-why-email">If you'd like me to write back, leave an email (optional)</label>
+          <p class="co-f-help" id="buy-why-email-help">I'll use it only to reply, then delete it after 28 days. Adding one means your note is no longer anonymous.</p>
+          <input class="co-f-email" id="buy-why-email" data-fq="email" type="email" placeholder="you@example.com" autocomplete="email" spellcheck="false" aria-describedby="buy-why-email-help buy-why-email-err">
+          <p class="co-f-err" id="buy-why-email-err" data-fq="email-error" hidden>That doesn't look like an email address.</p>
+        </div>
+        <div class="co-send-row">
+          <button type="button" class="co-send" data-fq="send">Send</button>
+          <p class="co-f-hint" data-fq="email-hint" hidden>Add a note to send your email with it.</p>
+          <p class="co-note-status" data-fq="note-status" role="status" hidden></p>
+        </div>
+      </div>
+    </div>
+    <div class="co-done-note" data-fq="done" tabindex="-1" hidden>
+      <div class="co-thanks">
+        <span class="co-ok co-ok-sm" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <div>
+          <p class="co-thanks-t">Thank you. Your note is in.</p>
+          <p class="co-thanks-s" data-fq="done-reply" hidden>I'll write back to the email you left.</p>
+        </div>
+      </div>
+      <div class="co-recap">
+        <p class="co-recap-k">What made you buy today?</p>
+        <p class="co-recap-v" data-fq="recap-choice"></p>
+        <p class="co-recap-k">Your note</p>
+        <p class="co-recap-note" data-fq="recap-note"></p>
+      </div>
+    </div>
+    <p class="co-privacy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Your answer is anonymous unless you add an email. An email is used only to reply and is deleted after 28 days. Your key and the email you paid with are never sent. <a href="/privacy/#what-you-send-yourself">Privacy</a></span></p>
+  </div>
+
+  <div class="co-faq">
+    <h2>Questions about your key</h2>
+    <dl>
+      <div class="co-qa"><dt>Is my key emailed?</dt><dd>No. Copy it somewhere safe or bookmark this page.</dd></div>
+      <div class="co-qa"><dt>How many computers can use it?</dt><dd>Up to three per key. Deactivate a device from the same panel in the About card to free a seat.</dd></div>
+      <div class="co-qa"><dt>I lost my key. How do I get it back?</dt><dd><p>Every Paddle receipt, the first and each renewal, shows a <strong>Transaction ID</strong> that starts with <code>txn_</code>. Paste it into <strong>Find my key</strong> on <a href="/checkout/success/">this page</a>, or into <strong>Have a key?</strong> in the TidyWL About card, which finds the key and switches Pro on in one step. On a computer where Pro is already on, the About card shows the key too.</p><p class="co-warn">Anyone holding a Transaction ID can see the key, so keep your receipts to yourself.</p></dd></div>
+      <div class="co-qa"><dt>Still stuck?</dt><dd>Email <a href="mailto:support@tidywl.com">support@tidywl.com</a> from the address you paid with.</dd></div>
+      <div class="co-qa"><dt>Refunds and cancelling</dt><dd>Every charge has a 14-day full refund, no questions. <a href="/refunds/">Refund policy</a>. Cancel any time from <strong>Manage subscription</strong> in the extension's About card.</dd></div>
+    </dl>
+  </div>
+</main>
 
 <style>
-  .key-box {
-    position: relative;
-    margin: 8px 0 32px;
-    padding: 20px 22px;
-    border: 1px solid var(--border, #e5e7eb);
-    border-radius: 12px;
-    background: var(--surface, rgba(127, 127, 127, 0.06));
+  /* Page tokens on top of the site's: one green for the checks (approved
+     2026-10-30), the field ground, and the panel's shadow. Dark follows the
+     site's three rules: the OS unless light is forced, then a forced dark. */
+  .co {
+    --ok: #2e7d4f; --ok-ink: #ffffff; --ok-tint: rgba(46, 125, 79, 0.12);
+    --field: var(--bg-card);
+    --co-shadow: 0 1px 2px rgba(42, 35, 29, 0.05), 0 18px 40px -26px rgba(42, 35, 29, 0.35);
   }
-  /* Room for the copy icon, only while a key is showing. */
-  .key-box.has-key { padding-right: 60px; }
-  .key-status { font-size: 0.95rem; color: var(--muted, #6b7280); }
-  .key-status[data-tone="error"] { color: #b42318; }
-  .key-value {
-    margin-top: 10px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 1.45rem;
-    letter-spacing: 0.06em;
-    word-break: break-all;
-    user-select: all;
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .co {
+      --ok: #5cc48a; --ok-ink: #0f2418; --ok-tint: rgba(92, 196, 138, 0.14);
+      --field: var(--bg);
+      --co-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 18px 40px -26px rgba(0, 0, 0, 0.7);
+    }
   }
-  .key-copy {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    border: 1px solid var(--border, #d1d5db);
-    border-radius: 8px;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
+  :root[data-theme="dark"] .co {
+    --ok: #5cc48a; --ok-ink: #0f2418; --ok-tint: rgba(92, 196, 138, 0.14);
+    --field: var(--bg);
+    --co-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 18px 40px -26px rgba(0, 0, 0, 0.7);
   }
-  .key-copy svg { width: 18px; height: 18px; }
-  .key-copy .icon-check { display: none; }
-  .key-copy.copied .icon-copy { display: none; }
-  .key-copy.copied .icon-check { display: block; }
-  .key-copy:hover { background: rgba(127, 127, 127, 0.12); }
-  .key-copy:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
-  .key-find { margin-top: 14px; }
-  .key-find-label { display: block; margin-bottom: 6px; font-size: 0.9rem; color: var(--muted, #6b7280); }
-  .key-find-row { display: flex; flex-wrap: wrap; gap: 8px; }
-  .key-find-input {
-    flex: 1 1 220px;
-    min-width: 0;
-    padding: 9px 12px;
-    border: 1px solid var(--border, #d1d5db);
-    border-radius: 8px;
-    background: transparent;
-    color: inherit;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 0.95rem;
+
+  .co { display: block; max-width: 688px; margin: 0 auto; padding: 44px 24px 64px; }
+  .co [hidden] { display: none !important; }
+  .co strong { color: var(--text); }
+
+  /* ---- hero ---- */
+  .co-hero { text-align: center; }
+  .co-ok { display: inline-flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 50%;
+    background: var(--ok); color: var(--ok-ink); box-shadow: 0 0 0 8px var(--ok-tint); }
+  .co-ok-sm { width: 36px; height: 36px; flex: none; box-shadow: 0 0 0 5px var(--ok-tint); }
+  .co-hero h1 { margin-top: 22px; font-size: 2.5rem; font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; text-wrap: balance; }
+  .co-hero .co-ok[hidden] + h1 { margin-top: 0; }
+  .co-hero-sub { margin: 10px auto 0; max-width: 32rem; font-size: 1.0625rem; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
+
+  /* ---- the key and its activation, one panel ---- */
+  .co-panel { margin-top: 32px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--co-shadow); overflow: hidden; }
+  .co-panel-key { padding: 20px 22px; }
+  /* Waiting, a prompt or an error reads as a sentence; once a key shows it is the field's label. */
+  .co-k-label { font-size: 0.95rem; line-height: 1.55; color: var(--text-muted); }
+  .co-k-label[data-tone="error"] { color: var(--accent-text); font-weight: 500; }
+  .co-panel-key.has-key .co-k-label { font-size: 0.8125rem; font-weight: 600; }
+  .co-panel-key:not(.has-key) .co-keyfield { display: none; }
+  .co-keyfield { margin-top: 8px; display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 18px; background: var(--bg-alt); border: 1px solid var(--border-subtle); border-radius: 12px; }
+  .co-key-value { flex: 1; min-width: 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1.2rem; font-weight: 500; letter-spacing: 0.04em; word-break: break-all; line-height: 1.4; user-select: all; }
+  .co-copy { flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border-radius: 9px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text); font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+  .co-copy:hover { border-color: var(--border-strong); }
+  .co-copy .icon-check { display: none; }
+  .co-copy.copied { border-color: var(--ok); color: var(--ok); }
+  .co-copy.copied .icon-copy { display: none; }
+  .co-copy.copied .icon-check { display: block; }
+  .co-find { margin-top: 14px; }
+  .co-find-label { display: block; margin-bottom: 6px; font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); }
+  .co-find-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .co-find-input { flex: 1 1 220px; min-width: 0; min-height: 44px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--field); color: var(--text);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.95rem; }
+  .co-find-input::placeholder { color: var(--text-muted); opacity: 1; }
+  .co-find-button { min-height: 44px; padding: 0 18px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-card); color: var(--text); font: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
+  .co-find-button:hover { border-color: var(--border-strong); }
+
+  .co-status { display: flex; align-items: flex-start; gap: 12px; padding: 18px 22px 20px; border-top: 1px solid var(--border-subtle); }
+  .co-status:not(.is-on) .co-mini-ok { display: none; }
+  .co-mini-ok { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; margin-top: 1px; border-radius: 50%; background: var(--ok-tint); color: var(--ok); }
+  .co-status-body { flex: 1; min-width: 0; }
+  .co-s-title { font-size: 1rem; font-weight: 700; line-height: 1.4; }
+  .co-auto { margin-top: 6px; font-size: 0.95rem; font-weight: 600; line-height: 1.55; }
+  .co-steps { list-style: none; counter-reset: s; margin-top: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .co-steps li { counter-increment: s; display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; line-height: 1.55; color: var(--text-secondary); }
+  .co-steps li::before { content: counter(s); flex: none; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: rgba(230, 57, 53, 0.1); color: var(--accent-text); font-size: 0.8125rem; font-weight: 700; }
+  .co-done { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border); font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
+  .co-status.is-on .co-done { margin-top: 4px; padding-top: 0; border-top: 0; }
+  .co-status.is-on .co-done strong { white-space: nowrap; }
+
+  /* ---- the note from Dominic, with the question ---- */
+  .co-note { margin-top: 24px; padding: 24px 26px 22px; border: 1px solid var(--highlight-border); border-radius: 16px; background: var(--highlight-bg); }
+  .co-by { display: flex; align-items: center; gap: 12px; }
+  .co-by img { display: block; flex: none; width: 40px; height: 40px; border-radius: 10px; }
+  .co-by-name { font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); }
+  .co-note[data-sent] .co-ask { display: none; }
+  .co-note-lines { margin-top: 16px; font-size: 1.0625rem; line-height: 1.6; text-wrap: pretty; }
+  .co-note-lines p + p { margin-top: 2px; }
+  .co-q { margin-top: 22px; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.012em; line-height: 1.3; }
+  .co-q-sub { margin-top: 4px; font-size: 0.9rem; color: var(--text-muted); }
+  .co-choices { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .co-choice { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px; padding: 10px 16px; border: 1px solid var(--border); border-radius: 10px;
+    background: var(--field); color: var(--text); font: inherit; font-size: 0.95rem; line-height: 1.35; text-align: left; cursor: pointer; }
+  .co-choice:hover { border-color: var(--border-strong); }
+  .co-choice svg { display: none; flex: none; color: var(--accent-text); }
+  .co-choice[aria-pressed="true"] { border-color: var(--accent-text); box-shadow: inset 0 0 0 1px var(--accent-text); font-weight: 600; }
+  .co-choice[aria-pressed="true"] svg { display: block; }
+  .co-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0 12px; }
+  .co-row > * { margin-top: 12px; }
+  .co-sent { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; font-weight: 600; color: var(--ok); }
+  .co-sent[data-state="sending"] { color: var(--text-muted); font-weight: 500; }
+  .co-sent[data-state="failed"] { color: var(--accent-text); }
+  .co-sent[data-state="sent"]::before { content: ""; flex: none; width: 16px; height: 16px; background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat; }
+  .co-retry { min-height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--field); color: var(--text); font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+  .co-retry:hover { border-color: var(--border-strong); }
+  .co-more { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--highlight-border); display: flex; flex-direction: column; gap: 14px; }
+  .co-f-label { font-size: 1rem; font-weight: 700; line-height: 1.4; margin-bottom: -6px; }
+  .co-f-note, .co-f-email { display: block; width: 100%; padding: 12px 14px; background: var(--field); color: var(--text); border: 1px solid var(--border); border-radius: 10px; font: inherit; font-size: 0.95rem; line-height: 1.5; }
+  .co-f-note { min-height: 92px; resize: vertical; }
+  .co-f-email { min-height: 48px; }
+  .co-f-note::placeholder, .co-f-email::placeholder { color: var(--text-muted); opacity: 1; }
+  .co-f-email[aria-invalid="true"] { border-color: var(--accent-text); box-shadow: inset 0 0 0 1px var(--accent-text); }
+  .co-email { display: flex; flex-direction: column; gap: 4px; }
+  .co-f-label-sm { font-size: 0.9375rem; font-weight: 600; line-height: 1.4; }
+  .co-f-help { margin-bottom: 4px; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
+  .co-f-err { font-size: 0.85rem; font-weight: 600; color: var(--accent-text); }
+  .co-send-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+  .co-send { min-height: 48px; padding: 12px 28px; border-radius: 10px; border: 1px solid var(--accent-fill); background: var(--accent-fill); color: #fff; font: inherit; font-size: 1rem; font-weight: 600; cursor: pointer; }
+  .co-send:hover:not(:disabled) { background: var(--accent-fill-hover); border-color: var(--accent-fill-hover); }
+  .co-send:disabled { background: var(--bg-alt); color: var(--text-muted); border-color: var(--border); cursor: default; }
+  .co-f-hint { font-size: 0.85rem; color: var(--text-muted); }
+  .co-note-status { font-size: 0.9rem; color: var(--text-muted); }
+  .co-note-status[data-state="failed"] { color: var(--accent-text); font-weight: 600; }
+  .co-choice:focus-visible, .co-send:focus-visible, .co-retry:focus-visible, .co-copy:focus-visible, .co-find-button:focus-visible,
+  .co-f-note:focus-visible, .co-f-email:focus-visible, .co-find-input:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  .co-done-note:focus { outline: none; }
+  .co-thanks { margin-top: 20px; display: flex; align-items: center; gap: 14px; }
+  .co-thanks-t { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
+  .co-thanks-s { margin-top: 2px; font-size: 0.95rem; color: var(--text-secondary); }
+  .co-recap { margin-top: 20px; padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--field); }
+  .co-recap-k { font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); }
+  .co-recap-v { margin: 2px 0 12px; font-size: 0.95rem; font-weight: 600; }
+  .co-recap-note { margin-top: 2px; font-size: 0.95rem; line-height: 1.55; color: var(--text-secondary); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .co-privacy { margin-top: 18px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.55; color: var(--text-muted); text-wrap: pretty; }
+  .co-privacy svg { flex: none; margin-top: 3px; }
+  .co-privacy a, .co-qa dd a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 2px; }
+
+  /* ---- questions about the key ---- */
+  .co-faq { margin-top: 44px; }
+  .co-faq h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.012em; line-height: 1.3; }
+  .co-faq dl { margin-top: 10px; }
+  .co-qa { display: grid; grid-template-columns: minmax(0, 200px) minmax(0, 1fr); gap: 24px; padding: 16px 0; border-top: 1px solid var(--border-subtle); }
+  .co-qa:last-child { border-bottom: 1px solid var(--border-subtle); }
+  .co-qa dt { font-size: 0.95rem; font-weight: 600; line-height: 1.5; }
+  .co-qa dd { font-size: 0.95rem; line-height: 1.65; color: var(--text-secondary); text-wrap: pretty; }
+  .co-qa dd .co-warn { margin-top: 8px; }
+  .co-qa code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.875em; padding: 1px 6px; border-radius: 4px; background: var(--bg-alt); border: 1px solid var(--border-subtle); }
+
+  /* A narrow window: stack what sits side by side. */
+  @media (max-width: 640px) {
+    .co { padding: 28px 16px 44px; }
+    .co-hero h1 { font-size: 1.85rem; }
+    .co-keyfield { flex-wrap: wrap; }
+    .co-key-value { flex: 1 1 100%; }
+    .co-note { padding: 20px 16px 18px; }
+    .co-choices { grid-template-columns: 1fr; }
+    .co-qa { grid-template-columns: 1fr; gap: 4px; }
   }
-  .key-find-button {
-    padding: 9px 16px;
-    border: 1px solid var(--border, #d1d5db);
-    border-radius: 8px;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    cursor: pointer;
-  }
-  .key-find-button:hover { background: rgba(127, 127, 127, 0.12); }
-  .key-box [hidden] { display: none !important; }
-  /* The steps sit right under the key, set apart, so the page reads as a step still to do. */
-  .activate-box {
-    margin: 0 0 36px;
-    padding: 20px 24px 18px;
-    border: 1.5px solid var(--highlight-border, #e9a8a6);
-    border-radius: 12px;
-    background: var(--highlight-bg, transparent);
-  }
-  .activate-box .activate-title { margin: 0 0 8px; font-size: 1.1rem; font-weight: 700; }
-  .activate-box ol { margin: 0 0 10px; padding-left: 1.4em; }
-  .activate-box li { margin: 6px 0; }
-  .activate-box li::marker { color: var(--accent-text, #c62828); font-weight: 700; }
-  .activate-done { margin: 0; color: var(--text-secondary, inherit); }
-  .activate-auto { margin: 0 0 10px; font-weight: 600; }
-  .activate-box.is-on { border-color: var(--border, #d1d5db); }
 </style>
 
 <script>
@@ -182,6 +294,7 @@ robots: noindex
     var status = document.getElementById('key-status');
     var value = document.getElementById('key-value');
     var copy = document.getElementById('key-copy');
+    var copyText = document.getElementById('key-copy-text');
     var find = document.getElementById('key-find');
     var findInput = document.getElementById('key-find-txn');
     var subtitle = document.getElementById('key-subtitle');
@@ -228,7 +341,9 @@ robots: noindex
     });
 
     if (!fromLink || !/^txn_[A-Za-z0-9]{1,64}$/.test(fromLink)) {
-      // Nobody just paid: someone looking for a key they already have.
+      // Nobody just paid: someone looking for a key they already have, so no
+      // green check above the heading.
+      document.getElementById('key-ok').hidden = true;
       document.getElementById('key-heading').textContent = 'Find your key';
       subtitle.textContent = 'Lost your TidyWL Pro key? Any of your Paddle receipts brings it back.';
       ask('Paste the Transaction ID from your Paddle receipt. It starts with txn_.', false);
@@ -313,14 +428,16 @@ robots: noindex
       copyWired = true;
       copy.addEventListener('click', function () {
         navigator.clipboard.writeText(value.textContent).then(function () {
-          // Icon-only, so the tick and the accessible name carry "Copied".
+          // The tick, the label and the accessible name all say "Copied".
           copy.classList.add('copied');
           copy.setAttribute('aria-label', 'Copied');
           copy.title = 'Copied';
+          copyText.textContent = 'Copied';
           setTimeout(function () {
             copy.classList.remove('copied');
             copy.setAttribute('aria-label', 'Copy key');
             copy.title = 'Copy key';
+            copyText.textContent = 'Copy';
           }, 1500);
         }, function () {
           var range = document.createRange(); range.selectNodeContents(value);
@@ -348,6 +465,7 @@ robots: noindex
   // from a checkout, which carries `transaction_id` (hosted) or `_ptxn` (the
   // pricing page); `txn` is Find my key and support links, someone who bought
   // earlier. It never touches the key, and sends neither the key nor the id.
+  // An email goes only if the buyer types one, with a note.
   (function () {
     var root = document.getElementById('buy-why');
     var params = new URLSearchParams(location.search);

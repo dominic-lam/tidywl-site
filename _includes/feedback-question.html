@@ -1,7 +1,9 @@
 <style>
   /* One optional question with its answers as buttons (2026-10-22): the
      checkout thank-you's "What made you buy today?" and the /feedback/ page.
-     Both post to /api/feedback and say "Sent" only on a 2xx reply. */
+     Both post to /api/feedback and say "Sent" only on a 2xx reply. Since
+     2026-10-30 the checkout page brings its own styles and uses only the
+     script below; these rules dress /feedback/. */
   .fq { margin: 0 0 36px; padding: 20px 24px 22px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-card); }
   .fq[hidden], .fq [hidden] { display: none !important; }
   .fq .fq-title { margin: 0 0 4px; font-size: 1.1rem; font-weight: 700; }
@@ -56,8 +58,18 @@
   //   [data-fq="more"]       the note part, revealed after a tap when there are buttons
   //   [data-fq="note"]       the textarea; [data-fq="send"] sends it with the answer
   //   [data-fq="note-status"], [data-fq="done"]
-  // Nothing the visitor types is ever put into the page except as a value; every
-  // text the script sets is a fixed string set with textContent.
+  // Opt-in, read only where the markup has them (the checkout thank-you, 2026-10-30);
+  // a page without them behaves exactly as before:
+  //   data-note-label, data-note-hint on an answer button: on its tap, the text of
+  //                          [data-fq="note-label"] and the note's placeholder
+  //   [data-fq="email"]      an optional email that rides with the note, never with a
+  //                          tap alone (the contract: question why_buy, with a note);
+  //                          [data-fq="email-error"] shows on blur when it is not one,
+  //                          [data-fq="email-hint"] when it is typed with no note
+  //   [data-fq="done-reply"] shown in the thank-you only when an email went
+  //   [data-fq="recap-choice"], [data-fq="recap-note"]  the thank-you's recap
+  // Nothing the visitor types is ever put into the page except as a value or with
+  // textContent; every other text the script sets is a fixed string.
   // One random id per question per page load, sent with every POST of that
   // question: the server keeps one row per id, so a tap followed by a note, or a
   // changed answer, replaces the first rather than adding a second. A page that
@@ -103,16 +115,33 @@
     var send = root.querySelector('[data-fq="send"]');
     var noteStatus = root.querySelector('[data-fq="note-status"]');
     var done = root.querySelector('[data-fq="done"]');
+    var noteLabel = root.querySelector('[data-fq="note-label"]');
+    var email = root.querySelector('[data-fq="email"]');
+    var emailError = root.querySelector('[data-fq="email-error"]');
+    var emailHint = root.querySelector('[data-fq="email-hint"]');
+    var doneReply = root.querySelector('[data-fq="done-reply"]');
+    var recapChoice = root.querySelector('[data-fq="recap-choice"]');
+    var recapNote = root.querySelector('[data-fq="recap-note"]');
+    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // the server's own test, after the same trim and 3-254 length
     var answerId = tidywlNewAnswerId();
     var needsChoice = choices.length > 0;
     var choice = null;
     var sentChoice = null;
     var sentNote = null; // once a note is in, every later choice resends it: the server replaces the whole row
+    var sentEmail = null; // and the email with it, since a send without one clears the stored one
     var choiceSend = 0;
     var noteSending = false;
 
     function post(extra) {
       return tidywlFeedbackPost(base, answerId, extra);
+    }
+
+    function emailValue() { return email ? email.value.trim() : ''; }
+    function emailOk(v) { return v.length >= 3 && v.length <= 254 && EMAIL_RE.test(v); }
+    function choiceLabel(value) {
+      var text = '';
+      choices.forEach(function (b) { if (b.getAttribute('data-choice') === value) text = b.textContent.trim(); });
+      return text;
     }
 
     function setStatus(state) {
@@ -129,22 +158,31 @@
       setStatus('sending');
       var extra = { choice: picked };
       if (sentNote != null) extra.note = sentNote;
+      if (sentEmail != null) extra.email = sentEmail;
       post(extra).then(function (ok) {
         if (mine !== choiceSend) return;
         if (ok) sentChoice = picked;
+        if (ok && recapChoice && sentNote != null) recapChoice.textContent = choiceLabel(picked);
         setStatus(ok ? 'sent' : 'failed');
       });
     }
 
     function refreshSend() {
-      send.disabled = noteSending || note.value.trim() === '' || (needsChoice && choice == null);
+      var e = emailValue();
+      send.disabled = noteSending || note.value.trim() === '' || (needsChoice && choice == null) || (e !== '' && !emailOk(e));
+      if (emailHint) emailHint.hidden = !(e !== '' && note.value.trim() === '');
     }
 
     choices.forEach(function (btn) {
       btn.setAttribute('aria-pressed', 'false');
       btn.addEventListener('click', function () {
+        // With an email in play, a tap while the note is on its way waits: its send
+        // carries no note yet, and arriving second it would clear the note and the email.
+        if (email && noteSending) return;
         var value = btn.getAttribute('data-choice');
         choices.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+        if (noteLabel && btn.hasAttribute('data-note-label')) noteLabel.textContent = btn.getAttribute('data-note-label');
+        if (btn.hasAttribute('data-note-hint')) note.placeholder = btn.getAttribute('data-note-hint');
         if (more) more.hidden = false;
         refreshSend();
         // Tapping the answer already in sends nothing twice.
@@ -158,16 +196,31 @@
 
     note.setAttribute('maxlength', String(MAX_NOTE));
     note.addEventListener('input', refreshSend);
+    if (email) {
+      email.addEventListener('input', function () {
+        email.removeAttribute('aria-invalid');
+        if (emailError) emailError.hidden = true;
+        refreshSend();
+      });
+      email.addEventListener('blur', function () {
+        var e = emailValue();
+        var bad = e !== '' && !emailOk(e);
+        if (bad) email.setAttribute('aria-invalid', 'true'); else email.removeAttribute('aria-invalid');
+        if (emailError) emailError.hidden = !bad;
+      });
+    }
     refreshSend();
     send.addEventListener('click', function () {
       var text = note.value.trim().slice(0, MAX_NOTE);
-      if (text === '' || noteSending || (needsChoice && choice == null)) return;
+      var e = emailValue();
+      if (text === '' || noteSending || (needsChoice && choice == null) || (e !== '' && !emailOk(e))) return;
       noteSending = true;
       refreshSend();
       send.textContent = 'Sending…';
       noteStatus.hidden = true;
       var extra = { note: text };
       if (needsChoice) extra.choice = choice;
+      if (e !== '') extra.email = e;
       post(extra).then(function (ok) {
         noteSending = false;
         send.textContent = 'Send';
@@ -179,6 +232,7 @@
           return;
         }
         sentNote = text;
+        if (e !== '') sentEmail = e;
         // The note carries the answer too, so a note that arrived means the answer did.
         if (needsChoice) {
           choiceSend++;
@@ -187,6 +241,11 @@
         }
         note.disabled = true;
         send.hidden = true;
+        if (email) email.disabled = true;
+        if (emailHint) emailHint.hidden = true;
+        if (doneReply) doneReply.hidden = e === '';
+        if (recapChoice) recapChoice.textContent = choiceLabel(choice);
+        if (recapNote) recapNote.textContent = text;
         root.setAttribute('data-sent', ''); // /feedback/ swaps its form for the thank-you on this
         done.hidden = false;
         done.focus({ preventScroll: true });
