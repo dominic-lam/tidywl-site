@@ -31,32 +31,6 @@
       "expires_at": "2026-11-10"
     },
     {
-      "id": "2026-10-netflix-my-list",
-      "display": "modal",
-      "size": "small",
-      "title": "Netflix's original My List page, rebuilt",
-      "message": "Watch Later Tidy for Netflix rebuilds Netflix's original My List page and puts IMDb ratings on Netflix's own cards. Free, from the maker of Watch Later Tidy. https://tidywl.com/netflix/",
-      "body": [
-        {
-          "text": "Netflix folded My List into one sideways row. **Watch Later Tidy for Netflix** brings the full page back: a My List link in Netflix's own menu, every title on one page, in Netflix's artwork and order."
-        },
-        {
-          "text": "It rebuilds the page rather than stretching the row into a grid, and adds IMDb ratings to Netflix's own title cards."
-        },
-        {
-          "text": "Free, no account. Chrome on a computer. From the maker of Watch Later Tidy.",
-          "tone": "muted"
-        }
-      ],
-      "button": {
-        "label": "Add to Chrome",
-        "url": "https://chromewebstore.google.com/detail/tidywl-for-netflix/gbgdgeamachehbegdghnhpkiebahmafm?utm_source=watch-later-tidy&utm_medium=announcement"
-      },
-      "type": "info",
-      "created_at": "2026-10-24",
-      "expires_at": "2026-11-30"
-    },
-    {
       "id": "v2.7.0-release",
       "title": "What's New in v2.7.0",
       "bullets": [
