@@ -43,7 +43,7 @@
         "Until the update, please hold off on syncing lists with thousands of videos.",
         "The fix comes in the next update, in a day or two. Thanks for being patient! Questions: https://discord.gg/sTvjfp4sCk"
       ],
-      "type": "warning",
+      "type": "important",
       "created_at": "2026-10-31",
       "expires_at": "2026-11-21"
     },
