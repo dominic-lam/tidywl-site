@@ -12,7 +12,8 @@
           "tone": "muted"
         },
         {
-          "text": "Syncing a very big list, around 3,800 videos or more, can make YouTube stop playing videos on your account for a while. We know about it and a fix is on the way."
+          "text": "Syncing a very big list, around 3,800 videos or more, can make YouTube stop playing videos on your account for a while. We know about it and a fix is on the way.",
+          "tone": "warning"
         },
         {
           "text": "From what we’ve seen, videos play normally again within 30 to 60 minutes. Nothing in your playlists is lost. If it happens, you can switch to another YouTube account for now."
