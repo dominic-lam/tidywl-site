@@ -1,6 +1,39 @@
 {
   "announcements": [
     {
+      "id": "2026-10-31-playback-block",
+      "display": "modal",
+      "size": "large",
+      "title": "Videos not playing on YouTube? We know why",
+      "message": "Posted October 31, 2026, 4:40 pm Pacific time. Syncing a very big list, around 3,800 videos or more, can make YouTube stop playing videos on your account for a while. We know about it and a fix is on the way. From what we’ve seen, videos play normally again within 30 to 60 minutes. Nothing in your playlists is lost. If it happens, you can switch to another YouTube account for now. Until the update, please hold off on syncing lists with thousands of videos. The fix comes in the next update, in a day or two. Thanks for being patient! Questions? Ask on Discord: https://discord.gg/sTvjfp4sCk",
+      "body": [
+        {
+          "text": "Posted October 31, 2026, 4:40 pm Pacific time",
+          "tone": "muted"
+        },
+        {
+          "text": "Syncing a very big list, around 3,800 videos or more, can make YouTube stop playing videos on your account for a while. We know about it and a fix is on the way.",
+          "tone": "warning"
+        },
+        {
+          "text": "From what we’ve seen, videos play normally again within 30 to 60 minutes. Nothing in your playlists is lost. If it happens, you can switch to another YouTube account for now."
+        },
+        {
+          "text": "Until the update, please hold off on syncing lists with thousands of videos."
+        },
+        {
+          "text": "The fix comes in the next update, in a day or two. Thanks for being patient!"
+        },
+        {
+          "text": "Questions? Ask on [Discord](https://discord.gg/sTvjfp4sCk).",
+          "tone": "muted"
+        }
+      ],
+      "type": "warning",
+      "created_at": "2026-10-31",
+      "expires_at": "2026-11-21"
+    },
+    {
       "id": "2026-10-omodo-launch",
       "display": "modal",
       "size": "large",
