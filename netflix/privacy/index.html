@@ -223,7 +223,7 @@ last_modified_at: 2026-10-28
       <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard or the My List page for the first time in a day, and, from version 1.5.0, shortly after something fails, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile. From version 1.6.0, the counts of what failed also come with a one-word reason from a fixed list, never free text.</li>
       <li><strong>There is no switch in the extension to turn this off.</strong> Uninstalling stops it, and records not updated for 12 months are deleted.</li>
       <li><strong>From version 1.2.1, removing the extension opens one page on tidywl.com, asking why.</strong> Its address carries a few facts after a <code>#</code>, which a browser never sends to our server by itself: the version, your browser's language, how long you had the extension, how many titles you removed and how many days you opened the dashboard. From version 1.6.1 it also carries your install's random ID, if it has one. With that ID, opening the page tells us the extension was removed, with the ID and those facts, so the removal can be read alongside that install's usage counts. Without it, the facts go only with an answer. Your answer is sent only if you press Send, and whether you were on a trial or Pro is never sent. Your email is asked for only after that, is optional, and is deleted within 60 days. Answers are deleted 12 months after the day they arrive.</li>
-      <li><strong>From version 1.6.1, the dashboard links to a feedback page on tidywl.com.</strong> It opens only if you click it. An answer there carries what you tapped or typed, whether you're on Free or Pro, the extension's version and where you opened it from. Never your licence key, never your install's ID. Answers are deleted after 12 months.</li>
+      <li><strong>From version 1.6.1, the dashboard links to a feedback page on tidywl.com, and once, after a big clean-up, asks you to answer a question there.</strong> It opens only if you click the link or the button on that ask. An answer there carries what you tapped or typed, whether you're on Free or Pro, the extension's version and where you opened it from. Never your licence key, never your install's ID. Answers are deleted after 12 months.</li>
       <li><strong>There is no account and no sign-in.</strong> A Pro key is not an account: there is no password, and we never learn your email. The usage report's identifier is random, made in your browser, and linked to nothing that identifies you: not your Netflix account, not a profile, not your email, not a Pro key. From version 1.6.1 the page that opens when you remove the extension carries it too, so an answer there can be read alongside that install's counts.</li>
       <li><strong>Five other requests leave your browser, and none of them identifies you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id; for a title its id cannot match, its name sent to IMDb's search and to Wikidata's; and, from version 1.1.0, Netflix's numeric title ids sent to our own ratings table, which answers with each one's IMDb rating. Each one is described in full below.</li>
       <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. Without Pro sync we never see them.</li>
@@ -332,6 +332,7 @@ last_modified_at: 2026-10-28
           <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
           <tr><td><code>tidywl_announcements_read</code></td><td>From version 1.5.0. Which of the dashboard's announcements you have read, so the bell's dot and the window that opens once know what is new: their ids only, the newest 200. One list for the browser, not per profile. Never sent.</td></tr>
           <tr><td><code>tidywl_issues_seen</code></td><td>From version 1.6.0. What the dashboard has already shown you of the known issues, so a closed notice stays closed until the issue changes and an issue opens as a window only once: four short lists of the issues' ids (and, for the closed notices and the bell's dot, which revision of each), the newest 100 in each. Ids from the settings file only, nothing about you. One record for the browser, not per profile. Never sent.</td></tr>
+          <tr><td><code>tidywl_feedback_ask</code></td><td>From version 1.6.1. When a clean-up of several titles queued the feedback card, and whether the card has been shown, so it appears at most once in this browser, answered or not. One record for the browser, not per profile. Never sent.</td></tr>
         </tbody>
       </table>
     </div>
@@ -674,6 +675,8 @@ last_modified_at: 2026-10-28
           <tr><td>ops_rejected_reason</td><td>The same, for <code>ops_rejected</code>.</td></tr>
           <tr><td>removals_failed_reason</td><td>The same, for <code>removals_failed</code>.</td></tr>
           <tr><td>mylist_page_failed_reason</td><td>The same, for <code>mylist_page_failed</code>.</td></tr>
+          <tr><td>feedback_asks</td><td>How many times the extension has shown the feedback card, the ask that appears once after a big clean-up.</td></tr>
+          <tr><td>feedback_clicks</td><td>How many times you have pressed <em>Answer one question</em> on that card, which opens the feedback page. Not whether you went on to answer.</td></tr>
         </tbody>
       </table>
     </div>
@@ -705,6 +708,12 @@ last_modified_at: 2026-10-28
       requests), <code>needs_variable</code> (a request Netflix now expects more from), <code>write_not_found</code>
       (Netflix's code for removing a title was not found), <code>no_data_layer</code> (Netflix's page had not loaded
       its data), <code>watch_state</code> and <code>leaving</code> (the part of a Sync that came short).
+    </p>
+    <p>
+      <strong>From version 1.6.1 the report also counts the feedback card.</strong> The two last in the table,
+      <code>feedback_asks</code> and <code>feedback_clicks</code>, show how often the card is shown and how often it is
+      taken up, as <code>rating_asks</code> and <code>rating_clicks</code> do for the rating ask. Like those, they are
+      lifetime totals.
     </p>
 
     <p>
@@ -942,13 +951,28 @@ last_modified_at: 2026-10-28
     <!-- Drafted 2026-11-01 on branch draft/netflix-1.6.1 with
          tidywl.com/netflix/feedback/ (this site's netflix/feedback/index.html),
          against CONTRACTS-1.6.1-feedback-and-uninstalls.md § 0.4-0.6 and § 3.3 in
-         the extension repo. Change this with the page and the API together. -->
+         the extension repo. Change this with the page and the API together.
+         The ask after a clean-up (the card, tidywl_feedback_ask, feedback_asks
+         and feedback_clicks) was added 2026-11-01 against § 8 of the same
+         contract, before it was built: check it against src/ at the v1.6.1
+         tag before this merges (cleanRun() in dashboard-actions.js, the two
+         counts in usage-utils.js). -->
     <p>
       From version 1.6.1 the dashboard has a link to <code>https://tidywl.com/netflix/feedback/</code>, which asks a
       quick question or two: a Pro subscriber how they'd feel if Pro went away, and anyone else what they wish the
       extension did and which Pro feature they'd want most. It opens only if you click the link, and answering is
       optional. Its address carries, after a <code>?</code>, whether you're on Free or Pro, the extension's version and
       where you opened it from, such as the dashboard or What's New. Nothing in it is private.
+    </p>
+    <p>
+      <strong>The dashboard also asks once.</strong> After a clean-up that removed five or more titles (the settings
+      file, request 1, can change that number or switch the ask off), a card above My List's toolbar asks <em>Got a
+      minute?</em> when you next open the dashboard, between an hour and 14 days later. Its button, <em>Answer one
+      question</em>, opens the page above in a new tab, with the same address as the link; its other button, <em>Don't
+      ask again</em>, closes it. The card is shown at most once in this browser, whatever you press, and what it
+      remembers of that stays in your browser, in <code>tidywl_feedback_ask</code>. How many times it was shown and its
+      button pressed go in the usage report, as <code>feedback_asks</code> and <code>feedback_clicks</code> (see
+      <em>A usage report, to tidywl.com</em>, above).
     </p>
     <p>
       Opening the page adds one to a daily count of visits to it, at
