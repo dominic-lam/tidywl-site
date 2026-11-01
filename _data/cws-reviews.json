@@ -1,5 +1,41 @@
 [
   {
+    "id": "18228804-4ee0-4938-820e-c1569b95b2c1",
+    "author": "Subway Boss Ingo (Akki)",
+    "stars": 3,
+    "text": "made youtube restrict me",
+    "date": "2026-10-31",
+    "version": "2.7.2",
+    "lang": "en"
+  },
+  {
+    "id": "bdbb0a10-e233-44a2-b360-2aa5c4674ebd",
+    "author": "Nate River",
+    "stars": 4,
+    "text": "Really good especially the export options\nI understand the paid option but free is also good",
+    "date": "2026-10-29",
+    "version": "2.7.2",
+    "lang": "en"
+  },
+  {
+    "id": "1ae944d1-ad46-44ef-8aa0-21a28a564f24",
+    "author": "Gábor Lengyel",
+    "stars": 5,
+    "text": "Worked perfectly, deleted almost 500 videos in seconds, amazing, thanks!",
+    "date": "2026-10-26",
+    "version": "2.7.1",
+    "lang": "en"
+  },
+  {
+    "id": "a632157b-d463-4c4f-a97e-f674884f6811",
+    "author": "Michał Plata",
+    "stars": 5,
+    "text": "Działa  (10.2026) i robi co ma robić",
+    "date": "2026-10-26",
+    "version": "2.7.1",
+    "lang": "pl"
+  },
+  {
     "id": "26e17412-89f4-466d-ba4c-c2bc4dfab2c8",
     "author": "Vivek Viswanadhapalli",
     "stars": 5,
@@ -7,6 +43,15 @@
     "date": "2026-10-25",
     "version": "2.7.0",
     "lang": "en"
+  },
+  {
+    "id": "878c29d9-3633-4e3d-b0bc-ff7e5ba74b70",
+    "author": "하얀구름",
+    "stars": 5,
+    "text": "좋아요를 선택해서 한꺼번에 100개 200개씩 삭제가 가능함. good .",
+    "date": "2026-10-25",
+    "version": "2.7.1",
+    "lang": "ko"
   },
   {
     "id": "a5803e5a-aee7-4056-8036-702bb5a06f9a",
