@@ -222,8 +222,9 @@ last_modified_at: 2026-10-28
       <li><strong>If you buy Pro, your licence key goes to tidywl.com.</strong> It switches Pro on and is checked again when you open the dashboard, at most once every 15 minutes. Paddle takes the payment; your card details and your email never reach us.</li>
       <li><strong>What does leave is a random identifier and some counts.</strong> After you sync, remove or add titles, search, open a category, use a playlist or Tonight, are shown Pro's offer, or open the dashboard or the My List page for the first time in a day, and, from version 1.5.0, shortly after something fails, the extension sends tidywl.com a random ID for your install and your lifetime totals — how many titles you have removed and added, how many searches you have run, how large your My List is, and so on. Never which titles, never what you searched for, never which profile. From version 1.6.0, the counts of what failed also come with a one-word reason from a fixed list, never free text.</li>
       <li><strong>There is no switch in the extension to turn this off.</strong> Uninstalling stops it, and records not updated for 12 months are deleted.</li>
-      <li><strong>From version 1.2.1, removing the extension opens one page on tidywl.com, asking why.</strong> Its address carries a few rough facts — the version, your browser's language, how long you had the extension and on how many days you opened it — after a <code>#</code>, which never reaches our server. They are sent only with an answer, if you press Send. From version 1.4.0 it also carries how many titles you removed with the extension and the exact number of days you opened it, which the page can show you and never sends. Your email is asked for only after that, is optional, and is deleted after 60 days.</li>
-      <li><strong>There is no account and no sign-in.</strong> A Pro key is not an account: there is no password, and we never learn your email. The usage report's identifier is random, made in your browser, and linked to nothing — not your Netflix account, not a profile, not your email, not a Pro key.</li>
+      <li><strong>From version 1.2.1, removing the extension opens one page on tidywl.com, asking why.</strong> Its address carries a few facts after a <code>#</code>, which a browser never sends to our server by itself: the version, your browser's language, how long you had the extension, how many titles you removed and how many days you opened the dashboard. From version 1.6.1 it also carries your install's random ID, if it has one. With that ID, opening the page tells us the extension was removed, with the ID and those facts, so the removal can be read alongside that install's usage counts. Without it, the facts go only with an answer. Your answer is sent only if you press Send, and whether you were on a trial or Pro is never sent. Your email is asked for only after that, is optional, and is deleted within 60 days. Answers are deleted 12 months after the day they arrive.</li>
+      <li><strong>From version 1.6.1, the dashboard links to a feedback page on tidywl.com.</strong> It opens only if you click it. An answer there carries what you tapped or typed, whether you're on Free or Pro, the extension's version and where you opened it from. Never your licence key, never your install's ID. Answers are deleted after 12 months.</li>
+      <li><strong>There is no account and no sign-in.</strong> A Pro key is not an account: there is no password, and we never learn your email. The usage report's identifier is random, made in your browser, and linked to nothing that identifies you: not your Netflix account, not a profile, not your email, not a Pro key. From version 1.6.1 the page that opens when you remove the extension carries it too, so an answer there can be read alongside that install's counts.</li>
       <li><strong>Five other requests leave your browser, and none of them identifies you.</strong> A public settings file from tidywl.com; IMDb's public ratings file; Netflix's numeric title ids sent to Wikidata to look up the matching IMDb id; for a title its id cannot match, its name sent to IMDb's search and to Wikidata's; and, from version 1.1.0, Netflix's numeric title ids sent to our own ratings table, which answers with each one's IMDb rating. Each one is described in full below.</li>
       <li><strong>Custom playlists and pins use Chrome's own sync storage.</strong> That means Google carries them between your signed-in Chrome browsers. Without Pro sync we never see them.</li>
       <li><strong>Everything about your account is stored per Netflix profile</strong>, and uninstalling the extension removes everything it stored in that browser.</li>
@@ -305,7 +306,7 @@ last_modified_at: 2026-10-28
           <tr><td><code>tidywl_badge_mode</code></td><td>From version 1.5.0. Where the badges on Netflix's own cards show, as you set it in the toolbar popup: <code>all</code>, <code>lists-off</code> (not on the My Netflix page or the My List page) or <code>off</code>. Absent until you change it, which means <code>all</code>. One setting for the browser, not per profile. Which of the three it is goes in the usage report, as <code>badge_mode</code>.</td></tr>
           <tr><td><code>tidywl_badge_look</code></td><td>From version 1.5.0. How the badges look, chosen beside that setting: <code>split</code>, the yellow and black tab; <code>meter</code>, the same with a score bar; or <code>pill</code>, a black badge like the dashboard's. One for the browser, not per profile. Never sent.</td></tr>
           <tr><td><code>tidywl_mobile_interest_clicks</code></td><td>A count of how many times you pressed the <em>Sync to mobile</em> button, which opens Pro in the About window, or Pro's offer if you do not have Pro. <strong>Since version 0.2.0 it is sent</strong>, as one of the usage report's counts — it is how the developer learns whether mobile sync is wanted.</td></tr>
-          <tr><td><code>tidywl_install_id</code></td><td>The random identifier the usage report carries. Made once, in your browser; linked to nothing.</td></tr>
+          <tr><td><code>tidywl_install_id</code></td><td>The random identifier the usage report carries. Made once, in your browser; linked to nothing that identifies you. From version 1.6.1 it also goes in the address of the page that opens when you remove the extension.</td></tr>
           <tr><td><code>tidywl_usage</code></td><td>The usage report's other counts, listed field by field below.</td></tr>
           <tr><td><code>tidywl_usage_open_day</code></td><td>The last day the dashboard was counted as opened, so it is counted at most once a day. Never sent.</td></tr>
           <tr><td><code>tidywl_usage_badge_day</code></td><td>From version 1.2.2. The last day the rating badges were counted as shown, so that is counted at most once a day too. Never sent.</td></tr>
@@ -595,7 +596,9 @@ last_modified_at: 2026-10-28
     <p>
       From version 0.2.0, each install carries a random identifier, made in your browser the first time a report is
       sent. It is not derived from, linked to, or stored alongside your Netflix account, a profile, your email or
-      anything else about you, and it is not shown anywhere in the extension. Reinstalling makes a new one.
+      anything else about you, and it is not shown anywhere in the extension. Reinstalling makes a new one. From
+      version 1.6.1 it also goes in the address of the page that opens when you remove the extension, so an answer
+      there can be read alongside these counts (<a href="#removed">the page that opens when you remove it</a>).
     </p>
     <p>
       Whenever one of your lifetime counts has changed, the extension sends that identifier and the counts to
@@ -834,14 +837,20 @@ last_modified_at: 2026-10-28
          From 1.4.0 the address adds r and n, read for display only and never
          sent (PLAN-1.4.0-rating-reach.md § 3 in the extension repo; the page's
          script keeps them out of the answer it posts), drafted 2026-10-14 on
-         branch draft/netflix-1.4.0. -->
+         branch draft/netflix-1.4.0.
+         From 1.6.1 (CONTRACTS-1.6.1-feedback-and-uninstalls.md in the extension
+         repo, § 0.1, § 0.2, § 3.3 and the user's answers in § 7) the address
+         adds i, the install id; opening the page sends a visit count and, with
+         i, a "no reason picked" row; r and n are sent (Q1); the answer joins to
+         the install's usage record; rows go after 12 months (Q2); the email is
+         cleared on day 58 so "within 60 days" holds. Drafted 2026-11-01 on
+         branch draft/netflix-1.6.1. -->
     <p>
       When you remove TidyWL for Netflix from Chrome, Chrome opens <code>https://tidywl.com/netflix/removed/</code> in
       a new tab and asks what made you remove it. The extension is gone by then: this is not one of its requests.
-      While it was installed it gave Chrome the page's address, and Chrome opens it itself. Answering is optional, and
-      closing the tab sends nothing.
+      While it was installed it gave Chrome the page's address, and Chrome opens it itself. Answering is optional.
     </p>
-    <p><strong>What the address carries.</strong> Up to seven short fields, after a <code>#</code>:</p>
+    <p><strong>What the address carries.</strong> Up to eight short fields, after a <code>#</code>:</p>
 
     <div class="nf-policy-table-wrap">
       <table class="nf-policy-table">
@@ -856,22 +865,32 @@ last_modified_at: 2026-10-28
           <tr><td>d</td><td>On how many days you opened the dashboard: none, one, or two or more.</td></tr>
           <tr><td>r</td><td>From version 1.4.0. How many titles you removed from My List with the extension, ever: the usage report's <code>removed</code>. Absent when none.</td></tr>
           <tr><td>n</td><td>From version 1.4.0. On how many days you opened the dashboard, exactly: the usage report's <code>open_days</code>, where <code>d</code> gives only none, one, or two or more. Absent when none.</td></tr>
+          <tr><td>i</td><td>From version 1.6.1. Your install's random ID, the same one the usage report carries (see <em>A usage report, to tidywl.com</em>, above). Absent when your install has none yet, which is the case until its first usage report.</td></tr>
         </tbody>
       </table>
     </div>
 
     <p>
-      <strong>None of it reaches our server when the page opens.</strong> A browser never sends the part of an address
-      after a <code>#</code> to the server it asks for the page; the page's own script reads the fields in your browser.
-      The plan, <code>p</code>, goes no further than that: the page reads it to tell a subscriber that removing the
-      extension did not cancel the subscription, and how to cancel, and never sends it anywhere. The two counts,
-      <code>r</code> and <code>n</code>, go no further either: if you answer that the extension did what you needed,
-      the page shows them back to you beside its rating button — for example, "You opened it on 12 days and cleared 43
-      titles from My List." — and never sends them anywhere. The other four leave your browser only if you press Send.
+      <strong>What happens when the page opens.</strong> A browser never sends the part of an address after a
+      <code>#</code> to the server it asks for the page; the page's own script reads the fields in your browser. Then:
+    </p>
+    <ul>
+      <li>It adds one to a daily count of visits to the page, at <code>https://tidywl.com/api/netflix/feedback/visit</code>. That request carries the page's name and nothing else.</li>
+      <li>From version 1.6.1, if the address carries an install ID, it also sends a row that says no reason was picked yet, to <code>https://tidywl.com/api/netflix/removed</code>, with that ID and <code>a</code>, <code>v</code>, <code>l</code>, <code>d</code>, <code>r</code> and <code>n</code>. That way I can see that the extension was removed, and how that install was used, even if you close the tab. It is written only if your install has no row yet.</li>
+      <li>Without an install ID, nothing else leaves your browser until you press Send.</li>
+    </ul>
+    <p>
+      The plan, <code>p</code>, never leaves your browser: the page reads it to tell a subscriber that removing the
+      extension did not cancel the subscription, and how to cancel, and never sends it anywhere. If you answer that the
+      extension did what you needed, the page also shows the two counts, <code>r</code> and <code>n</code>, back to you
+      beside its rating button, for example "You opened it on 12 days and cleared 43 titles from My List."
     </p>
     <p>
-      <strong>What Send stores.</strong> Pressing Send sends your answer, with those four fields, to
-      <code>https://tidywl.com/api/netflix/removed</code>, which keeps one row:
+      <strong>What Send stores.</strong> Pressing Send sends your answer to
+      <code>https://tidywl.com/api/netflix/removed</code>, with <code>a</code>, <code>v</code>, <code>l</code> and
+      <code>d</code>, and from version 1.6.1 how many titles you removed and how many days you opened the dashboard
+      (<code>r</code> and <code>n</code>) and your install's ID, when the address carries them. It keeps one row per
+      visit, so your answer replaces the "no reason picked" row from when the page opened:
     </p>
 
     <div class="nf-policy-table-wrap">
@@ -880,34 +899,94 @@ last_modified_at: 2026-10-28
           <tr><th>Field</th><th>What it is</th></tr>
         </thead>
         <tbody>
-          <tr><td>reason</td><td>The reason you picked, if you picked one.</td></tr>
+          <tr><td>reason</td><td>The reason you picked, if you picked one, or "none" for the row sent when the page opened.</td></tr>
           <tr><td>chips</td><td>The follow-up answers you tapped, if any.</td></tr>
           <tr><td>text</td><td>What you typed, if anything, up to 1,000 characters.</td></tr>
           <tr><td>a, v, l, d</td><td>From the address, as above; empty where the address did not carry one.</td></tr>
-          <tr><td>day</td><td>The day the answer arrived — the day only, never a time.</td></tr>
-          <tr><td>id</td><td>A random id the server makes for the answer, used only to attach an email if you leave one.</td></tr>
+          <tr><td>r, n</td><td>From version 1.6.1. How many titles you removed and how many days you opened the dashboard, from the address; empty where it did not carry them.</td></tr>
+          <tr><td>install</td><td>From version 1.6.1. Your install's random ID, from the address; empty where it did not carry one.</td></tr>
+          <tr><td>day</td><td>The day the row arrived — the day only, never a time.</td></tr>
+          <tr><td>id</td><td>A random id the page makes for your visit, so your answer replaces the "no reason picked" row, and an email you leave is attached to your answer.</td></tr>
         </tbody>
       </table>
     </div>
 
     <p>
-      <strong>Not stored:</strong> your IP address, which goes only to a rate limiter and is not written down; the usage
-      report's install identifier, which the page never has and the server never asks for; the plan; the two counts;
-      any cookie. An
-      answer names nothing about you unless you type it.
+      <strong>Joined to your usage counts, from version 1.6.1.</strong> A row with an install ID is read alongside that
+      install's usage record (<em>A usage report, to tidywl.com</em>, above), so I can see how the extension was used
+      before it was removed, for example whether it was ever synced or searched. The usage record names no title, no search, no profile and no Netflix account, and neither does the join.
+    </p>
+    <p>
+      <strong>Not stored:</strong> your IP address, which goes only to a rate limiter and is not written down; the plan;
+      any cookie. An answer names nothing about you unless you type it.
+    </p>
+    <p>
+      <strong>How long it is kept.</strong> Each row, with its install ID, is deleted 12 months after the day it
+      arrived. The daily visit count names nobody and is kept.
     </p>
     <p>
       <strong>Your email, only if you leave it.</strong> After Send, the page offers to take your email so we can ask
       you one question about your answer. If you type it and press that second Send, it goes to
       <code>https://tidywl.com/api/netflix/removed/email</code> with the answer's random id, and is stored on that
       answer's row with the day it was added. It is used for that one question, and for nothing else: no newsletter, no
-      list, never shared. <strong>It is deleted 60 days after you leave it</strong>; the answer stays, without it. To
+      list, never shared. <strong>It is deleted within 60 days of you leaving it</strong>; the answer stays, without it. To
       have it deleted sooner, write to
       <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on--> from that address.
     </p>
     <p>
       <strong>Why:</strong> the store counts how many people remove the extension, never why. This page is the one place
       a person who left can say, and the reasons decide what gets fixed or built next.
+    </p>
+
+    <h2 id="feedback">The feedback page, from version 1.6.1</h2>
+    <!-- Drafted 2026-11-01 on branch draft/netflix-1.6.1 with
+         tidywl.com/netflix/feedback/ (this site's netflix/feedback/index.html),
+         against CONTRACTS-1.6.1-feedback-and-uninstalls.md § 0.4-0.6 and § 3.3 in
+         the extension repo. Change this with the page and the API together. -->
+    <p>
+      From version 1.6.1 the dashboard has a link to <code>https://tidywl.com/netflix/feedback/</code>, which asks a
+      quick question or two: a Pro subscriber how they'd feel if Pro went away, and anyone else what they wish the
+      extension did and which Pro feature they'd want most. It opens only if you click the link, and answering is
+      optional. Its address carries, after a <code>?</code>, whether you're on Free or Pro, the extension's version and
+      where you opened it from, such as the dashboard or What's New. Nothing in it is private.
+    </p>
+    <p>
+      Opening the page adds one to a daily count of visits to it, at
+      <code>https://tidywl.com/api/netflix/feedback/visit</code>. That request carries the page's name and nothing else.
+    </p>
+    <p>
+      <strong>What an answer sends.</strong> Each answer goes to <code>https://tidywl.com/api/netflix/feedback</code>,
+      which keeps one row per question:
+    </p>
+
+    <div class="nf-policy-table-wrap">
+      <table class="nf-policy-table">
+        <thead>
+          <tr><th>Field</th><th>What it is</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>question</td><td>Which question you answered.</td></tr>
+          <tr><td>choice</td><td>The button you tapped, if the question has buttons.</td></tr>
+          <tr><td>note</td><td>What you typed, if anything, up to 2,000 characters.</td></tr>
+          <tr><td>plan</td><td>Free or Pro, from the address.</td></tr>
+          <tr><td>version</td><td>The extension's version, from the address.</td></tr>
+          <tr><td>source</td><td>Where you opened the page from, such as the dashboard or What's New.</td></tr>
+          <tr><td>day</td><td>The day the answer arrived, the day only, never a time.</td></tr>
+          <tr><td>answer id</td><td>A random id the page makes for each question, so a changed answer, or a note added after a tap, replaces the first one rather than adding a second. It lives only in that tab and is not linked to your install.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      <strong>Never sent:</strong> your licence key, your install's ID, anything from your Netflix account or profile,
+      and no email, since the page doesn't ask for one. Your IP address goes only to a rate limiter and is not written
+      down. Because an answer names nobody, it can't be replied to: if you'd like an answer, ask on
+      <a href="https://discord.gg/4j5u9xd35P" target="_blank" rel="noopener">Discord</a> or write to
+      <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--email_on-->.
+    </p>
+    <p>
+      <strong>How long it is kept.</strong> Each answer is deleted 12 months after the day it arrived. The daily visit
+      count names nobody and is kept.
     </p>
 
     <h2>How long anything is kept, and how to remove it</h2>
@@ -923,7 +1002,8 @@ last_modified_at: 2026-10-28
       <li><strong>Tonight's pick on your phone</strong> is hidden there after 5 am, and deleted from our server by the next sync of any of your browsers on version 1.1.0 or later after that, or after you press <em>Undo</em>.</li>
       <li><strong>A paired phone</strong> stays until you remove it in the extension. An unused pairing code is deleted when the next one is made, and cannot be used after ten minutes in any case.</li>
       <li><strong>Uninstalling</strong> removes everything the extension stored in that browser, and stops the usage report. It does not delete Pro's copy on our server — see <em>Requests about your data</em>. If you want to be certain your playlists are gone from your <em>other</em> signed-in Chrome browsers as well, delete them in the dashboard before you uninstall, so the deletion is what syncs.</li>
-      <li><strong>An answer sent from the page that opens when you remove the extension</strong> is kept. <strong>An email left with it is deleted 60 days after it was left</strong>, and the answer stays without it.</li>
+      <li><strong>An answer sent from the page that opens when you remove the extension</strong>, and from version 1.6.1 the row that says the page was opened, are deleted 12 months after the day they arrived. <strong>An email left with an answer is deleted within 60 days of being left</strong>, and the answer stays without it.</li>
+      <li><strong>An answer sent from the feedback page</strong>, from version 1.6.1, is deleted 12 months after the day it arrived. The daily counts of visits to that page and to the removal page name nobody and are kept.</li>
     </ul>
     <p>
       <strong>What our server keeps.</strong> One record per install, on a server we run at tidywl.com — a Cloudflare
