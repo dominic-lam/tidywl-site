@@ -204,6 +204,11 @@ sitemap: false
               <span class="un-reason-label">Something that used to work stopped working</span>
               <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
             </button>
+            <button type="button" class="un-reason" data-reason="unavailable" data-prompt="What did YouTube show, and when did it start?" data-placeholder="The exact words on the video, every video or only some, whether it began after a sync, whether it has cleared (and after how long), and any ad blocker.">
+              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.248-3.062A.5.5 0 0 1 22 7.87v8.196"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></svg></span>
+              <span class="un-reason-label">YouTube videos became unavailable</span>
+              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
             <button type="button" class="un-reason" data-reason="slow" data-prompt="Roughly how many videos, and which part was slow?" data-placeholder="Syncing, searching, removing, or opening the dashboard.">
               <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg></span>
               <span class="un-reason-label">It was too slow on my big list</span>
@@ -330,7 +335,7 @@ sitemap: false
                 <h2 class="un-h2" tabindex="-1">YouTube changes things. Most fixes go out within hours.</h2>
                 <p class="un-p">TidyWL works with YouTube's web endpoints rather than an official API, and YouTube changes them without notice. Most fixes go out within hours, with no extension update to install. Bigger changes need a new version.</p>
                 <p class="un-p">So it may already be working again. The Discord is the quickest place to see whether it's a known problem.</p>
-                <p class="un-p">If YouTube stopped playing videos on your account, or told you to try again later, that's a temporary limit on how many requests one account can make in a short time. In my testing it cleared by itself, from about 10 minutes to a few hours, so give it that long before you try anything else. Recent versions pace removals of thousands of videos to avoid it. If it happened to you, tell me what you were doing in the box below.</p>
+                <p class="un-p">If YouTube stopped playing videos on your account, or told you to try again later, that's a temporary limit on how many requests one account can make in a short time. In my experience it normally clears by itself in 30 to 60 minutes, so give it that long before you try anything else. Recent versions pace removals of thousands of videos to avoid it. If it happened to you, tell me what you were doing in the box below.</p>
                 <div class="un-btns">
                   <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
@@ -345,6 +350,12 @@ sitemap: false
                     <a class="un-tlink" data-reinstall="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Edge</a>
                   </div>
                 </div>
+              </div>
+
+              <div class="un-branch" data-branch="unavailable" hidden>
+                <h2 class="un-h2" tabindex="-1">This can be a temporary pause on YouTube's side.</h2>
+                <p class="un-p">After a big sync, YouTube can stop answering one account's video requests for a while. In my experience it normally goes back to normal in 30 to 60 minutes. In the meantime, you can switch to another YouTube account. So sorry for the inconvenience.</p>
+                <p class="un-p">If yours didn't, or you hadn't synced a big list, tell me what happened. I'd like to find out why.</p>
               </div>
 
               <div class="un-branch" data-branch="slow" hidden>
@@ -599,7 +610,7 @@ sitemap: false
     var thanksReply = document.getElementById('un-thanks-reply');
     // The reasons where a reply can help; the server refuses an email with any
     // other, so the page never sends one then.
-    var PROBLEM_REASONS = ['load', 'broke', 'slow', 'other'];
+    var PROBLEM_REASONS = ['load', 'broke', 'unavailable', 'slow', 'other'];
     var EMAIL_SHAPE = /^[^\s@]{1,64}@[^\s@.]+(\.[^\s@.]+)+$/;
 
     // Resolves true only when the server took it (a 2xx), false on a network
