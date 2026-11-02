@@ -1,51 +1,32 @@
 {
   "announcements": [
     {
-      "id": "2026-10-31-playback-block",
+      "id": "v2.8.0-release",
       "display": "modal",
-      "size": "large",
-      "title": "Videos not playing on YouTube? We know why",
-      "message": "Posted October 31, 2026, 4:40 pm Pacific time. Syncing a very big list, around 3,800 videos or more, can make YouTube stop playing videos on your account for a while. We know about it and a fix is on the way. From what we’ve seen, videos play normally again within 30 to 60 minutes. Nothing in your playlists is lost. If it happens, you can switch to another YouTube account for now. Until the update, please hold off on syncing lists with thousands of videos. The fix comes in the next update, in a day or two. Thanks for being patient! Questions? Ask on Discord: https://discord.gg/sTvjfp4sCk",
+      "size": "medium",
+      "title": "What's new in 2.8.0",
+      "message": "A big sync now opens your list straight away and fills in tags, music, Shorts and upload dates behind it, spaced out so YouTube doesn't pause your account. Also new: Search all videos, Play as queue, and for Pro, search through descriptions. Questions? https://discord.gg/sTvjfp4sCk",
       "body": [
         {
-          "text": "Posted October 31, 2026, 4:40 pm Pacific time",
-          "tone": "muted"
+          "text": "A big sync now **opens your list straight away**. Tags, music, Shorts and upload dates fill in behind it, about 8 minutes for 4,000 videos, spaced out so YouTube doesn't pause your account."
         },
         {
-          "text": "Syncing a very big list, around 3,800 videos or more, can make YouTube stop playing videos on your account for a while. We know about it and a fix is on the way.",
-          "tone": "warning"
+          "list": [
+            "The sidebar shows how far it has got, and **Resume sync** reads the rest if a sync stops early",
+            "**Music only** and **No music** leave out videos not read yet",
+            "**Search all videos** from the sidebar search",
+            "**Play as queue**: one tab plays up to 50 ticked videos, in the order you ticked them",
+            "Pro: search looks through video descriptions, and the **Playlists** menu finds a playlist by its creator"
+          ]
         },
         {
-          "text": "From what we’ve seen, videos play normally again within 30 to 60 minutes. Nothing in your playlists is lost. If it happens, you can switch to another YouTube account for now."
-        },
-        {
-          "text": "Until the update, please hold off on syncing lists with thousands of videos."
-        },
-        {
-          "text": "The fix comes in the next update, in a day or two. Thanks for being patient!"
-        },
-        {
-          "text": "Questions? Ask on [Discord](https://discord.gg/sTvjfp4sCk).",
+          "text": "Questions or ideas? Ask on [Discord](https://discord.gg/sTvjfp4sCk).",
           "tone": "muted"
         }
       ],
-      "type": "warning",
+      "type": "info",
       "created_at": "2026-10-31",
-      "expires_at": "2026-11-21"
-    },
-    {
-      "id": "2026-10-31-playback-block-banner",
-      "title": "Please read before you sync: videos not playing on YouTube",
-      "bullets": [
-        "Posted October 31, 2026, 4:40 pm Pacific time.",
-        "Syncing a very big list, around 3,800 videos or more, can make YouTube stop playing videos on your account for a while. We know about it and a fix is on the way.",
-        "From what we’ve seen, videos play normally again within 30 to 60 minutes. Nothing in your playlists is lost. If it happens, you can switch to another YouTube account for now.",
-        "Until the update, please hold off on syncing lists with thousands of videos.",
-        "The fix comes in the next update, in a day or two. Thanks for being patient! Questions: https://discord.gg/sTvjfp4sCk"
-      ],
-      "type": "important",
-      "created_at": "2026-10-31",
-      "expires_at": "2026-11-21"
+      "expires_at": "2027-01-31"
     },
     {
       "id": "2026-10-omodo-launch",
