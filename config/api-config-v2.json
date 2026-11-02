@@ -470,5 +470,8 @@
   },
   "feedbackPrompt": {
     "enabled": true
+  },
+  "playerLookups": {
+    "paceMinutesPer4000": 10
   }
 }
