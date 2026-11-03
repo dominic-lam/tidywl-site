@@ -1,7 +1,7 @@
 ---
 layout: null
 title: TidyWL removed
-description: The page the browser opens when TidyWL is removed. One question about why, a reply to each answer, and how to cancel Pro.
+description: The page the browser opens when TidyWL is removed. Your record, a rating ask, one question about why with a reply to each answer, and how to cancel Pro.
 permalink: /uninstall/
 sitemap: false
 ---
@@ -21,149 +21,256 @@ sitemap: false
   {% include styles.html %}
 
   <style>
-    /* The uninstall page (2026-10-03). The browser opens it the moment the
-       extension is removed (chrome.runtime.setUninstallURL), so it has its own
-       quiet header and footer: no install button in a bar, no menu. */
-    .un { --un-field: var(--bg-card); min-height: 100vh; display: flex; flex-direction: column; }
-    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .un { --un-field: var(--bg); } }
-    :root[data-theme="dark"] .un { --un-field: var(--bg); }
+    /* The uninstall page (2026-10-03), redesigned as "the receipt" on
+       2026-11-03. The browser opens it the moment the extension is removed
+       (chrome.runtime.setUninstallURL), so it has its own quiet header and
+       footer: no install button in a bar, no menu. The first screen is the
+       install's record from the link's # with the rating ask under it; the
+       reasons sit below, and a pick opens its reply inline while the record
+       folds into a sticky bar. */
 
-    .un-wrap { width: 100%; max-width: 1040px; margin: 0 auto; padding-left: clamp(16px, 4vw, 24px); padding-right: clamp(16px, 4vw, 24px); }
-    .un-head { padding-top: 20px; display: flex; align-items: center; }
-    .un-home { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em; }
-    .un-home img { display: block; width: 28px; height: 28px; border-radius: 6px; }
+    /* Sized like the extension's dashboard (tidywl src/dashboard/dashboard-ui.js,
+       #tidywl-dashboard): the column is 60% of the window from about 1440px up,
+       with no px cap, and its margins shrink smoothly below that, never under
+       12px a side. Type and spacing are in rem, and the root grows with the
+       window from 16px at 1440 x 900, so a 3000px-wide screen gets the same
+       composition, larger, not a narrow strip of small text. The vh term keeps
+       a wide but short window from pushing the Rate button below the fold. */
+    html { font-size: max(16px, min(1.1111vw, 1.7778vh)); }
 
-    .un-main { flex: 1 0 auto; padding-top: clamp(28px, 5vw, 56px); padding-bottom: clamp(48px, 7vw, 88px); }
-    .un-cols { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px; }
-    .un-flow { flex: 999 1 560px; min-width: 0; }
-    .un-step { display: flex; flex-direction: column; gap: 28px; padding: 0; }
-    .un-step[hidden], .un-branch[hidden], .un-again[hidden] { display: none; }
+    .un {
+      --un-field: var(--bg-card);
+      --un-raise: #f3ebdd;
+      --un-glow: rgba(230, 57, 53, 0.10);
+      --un-num: linear-gradient(180deg, #2a231d 10%, #5b4c3f 100%);
+      --un-bar: rgba(42, 35, 29, 0.03);
+      --un-lift: 0 0.75rem 2.5rem -0.75rem rgba(60, 40, 20, 0.30);
+      --un-rate-shadow: 0 0.75rem 2rem -0.85rem rgba(211, 47, 47, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      --un-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      min-height: 100vh; display: flex; flex-direction: column;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .un {
+        --un-field: var(--bg); --un-raise: #2c2825; --un-glow: rgba(230, 57, 53, 0.17);
+        --un-num: linear-gradient(180deg, #fffaf3 10%, #e6d5c0 100%); --un-bar: rgba(0, 0, 0, 0.14);
+        --un-lift: 0 0.75rem 2.5rem -0.5rem rgba(0, 0, 0, 0.85);
+        --un-rate-shadow: 0 0.75rem 2rem -0.75rem rgba(230, 57, 53, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+    }
+    :root[data-theme="dark"] .un {
+      --un-field: var(--bg); --un-raise: #2c2825; --un-glow: rgba(230, 57, 53, 0.17);
+      --un-num: linear-gradient(180deg, #fffaf3 10%, #e6d5c0 100%); --un-bar: rgba(0, 0, 0, 0.14);
+      --un-lift: 0 0.75rem 2.5rem -0.5rem rgba(0, 0, 0, 0.85);
+      --un-rate-shadow: 0 0.75rem 2rem -0.75rem rgba(230, 57, 53, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+    .un [hidden] { display: none !important; }
 
-    .un-eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-text); }
-    .un-intro { display: flex; flex-direction: column; gap: 12px; }
-    .un-h1 { font-size: clamp(1.6rem, 3.5vw, 2.25rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; text-wrap: balance; }
-    .un-lede { max-width: 34rem; font-size: 1.0625rem; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
-    .un-h1:focus, .un-h2:focus { outline: none; }
+    .un-wrap { width: calc(100% - clamp(24px, 74% - 490px, 40%)); margin-left: auto; margin-right: auto; }
 
-    .un-reasons { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); gap: 10px; }
-    .un-reason { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 12px 14px; text-align: left; background: var(--bg-card); color: var(--text); border: 1px solid var(--border); border-radius: 10px; font-size: 0.9375rem; font-weight: 600; line-height: 1.35; transition: border-color 0.2s; }
-    .un-reason:hover { border-color: var(--ghost-hover-border); }
-    .un-reason-label { flex: 1; min-width: 0; }
-    .un-icon { flex: none; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: var(--feature-icon-bg); color: var(--accent); }
-    .un-icon svg, .un-chev, .un-chip svg, .un-btn svg, .un-note-privacy svg, .un-small svg { display: block; flex: none; }
-    .un-chev { color: var(--text-muted); }
+    /* Icons carry px width/height attributes for no-CSS rendering; here they
+       follow the root size like everything else. */
+    .un svg { display: block; flex: none; }
+    .un svg[width="14"] { width: 0.875rem; height: 0.875rem; }
+    .un svg[width="16"] { width: 1rem; height: 1rem; }
+    .un svg[width="18"] { width: 1.125rem; height: 1.125rem; }
+    .un svg[width="20"] { width: 1.25rem; height: 1.25rem; }
+    .un svg[width="22"] { width: 1.375rem; height: 1.375rem; }
 
-    .un-small { display: flex; align-items: flex-start; gap: 8px; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
-    .un-small svg { margin-top: 2px; }
-    .un-inline-links { display: flex; flex-wrap: wrap; align-items: center; column-gap: 2px; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
-    .un-inline-links > span:first-child { padding-right: 4px; }
-    .un-pick-foot { display: flex; flex-direction: column; gap: 4px; }
-    .un-pick-foot .un-inline-links { padding-left: 24px; }
-    .un-tlink { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
-    .un-tlink:hover { text-decoration-thickness: 2px; }
-    p .un-tlink, li .un-tlink { display: inline; min-height: 0; padding: 0; }
-    .un-inline-links [hidden] { display: none; }
+    .un-head { display: flex; align-items: center; min-height: 3.5rem; padding-top: 0.5rem; }
+    .un-home { display: inline-flex; align-items: center; gap: 0.625rem; min-height: 2.75rem; font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em; }
+    .un-home img { display: block; width: 1.75rem; height: 1.75rem; border-radius: 0.375rem; }
 
-    .un-sent-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-    .un-textbtn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 10px 4px; background: transparent; border: 0; color: var(--text-muted); font-size: 0.9375rem; font-weight: 600; }
-    .un-textbtn:hover { color: var(--text); }
-    .un-sent { margin-left: auto; max-width: 100%; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
-    .un-chip { display: flex; align-items: center; gap: 10px; max-width: 100%; padding: 10px 16px 10px 12px; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px 14px 4px 14px; font-size: 0.9375rem; font-weight: 600; line-height: 1.35; }
-    .un-chip-icon { flex: none; display: flex; color: var(--accent); }
-    .un-sent-tick { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8125rem; color: var(--text-muted); }
+    .un-main { flex: 1 0 auto; padding-top: 0.5rem; padding-bottom: 3.5rem; container-type: inline-size; container-name: un; }
+
+    /* ── The receipt ── */
+    .un-stick { padding: 0; }
+    .un-receipt { --pad: 2.25rem; position: relative; padding: 1.4rem var(--pad) 1.1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 1.25rem; }
+    .un-receipt::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(55% 75% at 50% 0%, var(--un-glow), transparent 72%); }
+    .un-receipt > * { position: relative; }
+
+    .un-r-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-family: var(--un-mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .un-pill { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.2rem 0.7rem; border: 1px solid var(--border-strong); border-radius: 999px; letter-spacing: 0.1em; }
+    .un-pill::before { content: ""; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: var(--accent); }
+
+    .un-fig > div { display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: clamp(0.25rem, 1.6vh, 1rem); }
+    .un-num { color: var(--text); font-size: clamp(4.5rem, 17vh, 11rem); font-weight: 800; letter-spacing: -0.055em; line-height: 0.92; font-variant-numeric: lining-nums tabular-nums; overflow-wrap: anywhere; padding: 0 0.07em 0.06em 0; }
+    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+      .un-num { background: var(--un-num); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    }
+    .un-fig-label { margin-top: 0.7rem; font-size: clamp(1.125rem, 2.7vh, 1.5rem); font-weight: 700; letter-spacing: -0.015em; line-height: 1.3; text-wrap: balance; }
+    .un-fig-title { font-size: clamp(2.25rem, 7.5vh, 3.75rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; }
+    .un-fig-sub { margin-top: 0.7rem; font-size: 1.0625rem; line-height: 1.5; color: var(--text-secondary); text-wrap: balance; }
+    .un-lines { margin-top: 0.9rem; width: min(25rem, 100%); display: flex; flex-direction: column; gap: 0.3rem; font-family: var(--un-mono); font-size: 0.8125rem; line-height: 1.5; color: var(--text-secondary); }
+    .un-line { display: flex; align-items: baseline; gap: 0.5rem; }
+    .un-line i { flex: 1; border-bottom: 1px dotted var(--border-strong); transform: translateY(-0.2rem); }
+    .un-line b { font-weight: 700; color: var(--text); }
+
+    .un-tear { position: relative; height: 0; margin: 1.35rem calc(-1 * var(--pad)); border-top: 2px dashed var(--border-strong); }
+    .un-tear::before, .un-tear::after { content: ""; position: absolute; top: -0.875rem; width: 1.625rem; height: 1.625rem; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); }
+    .un-tear::before { left: -0.875rem; clip-path: inset(0 0 0 50%); }
+    .un-tear::after { right: -0.875rem; clip-path: inset(0 50% 0 0); }
+
+    .un-ask { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem 2rem; flex-wrap: wrap; }
+    .un-ask-copy { flex: 1 1 20rem; min-width: 0; }
+    .un-ask-h { font-size: 1.4375rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
+    .un-ask-p { margin-top: 0.3rem; max-width: 30rem; font-size: 0.96875rem; line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
+    .un-byline { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.7rem; font-size: 0.8125rem; font-weight: 500; line-height: 1.4; color: var(--text-muted); }
+    .un-mono { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 1.375rem; height: 1.375rem; border-radius: 50%; background: var(--feature-icon-bg); border: 1px solid var(--border); color: var(--accent-text); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0; }
+
+    .un-act { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+    .un-trio-label { font-size: 0.8125rem; color: var(--text-muted); }
+    .un-rates { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.6rem; }
+    .un-rate { display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem; min-height: 3.75rem; padding: 0 2.1rem; border-radius: 0.8rem; border: 1.5px solid var(--accent-fill); background: var(--accent-fill); color: #fff; font-size: 1.1875rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; box-shadow: var(--un-rate-shadow); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+    .un-rate:hover { background: var(--accent-fill-hover); border-color: var(--accent-fill-hover); transform: translateY(-1px); }
+    .un-rate:active { transform: none; }
+    .un-rate .un-star { width: 1.375rem; height: 1.375rem; fill: currentColor; fill-opacity: 0; transition: fill-opacity 0.2s; }
+    .un-rate:hover .un-star { fill-opacity: 0.9; }
+    .un-rate .un-logo { display: none; width: 1.4rem; height: 1.4rem; }
+    /* Store unknown: three quieter buttons, each with its store's mark. */
+    .un-act:not(.is-one) .un-rate { min-height: 3.5rem; padding: 0 1.3rem 0 1.1rem; gap: 0.65rem; background: var(--un-raise); border-color: var(--border-strong); color: var(--text); font-size: 1.0625rem; box-shadow: none; }
+    .un-act:not(.is-one) .un-rate:hover { border-color: var(--accent-text); }
+    .un-act:not(.is-one) .un-rate .un-logo { display: block; }
+    .un-act:not(.is-one) .un-rate .un-star { display: none; }
+    .un-act:not(.is-one) .un-rate-pre { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .un-act.is-one .un-trio-label, .un-act:not(.is-one) .un-hint { display: none; }
+    .un-hint { display: flex; align-items: center; gap: 0.45rem; font-size: 0.8125rem; line-height: 1.4; color: var(--text-muted); }
+    .un-hint img { display: block; width: 1rem; height: 1rem; }
+    .un-hint svg { color: var(--accent-text); }
+    .un-hint.is-done { color: var(--text-secondary); }
+
+    .un-fine { display: flex; align-items: flex-start; gap: 0.5rem; margin-top: 1.1rem; padding-top: 0.85rem; border-top: 1px solid var(--border-subtle); font-size: 0.78rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
+    .un-fine svg { margin-top: 0.15rem; }
+
+    /* After a pick the receipt folds into a bar and stays in view, so the Rate
+       button is on screen while the reply is read. The wrapper is what sticks:
+       its own background hides what scrolls under it. */
+    .un-stick.is-compact { position: sticky; top: 0; z-index: 6; padding: 0.75rem 0; margin-top: -0.75rem; background: var(--bg); }
+    .is-compact .un-receipt { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 1.5rem; padding: 0.9rem 1.5rem 0.65rem; border-radius: 1rem; box-shadow: var(--un-lift); }
+    .is-compact .un-r-top, .is-compact .un-tear, .is-compact .un-lines, .is-compact .un-fig-sub, .is-compact .un-ask-p, .is-compact .un-byline, .is-compact .un-hint, .is-compact .un-trio-label { display: none; }
+    .is-compact .un-fig > div { grid-column: 1; flex-direction: row; align-items: baseline; justify-content: flex-start; flex-wrap: wrap; gap: 0 0.9rem; margin: 0; text-align: left; }
+    .is-compact .un-num { font-size: 2.9rem; }
+    .is-compact .un-fig-label { margin: 0; font-size: 1.0625rem; }
+    .is-compact .un-fig-title { font-size: 1.5rem; }
+    .is-compact .un-ask { grid-column: 2; grid-row: 1; flex-wrap: nowrap; gap: 1.25rem; }
+    .is-compact .un-ask-copy { flex: none; }
+    .is-compact .un-ask-h { font-size: 1rem; font-weight: 600; color: var(--text-secondary); letter-spacing: 0; }
+    .is-compact .un-act { flex-direction: row; align-items: center; }
+    .is-compact .un-rate { min-height: 3rem; padding: 0 1.5rem; font-size: 1rem; }
+    .is-compact .un-act:not(.is-one) .un-rate { min-height: 2.75rem; padding: 0 1rem; font-size: 0.9375rem; }
+    .is-compact .un-fine { grid-column: 1 / -1; margin-top: 0.55rem; padding-top: 0.5rem; font-size: 0.72rem; }
+
+    /* ── The reasons ── */
+    .un-why { padding: 0; margin-top: 1.9rem; }
+    .un-why-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.2rem 1.1rem; }
+    .un-why-h { font-size: 1.4375rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
+    .un-why-h:focus, .un-rh:focus, .un-done h3:focus, .un-pro h3:focus, .un-pro-never:focus { outline: none; }
+    .un-why-p { font-size: 0.9375rem; line-height: 1.5; color: var(--text-muted); }
+    .un-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.95rem; }
+    .un-reason { display: inline-flex; align-items: center; gap: 0.6rem; min-height: 2.875rem; padding: 0 1.1rem 0 0.85rem; background: var(--bg-card); color: var(--text); border: 1px solid var(--border); border-radius: 999px; font-size: 0.9375rem; font-weight: 600; line-height: 1.2; text-align: left; transition: border-color 0.2s, background 0.2s; }
+    .un-reason:hover { border-color: var(--ghost-hover-border); background: var(--un-raise); }
+    .un-reason[aria-pressed="true"] { border-color: var(--accent); background: var(--highlight-bg); box-shadow: inset 0 0 0 1px var(--accent); }
+    .un-ci { display: flex; color: var(--accent); }
+
+    .un-reply { margin-top: 1.1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; scroll-margin-top: 8rem; }
+    .un-rp-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 1rem; padding: 0.65rem 1.1rem 0.65rem 1.25rem; border-bottom: 1px solid var(--border-subtle); background: var(--un-bar); }
+    .un-rp-pick { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem 0.65rem; min-width: 0; font-size: 0.9375rem; font-weight: 600; line-height: 1.35; }
+    .un-sent-tick { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8125rem; font-weight: 500; color: var(--text-muted); }
     .un-sent-tick svg { color: var(--accent-text); }
     .un-sent-tick[data-state="failed"] { color: var(--accent-text); font-weight: 600; }
-    .un-retry { display: inline; min-height: 0; padding: 0; background: transparent; border: 0; color: var(--text); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+    .un-retry { display: inline; padding: 0; background: transparent; border: 0; color: var(--text); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
     .un-retry:hover { text-decoration-thickness: 2px; }
-    .un-note-err { flex: 1 1 100%; margin: 0; font-size: 0.8125rem; font-weight: 600; line-height: 1.5; color: var(--accent-text); }
-    .un-retry[hidden], .un-note-err[hidden], .un-sent-tick svg[hidden], .un-small[hidden] { display: none; }
+    .un-textbtn { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 2.25rem; padding: 0 0.5rem; background: transparent; border: 0; border-radius: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; font-weight: 600; }
+    .un-textbtn:hover { color: var(--text); background: var(--un-raise); }
 
-    .un-reply { display: flex; align-items: flex-start; gap: 14px; }
-    .un-reply > img { flex: none; display: block; width: 40px; height: 40px; border-radius: 10px; }
-    .un-reply-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
-    .un-by { font-size: 0.8125rem; font-weight: 600; line-height: 1.4; color: var(--text-muted); }
-    .un-branch { display: flex; flex-direction: column; gap: 14px; }
-    .un-h2 { font-size: 1.375rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; text-wrap: balance; }
-    .un-p { font-size: 1rem; line-height: 1.65; color: var(--text-secondary); text-wrap: pretty; }
-    .un-dots { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .un-dots li { display: flex; align-items: flex-start; gap: 11px; font-size: 1rem; line-height: 1.65; color: var(--text-secondary); }
-    .un-dots li::before { content: ""; flex: none; width: 5px; height: 5px; margin-top: 0.7em; border-radius: 50%; background: var(--accent); }
+    .un-rp-body { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); }
+    .un-rp-left { display: flex; flex-direction: column; gap: 0.8rem; padding: 1.3rem 1.5rem 1.4rem 1.25rem; border-right: 1px solid var(--border-subtle); }
+    .un-rp-right { display: flex; flex-direction: column; gap: 0.75rem; padding: 1.3rem 1.25rem 1.2rem 1.5rem; }
+    .un-by { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8125rem; font-weight: 600; line-height: 1.4; color: var(--text-muted); }
+    .un-by img { display: block; width: 2rem; height: 2rem; border-radius: 0.5rem; }
+    .un-branch { display: flex; flex-direction: column; gap: 0.8rem; }
+    .un-rh { font-size: 1.3125rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.3; text-wrap: balance; }
+    .un-p { font-size: 0.96875rem; line-height: 1.62; color: var(--text-secondary); text-wrap: pretty; }
+    .un-dots { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .un-dots li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.96875rem; line-height: 1.6; color: var(--text-secondary); }
+    .un-dots li::before { content: ""; flex: none; width: 0.3125rem; height: 0.3125rem; margin-top: 0.7em; border-radius: 50%; background: var(--accent); }
     .un-strong { font-weight: 600; color: var(--text); overflow-wrap: anywhere; }
-    .un-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
-    .un-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; background: transparent; color: var(--text); font-size: 0.95rem; font-weight: 600; line-height: 1.5; padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border); transition: border-color 0.2s, background 0.2s; }
-    .un-btn:hover { border-color: var(--ghost-hover-border); background: var(--ghost-hover-bg); }
+    .un-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin-top: 0.15rem; }
+    .un-btn { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.5rem; padding: 0 1rem; background: transparent; color: var(--text); border: 1px solid var(--border-strong); border-radius: 0.6rem; font-size: 0.9rem; font-weight: 600; line-height: 1.3; transition: border-color 0.2s, background 0.2s; }
+    .un-btn:hover { border-color: var(--ghost-hover-border); background: var(--un-raise); }
+    .un-tlink { color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+    .un-tlink:hover { text-decoration-thickness: 2px; }
+    .un-inline-links { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0 0.15rem; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
+    .un-inline-links > span:first-child { padding-right: 0.2rem; }
+    .un-inline-links .un-tlink { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0 0.35rem; }
 
-    .un-card { display: flex; flex-direction: column; gap: 12px; padding: 22px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
-    .un-card label { font-size: 1.0625rem; font-weight: 700; line-height: 1.4; }
-    .un-help { font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
-    .un-card textarea { display: block; width: 100%; min-height: 112px; resize: vertical; padding: 12px 14px; background: var(--un-field); color: var(--text); border: 1px solid var(--border); border-radius: 8px; font: inherit; font-size: 1rem; line-height: 1.55; }
-    .un-card textarea::placeholder { color: var(--text-muted); opacity: 1; }
-    /* The optional email (2026-10-24): only under a problem reason, where a
-       reply can help. Smaller label than the note's, same field look. */
-    .un-email { display: flex; flex-direction: column; gap: 6px; }
-    .un-email[hidden] { display: none; }
-    .un-card .un-email label { font-size: 0.9375rem; font-weight: 600; }
-    .un-card input[type="email"] { display: block; width: 100%; min-height: 48px; padding: 12px 14px; background: var(--un-field); color: var(--text); border: 1px solid var(--border); border-radius: 8px; font: inherit; font-size: 1rem; line-height: 1.4; }
-    .un-card input[aria-invalid="true"] { border-color: var(--accent-text); }
-    .un-card-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
-    .un-note-privacy { flex: 1 1 260px; display: flex; align-items: flex-start; gap: 8px; font-size: 0.8125rem; line-height: 1.5; color: var(--text-muted); }
-    .un-note-privacy svg { margin-top: 3px; }
-    .un-primary { flex: none; display: inline-flex; align-items: center; min-height: 48px; padding: 14px 28px; border-radius: 8px; font-size: 1rem; font-weight: 600; line-height: 1.25; background: var(--accent-fill); color: #fff; border: 1px solid var(--accent-fill); transition: background 0.2s; }
+    .un-form { display: flex; flex-direction: column; gap: 0.75rem; }
+    .un-form label { display: block; font-size: 1.0625rem; font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; }
+    .un-help { font-size: 0.84rem; line-height: 1.5; color: var(--text-muted); }
+    .un-form textarea, .un-form input[type="email"] { display: block; width: 100%; padding: 0.7rem 0.85rem; background: var(--un-field); color: var(--text); border: 1px solid var(--border); border-radius: 0.55rem; font: inherit; font-size: 0.96875rem; line-height: 1.5; }
+    .un-form textarea { min-height: 5.6rem; resize: vertical; }
+    .un-form textarea::placeholder, .un-form input::placeholder { color: var(--text-muted); opacity: 1; }
+    .un-form input[aria-invalid="true"] { border-color: var(--accent-text); }
+    .un-email { display: flex; flex-direction: column; gap: 0.3rem; }
+    .un-form .un-email label { font-size: 0.9rem; font-weight: 600; letter-spacing: 0; }
+    .un-card-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1rem; }
+    .un-privacy { flex: 1 1 15rem; display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.78rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
+    .un-privacy svg { margin-top: 0.2rem; }
+    .un-primary { flex: none; display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1.5rem; border-radius: 0.6rem; font-size: 0.96875rem; font-weight: 600; line-height: 1.25; background: var(--accent-fill); color: #fff; border: 1px solid var(--accent-fill); transition: background 0.2s; }
     .un-primary:hover:not(:disabled) { background: var(--accent-fill-hover); border-color: var(--accent-fill-hover); }
     .un-primary:disabled { background: var(--bg-alt); color: var(--text-muted); border-color: var(--border); cursor: not-allowed; }
+    .un-note-err { margin: 0; font-size: 0.8125rem; font-weight: 600; line-height: 1.5; color: var(--accent-text); }
+    .un-done { display: flex; flex-direction: column; justify-content: center; gap: 0.7rem; height: 100%; }
+    .un-done-mark { display: flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; border-radius: 0.7rem; background: var(--feature-icon-bg); color: var(--accent); }
+    .un-done h3 { font-size: 1.1875rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
+    .un-already { margin-top: 0.85rem; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
 
-    .un-done-mark { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--feature-icon-bg); color: var(--accent); }
-    .un-again { display: flex; flex-direction: column; gap: 12px; padding-top: 24px; border-top: 1px solid var(--border-subtle); }
-    .un-again-title { font-size: 1rem; font-weight: 600; }
+    .un-why-foot { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 1rem; }
+    .un-why-foot .un-privacy { flex: none; max-width: 56rem; }
+    .un-why-foot .un-inline-links { padding-left: 1.05rem; }
 
-    .un-pro { flex: 1 1 320px; min-width: 0; max-width: 36rem; }
-    .un-pro-card { display: flex; flex-direction: column; gap: 14px; padding: 22px; background: var(--highlight-bg); border: 1px solid var(--highlight-border); border-radius: 12px; }
-    .un-pro-top { display: flex; align-items: center; gap: 12px; }
-    .un-pro-top .un-icon { width: 40px; height: 40px; }
-    .un-pro h2 { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; text-wrap: balance; }
-    .un-pro-text { font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
-    .un-pro .un-dots li { font-size: 0.875rem; line-height: 1.55; color: var(--text-muted); }
-    .un-pro .un-dots li::before { margin-top: 0.65em; }
-    .un-pro .un-btn { align-self: flex-start; background: var(--bg-card); }
-    .un-pro-never { padding-top: 12px; border-top: 1px solid var(--highlight-border); font-size: 0.8125rem; line-height: 1.5; color: var(--text-muted); }
-    .un-pro-part { display: flex; flex-direction: column; gap: 14px; }
-    .un-pro-part[hidden], .un-pro-never[hidden] { display: none; }
-    .un-pro h2:focus, .un-pro-never:focus { outline: none; }
-    .un-pro .un-btn[aria-pressed="true"] { border-color: var(--accent-text); background: var(--ghost-hover-bg); }
+    /* ── The Pro question: asks before it tells anyone to email (2026-10-08) ── */
+    .un-pro { margin-top: 1.6rem; padding: 1rem 1.25rem; background: var(--highlight-bg); border: 1px solid var(--highlight-border); border-radius: 1rem; }
+    .un-pro-row { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 1rem; }
+    .un-pro-ico { display: flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; border-radius: 0.6rem; background: var(--feature-icon-bg); color: var(--accent); }
+    .un-pro-q { display: flex; flex-direction: column; margin-right: auto; }
+    .un-eyebrow { font-family: var(--un-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.5; color: var(--accent-text); }
+    .un-pro-q h2 { font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; }
+    .un-pro-btns { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .un-pbtn { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1.1rem; background: var(--bg-card); color: var(--text); border: 1px solid var(--border-strong); border-radius: 0.6rem; font-size: 0.9rem; font-weight: 600; transition: border-color 0.2s; }
+    .un-pbtn:hover { border-color: var(--ghost-hover-border); }
+    .un-pbtn[aria-pressed="true"] { border-color: var(--accent-text); background: var(--un-raise); }
+    .un-pro-more { display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--highlight-border); }
+    .un-pro-more h3 { font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; }
+    .un-pro-more .un-p, .un-pro-more .un-dots li { font-size: 0.9rem; }
+    .un-pro-more .un-btn { align-self: flex-start; background: var(--bg-card); }
 
-    .un-foot { border-top: 1px solid var(--border-subtle); padding-top: 32px; padding-bottom: 36px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
-    .un-foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 8px; }
-    .un-foot nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; font-size: 0.9rem; color: var(--text-muted); transition: color 0.2s; }
+    .un-foot { margin-top: 0; padding: 1.5rem 0 1.75rem; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; }
+    .un-foot nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 0.5rem; }
+    .un-foot nav a { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0 0.6rem; font-size: 0.9rem; color: var(--text-muted); transition: color 0.2s; }
     .un-foot nav a:hover { color: var(--text); }
-    .un-legal { max-width: 620px; font-size: 0.78rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
+    .un-legal { max-width: 38rem; font-size: 0.78rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
     .un-copy { font-size: 0.8rem; color: var(--text-muted); }
-
-    /* The record (2026-10-11). The extension keeps the uninstall link's
-       FRAGMENT current with its own lifetime counts, and the page shows them
-       only on the "I finished my cleanup" answer and its thank-you, where the
-       rating ask follows from the number. readRecord() in the script is the
-       one parser; since 2026-10-24 what it reads goes with an answer only
-       when the link carries the install's random id (context() below). */
-    .un-record { display: flex; flex-direction: column; padding: 22px 24px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
-    .un-record[hidden], [data-store][hidden] { display: none; }
-    .un-record-fig { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-    .un-record-fig:focus { outline: none; }
-    .un-record-num { display: block; font-size: clamp(3rem, 12vw, 4.75rem); font-weight: 800; letter-spacing: -0.045em; line-height: 0.92; color: var(--accent); font-variant-numeric: lining-nums tabular-nums; overflow-wrap: anywhere; }
-    .un-record-label { display: block; font-size: 1.1875rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); text-wrap: balance; }
-    .un-record-more { margin-top: 4px; font-size: 0.9375rem; line-height: 1.5; color: var(--text-secondary); }
-    .un-record-more[hidden] { display: none; }
-    .un-record-src { margin-top: 14px; font-size: 0.8125rem; text-wrap: pretty; }
-    .un-record-rate { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border-subtle); }
-    .un-btn.is-primary { background: var(--accent-fill); border-color: var(--accent-fill); color: #fff; }
-    .un-btn.is-primary:hover { background: var(--accent-fill-hover); border-color: var(--accent-fill-hover); }
 
     .un :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     .un textarea:focus-visible, .un input:focus-visible { outline-offset: 1px; }
-    .un-reveal { animation: un-in 0.24s ease-out both; }
+    .un-reveal { animation: un-in 0.28s ease-out both; }
     @keyframes un-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    /* A narrow column (a small window): the reply stacks, and the bar wraps. */
+    @container un (max-width: 46rem) {
+      .un-rp-body { grid-template-columns: 1fr; }
+      .un-rp-left { border-right: 0; border-bottom: 1px solid var(--border-subtle); }
+      .un-act, .un-rates { align-items: flex-start; justify-content: flex-start; }
+      .is-compact .un-receipt { grid-template-columns: 1fr; }
+      .is-compact .un-ask { grid-column: 1; grid-row: auto; flex-wrap: wrap; margin-top: 0.5rem; }
+    }
+    @container un (max-width: 30rem) {
+      .un-receipt { --pad: 1.25rem; }
+      .is-compact .un-ask-h { display: none; }
+    }
     @media (prefers-reduced-motion: reduce) {
       .un-reveal { animation: none; }
-      .un-reason, .un-btn, .un-primary { transition: none; }
+      .un-reason, .un-btn, .un-primary, .un-rate, .un-pbtn { transition: none; }
     }
   </style>
 </head>
@@ -178,362 +285,333 @@ sitemap: false
   </header>
 
   <main class="un-wrap un-main">
-    <div class="un-cols">
-      <div class="un-flow">
+    <h1 class="sr-only">TidyWL was removed</h1>
 
-        <section class="un-step" id="un-pick" aria-labelledby="un-q">
-          <div class="un-intro">
-            <p class="un-eyebrow">Extension removed</p>
-            <h1 class="un-h1" id="un-q" tabindex="-1">What made you remove it?</h1>
-            <p class="un-lede">One click is enough. Each answer gets a straight reply, and anything you type after that is optional.</p>
-          </div>
+    <!-- The receipt. The record comes from the link's # (readRecord() below)
+         and is filled with textContent only; without script, or with no count
+         of 10 or more, it reads "TidyWL is removed." The rating ask is the
+         same for everyone and never names a star count. -->
+    <div class="un-stick" id="un-stick">
+      <section class="un-receipt" id="un-receipt" aria-label="Your record and the rating ask">
+        <div class="un-r-top">
+          <span data-rec="meta">Receipt · TidyWL</span>
+          <span class="un-pill">Removed</span>
+        </div>
 
-          <div class="un-reasons" role="group" aria-labelledby="un-q">
-            <button type="button" class="un-reason" data-reason="done" data-prompt="Anything that would have made the cleanup quicker?" data-placeholder="One line is plenty.">
-              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
-              <span class="un-reason-label">I finished my cleanup</span>
-              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-            <button type="button" class="un-reason" data-reason="load" data-prompt="What happened when you tried to open it?" data-placeholder="Where you clicked, what you saw instead, and which browser.">
-              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></span>
-              <span class="un-reason-label">It never opened, or showed the wrong account</span>
-              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-            <button type="button" class="un-reason" data-reason="broke" data-prompt="What were you trying to do when it broke?" data-placeholder="Which list, which button, and what happened instead.">
-              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
-              <span class="un-reason-label">Something that used to work stopped working</span>
-              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-            <button type="button" class="un-reason" data-reason="unavailable" data-prompt="What did YouTube show, and when did it start?" data-placeholder="The exact words on the video, every video or only some, whether it began after a sync, whether it has cleared (and after how long), and any ad blocker.">
-              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.248-3.062A.5.5 0 0 1 22 7.87v8.196"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></svg></span>
-              <span class="un-reason-label">YouTube videos became unavailable</span>
-              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-            <button type="button" class="un-reason" data-reason="slow" data-prompt="Roughly how many videos, and which part was slow?" data-placeholder="Syncing, searching, removing, or opening the dashboard.">
-              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg></span>
-              <span class="un-reason-label">It was too slow on my big list</span>
-              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-            <button type="button" class="un-reason" data-reason="feature" data-prompt="What did you need it to do?" data-placeholder="The job you were trying to get done, in your own words.">
-              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span>
-              <span class="un-reason-label">It's missing something I need</span>
-              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-            <button type="button" class="un-reason" data-reason="price" data-prompt="What would have made Pro worth paying for, if anything?" data-placeholder="A feature, a price, or nothing at all. All of it helps.">
-              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><path d="M7.5 7.5h.01"/></svg></span>
-              <span class="un-reason-label">Pro isn't worth the price to me</span>
-              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-            <button type="button" class="un-reason" data-reason="privacy" data-prompt="What gave you pause?" data-placeholder="A permission warning, something you read, something it did.">
-              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
-              <span class="un-reason-label">I wasn't sure what it does with my data</span>
-              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-            <button type="button" class="un-reason" data-reason="other" data-prompt="What made you remove it?" data-placeholder="Anything at all.">
-              <span class="un-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span>
-              <span class="un-reason-label">Something else</span>
-              <svg class="un-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </button>
-          </div>
-
-          <div class="un-pick-foot">
-            <p class="un-small">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span>Opening this page tells us this install was removed, with its random ID, its version and usage counts if your browser shares them. A click adds the reason you picked. Never your name, account or videos.</span>
-            </p>
-            <div class="un-inline-links" data-reinstall-links>
-              <span>Removed it by mistake? Add it back for</span>
-              <a class="un-tlink" data-reinstall="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Chrome</a>
-              <span aria-hidden="true">·</span>
-              <a class="un-tlink" data-reinstall="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Firefox</a>
-              <span aria-hidden="true">·</span>
-              <a class="un-tlink" data-reinstall="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Edge</a>
+        <div class="un-fig">
+          <div data-fig="rec" hidden>
+            <p class="un-num" aria-hidden="true" data-rec="num"></p>
+            <p class="sr-only" data-rec="num-sr"></p>
+            <p class="un-fig-label" data-rec="label"></p>
+            <div class="un-lines" data-rec="lines" hidden>
+              <p class="un-line" data-rec="moved-line" hidden><span>Moved to other playlists</span><i></i><b data-rec="moved"></b></p>
+              <p class="un-line" data-rec="age-line" hidden><span>With TidyWL for</span><i></i><b data-rec="age"></b></p>
             </div>
           </div>
-        </section>
-
-        <section class="un-step" id="un-answer" hidden>
-          <div class="un-sent-row">
-            <button type="button" class="un-textbtn" data-action="change">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-              Change answer
-            </button>
-            <div class="un-sent">
-              <div class="un-chip">
-                <span class="un-chip-icon" id="un-chip-icon"></span>
-                <span id="un-chip-label"></span>
-              </div>
-              <span class="un-sent-tick" id="un-sent-tick" data-state="sending" role="status">
-                <svg id="un-sent-icon" hidden width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-                <span id="un-sent-text">Sending…</span>
-                <button type="button" class="un-retry" id="un-retry" hidden>Try again</button>
-              </span>
-            </div>
+          <div data-fig="none">
+            <p class="un-fig-title">TidyWL is removed.</p>
+            <p class="un-fig-sub" data-rec="sub" hidden></p>
           </div>
+        </div>
 
-          <!-- The record: only on the done answer, and only when the link carried
-               a count at or over RECORD_MIN. Filled with textContent by
-               renderRecord(); its counts go with an answer only when the link
-               also carried the install's id, and the src line says which. -->
-          <div class="un-record un-reveal" id="un-record" hidden>
-            <p class="un-eyebrow">Your record on this browser</p>
-            <p class="un-record-fig" tabindex="-1">
-              <span class="un-record-num" data-rec="num"></span>
-              <span class="un-record-label" data-rec="label"></span>
-            </p>
-            <p class="un-record-more" data-rec="more" hidden></p>
-            <p class="un-small un-record-src">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span data-rec="src">Counted in this browser and carried in this page's link. The page doesn't send it anywhere.</span>
-            </p>
+        <div class="un-tear" aria-hidden="true"></div>
+
+        <div class="un-ask">
+          <div class="un-ask-copy">
+            <h2 class="un-ask-h">How would you rate it?</h2>
+            <p class="un-ask-p" data-rec="ask">Honest is best, good or bad. A rating helps the next person decide, and shows me what to fix.</p>
+            <p class="un-byline"><span class="un-mono" aria-hidden="true">D</span><span>Dominic builds TidyWL, on his own</span></p>
           </div>
-
-          <div class="un-reply un-reveal">
-            <img src="/assets/icon128.png" alt="" width="40" height="40">
-            <div class="un-reply-body">
-              <p class="un-by">Dominic, who builds TidyWL</p>
-
-              <div class="un-branch" data-branch="done" hidden>
-                <h2 class="un-h2" tabindex="-1">Then it did its job. Thanks for using it.</h2>
-                <p class="un-p">If it saved you time, a quick rating means a lot to a small app like this one. It's also how the next person finds it.</p>
-                <div class="un-btns" data-rate>
-                  <a class="un-btn" data-store="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
-                    Rate on Chrome<span class="sr-only"> (opens in a new tab)</span>
-                  </a>
-                  <a class="un-btn" data-store="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
-                    Rate on Firefox<span class="sr-only"> (opens in a new tab)</span>
-                  </a>
-                  <a class="un-btn" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
-                    Rate on Edge<span class="sr-only"> (opens in a new tab)</span>
-                  </a>
-                </div>
-              </div>
-
-              <div class="un-branch" data-branch="load" hidden>
-                <h2 class="un-h2" tabindex="-1">Two things to check, if you try it again.</h2>
-                <ul class="un-dots">
-                  <li><span>Open it from your Watch Later page, <span class="un-strong">youtube.com/playlist?list=WL</span>, while you're signed in to YouTube.</span></li>
-                  <li><span>Wrong account? Refresh the YouTube tab so it picks up the account you're signed in with, then open the dashboard again.</span></li>
-                </ul>
-                <p class="un-p">If you'd already tried both, that's a bug, and I'd like to fix it.</p>
-                <div class="un-btns">
-                  <a class="un-btn" href="/help/" target="_blank" rel="noopener">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
-                    Read the help page
-                  </a>
-                  <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                    Ask on Discord
-                  </a>
-                </div>
-              </div>
-
-              <div class="un-branch" data-branch="broke" hidden>
-                <h2 class="un-h2" tabindex="-1">YouTube changes things. Most fixes go out within hours.</h2>
-                <p class="un-p">TidyWL works with YouTube's web endpoints rather than an official API, and YouTube changes them without notice. Most fixes go out within hours, with no extension update to install. Bigger changes need a new version.</p>
-                <p class="un-p">So it may already be working again. The Discord is the quickest place to see whether it's a known problem.</p>
-                <p class="un-p">If YouTube stopped playing videos on your account, or told you to try again later, that's a temporary limit on how many requests one account can make in a short time. In my experience it normally clears by itself in 30 to 60 minutes, so give it that long before you try anything else. Recent versions pace removals of thousands of videos to avoid it. If it happened to you, tell me what you were doing in the box below.</p>
-                <div class="un-btns">
-                  <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                    Check Discord
-                  </a>
-                  <div class="un-inline-links" data-reinstall-links>
-                    <span>Reinstall:</span>
-                    <a class="un-tlink" data-reinstall="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Chrome</a>
-                    <span aria-hidden="true">·</span>
-                    <a class="un-tlink" data-reinstall="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Firefox</a>
-                    <span aria-hidden="true">·</span>
-                    <a class="un-tlink" data-reinstall="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Edge</a>
-                  </div>
-                </div>
-              </div>
-
-              <div class="un-branch" data-branch="unavailable" hidden>
-                <h2 class="un-h2" tabindex="-1">This can be a temporary pause on YouTube's side.</h2>
-                <p class="un-p">After a big sync, YouTube can stop answering one account's video requests for a while. In my experience it normally goes back to normal in 30 to 60 minutes. In the meantime, you can switch to another YouTube account. So sorry for the inconvenience.</p>
-                <p class="un-p">If yours didn't, or you hadn't synced a big list, tell me what happened. I'd like to find out why.</p>
-              </div>
-
-              <div class="un-branch" data-branch="slow" hidden>
-                <h2 class="un-h2" tabindex="-1">Slow on a big list is worth fixing.</h2>
-                <p class="un-p">Part of it is YouTube. It hands over a long playlist one page at a time, in order, and refuses removals sent all at once, so a first sync and a big delete take a while. After the first sync, search and filters run on a copy in your browser.</p>
-                <p class="un-p">If something stayed slow after that, I'd like the details.</p>
-              </div>
-
-              <div class="un-branch" data-branch="feature" hidden>
-                <h2 class="un-h2" tabindex="-1">Tell me what it is.</h2>
-                <p class="un-p">Requests like this shape what gets built next. If you'd like to make the case, or see what other people have asked for, the Discord is where requests get talked through.</p>
-                <div class="un-btns">
-                  <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                    Join the Discord
-                  </a>
-                </div>
-              </div>
-
-              <div class="un-branch" data-branch="price" hidden>
-                <h2 class="un-h2" tabindex="-1">Fair. The free dashboard needs no card.</h2>
-                <p class="un-p">No card and no account, so a reinstall costs nothing.</p>
-                <p class="un-p">If you did subscribe, removing the extension didn't cancel it. Email <a class="un-tlink" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">support@tidywl.com</a> to cancel. Every charge can be refunded in full within 14 days.</p>
-              </div>
-
-              <div class="un-branch" data-branch="privacy" hidden>
-                <h2 class="un-h2" tabindex="-1">Here's exactly what left your browser.</h2>
-                <p class="un-p">Your YouTube data (titles, video IDs, channels, playlists, watch history, your Google account) never left it, except links you chose to send to Gemini Notebook. What did go to tidywl.com was a random install ID with usage counts, never which videos, plus a licence check if you had Pro. This answer goes with that same ID and counts, when your browser shares them.</p>
-                <p class="un-p">Uninstalling stopped both and removed the copy of your lists it kept in your browser. Records not updated for 12 months are deleted.</p>
-                <div class="un-btns">
-                  <a class="un-btn" href="/privacy/" target="_blank" rel="noopener">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
-                    Read the privacy policy
-                  </a>
-                </div>
-              </div>
-
-              <div class="un-branch" data-branch="other" hidden>
-                <h2 class="un-h2" tabindex="-1">Then you know something I don't.</h2>
-                <p class="un-p">Tell me below. Leave an email if you'd like a reply, or ask on the <a class="un-tlink" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord</a>.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="un-card">
-            <div>
-              <label for="un-note" id="un-note-label">Anything else?</label>
-              <p class="un-help" id="un-note-help">Optional. A sentence is plenty.</p>
-            </div>
-            <textarea id="un-note" rows="4" maxlength="2000" aria-describedby="un-note-help un-note-privacy"></textarea>
-            <div class="un-email" id="un-email-box" hidden>
-              <label for="un-email">Want a reply? Leave an email (optional)</label>
-              <p class="un-help" id="un-email-help">I'll use it once to answer you, then delete it within 30 days.</p>
-              <input type="email" id="un-email" maxlength="254" autocomplete="email" spellcheck="false" aria-describedby="un-email-help un-note-privacy">
-            </div>
-            <div class="un-card-foot">
-              <p class="un-note-privacy" id="un-note-privacy">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                <span>Sends your note and reason with this install's random ID, its version and usage counts (when your browser shares them), and your email if you leave one. Never your videos or account.</span>
-              </p>
-              <button type="button" class="un-primary" id="un-send" disabled>Send note</button>
-              <p class="un-note-err" id="un-note-err" role="status" hidden></p>
-            </div>
-          </div>
-
-          <p class="un-small" id="un-already" hidden>Or close the tab. Your answer is already in.</p>
-        </section>
-
-        <section class="un-step un-reveal" id="un-thanks" hidden>
-          <!-- The same record leads the done thank-you, and carries the rating
-               ask that #un-rate-thanks shows when there is no record. -->
-          <div class="un-record" id="un-record-thanks" hidden>
-            <p class="un-eyebrow">Your record on this browser</p>
-            <p class="un-record-fig" tabindex="-1">
-              <span class="un-record-num" data-rec="num"></span>
-              <span class="un-record-label" data-rec="label"></span>
-            </p>
-            <p class="un-record-more" data-rec="more" hidden></p>
-            <p class="un-small un-record-src">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              <span data-rec="src">Counted in this browser and carried in this page's link. The page doesn't send it anywhere.</span>
-            </p>
-            <div class="un-record-rate">
-              <p class="un-p">If it saved you time, a quick rating means a lot to a small app like this one. It's also how the next person finds it.</p>
-              <div class="un-btns" data-rate>
-                <a class="un-btn" data-store="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
-                  Rate on Chrome<span class="sr-only"> (opens in a new tab)</span>
-                </a>
-                <a class="un-btn" data-store="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
-                  Rate on Firefox<span class="sr-only"> (opens in a new tab)</span>
-                </a>
-                <a class="un-btn" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
-                  Rate on Edge<span class="sr-only"> (opens in a new tab)</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="un-intro">
-            <span class="un-done-mark">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-            </span>
-            <h1 class="un-h1" id="un-thanks-title" tabindex="-1">Thank you. That helps.</h1>
-            <p class="un-lede">Your answer and your note are in. They go to Dominic, who builds TidyWL alone. <span id="un-thanks-reply">There's no email with them, so if you'd like an answer, ask on Discord or email support@tidywl.com.</span></p>
-            <div class="un-btns">
-              <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
-                Discord community
+          <!-- A known store shows its own Rate button only, filled; an unknown
+               one keeps all three. Edge goes to its listing: it has no review url. -->
+          <div class="un-act" id="un-act">
+            <p class="un-trio-label">Rate it on the store you use</p>
+            <div class="un-rates" data-rate>
+              <a class="un-rate" data-store="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener">
+                <svg class="un-star" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                <img class="un-logo" src="/assets/chrome-logo.svg" alt="" width="22" height="22">
+                <span><span class="un-rate-pre">Rate on </span>Chrome</span><span class="sr-only"> (opens in a new tab)</span>
               </a>
-              <a class="un-btn" href="mailto:support@tidywl.com">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                Email support
+              <a class="un-rate" data-store="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener">
+                <svg class="un-star" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                <img class="un-logo" src="/assets/firefox-logo.svg" alt="" width="22" height="22">
+                <span><span class="un-rate-pre">Rate on </span>Firefox</span><span class="sr-only"> (opens in a new tab)</span>
+              </a>
+              <a class="un-rate" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
+                <svg class="un-star" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+                <img class="un-logo" src="/assets/edge-logo.svg" alt="" width="22" height="22">
+                <span><span class="un-rate-pre">Rate on </span>Edge</span><span class="sr-only"> (opens in a new tab)</span>
               </a>
             </div>
+            <p class="un-hint" data-store="chrome" data-hint><img src="/assets/chrome-logo.svg" alt="" width="16" height="16">Opens the Chrome Web Store in a new tab</p>
+            <p class="un-hint" data-store="firefox" data-hint><img src="/assets/firefox-logo.svg" alt="" width="16" height="16">Opens Firefox Add-ons in a new tab</p>
+            <p class="un-hint" data-store="edge" data-hint><img src="/assets/edge-logo.svg" alt="" width="16" height="16">Opens Microsoft Edge Add-ons in a new tab</p>
+            <p class="un-hint is-done" id="un-rated" role="status" hidden>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span>Opened in a new tab. Click again if it did not open.</span>
+            </p>
           </div>
+        </div>
 
-          <div class="un-again" id="un-rate-thanks" hidden>
-            <p class="un-again-title">If it saved you time, a quick rating means a lot to a small app like this one</p>
-            <div class="un-btns" data-rate>
-            <a class="un-btn" data-store="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
-              Rate on Chrome<span class="sr-only"> (opens in a new tab)</span>
-            </a>
-            <a class="un-btn" data-store="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
-              Rate on Firefox<span class="sr-only"> (opens in a new tab)</span>
-            </a>
-            <a class="un-btn" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
-              Rate on Edge<span class="sr-only"> (opens in a new tab)</span>
-            </a>
-            </div>
-          </div>
+        <p class="un-fine" id="un-fine" hidden>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span data-rec="src">These figures are counted in this browser and carried in this page's link. The page doesn't send them anywhere.</span>
+        </p>
+      </section>
+    </div>
 
-          <div class="un-btns">
-            <p class="un-small">You can close this tab now.</p>
-            <button type="button" class="un-textbtn" data-action="change">Change my answer</button>
-          </div>
-        </section>
+    <!-- The reasons. One click sends the answer; the reply and the optional
+         note open inline under the chips. Each chip's data-full is the
+         original wording, shown in the reply's header. -->
+    <section class="un-why" id="un-pick" aria-labelledby="un-q">
+      <div class="un-why-head">
+        <h2 class="un-why-h" id="un-q" tabindex="-1">Mind telling me why you left?</h2>
+        <p class="un-why-p">One click is enough. Each answer gets a straight reply, and anything you type after that is optional.</p>
       </div>
 
-      <!-- The card asks first (2026-10-08): leading with "Email to cancel" drew a
-           cancel request from someone who had never subscribed. Without script it
-           shows everything, as it did before. -->
-      <aside class="un-pro" aria-labelledby="un-pro-eyebrow">
-        <div class="un-pro-card">
-          <div class="un-pro-top">
-            <span class="un-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      <div class="un-chips" role="group" aria-labelledby="un-q">
+        <button type="button" class="un-reason" aria-pressed="false" data-reason="done" data-full="I finished my cleanup" data-prompt="Anything that would have made the cleanup quicker?" data-placeholder="One line is plenty.">
+          <span class="un-ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <span class="un-reason-label">I finished my cleanup</span>
+        </button>
+        <button type="button" class="un-reason" aria-pressed="false" data-reason="load" data-full="It never opened, or showed the wrong account" data-prompt="What happened when you tried to open it?" data-placeholder="Where you clicked, what you saw instead, and which browser.">
+          <span class="un-ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></span>
+          <span class="un-reason-label">Wouldn't open, or wrong account</span>
+        </button>
+        <button type="button" class="un-reason" aria-pressed="false" data-reason="broke" data-full="Something that used to work stopped working" data-prompt="What were you trying to do when it broke?" data-placeholder="Which list, which button, and what happened instead.">
+          <span class="un-ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+          <span class="un-reason-label">Something stopped working</span>
+        </button>
+        <button type="button" class="un-reason" aria-pressed="false" data-reason="unavailable" data-full="YouTube videos became unavailable" data-prompt="What did YouTube show, and when did it start?" data-placeholder="The exact words on the video, every video or only some, whether it began after a sync, whether it has cleared (and after how long), and any ad blocker.">
+          <span class="un-ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.66 6H14a2 2 0 0 1 2 2v2.5l5.248-3.062A.5.5 0 0 1 22 7.87v8.196"/><path d="M16 16a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h2"/><path d="m2 2 20 20"/></svg></span>
+          <span class="un-reason-label">Videos became unavailable</span>
+        </button>
+        <button type="button" class="un-reason" aria-pressed="false" data-reason="slow" data-full="It was too slow on my big list" data-prompt="Roughly how many videos, and which part was slow?" data-placeholder="Syncing, searching, removing, or opening the dashboard.">
+          <span class="un-ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg></span>
+          <span class="un-reason-label">Too slow on my big list</span>
+        </button>
+        <button type="button" class="un-reason" aria-pressed="false" data-reason="feature" data-full="It's missing something I need" data-prompt="What did you need it to do?" data-placeholder="The job you were trying to get done, in your own words.">
+          <span class="un-ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span>
+          <span class="un-reason-label">Missing something I need</span>
+        </button>
+        <button type="button" class="un-reason" aria-pressed="false" data-reason="price" data-full="Pro isn't worth the price to me" data-prompt="What would have made Pro worth paying for, if anything?" data-placeholder="A feature, a price, or nothing at all. All of it helps.">
+          <span class="un-ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><path d="M7.5 7.5h.01"/></svg></span>
+          <span class="un-reason-label">Pro isn't worth the price</span>
+        </button>
+        <button type="button" class="un-reason" aria-pressed="false" data-reason="privacy" data-full="I wasn't sure what it does with my data" data-prompt="What gave you pause?" data-placeholder="A permission warning, something you read, something it did.">
+          <span class="un-ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+          <span class="un-reason-label">Unsure about my data</span>
+        </button>
+        <button type="button" class="un-reason" aria-pressed="false" data-reason="other" data-full="Something else" data-prompt="What made you remove it?" data-placeholder="Anything at all.">
+          <span class="un-ci"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></span>
+          <span class="un-reason-label">Something else</span>
+        </button>
+      </div>
+
+      <div class="un-reply" id="un-answer" hidden>
+        <div class="un-rp-bar">
+          <div class="un-rp-pick">
+            <span class="un-ci" id="un-chip-icon"></span>
+            <span id="un-chip-label"></span>
+            <span class="un-sent-tick" id="un-sent-tick" data-state="sending" role="status">
+              <svg id="un-sent-icon" hidden width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+              <span id="un-sent-text">Sending…</span>
+              <button type="button" class="un-retry" id="un-retry" hidden>Try again</button>
             </span>
-            <p class="un-eyebrow" id="un-pro-eyebrow">TidyWL Pro</p>
           </div>
-          <div class="un-pro-part" id="un-pro-ask" hidden>
-            <h2>Did you pay for Pro?</h2>
-            <div class="un-btns">
-              <button type="button" class="un-btn" data-pro="yes">Yes, I pay for Pro</button>
-              <button type="button" class="un-btn" data-pro="no">No</button>
+          <button type="button" class="un-textbtn" data-action="change">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+            Change answer
+          </button>
+        </div>
+
+        <div class="un-rp-body">
+          <div class="un-rp-left">
+            <p class="un-by"><img src="/assets/icon128.png" alt="" width="32" height="32">Dominic, who builds TidyWL</p>
+
+            <div class="un-branch" data-branch="done" hidden>
+              <h3 class="un-rh" tabindex="-1">Then it did its job. Thanks for using it.</h3>
+              <p class="un-p">If it saved you time, a quick rating means a lot to a small app like this one. It's also how the next person finds it.</p>
+            </div>
+
+            <div class="un-branch" data-branch="load" hidden>
+              <h3 class="un-rh" tabindex="-1">Two things to check, if you try it again.</h3>
+              <ul class="un-dots">
+                <li><span>Open it from your Watch Later page, <span class="un-strong">youtube.com/playlist?list=WL</span>, while you're signed in to YouTube.</span></li>
+                <li><span>Wrong account? Refresh the YouTube tab so it picks up the account you're signed in with, then open the dashboard again.</span></li>
+              </ul>
+              <p class="un-p">If you'd already tried both, that's a bug, and I'd like to fix it.</p>
+              <div class="un-btns">
+                <a class="un-btn" href="/help/" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+                  Read the help page
+                </a>
+                <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                  Ask on Discord
+                </a>
+              </div>
+            </div>
+
+            <div class="un-branch" data-branch="broke" hidden>
+              <h3 class="un-rh" tabindex="-1">YouTube changes things. Most fixes go out within hours.</h3>
+              <p class="un-p">TidyWL works with YouTube's web endpoints rather than an official API, and YouTube changes them without notice. Most fixes go out within hours, with no extension update to install. Bigger changes need a new version.</p>
+              <p class="un-p">So it may already be working again. The Discord is the quickest place to see whether it's a known problem.</p>
+              <p class="un-p">If YouTube stopped playing videos on your account, or told you to try again later, that's a temporary limit on how many requests one account can make in a short time. In my experience it normally clears by itself in 30 to 60 minutes, so give it that long before you try anything else. Recent versions pace removals of thousands of videos to avoid it. If it happened to you, tell me what you were doing in the note box.</p>
+              <div class="un-btns">
+                <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                  Check Discord
+                </a>
+                <div class="un-inline-links" data-reinstall-links>
+                  <span>Reinstall:</span>
+                  <a class="un-tlink" data-reinstall="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Chrome</a>
+                  <span aria-hidden="true">·</span>
+                  <a class="un-tlink" data-reinstall="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Firefox</a>
+                  <span aria-hidden="true">·</span>
+                  <a class="un-tlink" data-reinstall="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Edge</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="un-branch" data-branch="unavailable" hidden>
+              <h3 class="un-rh" tabindex="-1">This can be a temporary pause on YouTube's side.</h3>
+              <p class="un-p">After a big sync, YouTube can stop answering one account's video requests for a while. In my experience it normally goes back to normal in 30 to 60 minutes. In the meantime, you can switch to another YouTube account. So sorry for the inconvenience.</p>
+              <p class="un-p">If yours didn't, or you hadn't synced a big list, tell me what happened. I'd like to find out why.</p>
+            </div>
+
+            <div class="un-branch" data-branch="slow" hidden>
+              <h3 class="un-rh" tabindex="-1">Slow on a big list is worth fixing.</h3>
+              <p class="un-p">Part of it is YouTube. It hands over a long playlist one page at a time, in order, and refuses removals sent all at once, so a first sync and a big delete take a while. After the first sync, search and filters run on a copy in your browser.</p>
+              <p class="un-p">If something stayed slow after that, I'd like the details.</p>
+            </div>
+
+            <div class="un-branch" data-branch="feature" hidden>
+              <h3 class="un-rh" tabindex="-1">Tell me what it is.</h3>
+              <p class="un-p">Requests like this shape what gets built next. If you'd like to make the case, or see what other people have asked for, the Discord is where requests get talked through.</p>
+              <div class="un-btns">
+                <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                  Join the Discord
+                </a>
+              </div>
+            </div>
+
+            <div class="un-branch" data-branch="price" hidden>
+              <h3 class="un-rh" tabindex="-1">Fair. The free dashboard needs no card.</h3>
+              <p class="un-p">No card and no account, so a reinstall costs nothing.</p>
+              <p class="un-p">If you did subscribe, removing the extension didn't cancel it. Email <a class="un-tlink" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">support@tidywl.com</a> to cancel. Every charge can be refunded in full within 14 days.</p>
+            </div>
+
+            <div class="un-branch" data-branch="privacy" hidden>
+              <h3 class="un-rh" tabindex="-1">Here's exactly what left your browser.</h3>
+              <p class="un-p">Your YouTube data (titles, video IDs, channels, playlists, watch history, your Google account) never left it, except links you chose to send to Gemini Notebook. What did go to tidywl.com was a random install ID with usage counts, never which videos, plus a licence check if you had Pro. This answer goes with that same ID and counts, when your browser shares them.</p>
+              <p class="un-p">Uninstalling stopped both and removed the copy of your lists it kept in your browser. Records not updated for 12 months are deleted.</p>
+              <div class="un-btns">
+                <a class="un-btn" href="/privacy/" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+                  Read the privacy policy
+                </a>
+              </div>
+            </div>
+
+            <div class="un-branch" data-branch="other" hidden>
+              <h3 class="un-rh" tabindex="-1">Then you know something I don't.</h3>
+              <p class="un-p">Tell me in the note box. Leave an email if you'd like a reply, or ask on the <a class="un-tlink" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord</a>.</p>
             </div>
           </div>
-          <div class="un-pro-part" id="un-pro-yes">
-            <h2 id="un-pro-title" tabindex="-1">Removing the extension doesn't cancel your subscription.</h2>
-            <p class="un-pro-text">To cancel, email <a class="un-tlink" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">support@tidywl.com</a>. The Manage subscription button lived in the extension, so it went with it. Pro keeps working until the end of the period you paid for.</p>
-            <ul class="un-dots">
-              <li><span>On the free trial? Cancel before it ends and you're not charged.</span></li>
-              <li><span>Charged in the last 14 days? Every charge can be refunded in full. Same email.</span></li>
-            </ul>
-            <a class="un-btn" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-              Email to cancel
-            </a>
+
+          <div class="un-rp-right">
+            <div class="un-form" id="un-form">
+              <div>
+                <label for="un-note" id="un-note-label">Anything else?</label>
+                <p class="un-help" id="un-note-help">Optional. A sentence is plenty.</p>
+              </div>
+              <textarea id="un-note" rows="3" maxlength="2000" aria-describedby="un-note-help un-note-privacy"></textarea>
+              <div class="un-email" id="un-email-box" hidden>
+                <label for="un-email">Want a reply? Leave an email (optional)</label>
+                <p class="un-help" id="un-email-help">I'll use it once to answer you, then delete it within 30 days.</p>
+                <input type="email" id="un-email" maxlength="254" autocomplete="email" spellcheck="false" placeholder="name@example.com" aria-describedby="un-email-help un-note-privacy">
+              </div>
+              <div class="un-card-foot">
+                <p class="un-privacy" id="un-note-privacy">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  <span>Sends your note and reason with this install's random ID, its version and usage counts (when your browser shares them), and your email if you leave one. Never your videos or account.</span>
+                </p>
+                <button type="button" class="un-primary" id="un-send" disabled>Send note</button>
+              </div>
+              <p class="un-note-err" id="un-note-err" role="status" hidden></p>
+            </div>
+
+            <!-- The note arrived: the same words the old thank-you screen had,
+                 in place of the form, so the reply stays beside it. -->
+            <div class="un-done" id="un-thanks" hidden>
+              <span class="un-done-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+              <h3 id="un-thanks-title" tabindex="-1">Note received.</h3>
+              <p class="un-p">Your answer and your note go to Dominic, who builds TidyWL alone. <span id="un-thanks-reply">There's no email with them, so if you'd like an answer, ask on Discord or email support@tidywl.com.</span></p>
+              <div class="un-btns">
+                <a class="un-btn" href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+                  Discord community
+                </a>
+                <a class="un-btn" href="mailto:support@tidywl.com">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                  Email support
+                </a>
+              </div>
+            </div>
           </div>
-          <p class="un-pro-never" id="un-pro-no" tabindex="-1">Never subscribed? There's nothing to do here.</p>
         </div>
-      </aside>
-    </div>
+      </div>
+      <p class="un-already" id="un-already" hidden>Or close the tab. Your answer is already in.</p>
+
+      <div class="un-why-foot">
+        <p class="un-privacy">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Opening this page tells us this install was removed, with its random ID, its version and usage counts if your browser shares them. A click adds the reason you picked. Never your name, account or videos.</span>
+        </p>
+        <div class="un-inline-links" data-reinstall-links>
+          <span>Removed it by mistake? Add it back for</span>
+          <a class="un-tlink" data-reinstall="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Chrome</a>
+          <span aria-hidden="true">·</span>
+          <a class="un-tlink" data-reinstall="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/" target="_blank" rel="noopener">Firefox</a>
+          <span aria-hidden="true">·</span>
+          <a class="un-tlink" data-reinstall="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener">Edge</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- The card asks first (2026-10-08): leading with "Email to cancel" drew a
+         cancel request from someone who had never subscribed. Without script it
+         shows everything, as it did before. -->
+    <aside class="un-pro" aria-labelledby="un-pro-eyebrow">
+      <div class="un-pro-row">
+        <span class="un-pro-ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        </span>
+        <div class="un-pro-q">
+          <p class="un-eyebrow" id="un-pro-eyebrow">TidyWL Pro</p>
+          <h2 data-pro-ask hidden>Did you pay for Pro?</h2>
+        </div>
+        <div class="un-pro-btns" id="un-pro-ask" data-pro-ask hidden>
+          <button type="button" class="un-pbtn" data-pro="yes">Yes, I pay for Pro</button>
+          <button type="button" class="un-pbtn" data-pro="no">No</button>
+        </div>
+      </div>
+      <div class="un-pro-more" id="un-pro-yes">
+        <h3 id="un-pro-title" tabindex="-1">Removing the extension doesn't cancel your subscription.</h3>
+        <p class="un-p">To cancel, email <a class="un-tlink" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">support@tidywl.com</a>. The Manage subscription button lived in the extension, so it went with it. Pro keeps working until the end of the period you paid for.</p>
+        <ul class="un-dots">
+          <li><span>On the free trial? Cancel before it ends and you're not charged.</span></li>
+          <li><span>Charged in the last 14 days? Every charge can be refunded in full. Same email.</span></li>
+        </ul>
+        <a class="un-btn" href="mailto:support@tidywl.com?subject=Cancel%20my%20TidyWL%20Pro%20subscription">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Email to cancel
+        </a>
+      </div>
+      <p class="un-p un-pro-more un-pro-never" id="un-pro-no" tabindex="-1">Never subscribed? There's nothing to do here.</p>
+    </aside>
   </main>
 
   <footer class="un-wrap un-foot">
@@ -553,13 +631,13 @@ sitemap: false
   (function () {
     // The Pro card asks before it tells anyone to email (2026-10-08). Without
     // script the question stays hidden and the card shows everything.
-    var ask = document.getElementById('un-pro-ask');
+    var ask = document.querySelectorAll('[data-pro-ask]');
     var yes = document.getElementById('un-pro-yes');
     var no = document.getElementById('un-pro-no');
-    var answers = ask.querySelectorAll('[data-pro]');
+    var answers = document.querySelectorAll('[data-pro]');
     no.textContent = "Then there's nothing to cancel. You're all set.";
     no.setAttribute('aria-live', 'polite');
-    ask.hidden = false;
+    ask.forEach(function (el) { el.hidden = false; });
     yes.hidden = true;
     no.hidden = true;
     answers.forEach(function (btn) {
@@ -582,16 +660,16 @@ sitemap: false
     // carries the install's context from the link when the link has its random
     // id (context() below), and a note may carry an email under a problem
     // reason. The route and its rules: tidywl-api src/removed.js.
+    // The 2026-11-03 redesign changed none of this: same route, same bodies,
+    // same moments (open, a pick, Try again, Send note).
     var ENDPOINT = '/api/removed';
     var visit = Array.prototype.map.call(crypto.getRandomValues(new Uint8Array(16)), function (b) {
       return ('0' + b.toString(16)).slice(-2);
     }).join('');
 
-    var steps = {
-      pick: document.getElementById('un-pick'),
-      answer: document.getElementById('un-answer'),
-      thanks: document.getElementById('un-thanks')
-    };
+    var answer = document.getElementById('un-answer');
+    var stick = document.getElementById('un-stick');
+    var chips = document.querySelectorAll('.un-reason');
     var branches = document.querySelectorAll('.un-branch');
     var chipIcon = document.getElementById('un-chip-icon');
     var chipLabel = document.getElementById('un-chip-label');
@@ -607,11 +685,14 @@ sitemap: false
     var noteErr = document.getElementById('un-note-err');
     var emailBox = document.getElementById('un-email-box');
     var email = document.getElementById('un-email');
+    var form = document.getElementById('un-form');
+    var thanks = document.getElementById('un-thanks');
     var thanksReply = document.getElementById('un-thanks-reply');
     // The reasons where a reply can help; the server refuses an email with any
     // other, so the page never sends one then.
     var PROBLEM_REASONS = ['load', 'broke', 'unavailable', 'slow', 'other'];
     var EMAIL_SHAPE = /^[^\s@]{1,64}@[^\s@.]+(\.[^\s@.]+)+$/;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     // Resolves true only when the server took it (a 2xx), false on a network
     // error, a rate limit or any refusal, so the page never says "Sent" for an
@@ -635,10 +716,12 @@ sitemap: false
 
     // Only the latest send of the reason may set the tick: picking again while
     // an earlier send is still out must not let the older answer overwrite it.
+    // The tick is an <svg>, which has no .hidden property, so it is shown and
+    // hidden through the attribute.
     var reasonSend = 0;
     function setTick(state) {
       tick.setAttribute('data-state', state);
-      tickIcon.hidden = state !== 'sent';
+      if (state === 'sent') tickIcon.removeAttribute('hidden'); else tickIcon.setAttribute('hidden', '');
       tickText.textContent = state === 'sent' ? 'Sent' : state === 'failed' ? 'Not sent.' : 'Sending…';
       retryBtn.hidden = state !== 'failed';
       already.hidden = state !== 'sent';
@@ -719,6 +802,7 @@ sitemap: false
 
     var number = new Intl.NumberFormat('en-US');
     function plural(n, one, many) { return n === 1 ? one : many; }
+    function daysText(a) { return a === 0 ? 'less than a day' : number.format(a) + ' ' + plural(a, 'day', 'days'); }
 
     // What the record says, or null when no count reaches RECORD_MIN. Moves are
     // never folded into "cleaned up": the site's public figure leaves them out.
@@ -726,60 +810,98 @@ sitemap: false
       var c = rec.c != null && rec.c >= RECORD_MIN ? rec.c : null;
       var m = rec.m != null && rec.m >= RECORD_MIN ? rec.m : null;
       if (c != null) {
-        return {
-          num: number.format(c),
-          label: plural(c, 'video', 'videos') + ' cleaned up with TidyWL',
-          more: m == null ? null : 'Plus ' + number.format(m) + ' moved to ' + plural(m, 'another playlist.', 'other playlists.')
-        };
+        return { n: c, label: plural(c, 'video', 'videos') + ' cleaned up with TidyWL', moved: m };
       }
       if (m != null) {
-        return { num: number.format(m), label: plural(m, 'video', 'videos') + ' moved to other playlists with TidyWL', more: null };
+        return { n: m, label: plural(m, 'video', 'videos') + ' moved to other playlists with TidyWL', moved: null };
       }
       return null;
     }
 
     var record = readRecord(location.hash);
-    var recordCards = [document.getElementById('un-record'), document.getElementById('un-record-thanks')];
-    var rateThanks = document.getElementById('un-rate-thanks');
+    var STORE_NAMES = { chrome: 'Chrome', firefox: 'Firefox', edge: 'Edge' };
+    var receipt = document.getElementById('un-receipt');
+    var act = document.getElementById('un-act');
+    var rated = document.getElementById('un-rated');
+    function rec(name) { return receipt.querySelector('[data-rec="' + name + '"]'); }
 
-    function renderRecord() {
+    // The count runs up once, on the first paint, paced by setTimeout (never
+    // requestAnimationFrame, which a hidden window does not fire).
+    var countToken = 0;
+    function countUp(el, target, token) {
+      if (reduced || target < 50) { el.textContent = number.format(target); return; }
+      var start = Date.now();
+      (function step() {
+        if (token !== countToken) return;
+        var t = Math.min(1, (Date.now() - start) / 700);
+        el.textContent = number.format(Math.round(target * (1 - Math.pow(1 - t, 3))));
+        if (t < 1) setTimeout(step, 28);
+      })();
+    }
+
+    // The receipt: shown to everyone from the first paint (2026-11-03), where
+    // it used to wait for the "I finished my cleanup" answer. Still nothing
+    // under RECORD_MIN. Display only; what is sent is context(), unchanged.
+    function renderRecord(animate) {
       var lines = recordLines(record);
-      var shown = lines != null && reason === 'done';
-      recordCards.forEach(function (card) {
-        card.querySelector('[data-rec="num"]').textContent = lines ? lines.num : '';
-        card.querySelector('[data-rec="label"]').textContent = lines ? lines.label : '';
-        var more = card.querySelector('[data-rec="more"]');
-        more.textContent = lines && lines.more ? lines.more : '';
-        more.hidden = !(lines && lines.more);
-        card.querySelector('[data-rec="src"]').textContent = record.i != null
-          ? "Counted in this browser and carried in this page's link. It goes with your answer, with this install's random ID."
-          : "Counted in this browser and carried in this page's link. The page doesn't send it anywhere.";
-        card.hidden = !shown;
-      });
-      // On the thank-you, the record card carries the ask; without one, the
-      // old block does, for done only, as before.
-      rateThanks.hidden = reason !== 'done' || shown;
-      // A known store shows its own Rate button only; an unknown one keeps all three.
+      rec('meta').textContent = 'Receipt · TidyWL' + (record.v != null ? ' ' + record.v : '') + (record.s != null ? ' · ' + STORE_NAMES[record.s] : '');
+      receipt.querySelector('[data-fig="rec"]').hidden = lines == null;
+      receipt.querySelector('[data-fig="none"]').hidden = lines != null;
+      var token = ++countToken;
+      if (lines != null) {
+        var num = rec('num');
+        if (animate) countUp(num, lines.n, token); else num.textContent = number.format(lines.n);
+        rec('num-sr').textContent = number.format(lines.n);
+        rec('label').textContent = lines.label;
+        rec('moved').textContent = lines.moved != null ? number.format(lines.moved) : '';
+        rec('moved-line').hidden = lines.moved == null;
+        rec('age').textContent = record.a != null ? daysText(record.a) : '';
+        rec('age-line').hidden = record.a == null;
+        rec('lines').hidden = lines.moved == null && record.a == null;
+      }
+      var sub = rec('sub');
+      sub.textContent = lines == null && record.a != null ? 'It was installed for ' + daysText(record.a) + '.' : '';
+      sub.hidden = sub.textContent === '';
+      // A known count under RECORD_MIN reads as a short try; no count at all
+      // (an install older than 2.6.0) gets the general ask.
+      rec('ask').textContent = lines == null && record.c != null
+        ? 'Even a short try counts. An honest rating helps the next person decide.'
+        : 'Honest is best, good or bad. A rating helps the next person decide, and shows me what to fix.';
+      document.getElementById('un-fine').hidden = lines == null && record.a == null && record.v == null;
+      rec('src').textContent = record.i != null
+        ? "These figures are counted in this browser and carried in this page's link. They go with your answer, with this install's random ID."
+        : "These figures are counted in this browser and carried in this page's link. The page doesn't send them anywhere.";
+      // A known store shows its own Rate button only, and it fills; an
+      // unknown one keeps all three.
       document.querySelectorAll('[data-store]').forEach(function (el) {
         el.hidden = record.s != null && el.getAttribute('data-store') !== record.s;
       });
-      // One store and a record: the single Rate button is the ask, so it fills.
-      document.querySelectorAll('[data-rate] [data-store]').forEach(function (el) {
-        el.classList.toggle('is-primary', shown && record.s != null && !el.hidden);
-      });
-      return shown;
+      act.classList.toggle('is-one', record.s != null);
+      setRated(false);
     }
 
-    function show(name, focusEl) {
-      Object.keys(steps).forEach(function (k) { steps[k].hidden = k !== name; });
-      window.scrollTo(0, 0);
-      if (focusEl) focusEl.focus({ preventScroll: true });
+    // After a click on the one Rate button, its hint says so. Nothing is sent.
+    function setRated(on) {
+      rated.hidden = !on;
+      act.querySelectorAll('[data-hint]').forEach(function (el) {
+        el.hidden = on || (record.s != null && el.getAttribute('data-store') !== record.s);
+      });
+    }
+    act.querySelectorAll('.un-rate').forEach(function (a) {
+      a.addEventListener('click', function () { if (record.s != null) setRated(true); });
+    });
+
+    function replay(el) {
+      el.classList.remove('un-reveal');
+      void el.offsetWidth;
+      el.classList.add('un-reveal');
     }
 
     function pick(btn) {
       reason = btn.getAttribute('data-reason');
-      chipIcon.replaceChildren(btn.querySelector('.un-icon svg').cloneNode(true));
-      chipLabel.textContent = btn.querySelector('.un-reason-label').textContent;
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c === btn)); });
+      chipIcon.replaceChildren(btn.querySelector('.un-ci svg').cloneNode(true));
+      chipLabel.textContent = btn.getAttribute('data-full');
       noteLabel.textContent = btn.getAttribute('data-prompt');
       note.placeholder = btn.getAttribute('data-placeholder');
       note.value = '';
@@ -793,23 +915,43 @@ sitemap: false
       noteSending = false;
       sendBtn.textContent = 'Send note';
       noteErr.hidden = true;
+      form.hidden = false;
+      thanks.hidden = true;
       var heading = null;
       branches.forEach(function (b) {
         var on = b.getAttribute('data-branch') === reason;
         b.hidden = !on;
-        if (on) heading = b.querySelector('.un-h2');
+        if (on) heading = b.querySelector('.un-rh');
       });
       sendReason();
-      // With a record, focus lands on the number, so a screen reader hears it first.
-      if (renderRecord()) heading = recordCards[0].querySelector('.un-record-fig');
-      show('answer', heading);
+      answer.hidden = false;
+      replay(answer);
+      stick.classList.add('is-compact');
+      if (heading) heading.focus({ preventScroll: true });
+      answer.scrollIntoView({ block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
     }
 
-    document.querySelectorAll('.un-reason').forEach(function (btn) {
-      btn.addEventListener('click', function () { pick(btn); });
+    chips.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        // The answer already showing: nothing new to send, so only bring it
+        // into view. Any other chip is a new pick, sent like before.
+        if (!answer.hidden && btn.getAttribute('data-reason') === reason) {
+          answer.scrollIntoView({ block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
+          return;
+        }
+        pick(btn);
+      });
     });
     document.querySelectorAll('[data-action="change"]').forEach(function (btn) {
-      btn.addEventListener('click', function () { show('pick', document.getElementById('un-q')); });
+      btn.addEventListener('click', function () {
+        reason = null;
+        chips.forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+        answer.hidden = true;
+        already.hidden = true;
+        stick.classList.remove('is-compact');
+        window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+        document.getElementById('un-q').focus({ preventScroll: true });
+      });
     });
     retryBtn.addEventListener('click', function () {
       if (reason != null) sendReason();
@@ -822,7 +964,7 @@ sitemap: false
     email.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && !sendBtn.disabled) { e.preventDefault(); sendBtn.click(); }
     });
-    // The thank-you says the note is in, so it waits for the server to say so.
+    // "Note received" says the note is in, so it waits for the server to say so.
     sendBtn.addEventListener('click', function () {
       var text = note.value.trim();
       if (!text || reason == null || noteSending) return;
@@ -846,7 +988,7 @@ sitemap: false
       post(body).then(function (ok) {
         // The visitor went back and picked an answer meanwhile: that pick has
         // its own send and its own tick, so leave its screen alone.
-        if (mine !== noteSend || steps.answer.hidden) return;
+        if (mine !== noteSend || answer.hidden) return;
         noteSending = false;
         sendBtn.textContent = 'Send note';
         sendBtn.disabled = note.value.trim() === '';
@@ -861,8 +1003,9 @@ sitemap: false
         thanksReply.textContent = address !== ''
           ? "He'll write back once, to the email you left."
           : "There's no email with them, so if you'd like an answer, ask on Discord or email support@tidywl.com.";
-        var withRecord = renderRecord();
-        show('thanks', withRecord ? recordCards[1].querySelector('.un-record-fig') : document.getElementById('un-thanks-title'));
+        form.hidden = true;
+        thanks.hidden = false;
+        document.getElementById('un-thanks-title').focus({ preventScroll: true });
       });
     });
 
@@ -880,7 +1023,7 @@ sitemap: false
       });
     }
 
-    renderRecord();
+    renderRecord(true);
     renderReinstall();
     // 2026-10-25: opening the page records the uninstall, as "no reason picked",
     // when the link holds the install's random id (context() sends nothing
@@ -892,7 +1035,7 @@ sitemap: false
     // again through the same parser.
     window.addEventListener('hashchange', function () {
       record = readRecord(location.hash);
-      renderRecord();
+      renderRecord(false);
       renderReinstall();
     });
   })();
