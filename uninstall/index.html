@@ -145,6 +145,7 @@ sitemap: false
        button is on screen while the reply is read. The wrapper is what sticks:
        its own background hides what scrolls under it. */
     .un-stick.is-compact { position: sticky; top: 0; z-index: 6; padding: 0.75rem 0; margin-top: -0.75rem; background: var(--bg); }
+    .un-stick.is-compact::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 1rem; background: linear-gradient(var(--bg), transparent); pointer-events: none; }
     .is-compact .un-receipt { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 1.5rem; padding: 0.9rem 1.5rem 0.65rem; border-radius: 1rem; box-shadow: var(--un-lift); }
     .is-compact .un-r-top, .is-compact .un-tear, .is-compact .un-lines, .is-compact .un-fig-sub, .is-compact .un-ask-p, .is-compact .un-byline, .is-compact .un-hint, .is-compact .un-trio-label { display: none; }
     .is-compact .un-fig > div { grid-column: 1; flex-direction: row; align-items: baseline; justify-content: flex-start; flex-wrap: wrap; gap: 0 0.9rem; margin: 0; text-align: left; }
@@ -226,7 +227,7 @@ sitemap: false
 
     .un-why-foot { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 1rem; }
     .un-why-foot .un-privacy { flex: none; max-width: 56rem; }
-    .un-why-foot .un-inline-links { padding-left: 1.05rem; }
+    .un-why-foot .un-inline-links { padding-left: 1.375rem; }
 
     /* ── The Pro question: asks before it tells anyone to email (2026-10-08) ── */
     .un-pro { margin-top: 1.6rem; padding: 1rem 1.25rem; background: var(--highlight-bg); border: 1px solid var(--highlight-border); border-radius: 1rem; }
