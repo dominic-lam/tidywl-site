@@ -472,6 +472,6 @@
     "enabled": true
   },
   "playerLookups": {
-    "paceMinutesPer4000": 12
+    "paceMinutesPer4000": 15
   }
 }
