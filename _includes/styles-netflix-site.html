@@ -1,0 +1,259 @@
+  <style>
+    /* ── /netflix/: THE SCHOGER PASS (2026-11-03) ──
+       Loaded by _layouts/netflix.html alone, after styles-netflix.html and styles-site.html; the layout puts
+       `nf site` on <body>, so every rule in styles-site.html applies here as it does on the default layout's pages,
+       and this file only adds what the Netflix pages have and those do not. Every rule is prefixed with .nf.site.
+       It reverses one decision on purpose: Netflix red was the accent (styles-netflix.html, "any other colour reads
+       as a third party's chrome"). Here, as on the YouTube pages, buttons and marks are ink and red stays on the
+       logo; error text keeps --danger. */
+
+    /* ── Tokens: styles-netflix.html's red, back to ink. :root plus the two classes ties the specificity of its
+       dark rules, and this file comes later. Every value is a reference, so one rule serves both themes. ── */
+    :root body.nf.site {
+      --accent: var(--ink);
+      --accent-hover: var(--ink-hover);
+      --accent-fill: var(--ink);
+      --accent-fill-hover: var(--ink-hover);
+      --accent-text: var(--ink);
+      --feature-icon-bg: transparent;
+      --shadow-accent: 0 0 #0000;
+      --highlight-bg: var(--bg-card);
+      --highlight-border: var(--ring-c);
+      --nf-shot-bg: var(--well);
+      --nf-shot-border: transparent;
+    }
+
+    /* ── The blocks. The layout wraps the page in <main>, so main itself draws nothing and its sections (or the
+       sections of its one wrapper div) are the page's blocks. ── */
+    .nf.site > main { padding: 0; border-top: 0; }
+    .nf.site > main > section,
+    .nf.site > main > div > section {
+      max-width: none; margin: 0;
+      padding: 80px var(--edge) 96px;
+      border-top: 1px solid var(--line);
+    }
+    .nf.site .nf-wordmark-sub { font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+
+    /* ── Hero: the home page's split. The eyebrow and headline left (3/5), the line, the install and its note right
+       (2/5), the screenshot in a well under both. DOM order is untouched; grid areas place it. ── */
+    .nf.site .nf-hero { padding-top: 72px; text-align: left; }
+    .nf.site .nf-hero-inner {
+      max-width: none; margin: 0;
+      display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); column-gap: 48px;
+      grid-template-areas: "label ." "h1 sub" "h1 cta" "h1 note" "h1 ." "shot shot" "cap cap";
+      grid-template-rows: auto auto auto auto 1fr auto auto; align-items: start;
+    }
+    .nf.site .nf-hero .section-label { grid-area: label; }
+    .nf.site .nf-hero h1 {
+      grid-area: h1; margin: 0;
+      font-size: clamp(2.5rem, 4.4vw, 3.5rem); line-height: 1.05; font-weight: 550; letter-spacing: -0.025em;
+      max-width: 22ch; text-wrap: balance;
+    }
+    .nf.site .nf-hero h1 em { color: inherit; }
+    .nf.site .nf-hero-sub {
+      grid-area: sub; margin: 0 0 24px; padding-top: 8px; max-width: none;
+      font-size: 16px; line-height: 24px; color: var(--text-secondary);
+    }
+    .nf.site .nf-hero .cta-row,
+    .nf.site .nf-hero .nf-status { grid-area: cta; margin: 0; }
+    .nf.site .nf-hero .nf-install-note { grid-area: note; }
+    .nf.site .nf-hero .nf-shot { grid-area: shot; }
+    .nf.site .nf-hero .nf-shot-caption { grid-area: cap; }
+    .nf.site .cta-row .btn-primary img { width: 20px; height: 20px; }
+    .nf.site .btn-primary:has(img) { padding: 9px 18px 9px 12px; }
+    .nf.site .nf-status {
+      align-items: flex-start; text-align: left; max-width: none;
+      border: 0; border-radius: 16px; padding: 16px 20px; background: var(--well);
+    }
+    .nf.site .nf-status strong { font-size: 14px; line-height: 20px; font-weight: 600; }
+    .nf.site .nf-status span { font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+    .nf.site .nf-install-note { margin: 12px 0 0; font-size: 13px; line-height: 20px; color: var(--text-secondary); }
+
+    /* A screenshot in a well: 8px inset, concentric corners. */
+    .nf.site .nf-shot {
+      max-width: none; margin: 64px 0 0; padding: 8px;
+      background: var(--well); border: 0; border-radius: 20px; box-shadow: none;
+    }
+    .nf.site .nf-shot img { border-radius: 12px; box-shadow: 0 0 0 1px var(--ring-c); }
+    .nf.site .nf-shot--phone { max-width: 340px; }
+    .nf.site .nf-shot-caption,
+    .nf.site .nf-shot figcaption {
+      margin-top: 12px; text-align: left; font-size: 13px; line-height: 20px; color: var(--text-secondary);
+    }
+
+    /* ── Netflix against this: rings, gray on the left, ink on the right ── */
+    .nf.site .nf-rows { gap: 8px; }
+    .nf.site .nf-row {
+      border: 0; border-radius: 16px; padding: 20px 24px; background: var(--bg-card);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .nf.site .nf-row-from { font-size: 15px; line-height: 24px; color: var(--text-secondary); }
+    .nf.site .nf-row-to { font-size: 15px; line-height: 24px; color: var(--text); }
+    .nf.site .nf-row-to strong { font-weight: 600; }
+    .nf.site .nf-row-to a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+    .nf.site .nf-row-arrow { color: var(--text-subtle); }
+
+    /* ── The tabs and the Pro page's sections ── */
+    .nf.site .nf-tab-num {
+      font-family: var(--mono); font-size: 12px; line-height: 16px; font-weight: 500;
+      letter-spacing: 0.1em; color: var(--text-secondary);
+    }
+    .nf.site .nf-tab h3,
+    .nf.site .nf-pro .nf-tab h2 { font-size: 1.5rem; line-height: 1.25; font-weight: 550; letter-spacing: -0.02em; color: var(--text); }
+    .nf.site .nf-tab > p { font-size: 16px; line-height: 26px; max-width: 65ch; }
+    .nf.site .nf-tab > p a,
+    .nf.site .nf-tab-list a,
+    .nf.site .nf-closer p a,
+    .nf.site .privacy .note a,
+    .nf.site .nf-step p a {
+      color: var(--text); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px;
+    }
+    .nf.site .nf-tab-list { margin-top: 24px; gap: 12px 40px; }
+    .nf.site .nf-tab-list li { font-size: 15px; line-height: 24px; color: var(--text-secondary); padding-left: 18px; }
+    .nf.site .nf-tab-list li::before { top: 10px; width: 5px; height: 5px; background: var(--text-subtle); }
+    .nf.site .nf-tab-list strong { font-weight: 600; }
+    .nf.site .nf-pro .nf-tab:target h2 { color: var(--text); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; }
+    .nf.site .nf-pro-cta, .nf.site .nf-cta-tail { margin-top: 32px; }
+
+    /* ── Getting started: three ringed cards, the digit on an ink disc ── */
+    .nf.site .nf-steps { gap: 16px; }
+    .nf.site .nf-step {
+      border: 0; border-radius: 16px; padding: 24px; background: var(--bg-card);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .nf.site .nf-step h3 { font-size: 14px; line-height: 20px; font-weight: 550; margin-bottom: 4px; }
+    .nf.site .nf-step p { font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+    .nf.site .nf-step-n {
+      width: 28px; height: 28px; margin-bottom: 20px;
+      background: var(--btn2-bg); color: var(--text); box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+      font-family: var(--mono); font-size: 12px; font-weight: 500;
+    }
+
+    /* ── Privacy and the closer: left-aligned like every other block ── */
+    .nf.site .privacy { background: none; text-align: left; }
+    .nf.site .privacy .section-inner,
+    .nf.site .nf-closer .section-inner { max-width: none; }
+    .nf.site .privacy .section-heading,
+    .nf.site .nf-closer .section-heading { margin-left: 0; margin-right: 0; }
+    .nf.site .privacy .note { max-width: 65ch; margin-left: 0; margin-right: 0; text-align: left; font-size: 15px; line-height: 24px; color: var(--text-secondary); }
+    .nf.site .nf-privacy-points { max-width: 65ch; gap: 10px; }
+    .nf.site .nf-privacy-points li { font-size: 15px; line-height: 24px; }
+    .nf.site .nf-privacy-points li::before { border-color: var(--text); }
+    .nf.site .nf-closer { text-align: left; }
+    .nf.site .nf-closer p { max-width: 65ch; font-size: 16px; line-height: 26px; }
+    .nf.site .nf-closer .cta-row { justify-content: flex-start; }
+
+    /* ── The privacy policy's table and meta line ── */
+    .nf.site .nf-policy-meta { font-size: 13px; color: var(--text-secondary); border-bottom-color: var(--line); }
+    .nf.site .nf-policy-table { font-size: 14px; }
+    .nf.site .nf-policy-table th, .nf.site .nf-policy-table td { border-bottom-color: var(--line); }
+    .nf.site .nf-policy-table th { font-weight: 600; }
+    .nf.site .nf-policy-table td { color: var(--text-secondary); }
+
+    /* ── The video card: a ring, the label as an eyebrow ── */
+    .nf.site .nf-video {
+      border: 0; border-radius: 16px; padding: 8px; gap: 20px;
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .nf.site .nf-video:hover { box-shadow: 0 0 0 1px var(--border-strong), var(--lift); }
+    .nf.site .nf-video:focus-visible { outline-color: var(--ink); }
+    .nf.site .nf-video-label {
+      font-family: var(--mono); font-size: 12px; line-height: 16px; font-weight: 500;
+      letter-spacing: 0.1em; color: var(--text-secondary);
+    }
+    .nf.site .nf-video-title { font-weight: 550; }
+    .nf.site .nf-video-sub { font-size: 14px; color: var(--text-secondary); }
+
+    /* ── The Pro page: its index of features sits where the home page's install does, as small ringed pills ── */
+    .nf.site .nf-pro-hero { padding-bottom: 80px; }
+    .nf.site .nf-pro-index { grid-area: cta; justify-content: flex-start; max-width: none; margin: 0; gap: 8px; }
+    .nf.site .nf-pro-index a {
+      border: 0; border-radius: 999px; padding: 5px 12px; background: var(--btn2-bg);
+      font-size: 13px; line-height: 20px; font-weight: 600; color: var(--text);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .nf.site .nf-pro-index a:hover { background: var(--btn2-hover); }
+
+    /* ── Tutorials: rings for the legend and the contents, mono heads, the Pro marker in ink, no red ── */
+    .nf.site .tut-legend {
+      border: 0; border-radius: 12px; padding: 10px 14px; box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+      font-size: 14px; color: var(--text-secondary);
+    }
+    .nf.site .tut-toc { border: 0; border-radius: 20px; padding: 32px; gap: 24px 32px; box-shadow: 0 0 0 1px var(--ring-c), var(--lift); }
+    .nf.site .tut-toc-head,
+    .nf.site .tut-table th {
+      font-family: var(--mono); font-size: 12px; line-height: 16px; font-weight: 500;
+      letter-spacing: 0.1em; color: var(--text-secondary);
+    }
+    .nf.site .tut-toc a { font-size: 14px; line-height: 20px; }
+    .nf.site .tut-toc a:hover { color: var(--text); }
+    .nf.site .tut-toc a:focus-visible { outline-color: var(--ink); }
+    .nf.site .tut-band--alt { background: none; }
+    .nf.site .tut { border-top-color: var(--line); }
+    .nf.site .tut h2 { font-size: 1.5rem; font-weight: 550; letter-spacing: -0.02em; }
+    .nf.site .tut h3 { font-weight: 550; }
+    .nf.site .tut > p { font-size: 15px; line-height: 26px; }
+    .nf.site .tut-band-note a:hover, .nf.site .tut-note a:hover, .nf.site .tut-list a:hover,
+    .nf.site .tut-steps a:hover, .nf.site .tut > p a:hover, .nf.site .tut-table a:hover { color: var(--text); text-decoration-color: currentColor; }
+    .nf.site .tut code { font-family: var(--mono); background: var(--well); border: 0; border-radius: 6px; padding: 2px 6px; }
+    .nf.site .tut-page kbd { border: 0; border-radius: 6px; background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c), var(--lift); font-family: var(--mono); font-weight: 500; }
+    .nf.site .tut-table th, .nf.site .tut-table td { border-bottom-color: var(--line); }
+    .nf.site .tut-pill { border-radius: 999px; font-family: var(--mono); font-weight: 500; letter-spacing: 0.08em; padding: 1px 8px; }
+    .nf.site .tut-steps li::marker { color: var(--text-secondary); font-weight: 600; }
+    .nf.site .tut-note--warn { border-left-color: var(--border-strong); }
+
+    /* ── Pricing: the trial's three dates in a well, Tonight's card in a ring, the refund line left ── */
+    .nf.site .plan-timeline { border: 0; border-radius: 12px; background: var(--well); }
+    .nf.site .plan-timeline li { font-size: 13px; line-height: 20px; padding: 8px 14px; }
+    .nf.site .plan-timeline li + li { border-top-color: var(--line); }
+    .nf.site .plan-timeline strong { font-weight: 600; }
+    .nf.site .plan-timeline li:first-child strong { font-size: 14px; }
+    .nf.site .plan-refund { text-align: left; font-size: 13px; line-height: 20px; color: var(--text-secondary); }
+    .nf.site .plan-list li.plan-tonight {
+      border: 0; border-radius: 12px; padding: 14px 16px; background: var(--bg-card);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .nf.site .plan-tonight-name { font-size: 15px; font-weight: 550; }
+    .nf.site .plan-tonight-name svg { color: var(--text); }
+    .nf.site .plan-tonight-chip { border: 0; background: none; box-shadow: inset 0 0 0 1px var(--ring-c); font-size: 12px; font-weight: 500; }
+    .nf.site .plan-tonight-sample { border: 0; background: var(--well); font-family: var(--mono); font-weight: 500; letter-spacing: 0.1em; }
+    .nf.site .plan-more a { color: var(--text); text-decoration-color: var(--border-strong); }
+    .nf.site .nf-tab > p + p { margin-top: 16px; }
+
+    /* ── checkout/success: the activation box, a ring instead of a red border ── */
+    .nf.site .activate-box { border: 0; border-radius: 16px; background: var(--bg-card); box-shadow: 0 0 0 1px var(--ring-c), var(--lift); }
+    .nf.site .activate-box .activate-title { margin: 0 0 8px; font-size: 1.125rem; font-weight: 550; letter-spacing: -0.01em; }
+    .nf.site .key-box { border: 0; border-radius: 16px; background: var(--well); }
+    .nf.site .key-status { font-size: 15px; color: var(--text-secondary); }
+    .nf.site .key-status[data-tone="error"] { color: var(--danger); }
+    .nf.site .key-find-label { font-size: 13px; color: var(--text-secondary); }
+    .nf.site .key-find-input {
+      border: 0; border-radius: 10px; background: var(--bg-card); color: var(--text);
+      box-shadow: inset 0 0 0 1px var(--ring-c); font-family: var(--mono); font-size: 14px;
+    }
+    .nf.site .key-find-input:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+    .nf.site .key-find-button,
+    .nf.site .key-copy {
+      border: 0; border-radius: 999px; background: var(--btn2-bg); color: var(--text);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .nf.site .key-find-button { padding: 9px 18px; font-size: 14px; line-height: 22px; font-weight: 600; }
+    .nf.site .key-find-button:hover, .nf.site .key-copy:hover { background: var(--btn2-hover); }
+    .nf.site .activate-box li::marker { color: var(--text-secondary); font-weight: 600; }
+
+    /* Narrow screens: the split hero stacks. */
+    @media (max-width: 860px) {
+      .nf.site .nf-hero-inner {
+        grid-template-columns: minmax(0, 1fr); grid-template-rows: none;
+        grid-template-areas: "label" "h1" "sub" "cta" "note" "shot" "cap";
+      }
+      .nf.site .nf-hero h1 { margin-bottom: 16px; }
+    }
+    /* Phones */
+    @media (max-width: 640px) {
+      .nf.site > main > section,
+      .nf.site > main > div > section { padding-top: 48px; padding-bottom: 64px; }
+      .nf.site .nf-hero h1 { font-size: 2.25rem; }
+      .nf.site .nf-shot { margin-top: 40px; }
+    }
+  </style>
