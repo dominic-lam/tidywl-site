@@ -132,7 +132,7 @@
     /* ── The canvas grid ──
        Two vertical lines at the 1280px container's edges, top to bottom, and a full-width line on top of every
        section. Text sits 40px inside the lines; wells hug them, 8px inside. */
-    body.home { position: relative; overflow-x: clip; }
+    body.home { position: relative; overflow-x: clip; zoom: var(--home-zoom); }
     body.home::before {
       content: ""; position: absolute; top: 0; bottom: 0; z-index: 0;
       left: max(var(--gutter), calc((100% - 1280px) / 2));
@@ -144,6 +144,17 @@
     .home .section-inner,
     .home .hg-inner,
     .home .inside-inner { max-width: 1280px; margin-inline: auto; padding-inline: 40px; zoom: 1; }
+
+    /* ── Big screens: the whole page scales as one ──
+       styles.html zooms the hero and the tour alone, in three steps (2026-09-16). Here the same three steps, on
+       the same media queries, zoom the body instead: header, every section, the wells, the footer and the two
+       canvas lines all scale together. The lines are drawn inside the zoom, so they stay on the container's edges
+       by construction, and every spacing rule above (wells 8px in, text 40px in) holds in the page's own pixels.
+       The zoom: 1 just above stops styles.html's own zoom from stacking on top of this one. */
+    :root { --home-zoom: 1; }
+    @media (min-width: 1500px) and (min-height: 1160px) { :root { --home-zoom: 1.12; } }
+    @media (min-width: 1700px) and (min-height: 1290px) { :root { --home-zoom: 1.25; } }
+    @media (min-width: 1900px) and (min-height: 1440px) { :root { --home-zoom: 1.4; } }
     .home .testimonials, .home .features, .home .privacy, .home .founder-story { background: none; }
     .home p { text-wrap: pretty; }
 
@@ -190,19 +201,27 @@
     .home .logo-disc { width: 20px; height: 20px; background: none; box-shadow: none; }
     .home .logo-disc img, .home .edge-logo, .home .ff-logo { width: 20px; height: 20px; }
     .home .cta-row, .home .cta-others { gap: 8px; align-items: center; }
-    .home .cta-row { justify-content: flex-start; margin: 0; }
-    /* What rode inside the Chrome button, beside it now: the same words and chips. */
-    .home .cta-note {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-top: 16px;
-      font-size: 13px; line-height: 20px; color: var(--text-secondary);
+    .home .cta-row { justify-content: flex-start; margin: 0; column-gap: 16px; }
+    /* What rode inside the Chrome button now sits outside it, so the pill stays small: the two store badges to
+       its right, on the same line, and "Free to install" under the row. The badges take only the room left beside
+       the button (basis 0, never wider than their own text), so Edge and Firefox move to the next line together
+       when the line is full, and the badges stack in two lines before they would leave the button. */
+    .home .cta-row > .btn-chips {
+      flex: 1 1 0%; max-width: max-content; margin: 0;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 2px 16px;
     }
-    .home .cta-note .btn-sub { display: inline; margin: 0; font-size: inherit; font-weight: 500; color: var(--text); }
-    .home .cta-note .btn-chips { display: inline-flex; flex-wrap: wrap; gap: 6px 16px; margin: 0; }
-    .home .cta-note .btn-chip {
+    /* Where the row is wide enough for the button and both badges side by side (460px is the button, the gap and the
+       two badges in Inter), the badges keep that width, so Edge and Firefox are what moves down when the line is
+       full. Narrower rows, the hero between about 860 and 1330px wide, stack the badges beside the button. */
+    .home .cta-row { container-type: inline-size; }
+    @container (min-width: 460px) { .home .cta-row > .btn-chips { min-width: max-content; } }
+    .home .cta-row .btn-chip {
       padding: 0; background: none; color: var(--text-secondary);
       font-size: 13px; line-height: 20px; font-weight: 500; letter-spacing: 0; gap: 6px;
     }
-    .home .cta-note .btn-chip svg { width: 13px; height: 13px; }
+    .home .cta-row .btn-chip svg { width: 13px; height: 13px; }
+    .home .cta-note { margin-top: 16px; font-size: 13px; line-height: 20px; }
+    .home .cta-note .btn-sub { display: inline; margin: 0; font-size: inherit; font-weight: 500; color: var(--text); }
     .home .install-extra { justify-content: flex-start; margin: 8px 0 0; }
     .home .price-line { font-size: 13px; line-height: 20px; color: var(--text-secondary); }
     .home .hero-trust-pill {
