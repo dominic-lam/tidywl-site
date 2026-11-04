@@ -202,26 +202,32 @@
     .home .logo-disc img, .home .edge-logo, .home .ff-logo { width: 20px; height: 20px; }
     .home .cta-row, .home .cta-others { gap: 8px; align-items: center; }
     .home .cta-row { justify-content: flex-start; margin: 0; column-gap: 16px; }
-    /* What rode inside the Chrome button now sits outside it, so the pill stays small: the two store badges to
-       its right, on the same line, and "Free to install" under the row. The badges take only the room left beside
-       the button (basis 0, never wider than their own text), so Edge and Firefox move to the next line together
-       when the line is full, and the badges stack in two lines before they would leave the button. */
+    /* What rode inside the Chrome button now sits outside it, so the pill stays small: "Free to install" and the
+       two store badges to its right, in a small block of two lines ("Free to install" above, the badges below; the
+       owner, 2026-11-03). The block takes only the room left beside the button (basis 0, never wider than its own
+       text), so Edge and Firefox move to the next line together when the line is full. */
     .home .cta-row > .btn-chips {
       flex: 1 1 0%; max-width: max-content; margin: 0;
-      display: flex; flex-wrap: wrap; align-items: center; gap: 2px 16px;
+      display: grid; grid-template-columns: auto; align-items: center; gap: 2px 16px;
+    }
+    .home .cta-row > .btn-chips > .btn-sub {
+      grid-column: 1 / -1; margin: 0;
+      font-size: 13px; line-height: 20px; font-weight: 500; color: var(--text);
     }
     /* Where the row is wide enough for the button and both badges side by side (460px is the button, the gap and the
-       two badges in Inter), the badges keep that width, so Edge and Firefox are what moves down when the line is
-       full. Narrower rows, the hero between about 860 and 1330px wide, stack the badges beside the button. */
+       two badges in Inter; "Free to install" is narrower than the badges' line), the block keeps that width, so Edge
+       and Firefox are what moves down when the line is full. Narrower rows, the hero between about 860 and 1330px
+       wide, stack all three lines beside the button. A grid, not a wrapping flexbox: a wrapping flexbox's
+       max-content is all its items on one line, which would push the block past the row. */
     .home .cta-row { container-type: inline-size; }
-    @container (min-width: 460px) { .home .cta-row > .btn-chips { min-width: max-content; } }
+    @container (min-width: 460px) {
+      .home .cta-row > .btn-chips { grid-template-columns: auto auto; min-width: max-content; }
+    }
     .home .cta-row .btn-chip {
       padding: 0; background: none; color: var(--text-secondary);
       font-size: 13px; line-height: 20px; font-weight: 500; letter-spacing: 0; gap: 6px;
     }
     .home .cta-row .btn-chip svg { width: 13px; height: 13px; }
-    .home .cta-note { margin-top: 16px; font-size: 13px; line-height: 20px; }
-    .home .cta-note .btn-sub { display: inline; margin: 0; font-size: inherit; font-weight: 500; color: var(--text); }
     .home .install-extra { justify-content: flex-start; margin: 8px 0 0; }
     .home .price-line { font-size: 13px; line-height: 20px; color: var(--text-secondary); }
     .home .hero-trust-pill {
@@ -236,9 +242,6 @@
     .home .handoff .btn-primary { border-radius: 24px; padding: 11px 22px; line-height: 20px; }
     .home .handoff .btn-ghost.handoff-btn { padding: 11px 22px; }
     .home .btn-primary .btn-sub { font-size: 12px; font-weight: 500; opacity: 0.8; }
-    @media (max-width: 640px), (hover: none) and (pointer: coarse) {
-      .home .cta-note { display: none; }
-    }
     .home .skip-link { background: var(--ink); color: var(--on-ink); border-radius: 999px; }
 
     /* ── Header: bigger mark, links straight after it, small pills ── */
@@ -280,7 +283,6 @@
       grid-template-areas:
         "h1 stake"
         "h1 ctarow"
-        "h1 note"
         "h1 handoff"
         "h1 extra"
         "h1 ."
@@ -288,7 +290,7 @@
         "vs vs"
         "rows rows"
         "stats stats";
-      grid-template-rows: repeat(5, auto) 1fr repeat(4, auto);
+      grid-template-rows: repeat(4, auto) 1fr repeat(4, auto);
       align-items: start; text-align: left;
     }
     .home .hg .close { display: contents; }
@@ -305,7 +307,6 @@
     }
     .home .hg .stake .dot { display: none; }
     .home .hg .close .cta-row { grid-area: ctarow; justify-content: flex-start; margin: 0; }
-    .home .hg .cta-note { grid-area: note; }
     .home .hg .handoff { grid-area: handoff; }
     .home .hg .install-extra { grid-area: extra; }
     .home .hg .phone-demo { grid-area: demo; }
@@ -596,7 +597,7 @@
       .home .hg { padding-top: 48px; padding-bottom: 64px; }
       .home .hg-inner {
         grid-template-columns: minmax(0, 1fr);
-        grid-template-areas: "h1" "stake" "demo" "ctarow" "note" "handoff" "extra" "stats";
+        grid-template-areas: "h1" "stake" "demo" "ctarow" "handoff" "extra" "stats";
         grid-template-rows: none;
       }
       .home .hg .stake { padding-top: 16px; }
