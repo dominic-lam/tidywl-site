@@ -362,9 +362,17 @@
       background: var(--ink); color: var(--on-ink); font-weight: 600; border-radius: 999px; padding: 5px 12px;
     }
     .site .footer-links .btn-footer:hover { background: var(--ink-hover); color: var(--on-ink); }
-    .site .kofi-badge { margin-bottom: 24px; box-shadow: 0 0 0 1px var(--ring-c); }
-    .site .kofi-badge:hover { box-shadow: 0 0 0 1px var(--ring-c), var(--lift); }
-    .site .kofi-badge img { width: 120px; }
+    /* Ko-fi: a small secondary pill with a coffee cup, in the page's own style (the owner, 2026-11-03; it was
+       Ko-fi's blue badge image). */
+    .site .kofi-btn {
+      display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px;
+      padding: 5px 12px; border-radius: 999px;
+      font-size: 13px; line-height: 20px; font-weight: 600; color: var(--text);
+      background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+      text-decoration: none; transition: background 0.2s;
+    }
+    .site .kofi-btn:hover { background: var(--btn2-hover); color: var(--text); }
+    .site .kofi-btn svg { flex: none; }
     .site .footer-legal { margin: 0 0 8px; max-width: 80ch; font-size: 12px; color: var(--text-subtle); }
     .site .copyright { font-size: 12px; color: var(--text-subtle); }
 
