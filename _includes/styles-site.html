@@ -383,10 +383,102 @@
     .site .support-sub { text-align: left; margin: 0 0 40px; max-width: 60ch; }
     .site .support-grid { margin: 0; max-width: none; }
     .site .support-cta { align-self: flex-start; }
+    .site .support-cta svg { display: none; } /* no icons in buttons; browser logos are the one exception */
     .site .support-card .support-list li::before { background: var(--text-subtle); }
     .site .co-hero { text-align: left; }
     .site .co-hero-sub { margin: 10px 0 0; }
     .site .tut-legend { justify-content: flex-start; text-align: left; }
+
+    /* ── Pricing ── */
+    /* A split hero: the eyebrow and headline on the left (3/5), the line, the status and the buttons on the right
+       (2/5), its top level with the headline's. DOM order is untouched; grid areas place it. */
+    .site .pro-hero {
+      display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); column-gap: 48px;
+      grid-template-areas: "label ." "h1 tagline" "h1 status" "h1 cta" "h1 .";
+      grid-template-rows: auto auto auto auto 1fr; align-items: start;
+    }
+    .site .pro-hero .section-label { grid-area: label; }
+    .site .pro-hero h1 { grid-area: h1; margin: 0; }
+    .site .pro-hero .tagline { grid-area: tagline; padding-top: 8px; font-size: 1rem; line-height: 1.6; max-width: none; }
+    .site .pro-status {
+      grid-area: status; justify-self: start; margin: 0 0 24px;
+      border: 0; background: none; box-shadow: inset 0 0 0 1px var(--ring-c);
+      font-size: 12px; font-weight: 500; color: var(--text-secondary); padding: 4px 12px;
+    }
+    .site .pro-status .dot { width: 6px; height: 6px; background: var(--text); }
+    .site .pro-hero .cta-row { grid-area: cta; margin: 0; }
+    /* The two plans span the container. The plan you are sold gets an ink ring instead of a red tint. */
+    .site .plans { max-width: none; margin: 0; gap: 16px; }
+    .site .plan {
+      border: 0; border-radius: 20px; padding: 32px; gap: 12px; background: var(--bg-card);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .site .plan.best { background: var(--bg-card); box-shadow: 0 0 0 2px var(--ink), var(--lift); }
+    .site .plan-name { font-size: 1.125rem; font-weight: 550; letter-spacing: -0.01em; }
+    .site .plan-sub { font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+    .site .plan-price { font-size: 3rem; font-weight: 500; letter-spacing: -0.03em; }
+    .site .plan-price small { font-size: 13px; color: var(--text-secondary); }
+    .site .price-was { font-size: 1.5rem; font-weight: 400; color: var(--text-subtle); text-decoration-thickness: 1px; }
+    .site .plan-billed, .site .plan-trial, .site .plan-promo-note { font-size: 13px; line-height: 20px; color: var(--text-secondary); }
+    .site .plan-promo-label { font-size: 14px; font-weight: 600; color: var(--text); }
+    .site .billing-switch { background: var(--well); border: 0; padding: 2px; }
+    .site .billing-opt { font-size: 12px; font-weight: 500; color: var(--text-secondary); padding: 4px 10px; }
+    .site .billing-opt[aria-pressed="true"] {
+      background: var(--btn2-bg); color: var(--text); font-weight: 600;
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .site .billing-opt:focus-visible { outline-color: var(--ink); }
+    .site .billing-save { color: inherit; }
+    .site .plan-cta { width: 100%; justify-content: center; margin-top: 8px; }
+    .site .plan-cta-note {
+      background: var(--well); border: 0; border-radius: 12px; padding: 12px 14px;
+      font-size: 13px; line-height: 20px;
+    }
+    .site .plan-list-head { margin-top: 12px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .site .plan-list { gap: 10px; }
+    .site .plan-list li { font-size: 14px; line-height: 20px; }
+    .site .plan-list li::before, .site .plans-both li::before { color: var(--text); font-weight: 600; }
+    .site .plans-both { justify-content: flex-start; max-width: none; margin: 32px 0 0; gap: 8px 24px; }
+    .site .plans-both li { font-size: 14px; }
+    .site .plans-foot { text-align: left; max-width: 72ch; margin: 12px 0 0; font-size: 13px; color: var(--text-secondary); }
+    .site .pro-group-head h3 { font-size: 15px; font-weight: 550; }
+    .site .pro-group-head p { font-size: 14px; color: var(--text-secondary); }
+    .site .compare th, .site .compare td { border-bottom: 1px solid var(--line); }
+    .site .compare th {
+      font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: var(--text-secondary);
+    }
+    .site .compare td { font-size: 14px; }
+    .site .compare td.yes { color: var(--text); font-weight: 600; }
+    .site .compare td.limit { font-size: 13px; }
+    .site .later { border: 0; border-radius: 20px; background: var(--well); padding: 24px; }
+    .site .later li { font-size: 14px; }
+    .site .later-note { font-size: 13px; color: var(--text-secondary); }
+
+    /* ── Help: an inline heading. The title and its line share one paragraph's lines without a wrapper: both are
+       made inline, so they flow into one anonymous line box, the title in ink and the line in gray. ── */
+    .site .support .section-inner { text-wrap: balance; }
+    .site .support h1.section-heading,
+    .site .support .support-sub {
+      display: inline; margin: 0; max-width: none;
+      font-size: 2.25rem; line-height: 1.2; letter-spacing: -0.025em;
+    }
+    .site .support h1.section-heading { font-weight: 550; color: var(--text); }
+    .site .support .support-sub { font-weight: 500; color: var(--text-secondary); }
+    .site .support-grid { margin-top: 48px; gap: 16px; text-wrap: wrap; }
+    .site .support-card .support-list li { font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+
+    /* ── Blog index ── */
+    .site .post-list a { padding: 24px 0; }
+    .site .post-list-title { font-size: 1.125rem; line-height: 1.4; font-weight: 550; letter-spacing: -0.01em; color: var(--text); }
+    .site .post-list a:hover .post-list-title { color: var(--text-secondary); }
+    .site .post-list-excerpt { font-size: 15px; line-height: 24px; color: var(--text-secondary); }
+    .site .post-list li { border-color: var(--line); }
+
+    /* Narrow screens: the split hero stacks. */
+    @media (max-width: 860px) {
+      .site .pro-hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "label" "h1" "tagline" "status" "cta"; grid-template-rows: none; }
+      .site .pro-hero h1 { margin-bottom: 8px; }
+    }
 
     /* ── Phones ── */
     @media (max-width: 640px) {
@@ -410,5 +502,7 @@
       .site .btn-primary, .site .btn-ghost, .site .btn-edge, .site .btn-firefox,
       .site .support-cta, .site .plan-cta-buy, .site .plan-cta-locked { padding-block: 11px; }
       .site footer { padding: 40px 20px 48px; }
+      .site .support h1.section-heading, .site .support .support-sub { font-size: 1.75rem; }
+      .site .plan { padding: 24px; }
     }
   </style>
