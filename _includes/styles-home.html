@@ -1,0 +1,636 @@
+  <style>
+    /* ── HOME ONLY: THE SCHOGER PASS (2026-11-03, preview) ──
+       Loaded by index.html alone, after styles.html, so the twelve other pages that share styles.html and the
+       default layout render exactly as before. Every rule is either a :root token, which only this page sees
+       because only this page loads the file, or prefixed with .home, the class on this page's <body>.
+       The moves come from the schoger-style skill: neutral grays (the dashboard's own), ink instead of red,
+       rings instead of borders, 550 headings, mono eyebrows, a 1280px container framed by thin lines, a split
+       hero, screenshots in wells and pill buttons. Red stays on the logo and on one thing: the numbered pins on
+       the TidyWL screenshot in the hero. */
+
+    /* ── Tokens: the dashboard's neutral grays. Light. ── */
+    :root {
+      --ink: #0a0a0a;
+      --ink-hover: #262626;
+      --on-ink: #ffffff;
+      --ring-c: rgb(10 10 10 / 0.1);
+      --line: rgb(10 10 10 / 0.1);
+      --well: rgb(10 10 10 / 0.05);
+      --lift: 0 1px 2px rgb(10 10 10 / 0.08);
+      --btn2-bg: #ffffff;
+      --btn2-hover: #fafafa;
+      --brand-red: #d32f2f;
+      --gutter: 24px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+      --bg: #ffffff;
+      --bg-alt: #ffffff;
+      --bg-card: #ffffff;
+      --text: #0a0a0a;
+      --text-secondary: #525252;
+      --text-muted: #525252;
+      --text-subtle: #737373;
+      --border: var(--ring-c);
+      --border-subtle: var(--ring-c);
+      --border-strong: rgb(10 10 10 / 0.2);
+      --accent: var(--ink);
+      --accent-hover: var(--ink-hover);
+      --accent-fill: var(--ink);
+      --accent-fill-hover: var(--ink-hover);
+      --accent-text: var(--ink);
+      --star: var(--ink);
+      --stars-empty: rgb(10 10 10 / 0.2);
+      --highlight-bg: var(--bg-card);
+      --highlight-border: var(--ring-c);
+      --ghost-hover-bg: #fafafa;
+      --ghost-hover-border: rgb(10 10 10 / 0.2);
+      --feature-icon-bg: transparent;
+      --shadow-accent: 0 0 #0000;
+      --stage-bg: transparent;
+      --stage-card: #ffffff;
+      --stage-border: var(--ring-c);
+      --stage-rule: var(--ring-c);
+      --stage-subtle: #737373;
+      --tour-bg: transparent;
+      --ff-edge: transparent;
+    }
+
+    /* ── Tokens: dark. Written twice, like styles.html, and at the same specificity, so these win by order. ── */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ink: #fafafa;
+        --ink-hover: #e5e5e5;
+        --on-ink: #0a0a0a;
+        --ring-c: rgb(255 255 255 / 0.1);
+        --line: rgb(255 255 255 / 0.1);
+        --well: rgb(255 255 255 / 0.05);
+        --lift: 0 1px 2px rgb(0 0 0 / 0.4);
+        --btn2-bg: rgb(255 255 255 / 0.05);
+        --btn2-hover: rgb(255 255 255 / 0.1);
+        --bg: #0a0a0a;
+        --bg-alt: #0a0a0a;
+        --bg-card: #141414;
+        --text: #fafafa;
+        --text-secondary: #a3a3a3;
+        --text-muted: #a3a3a3;
+        --text-subtle: #8f8f8f;
+        --border: var(--ring-c);
+        --border-subtle: var(--ring-c);
+        --border-strong: rgb(255 255 255 / 0.2);
+        --accent-text: var(--ink);
+        --star: var(--ink);
+        --stars-empty: rgb(255 255 255 / 0.25);
+        --highlight-bg: var(--bg-card);
+        --highlight-border: var(--ring-c);
+        --ghost-hover-bg: rgb(255 255 255 / 0.05);
+        --ghost-hover-border: rgb(255 255 255 / 0.2);
+        --stage-bg: transparent;
+        --stage-card: #141414;
+        --stage-border: var(--ring-c);
+        --stage-rule: var(--ring-c);
+        --stage-subtle: #8f8f8f;
+        --tour-bg: transparent;
+        --ff-edge: transparent;
+      }
+    }
+    :root[data-theme="dark"] {
+      --ink: #fafafa;
+      --ink-hover: #e5e5e5;
+      --on-ink: #0a0a0a;
+      --ring-c: rgb(255 255 255 / 0.1);
+      --line: rgb(255 255 255 / 0.1);
+      --well: rgb(255 255 255 / 0.05);
+      --lift: 0 1px 2px rgb(0 0 0 / 0.4);
+      --btn2-bg: rgb(255 255 255 / 0.05);
+      --btn2-hover: rgb(255 255 255 / 0.1);
+      --bg: #0a0a0a;
+      --bg-alt: #0a0a0a;
+      --bg-card: #141414;
+      --text: #fafafa;
+      --text-secondary: #a3a3a3;
+      --text-muted: #a3a3a3;
+      --text-subtle: #8f8f8f;
+      --border: var(--ring-c);
+      --border-subtle: var(--ring-c);
+      --border-strong: rgb(255 255 255 / 0.2);
+      --accent-text: var(--ink);
+      --star: var(--ink);
+      --stars-empty: rgb(255 255 255 / 0.25);
+      --highlight-bg: var(--bg-card);
+      --highlight-border: var(--ring-c);
+      --ghost-hover-bg: rgb(255 255 255 / 0.05);
+      --ghost-hover-border: rgb(255 255 255 / 0.2);
+      --stage-bg: transparent;
+      --stage-card: #141414;
+      --stage-border: var(--ring-c);
+      --stage-rule: var(--ring-c);
+      --stage-subtle: #8f8f8f;
+      --tour-bg: transparent;
+      --ff-edge: transparent;
+    }
+
+    /* ── The canvas grid ──
+       Two vertical lines at the 1280px container's edges, top to bottom, and a full-width line on top of every
+       section. Text sits 40px inside the lines; wells hug them, 8px inside. */
+    body.home { position: relative; overflow-x: clip; zoom: var(--home-zoom); }
+    body.home::before {
+      content: ""; position: absolute; top: 0; bottom: 0; z-index: 0;
+      left: max(var(--gutter), calc((100% - 1280px) / 2));
+      right: max(var(--gutter), calc((100% - 1280px) / 2));
+      border-inline: 1px solid var(--line);
+      pointer-events: none;
+    }
+    .home section { padding: 96px var(--gutter); border-top: 1px solid var(--line); }
+    .home .section-inner,
+    .home .hg-inner,
+    .home .inside-inner { max-width: 1280px; margin-inline: auto; padding-inline: 40px; zoom: 1; }
+
+    /* ── Big screens: the whole page scales as one ──
+       styles.html zooms the hero and the tour alone, in three steps (2026-09-16). Here the same three steps, on
+       the same media queries, zoom the body instead: header, every section, the wells, the footer and the two
+       canvas lines all scale together. The lines are drawn inside the zoom, so they stay on the container's edges
+       by construction, and every spacing rule above (wells 8px in, text 40px in) holds in the page's own pixels.
+       The zoom: 1 just above stops styles.html's own zoom from stacking on top of this one. */
+    :root { --home-zoom: 1; }
+    @media (min-width: 1500px) and (min-height: 1160px) { :root { --home-zoom: 1.12; } }
+    @media (min-width: 1700px) and (min-height: 1290px) { :root { --home-zoom: 1.25; } }
+    @media (min-width: 1900px) and (min-height: 1440px) { :root { --home-zoom: 1.4; } }
+    .home .testimonials, .home .features, .home .privacy, .home .founder-story { background: none; }
+    .home p { text-wrap: pretty; }
+
+    /* ── Type ── */
+    .home .section-label,
+    .home .features-sublabel,
+    .home .wall-of-love-label,
+    .home .inside .how-title,
+    .home .demo-label {
+      font-family: var(--mono); font-size: 12px; line-height: 16px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary);
+    }
+    .home .section-label { margin-bottom: 16px; }
+    .home .section-heading,
+    .home .inside h2 {
+      font-size: 2.25rem; line-height: 1.15; font-weight: 550; letter-spacing: -0.025em;
+      max-width: 40ch; text-wrap: balance; color: var(--text); margin: 0 0 48px;
+    }
+
+    /* ── Buttons: pills, 14px, 40px tall from padding. Ink is primary; white with a ring is secondary. ── */
+    .home .btn-primary,
+    .home .btn-ghost,
+    .home .btn-edge,
+    .home .btn-firefox {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 0; border-radius: 999px;
+      font-size: 14px; line-height: 22px; font-weight: 600; letter-spacing: 0;
+      padding: 9px 18px; text-align: left;
+      transition: background 0.2s;
+    }
+    .home .btn-primary { background: var(--ink); color: var(--on-ink); }
+    .home .btn-primary:hover { background: var(--ink-hover); color: var(--on-ink); }
+    .home .btn-ghost,
+    .home .btn-edge,
+    .home .btn-firefox {
+      background: var(--btn2-bg); color: var(--text);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .home .btn-ghost:hover,
+    .home .btn-edge:hover,
+    .home .btn-firefox:hover { background: var(--btn2-hover); color: var(--text); border-color: transparent; }
+    /* The browsers' own logos stay: they say which browser a button is for (owner, 2026-11-03). */
+    .home .btn-chrome, .home .btn-edge, .home .btn-firefox { padding: 9px 16px 9px 12px; }
+    .home .logo-disc { width: 20px; height: 20px; background: none; box-shadow: none; }
+    .home .logo-disc img, .home .edge-logo, .home .ff-logo { width: 20px; height: 20px; }
+    .home .cta-row, .home .cta-others { gap: 8px; align-items: center; }
+    .home .cta-row { justify-content: flex-start; margin: 0; column-gap: 16px; }
+    /* What rode inside the Chrome button now sits outside it, so the pill stays small: "Free to install" and the
+       two store badges to its right, in a small block of two lines ("Free to install" above, the badges below; the
+       owner, 2026-11-03). The block takes only the room left beside the button (basis 0, never wider than its own
+       text), so Edge and Firefox move to the next line together when the line is full. */
+    .home .cta-row > .btn-chips {
+      flex: 1 1 0%; max-width: max-content; margin: 0;
+      display: grid; grid-template-columns: auto; align-items: center; gap: 2px 16px;
+    }
+    .home .cta-row > .btn-chips > .btn-sub {
+      grid-column: 1 / -1; margin: 0;
+      font-size: 13px; line-height: 20px; font-weight: 500; color: var(--text);
+    }
+    /* Where the row is wide enough for the button and both badges side by side (460px is the button, the gap and the
+       two badges in Inter; "Free to install" is narrower than the badges' line), the block keeps that width, so Edge
+       and Firefox are what moves down when the line is full. Narrower rows, the hero between about 860 and 1330px
+       wide, stack all three lines beside the button. A grid, not a wrapping flexbox: a wrapping flexbox's
+       max-content is all its items on one line, which would push the block past the row. */
+    .home .cta-row { container-type: inline-size; }
+    @container (min-width: 460px) {
+      .home .cta-row > .btn-chips { grid-template-columns: auto auto; min-width: max-content; }
+    }
+    .home .cta-row .btn-chip {
+      padding: 0; background: none; color: var(--text-secondary);
+      font-size: 13px; line-height: 20px; font-weight: 500; letter-spacing: 0; gap: 6px;
+    }
+    .home .cta-row .btn-chip svg { width: 13px; height: 13px; }
+    .home .install-extra { justify-content: flex-start; margin: 8px 0 0; }
+    .home .price-line { font-size: 13px; line-height: 20px; color: var(--text-secondary); }
+    .home .hero-trust-pill {
+      border: 0; box-shadow: inset 0 0 0 1px var(--ring-c); background: none;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .home .hero-trust-pill svg { color: var(--text-secondary); }
+    /* Phones and tablets: the hand-off replaces the install buttons, and the note goes with them. */
+    .home .handoff { justify-items: start; margin: 0 0 16px; }
+    .home .handoff-note { text-align: left; font-size: 15px; color: var(--text-secondary); }
+    .home .handoff-btn svg { display: none; }
+    .home .handoff .btn-primary { border-radius: 24px; padding: 11px 22px; line-height: 20px; }
+    .home .handoff .btn-ghost.handoff-btn { padding: 11px 22px; }
+    .home .btn-primary .btn-sub { font-size: 12px; font-weight: 500; opacity: 0.8; }
+    .home .skip-link { background: var(--ink); color: var(--on-ink); border-radius: 999px; }
+
+    /* ── Header: bigger mark, links straight after it, small pills ── */
+    .home .stage-top { background: none; }
+    .home .site-header {
+      max-width: none; margin: 0; gap: 8px;
+      padding: 14px calc(max(var(--gutter), (100% - 1280px) / 2) + 40px);
+    }
+    .home .site-header-home { margin-right: 16px; gap: 10px; font-size: 1rem; font-weight: 600; }
+    .home .site-header-home:hover { color: var(--text); }
+    .home .site-header-icon { width: 32px; height: 32px; border-radius: 8px; }
+    .home .site-nav { gap: 2px; }
+    .home .site-nav a {
+      font-size: 14px; line-height: 20px; font-weight: 500; padding: 5px 10px; border-radius: 999px;
+      color: var(--text-secondary);
+    }
+    .home .site-nav a:hover { color: var(--text); background: var(--ghost-hover-bg); }
+    .home .site-nav a[aria-current="page"] { color: var(--text); }
+    .home .site-nav-cta--bar {
+      margin-left: auto; background: var(--ink); color: var(--on-ink);
+      font-size: 14px; line-height: 20px; font-weight: 600; padding: 5px 12px; border-radius: 999px;
+    }
+    .home .site-nav-cta--bar:hover,
+    .home .site-nav .site-nav-cta:hover { background: var(--ink-hover); color: var(--on-ink); }
+    .home .theme-toggle,
+    .home .site-menu-btn {
+      width: 30px; height: 30px; border: 0; border-radius: 999px;
+      background: var(--btn2-bg); color: var(--text);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .home .theme-toggle svg { width: 16px; height: 16px; }
+    .home .theme-toggle:hover, .home .site-menu-btn:hover { background: var(--btn2-hover); }
+
+    /* ── Hero: headline left (3/5), the stake, install and price right (2/5), then the comparison in a well.
+       DOM order is untouched; grid areas place it. ── */
+    .home .hg { padding: 72px var(--gutter) 96px; }
+    .home .hg-inner {
+      display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); column-gap: 48px;
+      grid-template-areas:
+        "h1 stake"
+        "h1 ctarow"
+        "h1 handoff"
+        "h1 extra"
+        "h1 ."
+        "demo demo"
+        "vs vs"
+        "rows rows"
+        "stats stats";
+      grid-template-rows: repeat(4, auto) 1fr repeat(4, auto);
+      align-items: start; text-align: left;
+    }
+    .home .hg .close { display: contents; }
+    .home .hg h1 {
+      grid-area: h1; margin: 0;
+      font-size: clamp(2.5rem, 4.4vw, 3.5rem); line-height: 1.05; font-weight: 550; letter-spacing: -0.025em;
+      text-wrap: balance;
+    }
+    .home .hg h1 .em { color: inherit; }
+    .home .hg .stake {
+      grid-area: stake; display: block; margin: 0 0 24px; padding: 8px 0 0;
+      background: none; border: 0; border-radius: 0;
+      font-size: 16px; line-height: 24px; font-weight: 400; color: var(--text-secondary);
+    }
+    .home .hg .stake .dot { display: none; }
+    .home .hg .close .cta-row { grid-area: ctarow; justify-content: flex-start; margin: 0; }
+    .home .hg .handoff { grid-area: handoff; }
+    .home .hg .install-extra { grid-area: extra; }
+    .home .hg .phone-demo { grid-area: demo; }
+    .home .hg .rows { grid-area: rows; }
+    .home .hg .hero-stats { grid-area: stats; }
+
+    /* The comparison: one large well, 64px in, the two screenshots standing on its bottom edge. */
+    .home .hg .vs {
+      grid-area: vs; position: relative; overflow: hidden;
+      width: auto; max-width: none; margin: 64px -32px 0; padding: 48px 64px 0;
+      background: var(--well); border-radius: 20px;
+    }
+    .home .hg .vs::after {
+      content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit;
+      box-shadow: inset 0 0 0 1px var(--well); pointer-events: none;
+    }
+    .home .hg .vs figcaption {
+      font-family: var(--mono); font-size: 12px; line-height: 16px; font-weight: 500;
+      letter-spacing: 0.1em; color: var(--text-secondary);
+    }
+    .home .hg .vs .figB figcaption { color: var(--text); }
+    .home .hg .vs .shot {
+      border: 0; border-radius: 12px 12px 0 0; background: #0f0f0f; box-shadow: none;
+    }
+    .home .hg .vs .shot img { border-radius: 12px 12px 0 0; }
+    .home .hg .vs .shot::after {
+      content: ""; position: absolute; inset: 0; border-radius: inherit;
+      box-shadow: inset 0 0 0 1px var(--ring-c); pointer-events: none;
+    }
+    .home .hg .badge {
+      width: 36px; height: 36px; border: 0;
+      background: var(--bg); color: var(--text-secondary);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+      font-family: var(--mono); font-size: 12px; font-weight: 500;
+    }
+    .home .hg .pin { font-weight: 600; }
+    .home .hg .pin.yt {
+      background: #fafafa; color: #0a0a0a;
+      box-shadow: 0 0 0 3px rgb(255 255 255 / 0.25), 0 2px 8px rgb(0 0 0 / 0.5);
+    }
+    /* The one red moment: where each fix happens, on the product itself. */
+    .home .hg .pin.tw {
+      background: var(--brand-red); color: #fff;
+      box-shadow: 0 0 0 4px rgb(211 47 47 / 0.3), 0 4px 12px rgb(0 0 0 / 0.45);
+    }
+
+    /* The four pain → fix rows sit under the pictures, on the same columns. */
+    .home .hg .rows { width: auto; max-width: none; margin: 24px 32px 0; }
+    .home .hg .row { padding: 12px 0; border-top: 1px solid var(--line); }
+    .home .hg .row:last-child { border-bottom: 1px solid var(--line); }
+    .home .hg .pain { font-size: 15px; color: var(--text-secondary); }
+    .home .hg .pain b { font-weight: 600; }
+    .home .hg .fix { font-size: 15px; font-weight: 550; color: var(--text); }
+    .home .hg .row .n { width: 20px; height: 20px; font-size: 11px; font-weight: 600; }
+    .home .hg .pain .n { border: 0; box-shadow: inset 0 0 0 1px var(--border-strong); color: var(--text-secondary); }
+    .home .hg .fix .n { background: var(--ink); color: var(--on-ink); }
+    .home .hg .to { color: var(--text-subtle); }
+    .home .hg .chip {
+      background: none; box-shadow: inset 0 0 0 1px var(--ring-c);
+      font-size: 12px; font-weight: 500; color: var(--text-secondary); padding: 1px 8px;
+    }
+    .home .hg .proof .stars { color: var(--ink); }
+    .home .hg .proof q { color: var(--text-secondary); }
+
+    /* Stats: three left-aligned columns, a thin line between, values large and regular. */
+    .home .hg .hero-stats {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0; margin: 64px 0 0; justify-content: stretch; align-items: stretch;
+    }
+    .home .hero-stat { text-align: left; padding: 0 32px; border-left: 1px solid var(--line); }
+    .home .hero-stat:first-child { padding-left: 0; border-left: 0; }
+    .home .hero-stat-num {
+      font-size: 3rem; line-height: 1; font-weight: 400; letter-spacing: -0.025em; color: var(--text);
+    }
+    .home .hero-stat-star { color: var(--text); font-size: 0.55em; margin-left: 6px; vertical-align: 0.5em; }
+    .home .hero-stat-label { margin-top: 12px; font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+    .home a.hero-stat:hover .hero-stat-label { color: var(--text); }
+
+    /* ── The dashboard tour ── */
+    .home .inside { padding-bottom: 96px; }
+    .home .inside-inner { text-align: left; }
+    .home .inside .section-label { margin-bottom: 16px; }
+    .home .inside .shot {
+      border: 0; overflow: visible; box-shadow: none; background: none;
+      border-radius: 12px; isolation: isolate;
+    }
+    .home .inside .shot::before {
+      content: ""; position: absolute; inset: -8px; z-index: -1;
+      border-radius: 20px; background: var(--well);
+    }
+    .home .inside .shot::after {
+      content: ""; position: absolute; inset: 0; border-radius: 12px;
+      box-shadow: inset 0 0 0 1px var(--ring-c); pointer-events: none;
+    }
+    .home .inside .shot img { border-radius: 12px; background: #0f0f0f; }
+    .home .inside svg.leaders line { stroke: var(--text-subtle); stroke-width: 1; opacity: 0.9; }
+    .home .inside svg.leaders circle { fill: rgb(255 255 255 / 0.12); stroke: #fff; stroke-width: 2; }
+    .home .inside .num { width: 20px; height: 20px; background: var(--ink); color: var(--on-ink); font-size: 11px; font-weight: 600; }
+    .home .inside .txt b { font-size: 14px; line-height: 20px; font-weight: 550; }
+    .home .inside .txt span { font-size: 13px; line-height: 18px; color: var(--text-secondary); }
+    .home .inside .pin {
+      background: #fafafa; color: #0a0a0a; font-weight: 600;
+      box-shadow: 0 0 0 3px rgb(255 255 255 / 0.25), 0 2px 8px rgb(0 0 0 / 0.5);
+    }
+    .home .inside ol.features-list { margin: 40px 0 0; max-width: none; }
+    .home .inside ol.features-list li { font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+    .home .inside ol.features-list b { font-weight: 550; }
+    .home .inside .also { margin: 40px 0 0; font-size: 14px; color: var(--text-secondary); }
+    .home .inside .also b { color: var(--text); font-weight: 550; }
+    .home .inside .how-title { margin: 56px 0 16px; }
+    .home .inside .how { margin: 0; max-width: none; gap: 16px 32px; }
+    .home .inside .how li { font-size: 14px; line-height: 20px; }
+    .home .inside .how .step {
+      width: 28px; height: 28px; border: 0; border-radius: 999px;
+      box-shadow: inset 0 0 0 1px var(--border-strong); font-weight: 600; font-size: 12px;
+    }
+    .home .inside .how b { font-size: 14px; font-weight: 550; }
+    .home .inside .how .d { font-size: 14px; color: var(--text-secondary); }
+    @media (min-width: 1300px) {
+      /* The fixed 1220px stage sits 30px inside the lines. */
+      .home .inside .stage { margin-inline: calc((100% - 1220px) / 2); }
+    }
+    @media (max-width: 1299px) {
+      .home .inside .stage { max-width: none; margin: 0; }
+    }
+
+    /* ── Demo videos: two wells, 8px apart, hugging the lines ── */
+    .home .demo-section { padding: 96px var(--gutter); }
+    .home .demo-label { max-width: 1280px; margin: 0 auto 24px; padding-inline: 40px; justify-content: flex-start; }
+    .home .demo-videos { max-width: 1280px; margin: 0 auto; padding-inline: 8px; gap: 8px; }
+    .home .demo-section > .video-note { max-width: 1280px; margin: 16px auto 0; padding-inline: 40px; text-align: left; }
+    .home .video-wrapper {
+      position: relative; max-width: none; padding: 8px;
+      border: 0; border-radius: 20px; background: var(--well); box-shadow: none;
+    }
+    .home .video-facade, .home .video-wrapper iframe { border-radius: 12px; }
+    .home .video-facade::after {
+      content: ""; position: absolute; inset: 0; border-radius: inherit;
+      box-shadow: inset 0 0 0 1px var(--ring-c); pointer-events: none;
+    }
+    .home .video-play { width: 64px; height: 64px; background: #fff; color: #0a0a0a; box-shadow: 0 4px 16px rgb(0 0 0 / 0.4); }
+    .home .video-facade:hover .video-play { background: #fff; }
+    .home .video-facade:focus-visible { outline-color: #fff; }
+    .home .demo-video figcaption {
+      text-align: left; margin-top: 12px; padding-inline: 8px;
+      font-size: 14px; line-height: 20px; font-weight: 550;
+    }
+    .home .demo-video figcaption span { color: var(--text-secondary); }
+    .home .video-note { font-size: 13px; color: var(--text-secondary); }
+    .home .hg .phone-demo .video-note { text-align: left; }
+
+    /* ── Reviews: the real store reviews, every word kept. Rings and type only; no portraits exist. ── */
+    .home .testimonial {
+      border: 0; border-radius: 16px; padding: 24px; gap: 16px; background: var(--bg-card);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .home .testimonial .stars { color: var(--ink); font-size: 12px; letter-spacing: 2px; }
+    .home .testimonial blockquote { font-size: 15px; line-height: 24px; color: var(--text); }
+    .home .testimonial .author { font-size: 12px; line-height: 20px; color: var(--text-secondary); }
+    .home .testimonial .author .name { color: var(--text); font-weight: 550; }
+    .home .testimonial .author .source { color: var(--text-secondary); }
+    .home .reviews.is-on .testimonials-grid { padding: 2px 2px 8px; }
+    .home .reviews-controls, .home .marquee-controls { justify-content: flex-start; }
+    .home .reviews-btn {
+      border: 0; border-radius: 999px; background: var(--btn2-bg);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .home .reviews-btn:hover { background: var(--btn2-hover); }
+    .home .wall-of-love-label { margin: 56px 0 16px; }
+    .home .wall-blurb {
+      border: 0; border-radius: 12px; background: var(--bg-card);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .home .wall-blurb blockquote { font-size: 14px; line-height: 20px; }
+    .home .wall-blurb .meta { font-size: 12px; color: var(--text-secondary); }
+    .home .wall-blurb .meta .stars { color: var(--ink); }
+    .home .wall-blurb .meta .author-name { color: var(--text); font-weight: 550; }
+    .home .marquee { padding: 2px 2px 10px; }
+    .home .lang-tag { border: 0; box-shadow: inset 0 0 0 1px var(--ring-c); color: var(--text-secondary); }
+
+    /* ── Why I built this, then install ── */
+    .home .founder-story .section-inner { max-width: 1280px; }
+    .home .founder-story .section-heading { font-size: 2.25rem; margin-bottom: 32px; }
+    .home .founder-story .section-heading .sub { color: var(--text-secondary); font-weight: 500; }
+    .home .founder-story p.body { font-size: 16px; line-height: 28px; color: var(--text-secondary); max-width: 65ch; }
+    .home .founder-story .signature {
+      margin-top: 24px; font-style: normal; font-size: 14px; font-weight: 550; color: var(--text);
+    }
+    .home .closer .cta-row { margin: 40px 0 0; }
+    .home .closer .install-extra { margin: 8px 0 0; }
+    .home .closer .handoff { margin-top: 32px; }
+
+    /* ── Features ── */
+    .home .features .section-inner > .features-grid { gap: 16px; }
+    .home .feature-card {
+      border: 0; border-radius: 16px; padding: 24px; background: var(--bg-card);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .home .feature-icon,
+    .home .feature-mini .feature-icon {
+      width: 36px; height: 36px; border-radius: 10px; margin-bottom: 20px;
+      color: var(--ink); background: var(--btn2-bg);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .home .feature-icon svg { width: 18px; height: 18px; }
+    .home .feature-card h3 { font-size: 14px; line-height: 20px; font-weight: 550; margin-bottom: 4px; color: var(--text); }
+    .home .feature-card p { font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+    .home .feature-card .pill {
+      margin-top: 12px; padding: 2px 8px; border-radius: 999px;
+      box-shadow: inset 0 0 0 1px var(--ring-c);
+      font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.1em; color: var(--text-secondary);
+    }
+    .home .features-sublabel { margin: 56px 0 16px; }
+    .home .feature-mini {
+      border: 0; border-radius: 12px; padding: 16px; background: var(--bg-card);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .home .feature-mini .feature-icon { width: 28px; height: 28px; border-radius: 8px; margin-bottom: 12px; }
+    .home .feature-mini .feature-icon svg { width: 14px; height: 14px; }
+    .home .feature-mini h3 { font-size: 14px; line-height: 20px; font-weight: 550; }
+    .home .feature-mini p { font-size: 13px; line-height: 20px; color: var(--text-secondary); }
+    .home .features-tail { text-align: left; font-size: 14px; color: var(--text-secondary); }
+    .home .more-features > summary {
+      border: 0; padding: 9px 18px; font-size: 14px; line-height: 22px; background: var(--btn2-bg);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .home .more-features > summary span { color: var(--text-secondary); }
+    .home .more-features > summary:focus-visible { outline-color: var(--ink); }
+    .home .features .pro-line { margin-top: 32px; font-size: 14px; line-height: 24px; color: var(--text-secondary); max-width: 80ch; }
+    .home .features .pro-line a { font-weight: 550; text-decoration-color: var(--border-strong); }
+
+    /* ── FAQ ── */
+    .home .faq { max-width: 768px; margin: 0; }
+    .home .faq-list { border-top: 1px solid var(--line); }
+    .home .faq-item { border-bottom: 1px solid var(--line); }
+    .home .faq-q { font-size: 15px; line-height: 24px; font-weight: 550; padding: 18px 0; }
+    .home .faq-q:hover { color: var(--text-secondary); }
+    .home .faq-q .plus { color: var(--text-subtle); }
+    .home .faq-a { font-size: 15px; line-height: 26px; color: var(--text-secondary); max-width: 70ch; }
+    .home .faq-a a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+
+    /* ── Privacy: an inline heading — the title in ink, its sentence in gray, one paragraph. ── */
+    .home .privacy { text-align: left; }
+    .home .privacy .section-inner { max-width: 1280px; }
+    .home .privacy .inline-heading {
+      font-size: 2.25rem; line-height: 1.2; letter-spacing: -0.025em; max-width: 40ch; margin-bottom: 32px;
+    }
+    .home .privacy .inline-heading .section-heading,
+    .home .privacy .inline-heading p {
+      display: inline; font: inherit; letter-spacing: inherit; margin: 0; max-width: none;
+    }
+    .home .privacy .inline-heading .section-heading { font-weight: 550; color: var(--text); }
+    /* A drawn full stop joins the two; the markup's words are unchanged. */
+    .home .privacy .inline-heading .section-heading::after { content: "."; }
+    .home .privacy .inline-heading p { font-weight: 500; color: var(--text-secondary); }
+    .home .privacy p.note { font-size: 16px; line-height: 28px; color: var(--text-secondary); max-width: 72ch; margin-top: 0; }
+    .home .privacy .chips { display: flex; justify-content: flex-start; gap: 8px; margin-top: 32px; }
+    .home .privacy .chip {
+      border: 0; box-shadow: inset 0 0 0 1px var(--ring-c); background: none; padding: 4px 12px;
+      font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.1em; color: var(--text-secondary);
+    }
+
+    /* ── Footer: no band, left-aligned, small links ── */
+    .home footer {
+      border-top: 1px solid var(--line); text-align: left;
+      padding: 48px calc(max(var(--gutter), (100% - 1280px) / 2) + 40px) 56px;
+    }
+    .home .footer-links { justify-content: flex-start; gap: 8px 24px; margin-bottom: 32px; }
+    .home .footer-links a { font-size: 13px; line-height: 20px; color: var(--text-secondary); }
+    .home .footer-links a:hover { color: var(--text); }
+    .home .footer-links .btn-footer {
+      background: var(--ink); color: var(--on-ink); font-weight: 600; border-radius: 999px; padding: 5px 12px;
+    }
+    .home .footer-links .btn-footer:hover { background: var(--ink-hover); color: var(--on-ink); }
+    .home .kofi-badge { margin-bottom: 24px; box-shadow: 0 0 0 1px var(--ring-c); }
+    .home .kofi-badge:hover { box-shadow: 0 0 0 1px var(--ring-c), var(--lift); }
+    .home .kofi-badge img { width: 120px; }
+    .home .footer-legal { margin: 0 0 8px; max-width: 80ch; font-size: 12px; color: var(--text-subtle); }
+    .home .copyright { font-size: 12px; color: var(--text-subtle); }
+
+    /* ── Narrow screens ── */
+    @media (max-width: 1100px) {
+      .home .hg-inner { column-gap: 40px; }
+      .home .hero-stat-num { font-size: 2.5rem; }
+    }
+    /* Phones and small tablets: one column, the demo video in the hero, no comparison (as before). */
+    @media (max-width: 860px) {
+      .home .hg { padding-top: 48px; padding-bottom: 64px; }
+      .home .hg-inner {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "h1" "stake" "demo" "ctarow" "handoff" "extra" "stats";
+        grid-template-rows: none;
+      }
+      .home .hg .stake { padding-top: 16px; }
+      .home .hg .phone-demo { max-width: none; margin: 0 0 24px; }
+      .home .hg .hero-stats { margin-top: 48px; }
+    }
+    @media (max-width: 640px) {
+      :root { --gutter: 20px; }
+      body.home::before { display: none; }
+      .home section { padding-block: 64px; }
+      .home .inside { padding-bottom: 64px; }
+      .home .section-inner, .home .hg-inner, .home .inside-inner { padding-inline: 0; }
+      .home .hg { padding-top: 40px; }
+      .home .hg h1 { font-size: 2.25rem; }
+      .home .section-heading, .home .inside h2,
+      .home .founder-story .section-heading, .home .privacy .inline-heading { font-size: 1.75rem; }
+      .home .site-header { padding: 12px 16px; }
+      .home .site-header-home { margin-right: auto; }
+      .home .theme-toggle, .home .site-menu-btn { width: 44px; height: 44px; }
+      .home .theme-toggle svg { width: 18px; height: 18px; }
+      .home .site-header .site-nav { border: 0; box-shadow: 0 0 0 1px var(--ring-c), 0 18px 40px -22px rgb(0 0 0 / 0.55); border-radius: 16px; }
+      .home .site-header .site-nav a { font-size: 15px; padding: 10px 12px; }
+      .home .site-header .site-nav-more a { font-size: 13px; padding: 8px 12px; }
+      .home .site-header .site-nav .site-nav-cta--drawer {
+        background: var(--ink); color: var(--on-ink); border-radius: 999px; padding: 11px 20px; line-height: 22px;
+      }
+      .home .btn-primary, .home .btn-ghost, .home .btn-edge, .home .btn-firefox { padding-block: 11px; }
+      /* Three stats: the first across the top, the other two side by side. */
+      .home .hg .hero-stats { grid-template-columns: 1fr 1fr; row-gap: 24px; }
+      .home .hero-stat:first-child { grid-column: 1 / -1; padding: 0 0 24px; border-bottom: 1px solid var(--line); }
+      .home .hero-stat:nth-child(2) { padding-left: 0; border-left: 0; }
+      .home .hero-stat-num { font-size: 2.25rem; }
+      .home .inside .how { grid-template-columns: 1fr; }
+      .home footer { padding: 40px 20px 48px; }
+    }
+  </style>
