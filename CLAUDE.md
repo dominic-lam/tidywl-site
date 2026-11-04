@@ -56,6 +56,8 @@ Keep the site as simple as possible. No local build tools, no bundlers, no frame
 - `assets/` — static images (icon128.png, small_promo_tile.png, og-image.png)
 - `.gitignore` — standard ignores
 
+**Which style include serves which page (2026-11-03, the Schoger look).** `styles-home.html` styles the home page only. `styles-site.html` styles every default-layout page (body class `site`), and the Netflix layout loads it too. `styles-netflix-site.html` comes after it on `_layouts/netflix.html` (body class `nf site`: netflix/, its pricing, pro, privacy, terms, refunds, tutorials, checkout/success and blog) and covers what only those pages have; it also turns the old Netflix red accent into ink, so red stays on the logo. `styles-leaver.html` is loaded after the page's own style block by `uninstall/` (body class `leave`) and `netflix/removed/` (`nf leave`), the two pages that send data, so neither page's markup or script changed for the look. `styles-site.html`'s opening comment still says netflix/** loads neither file; that is out of date.
+
 ## Key Constraints
 - CNAME file is managed by GitHub Pages — do NOT modify or delete it
 - No local build tooling beyond Jekyll (see Tooling rule above)
