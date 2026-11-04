@@ -1,0 +1,426 @@
+  <style>
+    /* ── THE TWO LEAVER PAGES: THE SCHOGER PASS (2026-11-03) ──
+       uninstall/ (the receipt) and netflix/removed/ are layout: null pages and load neither styles-site.html nor the
+       Netflix layout, so each includes this file after its own <style> block and puts `leave` on <body>. The tokens
+       are styles-site.html's, copied value for value (the same copy-on-purpose as styles-site.html's own note); every
+       other rule is prefixed with .leave and only restyles: no markup, script or wording depends on this file.
+       Red stays on the logo; error text uses --danger and a success check --ok, the green of checkout/success/. */
+
+    /* ── Tokens: the home page's, value for value. Light. ── */
+    :root {
+      --ink: #0a0a0a;
+      --ink-hover: #262626;
+      --on-ink: #ffffff;
+      --ring-c: rgb(10 10 10 / 0.1);
+      --line: rgb(10 10 10 / 0.1);
+      --well: rgb(10 10 10 / 0.05);
+      --lift: 0 1px 2px rgb(10 10 10 / 0.08);
+      --btn2-bg: #ffffff;
+      --btn2-hover: #fafafa;
+      --danger: #c62828;
+      --gutter: 24px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      /* Text and full-width blocks start 40px inside the canvas lines. A percentage inside a custom property
+         resolves where it is used, so this is only used on blocks as wide as the page. */
+      --edge: calc(max(var(--gutter), (100% - 1280px) / 2) + 40px);
+
+      --bg: #ffffff;
+      --bg-alt: #ffffff;
+      --bg-card: #ffffff;
+      --text: #0a0a0a;
+      --text-secondary: #525252;
+      --text-muted: #525252;
+      --text-subtle: #737373;
+      --border: var(--ring-c);
+      --border-subtle: var(--ring-c);
+      --border-strong: rgb(10 10 10 / 0.2);
+      --accent: var(--ink);
+      --accent-hover: var(--ink-hover);
+      --accent-fill: var(--ink);
+      --accent-fill-hover: var(--ink-hover);
+      --accent-text: var(--ink);
+      --star: var(--ink);
+      --stars-empty: rgb(10 10 10 / 0.2);
+      --highlight-bg: var(--bg-card);
+      --highlight-border: var(--ring-c);
+      --ghost-hover-bg: #fafafa;
+      --ghost-hover-border: rgb(10 10 10 / 0.2);
+      --feature-icon-bg: transparent;
+      --shadow-accent: 0 0 #0000;
+      --stage-bg: transparent;
+      --stage-card: #ffffff;
+      --stage-border: var(--ring-c);
+      --stage-rule: var(--ring-c);
+      --stage-subtle: #737373;
+      --tour-bg: transparent;
+      --ff-edge: transparent;
+    }
+
+    /* ── Tokens: dark. Written twice, like styles.html, at the same specificity, so these win by order. ── */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ink: #fafafa;
+        --ink-hover: #e5e5e5;
+        --on-ink: #0a0a0a;
+        --ring-c: rgb(255 255 255 / 0.1);
+        --line: rgb(255 255 255 / 0.1);
+        --well: rgb(255 255 255 / 0.05);
+        --lift: 0 1px 2px rgb(0 0 0 / 0.4);
+        --btn2-bg: rgb(255 255 255 / 0.05);
+        --btn2-hover: rgb(255 255 255 / 0.1);
+        --danger: #ff7a70;
+        --bg: #0a0a0a;
+        --bg-alt: #0a0a0a;
+        --bg-card: #141414;
+        --text: #fafafa;
+        --text-secondary: #a3a3a3;
+        --text-muted: #a3a3a3;
+        --text-subtle: #8f8f8f;
+        --border: var(--ring-c);
+        --border-subtle: var(--ring-c);
+        --border-strong: rgb(255 255 255 / 0.2);
+        --accent-text: var(--ink);
+        --star: var(--ink);
+        --stars-empty: rgb(255 255 255 / 0.25);
+        --highlight-bg: var(--bg-card);
+        --highlight-border: var(--ring-c);
+        --ghost-hover-bg: rgb(255 255 255 / 0.05);
+        --ghost-hover-border: rgb(255 255 255 / 0.2);
+        --stage-bg: transparent;
+        --stage-card: #141414;
+        --stage-border: var(--ring-c);
+        --stage-rule: var(--ring-c);
+        --stage-subtle: #8f8f8f;
+        --tour-bg: transparent;
+        --ff-edge: transparent;
+      }
+    }
+    :root[data-theme="dark"] {
+      --ink: #fafafa;
+      --ink-hover: #e5e5e5;
+      --on-ink: #0a0a0a;
+      --ring-c: rgb(255 255 255 / 0.1);
+      --line: rgb(255 255 255 / 0.1);
+      --well: rgb(255 255 255 / 0.05);
+      --lift: 0 1px 2px rgb(0 0 0 / 0.4);
+      --btn2-bg: rgb(255 255 255 / 0.05);
+      --btn2-hover: rgb(255 255 255 / 0.1);
+      --danger: #ff7a70;
+      --bg: #0a0a0a;
+      --bg-alt: #0a0a0a;
+      --bg-card: #141414;
+      --text: #fafafa;
+      --text-secondary: #a3a3a3;
+      --text-muted: #a3a3a3;
+      --text-subtle: #8f8f8f;
+      --border: var(--ring-c);
+      --border-subtle: var(--ring-c);
+      --border-strong: rgb(255 255 255 / 0.2);
+      --accent-text: var(--ink);
+      --star: var(--ink);
+      --stars-empty: rgb(255 255 255 / 0.25);
+      --highlight-bg: var(--bg-card);
+      --highlight-border: var(--ring-c);
+      --ghost-hover-bg: rgb(255 255 255 / 0.05);
+      --ghost-hover-border: rgb(255 255 255 / 0.2);
+      --stage-bg: transparent;
+      --stage-card: #141414;
+      --stage-border: var(--ring-c);
+      --stage-rule: var(--ring-c);
+      --stage-subtle: #8f8f8f;
+      --tour-bg: transparent;
+      --ff-edge: transparent;
+    }
+
+    /* Success green, from checkout/success/ (option B, 2026-10-30). */
+    :root { --ok: #2e7d4f; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ok: #5cc48a; } }
+    :root[data-theme="dark"] { --ok: #5cc48a; }
+
+    /* netflix/removed/ also loads styles-netflix.html, whose red sits on body.nf. Back to ink, as on the Netflix
+       layout's pages (styles-netflix-site.html); :root ties the specificity of its dark rules and this comes later. */
+    :root body.nf.leave {
+      --accent: var(--ink);
+      --accent-hover: var(--ink-hover);
+      --accent-fill: var(--ink);
+      --accent-fill-hover: var(--ink-hover);
+      --accent-text: var(--ink);
+      --feature-icon-bg: transparent;
+      --highlight-bg: var(--bg-card);
+      --highlight-border: var(--ring-c);
+    }
+
+    .leave p { text-wrap: pretty; }
+
+    /* ════ uninstall/: the receipt ════
+       Kept from the page: the column (50% of the window from 1440px up), the root size that grows with the window,
+       and every text size 2px under its rem value, all the owner's calls. So sizes here are rem minus 2px, and at
+       1440 x 900 (a 16px root) they land on the site's px values: calc(1rem - 2px) is its 14px button, calc(0.875rem
+       - 2px) its 12px eyebrow. The site's body zoom is left out: the root size already does that job, and the two
+       would stack. The canvas lines frame the column, 2.5rem (40px at 1440) outside it, instead of the 1280px
+       container, and show only where the column has that room. */
+    :root body.leave .un {
+      --un-field: var(--bg-card);
+      --un-raise: var(--btn2-hover);
+      --un-glow: transparent;
+      --un-bar: var(--well);
+      --un-lift: 0 0 0 1px var(--ring-c), 0 12px 32px -16px rgb(0 0 0 / 0.35);
+      --un-rate-shadow: none;
+      position: relative;
+    }
+    body.leave { overflow-x: clip; }
+    @media (min-width: 1024px) {
+      .leave .un::before {
+        content: ""; position: absolute; top: 0; bottom: 0; z-index: 0; pointer-events: none;
+        left: calc(clamp(24px, 93.4% - 625px, 50%) / 2 - 2.5rem);
+        right: calc(clamp(24px, 93.4% - 625px, 50%) / 2 - 2.5rem);
+        border-inline: 1px solid var(--line);
+      }
+    }
+    .leave .un > * { position: relative; }
+    /* Full-width lines under the header and over the footer, as on every other page. */
+    .leave .un-main::before,
+    .leave .un-foot::before {
+      content: ""; position: absolute; top: 0; left: 50%; width: 100vw; transform: translateX(-50%);
+      border-top: 1px solid var(--line); pointer-events: none;
+    }
+    .leave .un-main { padding-top: 2rem; }
+    .leave .un-head { min-height: 3.75rem; padding-top: 0; }
+    .leave .un-home { font-size: calc(1.125rem - 2px); gap: 0.625rem; }
+    .leave .un-home img { width: 2rem; height: 2rem; border-radius: 0.5rem; }
+    .leave .un :focus-visible { outline-color: var(--ink); }
+
+    /* The receipt: a ring instead of a border, no red glow, the figure left-aligned in ink. */
+    .leave .un-receipt { border: 0; box-shadow: 0 0 0 1px var(--ring-c), var(--lift); }
+    .leave .un-receipt::before { content: none; }
+    /* The tear's notches stick 2px past a phone's 12px margin; their outer halves are clipped away anyway. */
+    .leave .un-receipt { overflow-x: clip; }
+    .leave .un-r-top { font-size: calc(0.875rem - 2px); line-height: 1rem; font-weight: 500; letter-spacing: 0.1em; color: var(--text-secondary); }
+    .leave .un-pill { border: 0; box-shadow: inset 0 0 0 1px var(--ring-c); padding: 0.25rem 0.75rem; letter-spacing: 0.1em; }
+    .leave .un-pill::before { width: 0.375rem; height: 0.375rem; background: var(--text); }
+    .leave .un-fig > div { align-items: flex-start; text-align: left; }
+    :root body.leave .un-num {
+      background: none; -webkit-background-clip: border-box; background-clip: border-box;
+      -webkit-text-fill-color: currentColor; color: var(--text);
+      font-weight: 550; letter-spacing: -0.045em;
+    }
+    .leave .un-fig-label { font-weight: 550; letter-spacing: -0.015em; }
+    .leave .un-fig-title { font-weight: 550; letter-spacing: -0.035em; }
+    .leave .un-fig-sub { max-width: 40rem; }
+    .leave .un-line b { font-weight: 600; }
+    .leave .un-tear { border-top: 1px dashed var(--border-strong); }
+    .leave .un-tear::before, .leave .un-tear::after { border-color: var(--ring-c); }
+
+    /* The rating ask: an ink pill for one store, three white pills with their logos when the store is unknown. */
+    .leave .un-ask-h { font-weight: 550; letter-spacing: -0.02em; }
+    .leave .un-mono { border: 0; background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c); color: var(--text); font-family: var(--mono); font-weight: 500; }
+    .leave .un-rate {
+      min-height: 0; gap: 0.5rem; padding: 0.5625rem 1.125rem 0.5625rem 0.875rem;
+      border: 0; border-radius: 999px; background: var(--ink); color: var(--on-ink); box-shadow: none;
+      font-size: calc(1rem - 2px); line-height: 1.375rem; font-weight: 600; letter-spacing: 0;
+      transition: background 0.2s;
+    }
+    .leave .un-rate:hover { background: var(--ink-hover); transform: none; }
+    .leave .un-rate .un-star { width: 1rem; height: 1rem; }
+    .leave .un-act:not(.is-one) .un-rate {
+      min-height: 0; padding: 0.5625rem 1rem 0.5625rem 0.75rem; gap: 0.5rem;
+      background: var(--btn2-bg); color: var(--text); box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+      font-size: calc(1rem - 2px);
+    }
+    .leave .un-act:not(.is-one) .un-rate:hover { background: var(--btn2-hover); }
+    .leave .un-rate .un-logo { width: 1.25rem; height: 1.25rem; }
+    .leave .un-trio-label, .leave .un-hint { color: var(--text-secondary); }
+    .leave .un-hint svg { color: var(--text-secondary); }
+    .leave .un-hint.is-done svg { color: var(--ok); }
+    .leave .un-fine { border-top-color: var(--line); color: var(--text-secondary); }
+    .leave .is-compact .un-receipt { box-shadow: var(--un-lift); }
+
+    /* The reasons: white pills in rings; the picked one gets an ink ring. */
+    .leave .un-why-h { font-weight: 550; letter-spacing: -0.02em; }
+    .leave .un-why-p { color: var(--text-secondary); }
+    .leave .un-reason {
+      border: 0; background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+      font-weight: 500; transition: background 0.2s;
+    }
+    .leave .un-reason:hover { background: var(--btn2-hover); }
+    .leave .un-reason[aria-pressed="true"] { background: var(--bg-card); box-shadow: 0 0 0 2px var(--ink); }
+    .leave .un-ci { color: var(--text-secondary); }
+    .leave .un-reason[aria-pressed="true"] .un-ci { color: var(--text); }
+
+    /* The reply. */
+    .leave .un-reply { border: 0; border-radius: 1.25rem; box-shadow: 0 0 0 1px var(--ring-c), var(--lift); }
+    .leave .un-rp-bar { border-bottom-color: var(--line); }
+    .leave .un-rp-pick { font-weight: 550; }
+    .leave .un-sent-tick { color: var(--text-secondary); }
+    .leave .un-sent-tick svg { color: var(--ok); }
+    .leave .un-sent-tick[data-state="failed"] { color: var(--danger); }
+    .leave .un-textbtn { border-radius: 999px; padding: 0 0.75rem; }
+    .leave .un-textbtn:hover { background: var(--well); }
+    .leave .un-rp-left { border-right-color: var(--line); }
+    .leave .un-by { color: var(--text-secondary); }
+    .leave .un-rh { font-weight: 550; letter-spacing: -0.02em; }
+    .leave .un-dots li::before { background: var(--text-subtle); }
+    .leave .un-tlink { text-decoration-color: var(--border-strong); }
+    .leave .un-tlink:hover { text-decoration-color: currentColor; text-decoration-thickness: 1px; }
+    .leave .un-inline-links { color: var(--text-secondary); }
+    .leave .un-btn,
+    .leave .un-pbtn {
+      min-height: 0; padding: 0.5625rem 1.125rem; border: 0; border-radius: 999px;
+      background: var(--btn2-bg); color: var(--text); box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+      font-size: calc(1rem - 2px); line-height: 1.375rem; font-weight: 600; transition: background 0.2s;
+    }
+    .leave .un-btn:hover, .leave .un-pbtn:hover { background: var(--btn2-hover); }
+    .leave .un-pbtn[aria-pressed="true"] { background: var(--bg-card); box-shadow: 0 0 0 2px var(--ink); }
+    .leave .un-form label { font-weight: 550; }
+    .leave .un-form .un-email label { font-weight: 500; }
+    .leave .un-help { color: var(--text-secondary); }
+    .leave .un-form textarea, .leave .un-form input[type="email"] {
+      border: 0; border-radius: 0.75rem; box-shadow: inset 0 0 0 1px var(--ring-c);
+    }
+    .leave .un-form textarea:hover, .leave .un-form input[type="email"]:hover { box-shadow: inset 0 0 0 1px var(--border-strong); }
+    .leave .un-form input[aria-invalid="true"] { box-shadow: inset 0 0 0 1px var(--danger); }
+    .leave .un-privacy { color: var(--text-secondary); }
+    .leave .un-primary {
+      min-height: 0; padding: 0.5625rem 1.125rem; border: 0; border-radius: 999px;
+      background: var(--ink); color: var(--on-ink);
+      font-size: calc(1rem - 2px); line-height: 1.375rem; font-weight: 600;
+    }
+    .leave .un-primary:hover:not(:disabled) { background: var(--ink-hover); }
+    .leave .un-primary:disabled { background: var(--well); color: var(--text-secondary); box-shadow: inset 0 0 0 1px var(--border-strong); }
+    .leave .un-note-err { color: var(--danger); }
+    .leave .un-done-mark { border-radius: 999px; background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c), var(--lift); color: var(--ok); }
+    .leave .un-done h3 { font-weight: 550; }
+    .leave .un-already { color: var(--text-secondary); }
+
+    /* The Pro question: a gray well instead of the red tint. */
+    .leave .un-pro { border: 0; border-radius: 1.25rem; background: var(--well); }
+    .leave .un-pro-ico { border-radius: 999px; background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c), var(--lift); color: var(--text); }
+    .leave .un-eyebrow { font-size: calc(0.875rem - 2px); line-height: 1rem; font-weight: 500; letter-spacing: 0.1em; color: var(--text-secondary); }
+    .leave .un-pro-q h2, .leave .un-pro-more h3 { font-weight: 550; }
+    .leave .un-pro-more { border-top-color: var(--line); }
+    .leave .un-pro-more .un-btn { background: var(--btn2-bg); }
+
+    /* The footer: left-aligned, small gray links, like the site's. */
+    .leave .un-foot { border-top: 0; align-items: flex-start; text-align: left; padding: 2rem 0 2.5rem; }
+    .leave .un-foot nav { justify-content: flex-start; gap: 0 1rem; margin-left: -0.6rem; }
+    .leave .un-foot nav a { font-size: calc(0.9375rem - 2px); color: var(--text-secondary); }
+    .leave .un-legal, .leave .un-copy { font-size: calc(0.875rem - 2px); color: var(--text-subtle); max-width: 50rem; }
+
+    /* ════ netflix/removed/ ════
+       No owner's call on its column, so it takes the site's frame whole: the 1280px container with its two lines,
+       text 40px inside them, full-width lines between header, main and footer, and the same body zoom. */
+    body.nf.leave { position: relative; overflow-x: clip; zoom: var(--site-zoom); }
+    body.nf.leave::before {
+      content: ""; position: absolute; top: 0; bottom: 0; z-index: 0; pointer-events: none;
+      left: max(var(--gutter), calc((100% - 1280px) / 2));
+      right: max(var(--gutter), calc((100% - 1280px) / 2));
+      border-inline: 1px solid var(--line);
+    }
+    :root { --site-zoom: 1; }
+    @media (min-width: 1500px) and (min-height: 1160px) { :root { --site-zoom: 1.12; } }
+    @media (min-width: 1700px) and (min-height: 1290px) { :root { --site-zoom: 1.25; } }
+    @media (min-width: 1900px) and (min-height: 1440px) { :root { --site-zoom: 1.4; } }
+    .leave .nfr { position: relative; }
+    .leave .nfr-wrap { max-width: none; padding-left: var(--edge); padding-right: var(--edge); }
+    .leave .nfr-head { padding-top: 14px; padding-bottom: 14px; }
+    .leave .nfr-home { gap: 10px; min-height: 32px; font-size: 1rem; font-weight: 600; }
+    .leave .nfr-home img { width: 32px; height: 32px; border-radius: 8px; }
+    .leave .nfr-main { border-top: 1px solid var(--line); padding-top: 72px; padding-bottom: 96px; }
+    .leave .nfr a:not([class]), .leave .nfr .nfr-link { color: var(--text); text-decoration-color: var(--border-strong); }
+    .leave .nfr :is(a, button, input, textarea, summary):focus-visible,
+    .leave .nfr-reason:has(input:focus-visible),
+    .leave .nfr-chip input:focus-visible + span { outline-color: var(--ink); }
+
+    /* Type: a mono eyebrow, a 550 title, gray lines under it. */
+    .leave .nfr-eyebrow {
+      font-family: var(--mono); font-size: 12px; line-height: 16px; font-weight: 500;
+      letter-spacing: 0.1em; color: var(--text-secondary); margin-bottom: 16px;
+    }
+    .leave .nfr-title { font-size: 2.75rem; line-height: 1.1; font-weight: 550; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .leave .nfr-lead { font-size: 1.125rem; line-height: 1.6; max-width: 60ch; }
+    .leave .nfr-founder, .leave .nfr-small, .leave .nfr-hint, .leave .nfr-pick-note, .leave .nfr-send-note, .leave .nfr-quiet { color: var(--text-secondary); }
+    .leave .nfr-founder { font-size: 15px; }
+    .leave .nfr .nfr-fix-title { font-size: 1.25rem; font-weight: 550; letter-spacing: -0.02em; }
+    .leave .nfr-q, .leave .nfr-text-label, .leave .nfr-card-title { font-weight: 550; }
+    .leave .nfr-pro-card h2, .leave .nfr-notice-title { font-weight: 550; letter-spacing: -0.01em; }
+
+    /* The reasons: ringed cards; once one is picked, the choice is a gray bubble. */
+    .leave .nfr-reasons { gap: 12px; }
+    .leave .nfr-reason { border: 0; border-radius: 16px; box-shadow: 0 0 0 1px var(--ring-c), var(--lift); transition: box-shadow 0.2s; }
+    .leave .nfr-reason:hover { box-shadow: 0 0 0 1px var(--border-strong), var(--lift); }
+    .leave .nfr-reason-head { font-size: 15px; font-weight: 550; }
+    .leave .nfr-icon { border-radius: 999px; background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c), var(--lift); color: var(--text); }
+    .leave .is-answering .nfr-reason-head { border: 0; background: var(--well); }
+    .leave .is-answering .nfr-reason-head .nfr-icon { box-shadow: none; background: none; }
+    .leave .nfr-chev { color: var(--text-subtle); }
+    .leave .nfr-change { border-radius: 999px; padding: 10px 12px; color: var(--text-secondary); }
+    .leave .nfr-change:hover { background: var(--well); }
+    .leave .nfr-reason-body::before { color: var(--text-secondary); }
+    .leave .nfr-ui { border: 0; border-radius: 6px; background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c); font-weight: 550; }
+    .leave .nfr-chip span { border: 0; background: var(--btn2-bg); box-shadow: inset 0 0 0 1px var(--ring-c); font-size: 14px; }
+    .leave .nfr-chip span:hover { background: var(--btn2-hover); }
+    .leave .nfr-chip input:checked + span { border: 0; background: var(--bg-card); box-shadow: inset 0 0 0 1.5px var(--ink); font-weight: 550; }
+    .leave .nfr-fix { border: 0; border-radius: 12px; background: var(--well); }
+    .leave .nfr-back .nfr-fix { background: none; border-radius: 0; }
+    .leave .nfr-back .nfr-fix + .nfr-fix { border-top-color: var(--line); }
+    .leave .nfr-mark { color: var(--on-ink); font-family: var(--mono); font-weight: 500; }
+
+    /* The toolbar sketch: rings, the button in ink. */
+    .leave .nfr-toolbar { border: 0; border-radius: 12px; background: var(--well); }
+    .leave .nfr-tb-url { border: 0; box-shadow: inset 0 0 0 1px var(--ring-c); }
+    .leave .nfr-tb-pop { border: 0; border-radius: 10px; box-shadow: 0 0 0 1px var(--ring-c), 0 10px 24px -14px rgb(0 0 0 / 0.45); }
+    .leave .nfr-tb-open { color: var(--on-ink); border-radius: 999px; }
+    .leave .nfr-tb-tiles span { border: 0; box-shadow: inset 0 0 0 1px var(--ring-c); }
+
+    /* The note and Send: a ringed field, an ink pill. */
+    .leave .nfr-text { border: 0; border-radius: 16px; box-shadow: 0 0 0 1px var(--ring-c), var(--lift); }
+    .leave .nfr-text-slot .nfr-text { box-shadow: none; }
+    .leave .nfr-text textarea, .leave .nfr-email-row input {
+      border: 0; border-radius: 12px; box-shadow: inset 0 0 0 1px var(--ring-c);
+    }
+    .leave .nfr-text textarea:hover, .leave .nfr-email-row input:hover { box-shadow: inset 0 0 0 1px var(--border-strong); }
+    .leave .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 0; border-radius: 999px; background: var(--ink); color: var(--on-ink);
+      font-size: 14px; line-height: 22px; font-weight: 600; letter-spacing: 0; padding: 9px 18px;
+    }
+    .leave .btn-primary:hover { background: var(--ink-hover); color: var(--on-ink); }
+    .leave .nfr-send:disabled,
+    .leave .nfr-send:disabled:hover { opacity: 1; background: var(--well); color: var(--text-secondary); box-shadow: inset 0 0 0 1px var(--border-strong); }
+    .leave .nfr-btn-outline {
+      border: 0; border-radius: 999px; padding: 9px 18px 9px 14px; background: var(--btn2-bg); color: var(--text);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift); font-size: 14px; line-height: 22px;
+    }
+    .leave .nfr-btn-outline:hover { background: var(--btn2-hover); }
+    /* A failed send is an error: red text in a red ring. */
+    .leave .nfr-error { border: 0; background: none; box-shadow: inset 0 0 0 1px var(--danger); color: var(--danger); border-radius: 12px; }
+
+    /* The side cards and the thanks. */
+    .leave .nfr-notice, .leave .nfr-pro-card, .leave .nfr-card {
+      border: 0; border-radius: 16px; background: var(--bg-card); box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .leave .nfr-pro-never { border-top-color: var(--line); }
+    .leave .nfr-notice-title svg { color: var(--text); }
+    .leave .nfr-thanks-mark { background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c), var(--lift); color: var(--ok); }
+    .leave .nfr-recap { border: 0; border-radius: 12px; background: var(--well); }
+    .leave .nfr-email-done svg { color: var(--ok); }
+
+    /* The footer: left-aligned, small gray links. */
+    .leave .nfr-foot {
+      border-top: 1px solid var(--line); align-items: flex-start; text-align: left; gap: 8px;
+      padding-top: 48px; padding-bottom: 56px;
+    }
+    .leave .nfr-foot nav { justify-content: flex-start; gap: 0 24px; }
+    .leave .nfr .nfr-foot nav a { min-height: 32px; padding: 0; font-size: 13px; color: var(--text-secondary); text-decoration: none; }
+    .leave .nfr .nfr-foot nav a:hover { color: var(--text); }
+    .leave .nfr-legal { max-width: 80ch; font-size: 12px; color: var(--text-subtle); }
+    .leave .nfr-copy { font-size: 12px; color: var(--text-subtle); }
+
+    @media (max-width: 640px) {
+      :root { --gutter: 20px; --edge: var(--gutter); }
+      body.nf.leave::before { display: none; }
+      .leave .nfr-main { padding-top: 48px; padding-bottom: 64px; }
+      .leave .nfr-title { font-size: 2rem; }
+      .leave .btn-primary { padding-block: 11px; }
+    }
+  </style>
