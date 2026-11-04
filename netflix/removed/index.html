@@ -39,23 +39,34 @@ sitemap: false
      CONTRACTS-1.2.1.md there — the link's fields, the two POST routes, the chip
      keys. Change a seam there first.
 
-     THE LINK. #a=<age>&v=<version>&l=<lang>&p=<plan>&d=<days>, read from
-     location.hash, then location.search for anything the hash lacks. Every
-     field is optional and an unknown value counts as missing, because anyone
-     can open this address by hand. `p` (trial or pro) shows the notice at the
-     top and is NEVER sent anywhere: with two paid subscribers, "pro" plus an
-     age bucket would point at one person. The privacy policy (#removed there)
-     says all of this; change it with this page.
+     THE LINK. #a=<age>&v=<version>&l=<lang>&p=<plan>&d=<days>&r=<removed>
+     &n=<open days>&i=<install id>, read from location.hash, then
+     location.search for anything the hash lacks. Every field is optional and
+     an unknown value counts as missing, because anyone can open this address
+     by hand. `p` (trial or pro) shows the notice at the top and is NEVER sent
+     anywhere: with a handful of paid subscribers, "pro" plus an age bucket
+     would point at one person. The privacy policy (#removed there) says all of
+     this; change it with this page.
 
-     From 1.4.0 (PLAN-1.4.0-rating-reach.md § 3 in the extension repo) the link
-     also carries &r=<titles removed>&n=<days the dashboard was opened>, both
-     lifetime, each left out when 0. Like `p`, they are read for display only:
-     one line beside the Rate button in "It did what I needed", and NEVER put in
-     a request — they are not in `fields`, which is all Send carries. Valid only
-     as ^\d{1,7}$, else absent; a 0 says nothing. Never playlists there: the
-     same reply says they left with the extension. Older versions send neither,
-     and the line stays hidden. Drafted 2026-10-14 on branch
-     draft/netflix-1.4.0, to merge the day 1.4.0 goes live.
+     From 1.4.0 the link also carries &r=<titles removed>&n=<days the dashboard
+     was opened>, both lifetime, each left out when 0. Valid only as
+     ^\d{1,7}$, else absent. They are said back beside the Rate button in "It
+     did what I needed" (a 0 says nothing there), and from 1.6.1 they are also
+     sent, as numbers, with the "no reason picked" row and with the answer (the
+     user's yes, CONTRACTS-1.6.1 § 7 Q1). Never playlists there: the same reply
+     says they left with the extension.
+
+     From 1.6.1 (CONTRACTS-1.6.1-feedback-and-uninstalls.md in the extension
+     repo, § 0.1, § 0.2, § 3.2) the link also carries &i=<install id>, the id
+     the usage report already sends, when the install has one. Valid only as a
+     lower-case UUID v4, else absent. On open the page draws one answer id (32
+     hex) for the visit, adds one to the day's visit count
+     (POST /api/netflix/feedback/visit, the page's name only), and, when `i` is
+     valid, posts reason "none" ("no reason picked") with that id, the install
+     id and the link's a v l d r n. Send posts the same id and install id with
+     the answer, so the answer replaces that row and joins to the install's
+     usage counts. Without `i` the page behaves as before 1.6.1, apart from the
+     visit count.
 
      EVERY FEATURE CLAIM below was checked against netflix/llms.txt on
      2026-10-04, and the button labels against the extension's src/ (Open
@@ -387,7 +398,7 @@ sitemap: false
 
         <p class="nfr-pick-note">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span>Nothing is sent until you press Send. No name, no install ID. <a href="/netflix/privacy/#removed" target="_blank" rel="noopener">Privacy</a></span>
+          <span><span id="nfr-pick-install" hidden>Opening this page lets me see that the extension was removed, with your install's ID, so I can see how it was used. Your answer is sent only when you press Send.</span><span id="nfr-pick-plain">Your answer is sent only when you press Send. No name, no install ID.</span> <a href="/netflix/privacy/#removed" target="_blank" rel="noopener">Privacy</a></span>
         </p>
 
         <!-- The one text box. It lives here until a reason is chosen, then
@@ -403,8 +414,11 @@ sitemap: false
           <button type="submit" class="btn-primary nfr-send" id="nfr-send" disabled>Send</button>
           <p class="nfr-send-note">
             <span id="nfr-note-fields">Goes with your answer: the version you had, your browser's language, and roughly how long you had TidyWL and how often you opened it.</span>
+            <span id="nfr-note-counts" hidden>And how many titles you removed and how many days you opened the dashboard.</span>
             <span id="nfr-note-plain" hidden>Only your answer is sent.</span>
-            No name, no install ID. <a href="/netflix/privacy/#removed" target="_blank" rel="noopener">Privacy</a>
+            <span id="nfr-note-install" hidden>Your install's ID goes with it too, so I can see how it was used. No name.</span>
+            <span id="nfr-note-anon">No name, no install ID.</span>
+            <a href="/netflix/privacy/#removed" target="_blank" rel="noopener">Privacy</a>
           </p>
         </div>
 
@@ -457,7 +471,7 @@ sitemap: false
       <!-- B5b: one question, by email, only if they like. -->
       <div class="nfr-card nfr-email" id="nfr-email">
         <h2 class="nfr-card-title">One more, only if you like</h2>
-        <p id="nfr-email-intro">Leave your email and I'll send you one question about what you told me. Just one, from me. No newsletter, no list, and I delete the address after 60 days.</p>
+        <p id="nfr-email-intro">Leave your email and I'll send you one question about what you told me. Just one, from me. No newsletter, no list, and I delete the address within 60 days.</p>
         <form id="nfr-email-form" novalidate>
           <label class="sr-only" for="nfr-email-input">Your email address</label>
           <div class="nfr-email-row">
@@ -864,15 +878,17 @@ sitemap: false
 
     // From 1.4.0: titles removed (r) and days the dashboard was opened (n),
     // both lifetime. Said back beside the Rate button in "It did what I
-    // needed", and never put in a request, like `p`: they stay out of
-    // `fields`, so Send cannot carry them. A 0 has nothing to say.
-    const count = (key) => {
+    // needed", where a 0 has nothing to say. From 1.6.1 they are also sent,
+    // as numbers, exactly as read from the link (CONTRACTS-1.6.1 § 7 Q1);
+    // `p` still never is.
+    const exact = (key) => {
       const value = only(raw(key), (v) => /^\d{1,7}$/.test(v));
-      return value == null ? 0 : Number(value);
+      return value == null ? null : Number(value);
     };
+    const counts = { r: exact('r'), n: exact('n') };
     const counted = (n, one, many) => n.toLocaleString('en-US') + ' ' + (n === 1 ? one : many);
-    const removedTitles = count('r');
-    const openedDays = count('n');
+    const removedTitles = counts.r == null ? 0 : counts.r;
+    const openedDays = counts.n == null ? 0 : counts.n;
     const said = [];
     if (openedDays > 0) said.push('opened it on ' + counted(openedDays, 'day', 'days'));
     if (removedTitles > 0) said.push('cleared ' + counted(removedTitles, 'title', 'titles') + ' from My List');
@@ -885,9 +901,64 @@ sitemap: false
     const browserLang = fields.l != null ? fields.l : (navigator.language || '').slice(0, 2).toLowerCase();
     if (browserLang !== '' && browserLang !== 'en') $('[data-reason="language"]').hidden = false;
 
+    // From 1.6.1: the install's id (CONTRACTS-1.6.1 § 0.1), the one the usage
+    // report already sends. Anything but a lower-case UUID v4 counts as absent.
+    const install = only(raw('i'), (v) => /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(v));
+
     const hasFields = Object.values(fields).some((v) => v != null);
+    const hasCounts = counts.r != null || counts.n != null;
     $('#nfr-note-fields').hidden = !hasFields;
-    $('#nfr-note-plain').hidden = hasFields;
+    $('#nfr-note-counts').hidden = !hasCounts;
+    $('#nfr-note-plain').hidden = hasFields || hasCounts || install != null;
+    $('#nfr-note-install').hidden = install == null;
+    $('#nfr-note-anon').hidden = install != null;
+    $('#nfr-pick-install').hidden = install == null;
+    $('#nfr-pick-plain').hidden = install != null;
+
+    // One id per visit (CONTRACTS-1.6.1 § 3.2), drawn here and sent with the
+    // "no reason picked" row and again with the answer, so the answer
+    // replaces that row rather than adding a second.
+    const visitId = Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, '0')).join('');
+
+    // What every request from this visit carries besides the answer. The
+    // install id and the counts only when the link had them; never `p`.
+    const context = () => {
+      const body = { id: visitId };
+      if (install != null) body.install = install;
+      return body;
+    };
+    const withCounts = (body) => {
+      if (counts.r != null) body.r = counts.r;
+      if (counts.n != null) body.n = counts.n;
+      return body;
+    };
+
+    // On open: one visit count, the page's name and nothing else. Sent once,
+    // never retried, and a failure shows nothing.
+    fetch('/api/netflix/feedback/visit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ page: 'removed' }),
+      credentials: 'omit',
+      keepalive: true,
+    }).catch(() => {});
+
+    // On open, only with an install id: the "no reason picked" row, so a
+    // removal is counted even when nobody presses Send. The server writes it
+    // only when that install has no row yet. Silent either way.
+    if (install != null) {
+      fetch('/api/netflix/removed', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(withCounts(Object.assign(context(), {
+          reason: 'none', chips: [], text: '',
+          a: fields.a, v: fields.v, l: fields.l, d: fields.d,
+        }))),
+        credentials: 'omit',
+        cache: 'no-store',
+        keepalive: true,
+      }).catch(() => {});
+    }
 
     // ── The form ──
     const form = $('#nfr-form');
@@ -973,12 +1044,12 @@ sitemap: false
       event.preventDefault();
       if (!canSend()) return;
       const chosen = chosenItem();
-      const answer = {
+      const answer = withCounts(Object.assign(context(), {
         reason: chosen == null ? null : chosen.dataset.reason,
         chips: chosen == null ? [] : tickedChips(chosen).map((chip) => chip.value),
         text: textarea.value.trim().slice(0, 1000),
         a: fields.a, v: fields.v, l: fields.l, d: fields.d,
-      };
+      }));
 
       busy = true;
       send.disabled = true;
