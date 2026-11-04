@@ -1,0 +1,508 @@
+  <style>
+    /* ── EVERY OTHER PAGE: THE SCHOGER PASS (2026-11-03, preview) ──
+       Loaded by _layouts/default.html alone (and so by every post, whose layout sits inside it), after styles.html
+       and styles-blog.html. The home page has its own copy in styles-home.html; uninstall/, netflix/**, omodo/ and
+       pro/ load neither. Tokens sit on :root, which only the default layout's pages see because only they load this
+       file; every other rule is prefixed with .site, the class default.html puts on <body>. That prefix also lifts
+       these rules over each page's own <style> block, which comes later in the document.
+       The decisions are the home page's (styles-home.html): the dashboard's neutral grays, ink instead of red, rings
+       instead of borders, 550 headings, mono eyebrows, a 1280px container framed by thin lines, pill buttons, and
+       the same three big-screen zoom steps. Red stays on the logo and on error messages. Rules copied from
+       styles-home.html are copied on purpose: deduplicating waits until the owner keeps the look. */
+
+    /* ── Tokens: the home page's, value for value. Light. ── */
+    :root {
+      --ink: #0a0a0a;
+      --ink-hover: #262626;
+      --on-ink: #ffffff;
+      --ring-c: rgb(10 10 10 / 0.1);
+      --line: rgb(10 10 10 / 0.1);
+      --well: rgb(10 10 10 / 0.05);
+      --lift: 0 1px 2px rgb(10 10 10 / 0.08);
+      --btn2-bg: #ffffff;
+      --btn2-hover: #fafafa;
+      --danger: #c62828;
+      --gutter: 24px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      /* Text and full-width blocks start 40px inside the canvas lines. A percentage inside a custom property
+         resolves where it is used, so this is only used on blocks as wide as the page. */
+      --edge: calc(max(var(--gutter), (100% - 1280px) / 2) + 40px);
+
+      --bg: #ffffff;
+      --bg-alt: #ffffff;
+      --bg-card: #ffffff;
+      --text: #0a0a0a;
+      --text-secondary: #525252;
+      --text-muted: #525252;
+      --text-subtle: #737373;
+      --border: var(--ring-c);
+      --border-subtle: var(--ring-c);
+      --border-strong: rgb(10 10 10 / 0.2);
+      --accent: var(--ink);
+      --accent-hover: var(--ink-hover);
+      --accent-fill: var(--ink);
+      --accent-fill-hover: var(--ink-hover);
+      --accent-text: var(--ink);
+      --star: var(--ink);
+      --stars-empty: rgb(10 10 10 / 0.2);
+      --highlight-bg: var(--bg-card);
+      --highlight-border: var(--ring-c);
+      --ghost-hover-bg: #fafafa;
+      --ghost-hover-border: rgb(10 10 10 / 0.2);
+      --feature-icon-bg: transparent;
+      --shadow-accent: 0 0 #0000;
+      --stage-bg: transparent;
+      --stage-card: #ffffff;
+      --stage-border: var(--ring-c);
+      --stage-rule: var(--ring-c);
+      --stage-subtle: #737373;
+      --tour-bg: transparent;
+      --ff-edge: transparent;
+    }
+
+    /* ── Tokens: dark. Written twice, like styles.html, at the same specificity, so these win by order. ── */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ink: #fafafa;
+        --ink-hover: #e5e5e5;
+        --on-ink: #0a0a0a;
+        --ring-c: rgb(255 255 255 / 0.1);
+        --line: rgb(255 255 255 / 0.1);
+        --well: rgb(255 255 255 / 0.05);
+        --lift: 0 1px 2px rgb(0 0 0 / 0.4);
+        --btn2-bg: rgb(255 255 255 / 0.05);
+        --btn2-hover: rgb(255 255 255 / 0.1);
+        --danger: #ff7a70;
+        --bg: #0a0a0a;
+        --bg-alt: #0a0a0a;
+        --bg-card: #141414;
+        --text: #fafafa;
+        --text-secondary: #a3a3a3;
+        --text-muted: #a3a3a3;
+        --text-subtle: #8f8f8f;
+        --border: var(--ring-c);
+        --border-subtle: var(--ring-c);
+        --border-strong: rgb(255 255 255 / 0.2);
+        --accent-text: var(--ink);
+        --star: var(--ink);
+        --stars-empty: rgb(255 255 255 / 0.25);
+        --highlight-bg: var(--bg-card);
+        --highlight-border: var(--ring-c);
+        --ghost-hover-bg: rgb(255 255 255 / 0.05);
+        --ghost-hover-border: rgb(255 255 255 / 0.2);
+        --stage-bg: transparent;
+        --stage-card: #141414;
+        --stage-border: var(--ring-c);
+        --stage-rule: var(--ring-c);
+        --stage-subtle: #8f8f8f;
+        --tour-bg: transparent;
+        --ff-edge: transparent;
+      }
+    }
+    :root[data-theme="dark"] {
+      --ink: #fafafa;
+      --ink-hover: #e5e5e5;
+      --on-ink: #0a0a0a;
+      --ring-c: rgb(255 255 255 / 0.1);
+      --line: rgb(255 255 255 / 0.1);
+      --well: rgb(255 255 255 / 0.05);
+      --lift: 0 1px 2px rgb(0 0 0 / 0.4);
+      --btn2-bg: rgb(255 255 255 / 0.05);
+      --btn2-hover: rgb(255 255 255 / 0.1);
+      --danger: #ff7a70;
+      --bg: #0a0a0a;
+      --bg-alt: #0a0a0a;
+      --bg-card: #141414;
+      --text: #fafafa;
+      --text-secondary: #a3a3a3;
+      --text-muted: #a3a3a3;
+      --text-subtle: #8f8f8f;
+      --border: var(--ring-c);
+      --border-subtle: var(--ring-c);
+      --border-strong: rgb(255 255 255 / 0.2);
+      --accent-text: var(--ink);
+      --star: var(--ink);
+      --stars-empty: rgb(255 255 255 / 0.25);
+      --highlight-bg: var(--bg-card);
+      --highlight-border: var(--ring-c);
+      --ghost-hover-bg: rgb(255 255 255 / 0.05);
+      --ghost-hover-border: rgb(255 255 255 / 0.2);
+      --stage-bg: transparent;
+      --stage-card: #141414;
+      --stage-border: var(--ring-c);
+      --stage-rule: var(--ring-c);
+      --stage-subtle: #8f8f8f;
+      --tour-bg: transparent;
+      --ff-edge: transparent;
+    }
+
+    /* ── The canvas grid: two lines at the 1280px container's edges, a full-width line on top of every block ── */
+    body.site { position: relative; overflow-x: clip; zoom: var(--site-zoom); }
+    body.site::before {
+      content: ""; position: absolute; top: 0; bottom: 0; z-index: 0;
+      left: max(var(--gutter), calc((100% - 1280px) / 2));
+      right: max(var(--gutter), calc((100% - 1280px) / 2));
+      border-inline: 1px solid var(--line);
+      pointer-events: none;
+    }
+    /* The page's blocks: every one is as wide as the page, draws its own top line, and starts its text 40px inside
+       the canvas lines. One line between neighbours: the header draws none, the footer draws its top. */
+    .site > section,
+    .site > article,
+    .site > main,
+    .site .pro-page > section,
+    .site .tut-page > section {
+      max-width: none; margin: 0;
+      padding: 80px var(--edge) 96px;
+      border-top: 1px solid var(--line);
+    }
+    .site .section-inner { max-width: none; margin: 0; padding: 0; }
+    .site p { text-wrap: pretty; }
+
+    /* ── Big screens: the same three zoom steps as the home page, on the body, so the header, the lines and the text
+       stay the same size when moving between pages. ── */
+    :root { --site-zoom: 1; }
+    @media (min-width: 1500px) and (min-height: 1160px) { :root { --site-zoom: 1.12; } }
+    @media (min-width: 1700px) and (min-height: 1290px) { :root { --site-zoom: 1.25; } }
+    @media (min-width: 1900px) and (min-height: 1440px) { :root { --site-zoom: 1.4; } }
+
+    /* ── Type ── */
+    .site .section-label,
+    .site .plan-list-head,
+    .site .later-label {
+      font-family: var(--mono); font-size: 12px; line-height: 16px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary);
+    }
+    .site .section-label { margin-bottom: 16px; }
+    .site .section-heading {
+      font-size: 2.25rem; line-height: 1.15; font-weight: 550; letter-spacing: -0.025em;
+      max-width: 40ch; text-wrap: balance; color: var(--text); margin: 0 0 40px;
+    }
+    .site .blog-title,
+    .site .post-title {
+      font-size: 2.75rem; line-height: 1.1; font-weight: 550; letter-spacing: -0.02em;
+      max-width: 30ch; text-wrap: balance; color: var(--text); margin-bottom: 16px;
+    }
+    .site .blog-subtitle { font-size: 1.125rem; line-height: 1.6; color: var(--text-secondary); max-width: 60ch; margin-bottom: 48px; }
+    .site .post-meta, .site .post-list-meta { font-size: 13px; color: var(--text-secondary); }
+    .site .post-meta { margin-bottom: 48px; }
+    .site .post-meta .dot, .site .post-list-meta .dot { color: var(--text-subtle); }
+
+    /* ── Long text: posts, the legal pages, Firefox, the bulk-delete guide. A left-aligned 720px measure. ── */
+    /* 672px is the live measure: blog-wrap was 720px with 24px padding on each side. checkout/success's column was
+       688px with the same padding. */
+    .site .blog-wrap > * { max-width: 672px; }
+    .site .co > * { max-width: 640px; }
+    .site .post-body { font-size: 1rem; line-height: 1.75; color: var(--text-secondary); }
+    /* styles-blog.html's `.post-body p { margin: 0 }` outranks its own `> * + *` gap, so on the live site a post's
+       paragraphs run into each other with no space between them. The gap comes back here. */
+    .site .post-body > * + * { margin-top: 20px; }
+    .site .post-body > h2 + *, .site .post-body > h3 + * { margin-top: 12px; }
+    .site .post-body h2 {
+      font-size: 1.5rem; line-height: 1.25; font-weight: 550; letter-spacing: -0.02em; color: var(--text);
+      margin-top: 48px; text-wrap: balance;
+    }
+    .site .post-body h3 { font-size: 1.125rem; line-height: 1.35; font-weight: 550; letter-spacing: -0.01em; color: var(--text); margin-top: 36px; }
+    .site .post-body strong, .site .post-body b { color: var(--text); font-weight: 600; }
+    .site .post-body a:not([class*="btn-"]),
+    .site .faq-a a,
+    .site .fb a:not([class*="btn-"]),
+    .site .co-privacy a, .site .co-qa dd a {
+      color: var(--text); text-decoration: underline; text-decoration-color: var(--border-strong);
+      text-underline-offset: 3px;
+    }
+    .site .post-body a:not([class*="btn-"]):hover,
+    .site .faq-a a:hover { color: var(--text); text-decoration-color: currentColor; }
+    .site .post-body blockquote,
+    .site .privacy-meta,
+    .site .ff-note { border-left: 1px solid var(--border-strong); padding-left: 16px; }
+    .site .post-body blockquote { font-style: normal; color: var(--text-secondary); }
+    .site .post-body code {
+      font-family: var(--mono); background: var(--well); border: 0; border-radius: 6px;
+      padding: 2px 6px; font-size: 0.875em; color: var(--text);
+      overflow-wrap: anywhere; /* a long URL in code pushed the privacy page sideways on phones, live too */
+    }
+    .site .post-body pre { background: var(--well); border: 0; border-radius: 12px; }
+    .site .post-body pre code { background: none; padding: 0; }
+    .site .post-body img { border: 0; border-radius: 12px; box-shadow: 0 0 0 1px var(--ring-c); }
+    .site .post-body hr { border-top-color: var(--line); }
+    .site .post-faq .section-heading { font-size: 1.5rem; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .site .post-footer { border-top-color: var(--line); font-size: 14px; }
+    .site .post-footer a { color: var(--text-secondary); }
+    .site .post-footer a:hover { color: var(--text); }
+
+    /* A picture in a well: 8px inset, concentric corners, an inset ring on top. */
+    .site .hero-shot {
+      position: relative; max-width: none; margin: 40px 0 0; padding: 8px;
+      background: var(--well); border: 0; border-radius: 20px; box-shadow: none;
+    }
+    .site .hero-shot img { border: 0; border-radius: 12px; }
+    .site .hero-shot figcaption { padding: 12px 8px 4px; font-size: 13px; line-height: 20px; color: var(--text-secondary); }
+
+    /* ── FAQ: lines, 550 questions, ink links ── */
+    .site .faq { max-width: 768px; margin: 0; }
+    .site .faq-list { border-top: 1px solid var(--line); }
+    .site .faq-item { border-bottom: 1px solid var(--line); }
+    .site .faq-q { font-size: 15px; line-height: 24px; font-weight: 550; padding: 18px 0; }
+    .site .faq-q:hover { color: var(--text-secondary); }
+    .site .faq-q .plus { color: var(--text-subtle); }
+    .site .faq-a { font-size: 15px; line-height: 26px; color: var(--text-secondary); max-width: 70ch; }
+
+    /* ── Cards: rings, not borders ── */
+    .site .feature-card {
+      border: 0; border-radius: 16px; padding: 24px; background: var(--bg-card);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .site .feature-icon {
+      width: 36px; height: 36px; border-radius: 10px; margin-bottom: 20px;
+      color: var(--ink); background: var(--btn2-bg);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .site .feature-icon svg { width: 18px; height: 18px; }
+    .site .feature-card h3 { font-size: 14px; line-height: 20px; font-weight: 550; margin-bottom: 4px; color: var(--text); }
+    .site .feature-card p { font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+
+    /* ── Buttons: pills, 14px, 40px tall from padding. Ink is primary; white with a ring is secondary. ── */
+    .site .btn-primary,
+    .site .btn-ghost,
+    .site .btn-edge,
+    .site .btn-firefox,
+    .site .support-cta,
+    .site .plan-cta-buy,
+    .site .plan-cta-locked {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 0; border-radius: 999px;
+      font-size: 14px; line-height: 22px; font-weight: 600; letter-spacing: 0;
+      padding: 9px 18px; text-align: left;
+      transition: background 0.2s;
+    }
+    .site .btn-primary,
+    .site .support-cta,
+    .site .plan-cta-buy:not(:disabled) { background: var(--ink); color: var(--on-ink); }
+    .site .btn-primary:hover,
+    .site .support-cta:hover,
+    .site .plan-cta-buy:not(:disabled):hover { background: var(--ink-hover); color: var(--on-ink); }
+    .site .btn-primary .btn-sub { font-size: 12px; font-weight: 500; opacity: 0.8; }
+    .site .btn-ghost,
+    .site .btn-edge,
+    .site .btn-firefox {
+      background: var(--btn2-bg); color: var(--text);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .site .btn-ghost:hover,
+    .site .btn-edge:hover,
+    .site .btn-firefox:hover { background: var(--btn2-hover); color: var(--text); border-color: transparent; }
+    .site .plan-cta-locked,
+    .site .plan-cta-buy:disabled {
+      background: var(--well); color: var(--text-secondary); border: 0;
+      box-shadow: inset 0 0 0 1px var(--border-strong);
+    }
+    .site .cta-row { justify-content: flex-start; gap: 8px; }
+    .site .skip-link { background: var(--ink); color: var(--on-ink); border-radius: 999px; }
+    /* Ink flips to near-white in dark mode, so anything that painted white text on the accent follows it. */
+    .site .fb .fq-send:not(:disabled),
+    .site .co-send:not(:disabled),
+    .site .fb-tick,
+    .site .tut-pill { color: var(--on-ink); }
+    .site .fb .fq-send:not(:disabled), .site .co-send:not(:disabled) { border-radius: 999px; }
+    /* Error messages stay red: a failed send or a refused key must not read as ordinary text. */
+    .site .co-k-label[data-tone="error"],
+    .site .co-sent[data-state="failed"],
+    .site .co-f-err,
+    .site .co-note-status[data-state="failed"],
+    .site .fq-status[data-state="failed"] { color: var(--danger); }
+    .site .co-f-email[aria-invalid="true"] { border-color: var(--danger); box-shadow: inset 0 0 0 1px var(--danger); }
+    /* The page-local tokens that were warm beige or red. html:root outranks each page's own :root. */
+    html:root { --fb-off-bg: #f5f5f5; --fb-off-fg: #737373; --fb-focus: rgb(10 10 10 / 0.12); }
+    @media (prefers-color-scheme: dark) {
+      html:root:not([data-theme="light"]) { --fb-off-bg: #262626; --fb-off-fg: #a3a3a3; --fb-focus: rgb(255 255 255 / 0.2); }
+    }
+    html:root[data-theme="dark"] { --fb-off-bg: #262626; --fb-off-fg: #a3a3a3; --fb-focus: rgb(255 255 255 / 0.2); }
+    .site .co { --co-shadow: 0 0 0 1px var(--ring-c), var(--lift); }
+
+    /* ── Header: bigger mark, links straight after it, small pills (the home page's rules) ── */
+    .site .site-header {
+      max-width: none; margin: 0; gap: 8px;
+      padding: 14px var(--edge);
+    }
+    .site .site-header-home { margin-right: 16px; gap: 10px; font-size: 1rem; font-weight: 600; }
+    .site .site-header-home:hover { color: var(--text); }
+    .site .site-header-icon { width: 32px; height: 32px; border-radius: 8px; }
+    .site .site-nav { gap: 2px; }
+    .site .site-nav a {
+      font-size: 14px; line-height: 20px; font-weight: 500; padding: 5px 10px; border-radius: 999px;
+      color: var(--text-secondary);
+    }
+    .site .site-nav a:hover { color: var(--text); background: var(--ghost-hover-bg); }
+    .site .site-nav a[aria-current="page"] { color: var(--text); }
+    .site .site-nav-cta--bar {
+      margin-left: auto; background: var(--ink); color: var(--on-ink);
+      font-size: 14px; line-height: 20px; font-weight: 600; padding: 5px 12px; border-radius: 999px;
+    }
+    .site .site-nav-cta--bar:hover,
+    .site .site-nav .site-nav-cta:hover { background: var(--ink-hover); color: var(--on-ink); }
+    .site .theme-toggle,
+    .site .site-menu-btn {
+      width: 30px; height: 30px; border: 0; border-radius: 999px;
+      background: var(--btn2-bg); color: var(--text);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .site .theme-toggle svg { width: 16px; height: 16px; }
+    .site .theme-toggle:hover, .site .site-menu-btn:hover { background: var(--btn2-hover); }
+
+    /* ── Footer: no band, left-aligned, small links (the home page's rules) ── */
+    .site footer {
+      border-top: 1px solid var(--line); text-align: left;
+      padding: 48px var(--edge) 56px;
+    }
+    .site .footer-links { justify-content: flex-start; gap: 8px 24px; margin-bottom: 32px; }
+    .site .footer-links a { font-size: 13px; line-height: 20px; color: var(--text-secondary); }
+    .site .footer-links a:hover { color: var(--text); }
+    .site .footer-links .btn-footer {
+      background: var(--ink); color: var(--on-ink); font-weight: 600; border-radius: 999px; padding: 5px 12px;
+    }
+    .site .footer-links .btn-footer:hover { background: var(--ink-hover); color: var(--on-ink); }
+    .site .kofi-badge { margin-bottom: 24px; box-shadow: 0 0 0 1px var(--ring-c); }
+    .site .kofi-badge:hover { box-shadow: 0 0 0 1px var(--ring-c), var(--lift); }
+    .site .kofi-badge img { width: 120px; }
+    .site .footer-legal { margin: 0 0 8px; max-width: 80ch; font-size: 12px; color: var(--text-subtle); }
+    .site .copyright { font-size: 12px; color: var(--text-subtle); }
+
+    /* ── Page openings that were centred: left-aligned like the rest ── */
+    .site .pro-hero,
+    .site .tut-hero { text-align: left; align-items: flex-start; }
+    .site .pro-hero h1,
+    .site .tut-hero h1 {
+      font-size: clamp(2.5rem, 4.4vw, 3.5rem); line-height: 1.05; font-weight: 550; letter-spacing: -0.025em;
+      max-width: 22ch; margin: 0 0 24px; text-wrap: balance;
+    }
+    .site .pro-hero h1 .em, .site .tut-hero h1 .em { color: inherit; }
+    .site .pro-hero .tagline,
+    .site .tut-hero .tagline { font-size: 1.125rem; line-height: 1.6; color: var(--text-secondary); max-width: 52ch; margin: 0 0 24px; }
+    .site .support { text-align: left; }
+    .site .support-sub { text-align: left; margin: 0 0 40px; max-width: 60ch; }
+    .site .support-grid { margin: 0; max-width: none; }
+    .site .support-cta { align-self: flex-start; }
+    .site .support-cta svg { display: none; } /* no icons in buttons; browser logos are the one exception */
+    .site .support-card .support-list li::before { background: var(--text-subtle); }
+    .site .co-hero { text-align: left; }
+    .site .co-hero-sub { margin: 10px 0 0; }
+    .site .tut-legend { justify-content: flex-start; text-align: left; }
+
+    /* ── Pricing ── */
+    /* A split hero: the eyebrow and headline on the left (3/5), the line, the status and the buttons on the right
+       (2/5), its top level with the headline's. DOM order is untouched; grid areas place it. */
+    .site .pro-hero {
+      display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); column-gap: 48px;
+      grid-template-areas: "label ." "h1 tagline" "h1 status" "h1 cta" "h1 .";
+      grid-template-rows: auto auto auto auto 1fr; align-items: start;
+    }
+    .site .pro-hero .section-label { grid-area: label; }
+    .site .pro-hero h1 { grid-area: h1; margin: 0; }
+    .site .pro-hero .tagline { grid-area: tagline; padding-top: 8px; font-size: 1rem; line-height: 1.6; max-width: none; }
+    .site .pro-status {
+      grid-area: status; justify-self: start; margin: 0 0 24px;
+      border: 0; background: none; box-shadow: inset 0 0 0 1px var(--ring-c);
+      font-size: 12px; font-weight: 500; color: var(--text-secondary); padding: 4px 12px;
+    }
+    .site .pro-status .dot { width: 6px; height: 6px; background: var(--text); }
+    .site .pro-hero .cta-row { grid-area: cta; margin: 0; }
+    /* The two plans span the container. The plan you are sold gets an ink ring instead of a red tint. */
+    .site .plans { max-width: none; margin: 0; gap: 16px; }
+    .site .plan {
+      border: 0; border-radius: 20px; padding: 32px; gap: 12px; background: var(--bg-card);
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .site .plan.best { background: var(--bg-card); box-shadow: 0 0 0 2px var(--ink), var(--lift); }
+    .site .plan-name { font-size: 1.125rem; font-weight: 550; letter-spacing: -0.01em; }
+    .site .plan-sub { font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+    .site .plan-price { font-size: 3rem; font-weight: 500; letter-spacing: -0.03em; }
+    .site .plan-price small { font-size: 13px; color: var(--text-secondary); }
+    .site .price-was { font-size: 1.5rem; font-weight: 400; color: var(--text-subtle); text-decoration-thickness: 1px; }
+    .site .plan-billed, .site .plan-trial, .site .plan-promo-note { font-size: 13px; line-height: 20px; color: var(--text-secondary); }
+    .site .plan-promo-label { font-size: 14px; font-weight: 600; color: var(--text); }
+    .site .billing-switch { background: var(--well); border: 0; padding: 2px; }
+    .site .billing-opt { font-size: 12px; font-weight: 500; color: var(--text-secondary); padding: 4px 10px; }
+    .site .billing-opt[aria-pressed="true"] {
+      background: var(--btn2-bg); color: var(--text); font-weight: 600;
+      box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
+    }
+    .site .billing-opt:focus-visible { outline-color: var(--ink); }
+    .site .billing-save { color: inherit; }
+    .site .plan-cta { width: 100%; justify-content: center; margin-top: 8px; }
+    .site .plan-cta-note {
+      background: var(--well); border: 0; border-radius: 12px; padding: 12px 14px;
+      font-size: 13px; line-height: 20px;
+    }
+    .site .plan-list-head { margin-top: 12px; padding-top: 20px; border-top: 1px solid var(--line); }
+    .site .plan-list { gap: 10px; }
+    .site .plan-list li { font-size: 14px; line-height: 20px; }
+    .site .plan-list li::before, .site .plans-both li::before { color: var(--text); font-weight: 600; }
+    .site .plans-both { justify-content: flex-start; max-width: none; margin: 32px 0 0; gap: 8px 24px; }
+    .site .plans-both li { font-size: 14px; }
+    .site .plans-foot { text-align: left; max-width: 72ch; margin: 12px 0 0; font-size: 13px; color: var(--text-secondary); }
+    .site .pro-group-head h3 { font-size: 15px; font-weight: 550; }
+    .site .pro-group-head p { font-size: 14px; color: var(--text-secondary); }
+    .site .compare th, .site .compare td { border-bottom: 1px solid var(--line); }
+    .site .compare th {
+      font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; color: var(--text-secondary);
+    }
+    .site .compare td { font-size: 14px; }
+    .site .compare td.yes { color: var(--text); font-weight: 600; }
+    .site .compare td.limit { font-size: 13px; }
+    .site .later { border: 0; border-radius: 20px; background: var(--well); padding: 24px; }
+    .site .later li { font-size: 14px; }
+    .site .later-note { font-size: 13px; color: var(--text-secondary); }
+
+    /* ── Help: an inline heading. The title and its line share one paragraph's lines without a wrapper: both are
+       made inline, so they flow into one anonymous line box, the title in ink and the line in gray. ── */
+    .site .support .section-inner { text-wrap: balance; }
+    .site .support h1.section-heading,
+    .site .support .support-sub {
+      display: inline; margin: 0; max-width: none;
+      font-size: 2.25rem; line-height: 1.2; letter-spacing: -0.025em;
+    }
+    .site .support h1.section-heading { font-weight: 550; color: var(--text); }
+    .site .support .support-sub { font-weight: 500; color: var(--text-secondary); }
+    .site .support-grid { margin-top: 48px; gap: 16px; text-wrap: wrap; }
+    .site .support-card .support-list li { font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+
+    /* ── Blog index ── */
+    .site .post-list a { padding: 24px 0; }
+    .site .post-list-title { font-size: 1.125rem; line-height: 1.4; font-weight: 550; letter-spacing: -0.01em; color: var(--text); }
+    .site .post-list a:hover .post-list-title { color: var(--text-secondary); }
+    .site .post-list-excerpt { font-size: 15px; line-height: 24px; color: var(--text-secondary); }
+    .site .post-list li { border-color: var(--line); }
+
+    /* Narrow screens: the split hero stacks. */
+    @media (max-width: 860px) {
+      .site .pro-hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "label" "h1" "tagline" "status" "cta"; grid-template-rows: none; }
+      .site .pro-hero h1 { margin-bottom: 8px; }
+    }
+
+    /* ── Phones ── */
+    @media (max-width: 640px) {
+      :root { --gutter: 20px; --edge: var(--gutter); }
+      body.site::before { display: none; }
+      .site > section, .site > article, .site > main,
+      .site .pro-page > section, .site .tut-page > section { padding-top: 48px; padding-bottom: 64px; }
+      .site .section-heading { font-size: 1.75rem; }
+      .site .blog-title, .site .post-title { font-size: 2rem; }
+      .site .pro-hero h1, .site .tut-hero h1 { font-size: 2.25rem; }
+      .site .site-header { padding: 12px 16px; }
+      .site .site-header-home { margin-right: auto; }
+      .site .theme-toggle, .site .site-menu-btn { width: 44px; height: 44px; }
+      .site .theme-toggle svg { width: 18px; height: 18px; }
+      .site .site-header .site-nav { border: 0; box-shadow: 0 0 0 1px var(--ring-c), 0 18px 40px -22px rgb(0 0 0 / 0.55); border-radius: 16px; }
+      .site .site-header .site-nav a { font-size: 15px; padding: 10px 12px; }
+      .site .site-header .site-nav-more a { font-size: 13px; padding: 8px 12px; }
+      .site .site-header .site-nav .site-nav-cta--drawer {
+        background: var(--ink); color: var(--on-ink); border-radius: 999px; padding: 11px 20px; line-height: 22px;
+      }
+      .site .btn-primary, .site .btn-ghost, .site .btn-edge, .site .btn-firefox,
+      .site .support-cta, .site .plan-cta-buy, .site .plan-cta-locked { padding-block: 11px; }
+      .site footer { padding: 40px 20px 48px; }
+      .site .support h1.section-heading, .site .support .support-sub { font-size: 1.75rem; }
+      .site .plan { padding: 24px; }
+    }
+  </style>
