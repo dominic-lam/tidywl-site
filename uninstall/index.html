@@ -121,6 +121,10 @@ sitemap: false
     .un-ask-copy { flex: 1 1 20rem; min-width: 0; }
     .un-ask-h { font-size: 1.4375rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
     .un-ask-p { margin-top: 0.35rem; max-width: 32rem; font-size: 1rem; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
+    .un-steps { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem 0.5rem; margin: 0.7rem 0 0; padding: 0; counter-reset: un-step; }
+    .un-steps li { counter-increment: un-step; display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.3rem 0.75rem 0.3rem 0.35rem; border-radius: 999px; background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c); font-size: 0.875rem; font-weight: 500; line-height: 1.3; color: var(--text); }
+    .un-steps li::before { content: counter(un-step); display: inline-flex; align-items: center; justify-content: center; width: 1.25rem; height: 1.25rem; border-radius: 50%; background: var(--text); color: var(--bg); font-size: 0.75rem; font-weight: 600; }
+    .is-compact .un-steps { display: none; }
     .un-byline { display: flex; align-items: center; gap: 0.625rem; margin-top: 0.9rem; font-size: 0.875rem; font-weight: 500; line-height: 1.4; color: var(--text-muted); }
     /* Dominic's photo, cropped round (2026-11-05). It is his profile picture, a white Persian cat, on purpose. */
     /* object-view-box zooms in on the face where Chromium supports it; elsewhere the whole photo shows, still round. */
@@ -352,6 +356,13 @@ sitemap: false
           <div class="un-ask-copy">
             <h2 class="un-ask-h" data-rec="ask-h">How would you rate it?</h2>
             <p class="un-ask-p" data-rec="ask">Honest is best, good or bad. A rating helps the next person decide, and shows me what to fix.</p>
+            <!-- Chrome after a big cleanup only (lab round 5, 2026-11-05): the
+                 add-back round trip as three steps on one store page. -->
+            <ol class="un-steps" id="un-steps" aria-label="On the Chrome Web Store" hidden>
+              <li>Add to Chrome</li>
+              <li>Pick your stars</li>
+              <li>Remove from Chrome</li>
+            </ol>
             <p class="un-byline"><img class="un-avatar" src="/assets/dominic.jpg" alt="" width="28" height="28"><span>Dominic builds TidyWL, on his own</span></p>
           </div>
           <!-- A known store shows its own Rate button only, filled; an unknown
@@ -978,7 +989,8 @@ sitemap: false
       document.getElementById('un-tear').hidden = noRateAsk;
       document.getElementById('un-ask').hidden = noRateAsk;
       document.getElementById('un-rp-rate').hidden = noRateAsk;
-      if (chromeAddBack) rec('ask').textContent = "Chrome only takes ratings from people who have it installed. If it saved you time: add it back, pick your stars, then press Remove from Chrome on the same page. Under a minute, and it would mean a lot.";
+      if (chromeAddBack) rec('ask').textContent = "Chrome only takes ratings from people who have it installed. If it saved you time, it's three clicks on one store page, under a minute, and it would mean a lot.";
+      document.getElementById('un-steps').hidden = !chromeAddBack;
       act.querySelector('.un-rate[data-store="chrome"] .un-rate-pre').textContent = chromeAddBack ? 'Add back and rate on ' : 'Rate on ';
       document.getElementById('un-rp-chrome-label').textContent = chromeAddBack ? 'Add back and rate on Chrome' : 'Rate on Chrome';
       document.getElementById('un-rp-chrome-hint').textContent = chromeAddBack
