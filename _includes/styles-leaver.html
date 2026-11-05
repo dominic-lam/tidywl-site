@@ -302,7 +302,10 @@
     .leave .un-already { color: var(--text-secondary); }
 
     /* The Pro question: a gray well instead of the red tint. */
-    .leave .un-pro { border: 0; border-radius: 1.25rem; background: var(--well); }
+    /* Lighter since lab round 2 (2026-11-05): three visitors read the grey card as a sales afterthought. A rule
+       above it and no icon; the question still comes first. */
+    .leave .un-pro { border: 0; border-top: 1px solid var(--line); border-radius: 0; background: none; padding: 1.25rem 0 0; }
+    .leave .un-pro-ico { display: none; }
     .leave .un-pro-ico { border-radius: 999px; background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c), var(--lift); color: var(--text); }
     .leave .un-eyebrow { font-size: 0.875rem; line-height: 1rem; font-weight: 500; letter-spacing: 0.1em; color: var(--text-secondary); }
     .leave .un-pro-q h2, .leave .un-pro-more h3 { font-weight: 550; }

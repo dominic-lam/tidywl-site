@@ -126,7 +126,7 @@ sitemap: false
     /* object-view-box zooms in on the face where Chromium supports it; elsewhere the whole photo shows, still round. */
     .un-avatar { flex: none; display: block; width: 2rem; height: 2rem; border-radius: 50%; object-fit: cover; object-view-box: inset(18% 8% 6% 16%); }
 
-    .un-act { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+    .un-act { flex: 0 1 auto; max-width: 19rem; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
     .un-trio-label { font-size: 0.875rem; color: var(--text-muted); }
     .un-rates { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.6rem; }
     .un-rate { display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem; min-height: 3.75rem; padding: 0 2.1rem; border-radius: 0.8rem; border: 1.5px solid var(--accent-fill); background: var(--accent-fill); color: #fff; font-size: 1.1875rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; box-shadow: var(--un-rate-shadow); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
@@ -142,8 +142,8 @@ sitemap: false
     .un-act:not(.is-one) .un-rate .un-star { display: none; }
     .un-act:not(.is-one) .un-rate-pre { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .un-act.is-one .un-trio-label, .un-act:not(.is-one) .un-hint { display: none; }
-    .un-hint { display: flex; align-items: center; gap: 0.45rem; font-size: 0.875rem; line-height: 1.4; color: var(--text-muted); }
-    .un-hint img { display: block; width: 1rem; height: 1rem; }
+    .un-hint { display: flex; align-items: flex-start; gap: 0.45rem; font-size: 0.875rem; line-height: 1.4; color: var(--text-muted); }
+    .un-hint img { display: block; flex: none; width: 1rem; height: 1rem; margin-top: 0.1rem; }
     .un-hint svg { color: var(--accent-text); }
     .un-hint.is-done { color: var(--text-secondary); }
 
@@ -336,6 +336,7 @@ sitemap: false
             <div class="un-lines" data-rec="lines" hidden>
               <p class="un-line" data-rec="moved-line" hidden><span>Moved to other playlists</span><i></i><b data-rec="moved"></b></p>
               <p class="un-line" data-rec="age-line" hidden><span>With TidyWL for</span><i></i><b data-rec="age"></b></p>
+              <p class="un-line" data-rec="saved-line" hidden><span>Time saved, at 4 s a video by hand</span><i></i><b data-rec="saved"></b></p>
             </div>
           </div>
           <div data-fig="none">
@@ -385,7 +386,7 @@ sitemap: false
 
         <p class="un-fine" id="un-fine" hidden>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span data-rec="src">These figures come from this browser, through this page's link.</span>
+          <span data-rec="src">TidyWL counted these on your computer and handed them to this page.</span>
         </p>
       </section>
     </div>
@@ -461,7 +462,7 @@ sitemap: false
 
             <div class="un-branch" data-branch="done" hidden>
               <h3 class="un-rh" tabindex="-1">Then it did its job. Thanks for using it.</h3>
-              <p class="un-p">If YouTube paused videos on your account partway through, sorry about that. It's a limit on how many requests one account can make, and in my experience it clears by itself in 30 to 60 minutes.</p>
+              <p class="un-p">If YouTube paused your videos for a while, sorry. That's its limit on one account's requests, and in my experience it clears within an hour.</p>
               <p class="un-p">If it saved you time, a quick rating means a lot to a small app like this one. It's also how the next person finds it.</p>
               <!-- The Rate button again, beside the answer that most often
                    leads to it (2026-11-05, lab round 1). A known store shows
@@ -472,7 +473,7 @@ sitemap: false
                 <a class="un-btn" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener"><img src="/assets/edge-logo.svg" alt="" width="16" height="16">Rate on Edge<span class="sr-only"> (opens in a new tab)</span></a>
               </div>
               <p class="un-rp-hint" data-store="chrome">Stars alone are fine. Writing a review is optional.</p>
-              <p class="un-rp-hint" data-store="firefox">Needs a Mozilla account. Stars alone are fine.</p>
+              <p class="un-rp-hint" data-store="firefox">Needs a Mozilla account. Stars alone are fine. No account? Your answer here already helps.</p>
             </div>
 
             <div class="un-branch" data-branch="load" hidden>
@@ -867,6 +868,16 @@ sitemap: false
     var number = new Intl.NumberFormat('en-US');
     function plural(n, one, many) { return n === 1 ? one : many; }
     function daysText(a) { return a === 0 ? 'less than a day' : number.format(a) + ' ' + plural(a, 'day', 'days'); }
+    // Time saved (2026-11-05, lab round 2): an estimate, and the page says its
+    // basis on the same line: about 4 seconds to remove one video by hand
+    // (hover, the menu, Remove). Display only; nothing here is sent.
+    var SECONDS_BY_HAND = 4;
+    function savedText(c) {
+      var s = c * SECONDS_BY_HAND;
+      if (s < 600) { var m = Math.max(1, Math.round(s / 60)); return 'about ' + m + ' ' + plural(m, 'minute', 'minutes'); }
+      if (s < 5400) return 'about ' + Math.round(s / 300) * 5 + ' minutes';
+      return 'about ' + number.format(Math.round(s / 1800) / 2) + ' hours';
+    }
 
     // What the record says, or null when no count reaches RECORD_MIN. Moves are
     // never folded into "cleaned up": the site's public figure leaves them out.
@@ -921,7 +932,10 @@ sitemap: false
         rec('moved-line').hidden = lines.moved == null;
         rec('age').textContent = record.a != null ? daysText(record.a) : '';
         rec('age-line').hidden = record.a == null;
-        rec('lines').hidden = lines.moved == null && record.a == null;
+        var saved = record.c != null && record.c >= RECORD_MIN;
+        rec('saved').textContent = saved ? savedText(record.c) : '';
+        rec('saved-line').hidden = !saved;
+        rec('lines').hidden = lines.moved == null && record.a == null && !saved;
       }
       var sub = rec('sub');
       sub.textContent = lines == null && record.a != null ? 'It was installed for ' + daysText(record.a) + '.' : '';
@@ -936,8 +950,11 @@ sitemap: false
       // One statement of what opening the page sent, under the reasons; the
       // receipt's own line only says where the figures come from (2026-11-05,
       // after a lab visitor read the two old lines as contradicting each other).
+      rec('src').textContent = record.i != null
+        ? 'TidyWL counted these on your computer and handed them to this page.'
+        : 'TidyWL counted these on your computer and handed them to this page, only to show you. Nothing here sends or keeps them.';
       document.getElementById('un-sent-note').textContent = record.i != null
-        ? "Opening this page sent tidywl.com this install's random ID, its version and its usage counts. Picking a reason adds that reason. Never your name, account or videos."
+        ? "To help me see why people leave, opening this page sent tidywl.com this install's random ID, its version and its usage counts. Picking a reason adds that reason. Never your name, account or videos."
         : "Opening this page only counted a visit, with nothing about you or this install. Picking a reason sends just that reason. Never your name, account or videos.";
       // A known store shows its own Rate button only, and it fills; an
       // unknown one keeps all three.
