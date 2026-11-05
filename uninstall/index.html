@@ -296,8 +296,9 @@ sitemap: false
 
     <!-- The receipt. The record comes from the link's # (readRecord() below)
          and is filled with textContent only; without script, or with no count
-         of 10 or more, it reads "TidyWL is removed." The rating ask is the
-         same for everyone and never names a star count. -->
+         of 10 or more, it reads "TidyWL is removed." The rating ask never
+         names a star count; its heading asks about time saved when the link
+         counts BIG_CLEAN or more videos cleaned up (2026-11-05). -->
     <div class="un-stick" id="un-stick">
       <section class="un-receipt" id="un-receipt" aria-label="Your record and the rating ask">
         <div class="un-r-top">
@@ -325,7 +326,7 @@ sitemap: false
 
         <div class="un-ask">
           <div class="un-ask-copy">
-            <h2 class="un-ask-h">How would you rate it?</h2>
+            <h2 class="un-ask-h" data-rec="ask-h">How would you rate it?</h2>
             <p class="un-ask-p" data-rec="ask">Honest is best, good or bad. A rating helps the next person decide, and shows me what to fix.</p>
             <p class="un-byline"><span class="un-mono" aria-hidden="true">D</span><span>Dominic builds TidyWL, on his own</span></p>
           </div>
@@ -766,6 +767,10 @@ sitemap: false
     var RECORD_VERSION = /^[0-9]{1,5}(\.[0-9]{1,5}){0,3}$/;
     var RECORD_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     var RECORD_MIN = 10;
+    // A cleanup this big gets "Did I save you some time?" over the rating ask
+    // instead of "How would you rate it?" (the user, 2026-11-05). Moves alone
+    // never count toward it.
+    var BIG_CLEAN = 100;
     var has = Object.prototype.hasOwnProperty;
 
     function readRecord(hash) {
@@ -874,6 +879,7 @@ sitemap: false
       rec('ask').textContent = lines == null && record.c != null
         ? 'Even a short try counts. An honest rating helps the next person decide.'
         : 'Honest is best, good or bad. A rating helps the next person decide, and shows me what to fix.';
+      rec('ask-h').textContent = record.c != null && record.c >= BIG_CLEAN ? 'Did I save you some time?' : 'How would you rate it?';
       document.getElementById('un-fine').hidden = lines == null && record.a == null && record.v == null;
       rec('src').textContent = record.i != null
         ? "These figures are counted in this browser and carried in this page's link. They go with your answer, with this install's random ID."
