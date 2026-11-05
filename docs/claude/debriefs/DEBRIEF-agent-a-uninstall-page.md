@@ -1,6 +1,47 @@
-STATUS: DONE (ready to merge; follow-ups: the Rate-click count in tidywl-api, and the redesign on agent-b-uninstall-design)
+STATUS: DONE
+COMMIT: c481560
+BRANCH: agent-a-uninstall-page
+DEPENDS_ON: none
+STORE_TOUCHED: no
+MIGRATION_ADDED: no
+GATES: lint=SKIPPED build=PASS test=PASS
+CONCERNS: no package.json, so there is no npm lint/build/test; build is the Jekyll build, test is node --test on each scripts/*.test.mjs (43 pass, as on main)
 
 # agent-a-uninstall-page
+
+## Files staged
+Committed step by step on this branch; nothing was left unstaged.
+- uninstall/index.html
+- _includes/styles-leaver.html (its uninstall section only)
+- CLAUDE.md (the uninstall/index.html line only)
+- docs/claude/research/RESEARCH-uninstall-page-ratings-feedback.md
+- docs/claude/debriefs/DEBRIEF-agent-a-uninstall-page.md
+
+## Shared files touched
+- _includes/styles-leaver.html also styles netflix/removed/. Only rules inside its uninstall section changed: ten `calc(X - 2px)` became X, and one comment.
+- CLAUDE.md: the one line describing the page.
+
+## Design decisions
+- The 2px comes off the root, `max(14px, min(1.1111vw, 1.7778vh) - 2px)`, instead of off each text size, so spacing and icons shrink with the text (the user).
+- The cleaned-up count is `clamp(2.5rem, 5vh, 11rem)`: 5% is the user's pick after trying 10, 8, 7 and 6. The floor came down from 4.5rem, which sat above 7% at every window size.
+- "Did I save you some time?" replaces "How would you rate it?" at 100 or more cleaned (`BIG_CLEAN`, the user's cut-off). Moves alone never count.
+- Reinstall links in the "Wouldn't open" and "videos became unavailable" replies; the second says "Reinstall once it clears".
+
+## Manual steps
+- None outside git. Previews were local Jekyll builds served from a scratch folder; no live page was loaded with an `i`.
+
+## Bugs found and fixed
+- The count's 4.5rem floor made the user's 7% invisible: 63px at 1440x900 and 112px at 3008x1512, both the floor.
+
+## Deliberately deferred work
+- Counting Rate clicks: needs a new value in `VISIT_PAGES` (tidywl-api `src/feedback.js`) first. The owner approved it as its own session; for TODO.
+
+## Gotchas for future agents
+- Chrome's store does not let a removed install rate (the owner checked on 2026-11-05), so a Chrome Rate button on this page reaches almost nobody. Branch agent-b-uninstall-design builds on that and contains this whole branch.
+- `node --test scripts/` fails because it treats the folder as one file; run each `scripts/*.test.mjs`.
+- Merging this before the rating count due about 2026-11-10 changes the ask's look; the owner chose not to wait.
+
+## Session log
 
 Branch `agent-a-uninstall-page` in `tidywl-site`, worktree `.claude/worktrees/agent-a-uninstall-page`. Scope: `uninstall/index.html` and `_includes/styles-leaver.html` (shared with `netflix/removed/`, which is out of scope). No push; the user merges with /agent-merge.
 
