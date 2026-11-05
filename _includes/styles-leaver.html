@@ -244,14 +244,14 @@
     .leave .is-compact .un-rate { min-height: 2.5rem; padding: 0 1.125rem 0 0.875rem; font-size: 0.9375rem; }
     .leave .is-compact .un-act:not(.is-one) .un-rate { min-height: 2.375rem; padding: 0 0.875rem 0 0.75rem; font-size: 0.9375rem; }
 
-    /* The reasons: white pills in rings; the picked one gets an ink ring. */
+    /* The reasons: white tiles in rings; the picked one gets an ink ring. */
     .leave .un-why-h { font-weight: 550; letter-spacing: -0.02em; }
     .leave .un-why-p { color: var(--text-secondary); }
     .leave .un-reason {
       border: 0; background: var(--btn2-bg); box-shadow: 0 0 0 1px var(--ring-c), var(--lift);
       font-weight: 500; transition: background 0.2s;
     }
-    .leave .un-reason:hover { background: var(--btn2-hover); }
+    .leave .un-reason:hover { background: var(--btn2-hover); box-shadow: 0 0 0 1px var(--border-strong), var(--lift); }
     .leave .un-reason[aria-pressed="true"] { background: var(--bg-card); box-shadow: 0 0 0 2px var(--ink); }
     .leave .un-ci { color: var(--text-secondary); }
     .leave .un-reason[aria-pressed="true"] .un-ci { color: var(--text); }
@@ -266,7 +266,7 @@
     .leave .un-textbtn { border-radius: 999px; padding: 0 0.75rem; }
     .leave .un-textbtn:hover { background: var(--well); }
     .leave .un-rp-left { border-right-color: var(--line); }
-    .leave .un-by { color: var(--text-secondary); }
+    .leave .un-by { color: var(--text); font-weight: 550; }
     .leave .un-rh { font-weight: 550; letter-spacing: -0.02em; }
     .leave .un-dots li::before { background: var(--text-subtle); }
     .leave .un-tlink { text-decoration-color: var(--border-strong); }

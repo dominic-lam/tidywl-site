@@ -1,4 +1,4 @@
-STATUS: IN PROGRESS (step 2 of 4 done: the first screen)
+STATUS: IN PROGRESS (step 3 of 4 done: the rest of the page)
 
 # Debrief: agent-b-uninstall-design
 
@@ -15,6 +15,8 @@ locally, so no visit reached live data.
 - Step 1 (before shots and audit): done. Five `before-*.png` shots; audit below.
 - Step 2 (the first screen): done. Dominic's photo in the byline, the ledger across the card, a 40px Rate button,
   the fine print as the receipt's stub, secondary text up to 11.4 to 12.25px at the 1440 root. Details below.
+- Step 3 (the rest): done. The reasons in a three-column grid, the reply signed with the photo, larger reply and
+  form text, a four-line note box, an icon of its own for the reinstall line, more room around each section.
 
 ## Step 1: the audit, worst first
 
@@ -84,3 +86,34 @@ Deviations from the Schoger look, each with its reason:
   (`buttons.md › Style`), and the Pro card's buttons sat at the same size on the same screen.
 - The fine print sits on a grey band: the look's own `--well`, used by the reply's header bar, so this is a reuse
   rather than a new colour; the reason is one separator per card (`layout.md`, group with container shapes).
+
+## Step 3: the rest of the page
+
+- **The nine reasons are a three-column grid of ringed tiles**, in the same order, read across. Each column is as
+  wide as its longest answer and the spare width is shared, so at 1440 every answer fits on one line; in a
+  narrower window the longest one wraps onto two lines and every row takes that height, so the grid stays even.
+  Two columns from 46rem of column width down, one from 30rem, in the existing container queries. Tiles are
+  42px tall, 10.5px apart (was 8.4px; `accessibility.md › Mobility`, about 12 pt around bezeled controls). Hover
+  darkens the ring as well as the fill, so the pointer feedback shows. Audit 2.
+- **The reply is signed with the photo**: 2.5rem (35px), round, in place of the app icon, and "Dominic, who
+  builds TidyWL" in ink at 13.1px instead of grey at 11.4px. Audit 5.
+- **Reply and form text**: body and bullets 13.6 to 14px, the sent tick 11.4 to 12.25px, the form's help 11.8 to
+  12.25px, both privacy notes 10.9 to 11.4px. Column padding 17.5 to 21px, and the reply's header bar lines up
+  with the column under it. The form's question is balanced over two lines instead of leaving one word. Audit 1.
+- **The note box is four lines tall** (was three), so the longest hint, under "Videos became unavailable", shows
+  whole instead of scrolling inside the box.
+- **The two notes under the reasons each have an icon on one left edge**: the lock for the privacy note, a
+  "rotate back" arrow for "Removed it by mistake?". The reinstall line is no longer indented under the lock's
+  text. Audit 7.
+- **More room between sections**: the reasons start 35px under the receipt (was 26.6px), and the Pro card 35px
+  under the reasons (was 22.4px). The Pro card itself is unchanged apart from its padding and 13.1px body text.
+- The footer is unchanged.
+
+Markup changes (none read by the script): the reply's author `<img>` now has `class="un-avatar"` and
+`src="/assets/dominic.jpg"`; an `<svg>` was added as the first child of the reinstall box under the reasons. The
+script hides that box's `span[aria-hidden="true"]` dots, and an `<svg>` is not a `span`, so the icon stays. The
+CSS that padded the box's first `span` now names `span:first-of-type`, since the `svg` is the first child.
+
+Deviation from the Schoger look: the reasons are rounded tiles (14px corners) rather than the look's pills,
+because a label may wrap onto two lines in a narrower window and a pill does not hold two lines. The Netflix twin
+uses ringed cards for its reasons too, so this stays inside the leaver pages' vocabulary.

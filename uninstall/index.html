@@ -171,21 +171,24 @@ sitemap: false
     .is-compact .un-fine { grid-column: 1 / -1; margin-top: 0.8rem; padding-top: 0.5rem; padding-bottom: 0.55rem; font-size: 0.8125rem; }
 
     /* ── The reasons ── */
-    .un-why { padding: 0; margin-top: 1.9rem; }
-    .un-why-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.2rem 1.1rem; }
+    .un-why { padding: 0; margin-top: 2.5rem; }
+    .un-why-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.3rem 1.1rem; }
     .un-why-h { font-size: 1.4375rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
     .un-why-h:focus, .un-rh:focus, .un-done h3:focus, .un-pro h3:focus, .un-pro-never:focus { outline: none; }
-    .un-why-p { font-size: 0.9375rem; line-height: 1.5; color: var(--text-muted); }
-    .un-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.95rem; }
-    .un-reason { display: inline-flex; align-items: center; gap: 0.6rem; min-height: 2.875rem; padding: 0 1.1rem 0 0.85rem; background: var(--bg-card); color: var(--text); border: 1px solid var(--border); border-radius: 999px; font-size: 0.9375rem; font-weight: 600; line-height: 1.2; text-align: left; transition: border-color 0.2s, background 0.2s; }
+    .un-why-p { font-size: 1rem; line-height: 1.5; color: var(--text-muted); }
+    /* The nine answers in a three-column grid, in reading order, so every answer starts on one of three left
+       edges (2026-11-05; they were wrapping pills). Each column is as wide as its longest answer and the spare
+       width is shared out; when a window is too narrow for that, the longest answer wraps rather than overflowing. */
+    .un-chips { display: grid; grid-template-columns: repeat(3, auto); grid-auto-rows: 1fr; gap: 0.75rem; margin-top: 1.1rem; }
+    .un-reason { display: flex; align-items: center; gap: 0.55rem; width: 100%; min-height: 3rem; padding: 0.55rem 0.875rem 0.55rem 0.75rem; background: var(--bg-card); color: var(--text); border: 1px solid var(--border); border-radius: 0.875rem; font-size: 0.9375rem; font-weight: 600; line-height: 1.3; text-align: left; text-wrap: balance; transition: border-color 0.2s, background 0.2s; }
     .un-reason:hover { border-color: var(--ghost-hover-border); background: var(--un-raise); }
     .un-reason[aria-pressed="true"] { border-color: var(--accent); background: var(--highlight-bg); box-shadow: inset 0 0 0 1px var(--accent); }
     .un-ci { display: flex; color: var(--accent); }
 
     .un-reply { margin-top: 1.1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem; overflow: hidden; scroll-margin-top: 8rem; }
-    .un-rp-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 1rem; padding: 0.65rem 1.1rem 0.65rem 1.25rem; border-bottom: 1px solid var(--border-subtle); background: var(--un-bar); }
+    .un-rp-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 1rem; padding: 0.7rem 1rem 0.7rem 1.5rem; border-bottom: 1px solid var(--border-subtle); background: var(--un-bar); }
     .un-rp-pick { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem 0.65rem; min-width: 0; font-size: 0.9375rem; font-weight: 600; line-height: 1.35; }
-    .un-sent-tick { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8125rem; font-weight: 500; color: var(--text-muted); }
+    .un-sent-tick { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.875rem; font-weight: 500; color: var(--text-muted); }
     .un-sent-tick svg { color: var(--accent-text); }
     .un-sent-tick[data-state="failed"] { color: var(--accent-text); font-weight: 600; }
     .un-retry { display: inline; padding: 0; background: transparent; border: 0; color: var(--text); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
@@ -194,15 +197,16 @@ sitemap: false
     .un-textbtn:hover { color: var(--text); background: var(--un-raise); }
 
     .un-rp-body { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); }
-    .un-rp-left { display: flex; flex-direction: column; gap: 0.8rem; padding: 1.3rem 1.5rem 1.4rem 1.25rem; border-right: 1px solid var(--border-subtle); }
-    .un-rp-right { display: flex; flex-direction: column; gap: 0.75rem; padding: 1.3rem 1.25rem 1.2rem 1.5rem; }
-    .un-by { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8125rem; font-weight: 600; line-height: 1.4; color: var(--text-muted); }
-    .un-by img { display: block; width: 2rem; height: 2rem; border-radius: 0.5rem; }
+    .un-rp-left { display: flex; flex-direction: column; gap: 0.9rem; padding: 1.5rem 1.75rem 1.75rem 1.5rem; border-right: 1px solid var(--border-subtle); }
+    .un-rp-right { display: flex; flex-direction: column; gap: 0.8rem; padding: 1.5rem 1.5rem 1.5rem 1.75rem; }
+    /* The reply is signed like the ask: Dominic's photo, a little larger here because it heads a letter. */
+    .un-by { display: flex; align-items: center; gap: 0.7rem; font-size: 0.9375rem; font-weight: 600; line-height: 1.4; color: var(--text); }
+    .un-by .un-avatar { width: 2.5rem; height: 2.5rem; }
     .un-branch { display: flex; flex-direction: column; gap: 0.8rem; }
     .un-rh { font-size: 1.3125rem; font-weight: 700; letter-spacing: -0.015em; line-height: 1.3; text-wrap: balance; }
-    .un-p { font-size: 0.96875rem; line-height: 1.62; color: var(--text-secondary); text-wrap: pretty; }
+    .un-p { font-size: 1rem; line-height: 1.6; color: var(--text-secondary); text-wrap: pretty; }
     .un-dots { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
-    .un-dots li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 0.96875rem; line-height: 1.6; color: var(--text-secondary); }
+    .un-dots li { display: flex; align-items: flex-start; gap: 0.7rem; font-size: 1rem; line-height: 1.6; color: var(--text-secondary); }
     .un-dots li::before { content: ""; flex: none; width: 0.3125rem; height: 0.3125rem; margin-top: 0.7em; border-radius: 50%; background: var(--accent); }
     .un-strong { font-weight: 600; color: var(--text); overflow-wrap: anywhere; }
     .un-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin-top: 0.15rem; }
@@ -211,20 +215,21 @@ sitemap: false
     .un-tlink { color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
     .un-tlink:hover { text-decoration-thickness: 2px; }
     .un-inline-links { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0 0.15rem; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
-    .un-inline-links > span:first-child { padding-right: 0.2rem; }
+    .un-inline-links > span:first-of-type { padding-right: 0.2rem; }
     .un-inline-links .un-tlink { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0 0.35rem; }
 
     .un-form { display: flex; flex-direction: column; gap: 0.75rem; }
-    .un-form label { display: block; font-size: 1.0625rem; font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; }
-    .un-help { font-size: 0.84rem; line-height: 1.5; color: var(--text-muted); }
+    .un-form label { display: block; font-size: 1.0625rem; font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; text-wrap: balance; }
+    .un-help { font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
     .un-form textarea, .un-form input[type="email"] { display: block; width: 100%; padding: 0.7rem 0.85rem; background: var(--un-field); color: var(--text); border: 1px solid var(--border); border-radius: 0.55rem; font: inherit; font-size: 0.96875rem; line-height: 1.5; }
-    .un-form textarea { min-height: 5.6rem; resize: vertical; }
+    /* Four lines, so the longest hint (Videos became unavailable) shows whole instead of scrolling. */
+    .un-form textarea { min-height: 7.5rem; resize: vertical; }
     .un-form textarea::placeholder, .un-form input::placeholder { color: var(--text-muted); opacity: 1; }
     .un-form input[aria-invalid="true"] { border-color: var(--accent-text); }
     .un-email { display: flex; flex-direction: column; gap: 0.3rem; }
     .un-form .un-email label { font-size: 0.9rem; font-weight: 600; letter-spacing: 0; }
     .un-card-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1rem; }
-    .un-privacy { flex: 1 1 15rem; display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.78rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
+    .un-privacy { flex: 1 1 15rem; display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.8125rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
     .un-privacy svg { margin-top: 0.2rem; }
     .un-primary { flex: none; display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1.5rem; border-radius: 0.6rem; font-size: 0.96875rem; font-weight: 600; line-height: 1.25; background: var(--accent-fill); color: #fff; border: 1px solid var(--accent-fill); transition: background 0.2s; }
     .un-primary:hover:not(:disabled) { background: var(--accent-fill-hover); border-color: var(--accent-fill-hover); }
@@ -235,12 +240,15 @@ sitemap: false
     .un-done h3 { font-size: 1.1875rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
     .un-already { margin-top: 0.85rem; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
 
-    .un-why-foot { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 1rem; }
+    /* Two notes under the answers, each with its own icon on one left edge, so neither reads as a sub-point of
+       the other (they used to share the lock, with the reinstall line indented under it). */
+    .un-why-foot { display: flex; flex-direction: column; gap: 0.2rem; margin-top: 1.1rem; }
     .un-why-foot .un-privacy { flex: none; max-width: 56rem; }
-    .un-why-foot .un-inline-links { padding-left: 1.375rem; }
+    .un-why-foot .un-inline-links { gap: 0 0.15rem; }
+    .un-why-foot .un-inline-links > svg { margin-right: 0.35rem; }
 
     /* ── The Pro question: asks before it tells anyone to email (2026-10-08) ── */
-    .un-pro { margin-top: 1.6rem; padding: 1rem 1.25rem; background: var(--highlight-bg); border: 1px solid var(--highlight-border); border-radius: 1rem; }
+    .un-pro { margin-top: 2.5rem; padding: 1.125rem 1.25rem 1.125rem 1.125rem; background: var(--highlight-bg); border: 1px solid var(--highlight-border); border-radius: 1rem; }
     .un-pro-row { display: flex; align-items: center; flex-wrap: wrap; gap: 0.6rem 1rem; }
     .un-pro-ico { display: flex; align-items: center; justify-content: center; width: 2.25rem; height: 2.25rem; border-radius: 0.6rem; background: var(--feature-icon-bg); color: var(--accent); }
     .un-pro-q { display: flex; flex-direction: column; margin-right: auto; }
@@ -252,7 +260,7 @@ sitemap: false
     .un-pbtn[aria-pressed="true"] { border-color: var(--accent-text); background: var(--un-raise); }
     .un-pro-more { display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--highlight-border); }
     .un-pro-more h3 { font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; }
-    .un-pro-more .un-p, .un-pro-more .un-dots li { font-size: 0.9rem; }
+    .un-pro-more .un-p, .un-pro-more .un-dots li { font-size: 0.9375rem; }
     .un-pro-more .un-btn { align-self: flex-start; background: var(--bg-card); }
 
     .un-foot { margin-top: 0; padding: 1.5rem 0 1.75rem; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; text-align: center; }
@@ -269,6 +277,7 @@ sitemap: false
 
     /* A narrow column (a small window): the reply stacks, and the bar wraps. */
     @container un (max-width: 46rem) {
+      .un-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .un-rp-body { grid-template-columns: 1fr; }
       .un-rp-left { border-right: 0; border-bottom: 1px solid var(--border-subtle); }
       .un-act, .un-rates { align-items: flex-start; justify-content: flex-start; }
@@ -276,6 +285,7 @@ sitemap: false
       .is-compact .un-ask { grid-column: 1; grid-row: auto; flex-wrap: wrap; margin-top: 0.5rem; }
     }
     @container un (max-width: 30rem) {
+      .un-chips { grid-template-columns: minmax(0, 1fr); }
       .un-receipt { --pad: 1.25rem; }
       .is-compact .un-ask-h { display: none; }
     }
@@ -440,7 +450,7 @@ sitemap: false
 
         <div class="un-rp-body">
           <div class="un-rp-left">
-            <p class="un-by"><img src="/assets/icon128.png" alt="" width="32" height="32">Dominic, who builds TidyWL</p>
+            <p class="un-by"><img class="un-avatar" src="/assets/dominic.jpg" alt="" width="36" height="36">Dominic, who builds TidyWL</p>
 
             <div class="un-branch" data-branch="done" hidden>
               <h3 class="un-rh" tabindex="-1">Then it did its job. Thanks for using it.</h3>
@@ -602,6 +612,7 @@ sitemap: false
           <span>Opening this page tells us this install was removed, with its random ID, its version and usage counts if your browser shares them. A click adds the reason you picked. Never your name, account or videos.</span>
         </p>
         <div class="un-inline-links" data-reinstall-links>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
           <span>Removed it by mistake? Add it back for</span>
           <a class="un-tlink" data-reinstall="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo" target="_blank" rel="noopener">Chrome</a>
           <span aria-hidden="true">·</span>
