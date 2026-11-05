@@ -376,7 +376,7 @@ sitemap: false
               </a>
             </div>
             <p class="un-hint" data-store="chrome" data-hint><img src="/assets/chrome-logo.svg" alt="" width="16" height="16">Opens the Chrome Web Store in a new tab. Stars alone are fine.</p>
-            <p class="un-hint" data-store="firefox" data-hint><img src="/assets/firefox-logo.svg" alt="" width="16" height="16">Opens Firefox Add-ons in a new tab. Needs a Mozilla account, which you have if you use Firefox Sync. Stars alone are fine.</p>
+            <p class="un-hint" data-store="firefox" data-hint><img src="/assets/firefox-logo.svg" alt="" width="16" height="16">Opens Firefox Add-ons in a new tab. Needs a Mozilla account, which you have if you use Firefox Sync. Pick your stars. It shows your display name, not your email.</p>
             <p class="un-hint" data-store="edge" data-hint><img src="/assets/edge-logo.svg" alt="" width="16" height="16">Opens Microsoft Edge Add-ons in a new tab</p>
             <p class="un-hint is-done" id="un-rated" role="status" hidden>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
@@ -477,7 +477,7 @@ sitemap: false
                 <a class="un-btn" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener"><img src="/assets/edge-logo.svg" alt="" width="16" height="16">Rate on Edge<span class="sr-only"> (opens in a new tab)</span></a>
               </div>
               <p class="un-rp-hint" data-store="chrome" id="un-rp-chrome-hint">Stars alone are fine. Writing a review is optional.</p>
-              <p class="un-rp-hint" data-store="firefox">Needs a Mozilla account, which you have if you use Firefox Sync. Stars alone are fine. No account? Your answer here already helps.</p>
+              <p class="un-rp-hint" data-store="firefox">Needs a Mozilla account, which you have if you use Firefox Sync. Pick your stars. It shows your display name, not your email. No account? Your answer here already helps.</p>
               </div>
             </div>
 
@@ -978,11 +978,11 @@ sitemap: false
       document.getElementById('un-tear').hidden = noRateAsk;
       document.getElementById('un-ask').hidden = noRateAsk;
       document.getElementById('un-rp-rate').hidden = noRateAsk;
-      if (chromeAddBack) rec('ask').textContent = "Chrome only takes ratings from people who have it installed. If it saved you time, adding it back for a minute to leave stars would mean a lot. You can remove it again right after.";
+      if (chromeAddBack) rec('ask').textContent = "Chrome only takes ratings from people who have it installed. If it saved you time: add it back, pick your stars, then press Remove from Chrome on the same page. Under a minute, and it would mean a lot.";
       act.querySelector('.un-rate[data-store="chrome"] .un-rate-pre').textContent = chromeAddBack ? 'Add back and rate on ' : 'Rate on ';
       document.getElementById('un-rp-chrome-label').textContent = chromeAddBack ? 'Add back and rate on Chrome' : 'Rate on Chrome';
       document.getElementById('un-rp-chrome-hint').textContent = chromeAddBack
-        ? 'Chrome only takes ratings from people who have it installed. Add it back, pick your stars, and remove it again whenever you like.'
+        ? 'Add it back, pick your stars, then press Remove from Chrome on the same page. Under a minute.'
         : 'Stars alone are fine. Writing a review is optional.';
       setRated(false);
     }
