@@ -917,6 +917,23 @@ sitemap: false
     }
 
     var record = readRecord(location.hash);
+    // The store the page shows (2026-11-05, the user: "don't we know their
+    // browser?"). The link names it from 2.6.0; an older install, or anyone
+    // opening the page directly, sends no s, so the page reads the browser it
+    // opened in, which the extension's removal opens it in. Firefox and Edge
+    // are themselves; any other desktop Chromium (Chrome, Brave, Opera,
+    // Vivaldi, Arc) installs from the Chrome Web Store. Anything else, such
+    // as Safari or a phone, keeps all three. Display only: context() reads
+    // record.s alone, so a guessed store is never sent.
+    function browserStore() {
+      var ua = navigator.userAgent || '';
+      if (/Firefox\//.test(ua)) return 'firefox';
+      if (/Edg\//.test(ua)) return 'edge';
+      if (/Chrome\//.test(ua) && !/Mobile/.test(ua)) return 'chrome';
+      return null;
+    }
+    function shownStore() { return record.s != null ? record.s : browserStore(); }
+    var store = shownStore();
     var STORE_NAMES = { chrome: 'Chrome', firefox: 'Firefox', edge: 'Edge' };
     var receipt = document.getElementById('un-receipt');
     var act = document.getElementById('un-act');
@@ -983,16 +1000,16 @@ sitemap: false
       // A known store shows its own Rate button only, and it fills; an
       // unknown one keeps all three.
       document.querySelectorAll('[data-store]').forEach(function (el) {
-        el.hidden = record.s != null && el.getAttribute('data-store') !== record.s;
+        el.hidden = store != null && el.getAttribute('data-store') !== store;
       });
-      act.classList.toggle('is-one', record.s != null);
+      act.classList.toggle('is-one', store != null);
       // Chrome takes ratings only from current installs (the owner checked on
       // 2026-11-05: once removed, no rating without installing it again). So a
       // Chrome leaver is asked to add it back and rate only after a big
       // cleanup; under that there is no rating ask, and the reasons right under
       // the record are the first screen's question. Display only.
-      var chromeAddBack = record.s === 'chrome' && record.c != null && record.c >= BIG_CLEAN;
-      var noRateAsk = record.s === 'chrome' && !chromeAddBack;
+      var chromeAddBack = store === 'chrome' && record.c != null && record.c >= BIG_CLEAN;
+      var noRateAsk = store === 'chrome' && !chromeAddBack;
       document.getElementById('un-tear').hidden = noRateAsk;
       document.getElementById('un-ask').hidden = noRateAsk;
       document.getElementById('un-rp-rate').hidden = noRateAsk;
@@ -1010,11 +1027,11 @@ sitemap: false
     function setRated(on) {
       rated.hidden = !on;
       act.querySelectorAll('[data-hint]').forEach(function (el) {
-        el.hidden = on || (record.s != null && el.getAttribute('data-store') !== record.s);
+        el.hidden = on || (store != null && el.getAttribute('data-store') !== store);
       });
     }
     act.querySelectorAll('.un-rate').forEach(function (a) {
-      a.addEventListener('click', function () { if (record.s != null) setRated(true); });
+      a.addEventListener('click', function () { if (store != null) setRated(true); });
     });
 
     function replay(el) {
@@ -1136,15 +1153,15 @@ sitemap: false
     });
 
     // Removed it by mistake (2026-10-22): a known store keeps only its own
-    // reinstall link, and the dots between links go with the others. No `s`,
-    // or an unknown one, keeps all three.
+    // reinstall link, and the dots between links go with the others. No store,
+    // from the link or the browser (shownStore()), keeps all three.
     function renderReinstall() {
       document.querySelectorAll('[data-reinstall-links]').forEach(function (box) {
         box.querySelectorAll('[data-reinstall]').forEach(function (a) {
-          a.hidden = record.s != null && a.getAttribute('data-reinstall') !== record.s;
+          a.hidden = store != null && a.getAttribute('data-reinstall') !== store;
         });
         box.querySelectorAll('span[aria-hidden="true"]').forEach(function (dot) {
-          dot.hidden = record.s != null;
+          dot.hidden = store != null;
         });
       });
     }
@@ -1161,6 +1178,7 @@ sitemap: false
     // again through the same parser.
     window.addEventListener('hashchange', function () {
       record = readRecord(location.hash);
+      store = shownStore();
       renderRecord(false);
       renderReinstall();
     });
