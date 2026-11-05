@@ -1,4 +1,4 @@
-STATUS: IN PROGRESS (step 3 of 4 done: the rest of the page)
+STATUS: DONE (all four steps; the script is byte-identical to agent-a-uninstall-page)
 
 # Debrief: agent-b-uninstall-design
 
@@ -17,6 +17,8 @@ locally, so no visit reached live data.
   the fine print as the receipt's stub, secondary text up to 11.4 to 12.25px at the 1440 root. Details below.
 - Step 3 (the rest): done. The reasons in a three-column grid, the reply signed with the photo, larger reply and
   form text, a four-line note box, an icon of its own for the reinstall line, more room around each section.
+- Step 4 (verify): done. Script diff empty, ids and data attributes identical, template tests 6 of 6, every
+  after shot looked at; one fix found on the way (the sticky bar's cover). Details below.
 
 ## Step 1: the audit, worst first
 
@@ -117,3 +119,47 @@ CSS that padded the box's first `span` now names `span:first-of-type`, since the
 Deviation from the Schoger look: the reasons are rounded tiles (14px corners) rather than the look's pills,
 because a label may wrap onto two lines in a narrower window and a pill does not hold two lines. The Netflix twin
 uses ringed cards for its reasons too, so this stays inside the leaver pages' vocabulary.
+
+## Step 4: verification
+
+- **Script diff: empty.** The one `<script>` block extracted from `git show agent-a-uninstall-page:uninstall/index.html`
+  and from this branch's file (434 lines each) diff to nothing.
+- **Every `id` and `data-*` attribute in the body is identical** to agent-a's (sorted lists diffed). The classes
+  the script reads (`un-reason`, `un-rate`, `un-branch`, `un-rh`, `un-ci`, `un-reveal`, `is-compact`, `is-one`)
+  are all kept.
+- **`node --test scripts/templates.test.mjs`: 6 pass, 0 fail.**
+- **Network:** a page load plus a pick requests only same-origin files. The one new request is
+  `/assets/dominic.jpg`, already in the repo. Nothing new is sent; no privacy sentence changed.
+- Front matter not touched.
+- `styles-leaver.html` changes all sit between its `/* ════ uninstall/: the receipt ════` and
+  `/* ════ netflix/removed/ ════` lines; the tokens and the Netflix section are untouched.
+- Keyboard focus checked on a reason tile and on the Rate button: the 2px ink ring with its 3px offset shows.
+- Checked at 1440 x 900, 3008 x 1512, 1100 x 800, 720 x 900 and 600 x 1000; no sideways scroll at any of them.
+  At 600 the existing container queries still stack the ask and put the reasons in two columns.
+
+Found and fixed while looking at the shots:
+- With the reasons now reaching the column's edges, a picked tile's 2px ring peeked out beside the sticky bar as it
+  scrolled under. The bar's cover is now 0.5rem wider a side (two side shadows in the page colour).
+- The longest note hint (under "Videos became unavailable") was cut off in a three-line box: the box is four lines.
+- In a 1100px window "Wouldn't open, or wrong account" wraps and made its row taller than the others: every row
+  now takes the tallest row's height.
+- The note question left one word on its second line: balanced.
+
+## Wording changes
+
+None. Every visible word is as it was. The byline's "D" monogram (hidden from screen readers) became a photo with
+empty alt text, since the words beside it name Dominic.
+
+## Proposals (not made; they need a script change or the owner's call)
+
+- **Split the receipt's top line into ledger rows.** The script writes "Receipt · TidyWL 2.8.1 · Chrome" into one
+  element (`data-rec="meta"`). Separate `version` and `store` rows under the dotted leader would read more like a
+  receipt and fill the ledger, but that needs `renderRecord()` to write them.
+- **An Increase Contrast answer** (`color.md`: "an increased contrast option for each variant"): under
+  `prefers-contrast: more`, rings at 30% instead of 10% and secondary text a step darker. Left out because it
+  touches the shared tokens at the top of `styles-leaver.html`, which this step may not edit.
+- **Firefox crop:** `object-view-box` is Chromium only, so Firefox shows the whole photo in the circle (the cat
+  smaller, still recognisable). Not checked in Firefox itself. A cropped copy of the photo would make it identical
+  everywhere, at the cost of a second image file.
+- The reply's left column leaves empty space under the shortest replies (I finished my cleanup, Missing
+  something, Something else) beside the taller note form. Left alone: the two-column reply is the owner's layout.
