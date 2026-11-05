@@ -126,7 +126,8 @@ sitemap: false
     /* object-view-box zooms in on the face where Chromium supports it; elsewhere the whole photo shows, still round. */
     .un-avatar { flex: none; display: block; width: 2rem; height: 2rem; border-radius: 50%; object-fit: cover; object-view-box: inset(18% 8% 6% 16%); }
 
-    .un-act { flex: 0 1 auto; max-width: 19rem; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+    .un-act { flex: 0 1 auto; max-width: 21rem; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
+    .un-act.is-one .un-rate { white-space: nowrap; }
     .un-trio-label { font-size: 0.875rem; color: var(--text-muted); }
     .un-rates { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.6rem; }
     .un-rate { display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem; min-height: 3.75rem; padding: 0 2.1rem; border-radius: 0.8rem; border: 1.5px solid var(--accent-fill); background: var(--accent-fill); color: #fff; font-size: 1.1875rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; box-shadow: var(--un-rate-shadow); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
@@ -345,9 +346,9 @@ sitemap: false
           </div>
         </div>
 
-        <div class="un-tear" aria-hidden="true"></div>
+        <div class="un-tear" id="un-tear" aria-hidden="true"></div>
 
-        <div class="un-ask">
+        <div class="un-ask" id="un-ask">
           <div class="un-ask-copy">
             <h2 class="un-ask-h" data-rec="ask-h">How would you rate it?</h2>
             <p class="un-ask-p" data-rec="ask">Honest is best, good or bad. A rating helps the next person decide, and shows me what to fix.</p>
@@ -463,17 +464,21 @@ sitemap: false
             <div class="un-branch" data-branch="done" hidden>
               <h3 class="un-rh" tabindex="-1">Then it did its job. Thanks for using it.</h3>
               <p class="un-p">If YouTube paused your videos for a while, sorry. That's its limit on one account's requests, and in my experience it clears within an hour.</p>
-              <p class="un-p">If it saved you time, a quick rating means a lot to a small app like this one. It's also how the next person finds it.</p>
               <!-- The Rate button again, beside the answer that most often
                    leads to it (2026-11-05, lab round 1). A known store shows
-                   its own; the script hides the others by data-store. -->
+                   its own; the script hides the others by data-store. On
+                   Chrome it is hidden under BIG_CLEAN and asks to add it back
+                   above it: Chrome takes ratings only from current installs. -->
+              <div class="un-rp-rate" id="un-rp-rate">
+              <p class="un-p">If it saved you time, a quick rating means a lot to a small app like this one. It's also how the next person finds it.</p>
               <div class="un-btns">
-                <a class="un-btn" data-store="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener"><img src="/assets/chrome-logo.svg" alt="" width="16" height="16">Rate on Chrome<span class="sr-only"> (opens in a new tab)</span></a>
+                <a class="un-btn" data-store="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener"><img src="/assets/chrome-logo.svg" alt="" width="16" height="16"><span id="un-rp-chrome-label">Rate on Chrome</span><span class="sr-only"> (opens in a new tab)</span></a>
                 <a class="un-btn" data-store="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener"><img src="/assets/firefox-logo.svg" alt="" width="16" height="16">Rate on Firefox<span class="sr-only"> (opens in a new tab)</span></a>
                 <a class="un-btn" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener"><img src="/assets/edge-logo.svg" alt="" width="16" height="16">Rate on Edge<span class="sr-only"> (opens in a new tab)</span></a>
               </div>
-              <p class="un-rp-hint" data-store="chrome">Stars alone are fine. Writing a review is optional.</p>
+              <p class="un-rp-hint" data-store="chrome" id="un-rp-chrome-hint">Stars alone are fine. Writing a review is optional.</p>
               <p class="un-rp-hint" data-store="firefox">Needs a Mozilla account, which you have if you use Firefox Sync. Stars alone are fine. No account? Your answer here already helps.</p>
+              </div>
             </div>
 
             <div class="un-branch" data-branch="load" hidden>
@@ -963,6 +968,22 @@ sitemap: false
         el.hidden = record.s != null && el.getAttribute('data-store') !== record.s;
       });
       act.classList.toggle('is-one', record.s != null);
+      // Chrome takes ratings only from current installs (the owner checked on
+      // 2026-11-05: once removed, no rating without installing it again). So a
+      // Chrome leaver is asked to add it back and rate only after a big
+      // cleanup; under that there is no rating ask, and the reasons right under
+      // the record are the first screen's question. Display only.
+      var chromeAddBack = record.s === 'chrome' && record.c != null && record.c >= BIG_CLEAN;
+      var noRateAsk = record.s === 'chrome' && !chromeAddBack;
+      document.getElementById('un-tear').hidden = noRateAsk;
+      document.getElementById('un-ask').hidden = noRateAsk;
+      document.getElementById('un-rp-rate').hidden = noRateAsk;
+      if (chromeAddBack) rec('ask').textContent = "Chrome only takes ratings from people who have it installed. If it saved you time, adding it back for a minute to leave stars would mean a lot. You can remove it again right after.";
+      act.querySelector('.un-rate[data-store="chrome"] .un-rate-pre').textContent = chromeAddBack ? 'Add back and rate on ' : 'Rate on ';
+      document.getElementById('un-rp-chrome-label').textContent = chromeAddBack ? 'Add back and rate on Chrome' : 'Rate on Chrome';
+      document.getElementById('un-rp-chrome-hint').textContent = chromeAddBack
+        ? 'Chrome only takes ratings from people who have it installed. Add it back, pick your stars, and remove it again whenever you like.'
+        : 'Stars alone are fine. Writing a review is optional.';
       setRated(false);
     }
 
