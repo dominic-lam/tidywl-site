@@ -88,7 +88,8 @@ sitemap: false
 
     /* ── The receipt ── */
     .un-stick { padding: 0; }
-    .un-receipt { --pad: 2.25rem; position: relative; padding: 1.4rem var(--pad) 1.1rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 1.25rem; }
+    /* --pad-b is also the fine-print band's pull to the card's foot, so the band always meets the bottom edge. */
+    .un-receipt { --pad: 2.5rem; --pad-t: 1.6rem; --pad-b: 1.6rem; position: relative; padding: var(--pad-t) var(--pad) var(--pad-b); background: var(--bg-card); border: 1px solid var(--border); border-radius: 1.25rem; }
     .un-receipt::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(55% 75% at 50% 0%, var(--un-glow), transparent 72%); }
     .un-receipt > * { position: relative; }
 
@@ -105,25 +106,28 @@ sitemap: false
     .un-fig-label { margin-top: 0.7rem; font-size: clamp(1.125rem, 2.7vh, 1.5rem); font-weight: 700; letter-spacing: -0.015em; line-height: 1.3; text-wrap: balance; }
     .un-fig-title { font-size: clamp(2.25rem, 7.5vh, 3.75rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; }
     .un-fig-sub { margin-top: 0.7rem; font-size: 1.0625rem; line-height: 1.5; color: var(--text-secondary); text-wrap: balance; }
-    .un-lines { margin-top: 0.9rem; width: min(25rem, 100%); display: flex; flex-direction: column; gap: 0.3rem; font-family: var(--un-mono); font-size: 0.8125rem; line-height: 1.5; color: var(--text-secondary); }
+    /* The ledger runs the card's full width, as on a till receipt, so its total lines up with the pill above and the Rate button below. */
+    .un-lines { margin-top: 1.1rem; width: 100%; display: flex; flex-direction: column; gap: 0.35rem; font-family: var(--un-mono); font-size: 0.875rem; line-height: 1.5; color: var(--text-secondary); }
     .un-line { display: flex; align-items: baseline; gap: 0.5rem; }
     .un-line i { flex: 1; border-bottom: 1px dotted var(--border-strong); transform: translateY(-0.2rem); }
     .un-line b { font-weight: 700; color: var(--text); }
 
-    .un-tear { position: relative; height: 0; margin: 1.35rem calc(-1 * var(--pad)); border-top: 2px dashed var(--border-strong); }
+    .un-tear { position: relative; height: 0; margin: 1.5rem calc(-1 * var(--pad)); border-top: 2px dashed var(--border-strong); }
     .un-tear::before, .un-tear::after { content: ""; position: absolute; top: -0.875rem; width: 1.625rem; height: 1.625rem; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); }
     .un-tear::before { left: -0.875rem; clip-path: inset(0 0 0 50%); }
     .un-tear::after { right: -0.875rem; clip-path: inset(0 50% 0 0); }
 
-    .un-ask { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem 2rem; flex-wrap: wrap; }
+    .un-ask { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem 2.5rem; flex-wrap: wrap; }
     .un-ask-copy { flex: 1 1 20rem; min-width: 0; }
     .un-ask-h { font-size: 1.4375rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
-    .un-ask-p { margin-top: 0.3rem; max-width: 30rem; font-size: 0.96875rem; line-height: 1.5; color: var(--text-secondary); text-wrap: pretty; }
-    .un-byline { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.7rem; font-size: 0.8125rem; font-weight: 500; line-height: 1.4; color: var(--text-muted); }
-    .un-mono { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 1.375rem; height: 1.375rem; border-radius: 50%; background: var(--feature-icon-bg); border: 1px solid var(--border); color: var(--accent-text); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0; }
+    .un-ask-p { margin-top: 0.35rem; max-width: 32rem; font-size: 1rem; line-height: 1.55; color: var(--text-secondary); text-wrap: pretty; }
+    .un-byline { display: flex; align-items: center; gap: 0.625rem; margin-top: 0.9rem; font-size: 0.875rem; font-weight: 500; line-height: 1.4; color: var(--text-muted); }
+    /* Dominic's photo, cropped round (2026-11-05). It is his profile picture, a white Persian cat, on purpose. */
+    /* object-view-box zooms in on the face where Chromium supports it; elsewhere the whole photo shows, still round. */
+    .un-avatar { flex: none; display: block; width: 2rem; height: 2rem; border-radius: 50%; object-fit: cover; object-view-box: inset(18% 8% 6% 16%); }
 
     .un-act { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem; }
-    .un-trio-label { font-size: 0.8125rem; color: var(--text-muted); }
+    .un-trio-label { font-size: 0.875rem; color: var(--text-muted); }
     .un-rates { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.6rem; }
     .un-rate { display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem; min-height: 3.75rem; padding: 0 2.1rem; border-radius: 0.8rem; border: 1.5px solid var(--accent-fill); background: var(--accent-fill); color: #fff; font-size: 1.1875rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; box-shadow: var(--un-rate-shadow); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
     .un-rate:hover { background: var(--accent-fill-hover); border-color: var(--accent-fill-hover); transform: translateY(-1px); }
@@ -138,20 +142,21 @@ sitemap: false
     .un-act:not(.is-one) .un-rate .un-star { display: none; }
     .un-act:not(.is-one) .un-rate-pre { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     .un-act.is-one .un-trio-label, .un-act:not(.is-one) .un-hint { display: none; }
-    .un-hint { display: flex; align-items: center; gap: 0.45rem; font-size: 0.8125rem; line-height: 1.4; color: var(--text-muted); }
+    .un-hint { display: flex; align-items: center; gap: 0.45rem; font-size: 0.875rem; line-height: 1.4; color: var(--text-muted); }
     .un-hint img { display: block; width: 1rem; height: 1rem; }
     .un-hint svg { color: var(--accent-text); }
     .un-hint.is-done { color: var(--text-secondary); }
 
-    .un-fine { display: flex; align-items: flex-start; gap: 0.5rem; margin-top: 1.1rem; padding-top: 0.85rem; border-top: 1px solid var(--border-subtle); font-size: 0.78rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
-    .un-fine svg { margin-top: 0.15rem; }
+    /* The fine print is the receipt's stub: a quiet band at its foot rather than a second rule under the tear. */
+    .un-fine { display: flex; align-items: flex-start; gap: 0.5rem; margin: 1.5rem calc(-1 * var(--pad)) calc(-1 * var(--pad-b)); padding: 0.75rem var(--pad) 0.8rem; background: var(--un-bar); border-bottom-left-radius: inherit; border-bottom-right-radius: inherit; font-size: 0.8125rem; line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
+    .un-fine svg { margin-top: 0.2rem; }
 
     /* After a pick the receipt folds into a bar and stays in view, so the Rate
        button is on screen while the reply is read. The wrapper is what sticks:
        its own background hides what scrolls under it. */
     .un-stick.is-compact { position: sticky; top: 0; z-index: 6; padding: 0.75rem 0; margin-top: -0.75rem; background: var(--bg); }
     .un-stick.is-compact::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 1rem; background: linear-gradient(var(--bg), transparent); pointer-events: none; }
-    .is-compact .un-receipt { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 1.5rem; padding: 0.9rem 1.5rem 0.65rem; border-radius: 1rem; box-shadow: var(--un-lift); }
+    .is-compact .un-receipt { --pad: 1.5rem; --pad-t: 0.9rem; --pad-b: 0.9rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 1.5rem; border-radius: 1rem; box-shadow: var(--un-lift); }
     .is-compact .un-r-top, .is-compact .un-tear, .is-compact .un-lines, .is-compact .un-fig-sub, .is-compact .un-ask-p, .is-compact .un-byline, .is-compact .un-hint, .is-compact .un-trio-label { display: none; }
     .is-compact .un-fig > div { grid-column: 1; flex-direction: row; align-items: baseline; justify-content: flex-start; flex-wrap: wrap; gap: 0 0.9rem; margin: 0; text-align: left; }
     .is-compact .un-num { font-size: 2.9rem; }
@@ -163,7 +168,7 @@ sitemap: false
     .is-compact .un-act { flex-direction: row; align-items: center; }
     .is-compact .un-rate { min-height: 3rem; padding: 0 1.5rem; font-size: 1rem; }
     .is-compact .un-act:not(.is-one) .un-rate { min-height: 2.75rem; padding: 0 1rem; font-size: 0.9375rem; }
-    .is-compact .un-fine { grid-column: 1 / -1; margin-top: 0.55rem; padding-top: 0.5rem; font-size: 0.72rem; }
+    .is-compact .un-fine { grid-column: 1 / -1; margin-top: 0.8rem; padding-top: 0.5rem; padding-bottom: 0.55rem; font-size: 0.8125rem; }
 
     /* ── The reasons ── */
     .un-why { padding: 0; margin-top: 1.9rem; }
@@ -328,7 +333,7 @@ sitemap: false
           <div class="un-ask-copy">
             <h2 class="un-ask-h" data-rec="ask-h">How would you rate it?</h2>
             <p class="un-ask-p" data-rec="ask">Honest is best, good or bad. A rating helps the next person decide, and shows me what to fix.</p>
-            <p class="un-byline"><span class="un-mono" aria-hidden="true">D</span><span>Dominic builds TidyWL, on his own</span></p>
+            <p class="un-byline"><img class="un-avatar" src="/assets/dominic.jpg" alt="" width="28" height="28"><span>Dominic builds TidyWL, on his own</span></p>
           </div>
           <!-- A known store shows its own Rate button only, filled; an unknown
                one keeps all three. Edge goes to its listing: it has no review url. -->
