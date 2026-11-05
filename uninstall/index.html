@@ -214,6 +214,11 @@ sitemap: false
     .un-btns { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin-top: 0.15rem; }
     .un-btn { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.5rem; padding: 0 1rem; background: transparent; color: var(--text); border: 1px solid var(--border-strong); border-radius: 0.6rem; font-size: 0.9rem; font-weight: 600; line-height: 1.3; transition: border-color 0.2s, background 0.2s; }
     .un-btn:hover { border-color: var(--ghost-hover-border); background: var(--un-raise); }
+    .un-btn img { display: block; width: 1rem; height: 1rem; }
+    /* The effort line under the reply's Rate button: one per store, and none
+       while the store is unknown, as with the first screen's hints. */
+    .un-rp-hint { margin-top: -0.3rem; font-size: 0.875rem; line-height: 1.45; color: var(--text-secondary); }
+    .un:has(#un-act:not(.is-one)) .un-rp-hint { display: none; }
     .un-tlink { color: var(--text); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
     .un-tlink:hover { text-decoration-thickness: 2px; }
     .un-inline-links { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0 0.15rem; font-size: 0.875rem; line-height: 1.5; color: var(--text-muted); }
@@ -368,8 +373,8 @@ sitemap: false
                 <span><span class="un-rate-pre">Rate on </span>Edge</span><span class="sr-only"> (opens in a new tab)</span>
               </a>
             </div>
-            <p class="un-hint" data-store="chrome" data-hint><img src="/assets/chrome-logo.svg" alt="" width="16" height="16">Opens the Chrome Web Store in a new tab</p>
-            <p class="un-hint" data-store="firefox" data-hint><img src="/assets/firefox-logo.svg" alt="" width="16" height="16">Opens Firefox Add-ons in a new tab</p>
+            <p class="un-hint" data-store="chrome" data-hint><img src="/assets/chrome-logo.svg" alt="" width="16" height="16">Opens the Chrome Web Store in a new tab. Stars alone are fine.</p>
+            <p class="un-hint" data-store="firefox" data-hint><img src="/assets/firefox-logo.svg" alt="" width="16" height="16">Opens Firefox Add-ons in a new tab. Needs a Mozilla account. Stars alone are fine.</p>
             <p class="un-hint" data-store="edge" data-hint><img src="/assets/edge-logo.svg" alt="" width="16" height="16">Opens Microsoft Edge Add-ons in a new tab</p>
             <p class="un-hint is-done" id="un-rated" role="status" hidden>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
@@ -380,7 +385,7 @@ sitemap: false
 
         <p class="un-fine" id="un-fine" hidden>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span data-rec="src">These figures are counted in this browser and carried in this page's link. The page doesn't send them anywhere.</span>
+          <span data-rec="src">These figures come from this browser, through this page's link.</span>
         </p>
       </section>
     </div>
@@ -456,7 +461,18 @@ sitemap: false
 
             <div class="un-branch" data-branch="done" hidden>
               <h3 class="un-rh" tabindex="-1">Then it did its job. Thanks for using it.</h3>
+              <p class="un-p">If YouTube paused videos on your account partway through, sorry about that. It's a limit on how many requests one account can make, and in my experience it clears by itself in 30 to 60 minutes.</p>
               <p class="un-p">If it saved you time, a quick rating means a lot to a small app like this one. It's also how the next person finds it.</p>
+              <!-- The Rate button again, beside the answer that most often
+                   leads to it (2026-11-05, lab round 1). A known store shows
+                   its own; the script hides the others by data-store. -->
+              <div class="un-btns">
+                <a class="un-btn" data-store="chrome" href="https://chromewebstore.google.com/detail/fkelmapobieliokjcmnilmjllacmbfjo/reviews" target="_blank" rel="noopener"><img src="/assets/chrome-logo.svg" alt="" width="16" height="16">Rate on Chrome<span class="sr-only"> (opens in a new tab)</span></a>
+                <a class="un-btn" data-store="firefox" href="https://addons.mozilla.org/firefox/addon/watch-later-tidy/reviews/" target="_blank" rel="noopener"><img src="/assets/firefox-logo.svg" alt="" width="16" height="16">Rate on Firefox<span class="sr-only"> (opens in a new tab)</span></a>
+                <a class="un-btn" data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/doflfclcoebklpifkhcahbhlgbpamjcf" target="_blank" rel="noopener"><img src="/assets/edge-logo.svg" alt="" width="16" height="16">Rate on Edge<span class="sr-only"> (opens in a new tab)</span></a>
+              </div>
+              <p class="un-rp-hint" data-store="chrome">Stars alone are fine. Writing a review is optional.</p>
+              <p class="un-rp-hint" data-store="firefox">Needs a Mozilla account. Stars alone are fine.</p>
             </div>
 
             <div class="un-branch" data-branch="load" hidden>
@@ -611,7 +627,7 @@ sitemap: false
       <div class="un-why-foot">
         <p class="un-privacy">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span>Opening this page tells us this install was removed, with its random ID, its version and usage counts if your browser shares them. A click adds the reason you picked. Never your name, account or videos.</span>
+          <span id="un-sent-note">Opening this page only counted a visit, with nothing about you or this install. Picking a reason sends just that reason. Never your name, account or videos.</span>
         </p>
         <div class="un-inline-links" data-reinstall-links>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
@@ -917,9 +933,12 @@ sitemap: false
         : 'Honest is best, good or bad. A rating helps the next person decide, and shows me what to fix.';
       rec('ask-h').textContent = record.c != null && record.c >= BIG_CLEAN ? 'Did I save you some time?' : 'How would you rate it?';
       document.getElementById('un-fine').hidden = lines == null && record.a == null && record.v == null;
-      rec('src').textContent = record.i != null
-        ? "These figures are counted in this browser and carried in this page's link. They go with your answer, with this install's random ID."
-        : "These figures are counted in this browser and carried in this page's link. The page doesn't send them anywhere.";
+      // One statement of what opening the page sent, under the reasons; the
+      // receipt's own line only says where the figures come from (2026-11-05,
+      // after a lab visitor read the two old lines as contradicting each other).
+      document.getElementById('un-sent-note').textContent = record.i != null
+        ? "Opening this page sent tidywl.com this install's random ID, its version and its usage counts. Picking a reason adds that reason. Never your name, account or videos."
+        : "Opening this page only counted a visit, with nothing about you or this install. Picking a reason sends just that reason. Never your name, account or videos.";
       // A known store shows its own Rate button only, and it fills; an
       // unknown one keeps all three.
       document.querySelectorAll('[data-store]').forEach(function (el) {
