@@ -1,4 +1,54 @@
-STATUS: DONE (redesign and six lab rounds on the branch; ready for the owner to look at and merge after agent-a-uninstall-page)
+STATUS: DONE_WITH_CONCERNS
+COMMIT: db40604
+BRANCH: agent-b-uninstall-design
+DEPENDS_ON: agent-a-uninstall-page (contained: merged in at db40604, so A then B, or B alone, merges cleanly)
+STORE_TOUCHED: no
+MIGRATION_ADDED: no
+GATES: lint=SKIPPED build=PASS test=PASS
+CONCERNS: the lab never reached its target of 8 (last round 4.0 / 3.0 / 5.0); three things on the page are unverified: the Chrome listing's "Remove from Chrome" label, "under a minute", and a Chrome rating surviving a second removal
+
+# agent-b-uninstall-design (the redesign and the lab)
+
+## Files staged
+Committed step by step on this branch; nothing was left unstaged.
+- uninstall/index.html
+- _includes/styles-leaver.html (its uninstall section only)
+- CLAUDE.md (the uninstall/index.html line only)
+- assets/dominic.jpg (the owner's profile photo, 256x256, from the URL they gave)
+- docs/claude/debriefs/DEBRIEF-agent-b-uninstall-design.md
+
+## Shared files touched
+- _includes/styles-leaver.html: every hunk sits between its uninstall and netflix section markers (checked by diff), so netflix/removed/ is untouched.
+- CLAUDE.md: the one line describing the page, now also recording the Chrome rating finding.
+
+## Design decisions
+- Chrome takes ratings only from current installs (the owner checked, 2026-11-05). So on Chrome, 100 or more cleaned asks "Add back and rate on Chrome" with three numbered steps and the line "Chrome only lets you rate it while it's installed. Three clicks, under a minute, and your YouTube isn't touched." (the owner's pick of length). Under 100, Chrome shows no rating ask and the reasons sit right under the record. Firefox, Edge and an unknown store keep their Rate buttons.
+- One sentence under the reasons says what opening the page sent, chosen by whether the link has an `i`; the record's own line only says where the figures came from. Round 1 read the two old lines as a contradiction.
+- A "Time saved, at 4 s a video by hand" ledger line: an estimate that names its basis (the owner said yes to 4 s).
+- "Your record" for "Receipt" and "YouTube stopped playing videos" for the ninth reason (the owner's yes); the reason's key is still `unavailable`, so the server is unchanged.
+- The photo is served from the site, so no visitor's browser is sent to Google for it.
+- Every script change is display text in `renderRecord()`. The send calls were compared with branch A after every round and never changed.
+
+## Manual steps
+- Six lab rounds, each with three simulated visitors (judge agents) reading screenshots and page text of a local build. The harness answers `/api/` locally with 200 and gives the two Chrome visitors an `i`.
+- The owner checked by hand that Chrome's store offers no rating after removal.
+
+## Bugs found and fixed
+- The lab harness itself in round 1: visitors saw "Not sent" because the local server had no API.
+- The Rate button dropped under the copy when its hint grew longer (round 2). The Rate column is now 21rem and the one-store button stays on one line.
+
+## Deliberately deferred work
+- The page in the visitor's language: the extension ships de, es, ja, pt_BR and ru; the page is English only. Proposal.
+- A link flag from the extension for installs that hit YouTube's pause, so only they see the apology. Proposal.
+- The in-extension rating ask after a big cleanup: the owner said yes; the launch prompt for tidywl branch agent-f-rating-ask-big-cleanup was given.
+- The Rate-click count in tidywl-api (approved, for TODO). Edge's rating rule is unchecked. In Firefox, `object-view-box` does not apply, so the cat shows smaller in its circle.
+
+## Gotchas for future agents
+- `renderRecord()` hides `#un-tear`, `#un-ask` and `#un-rp-rate` for Chrome under `BIG_CLEAN`. The global `[data-store]` loop hides other stores' buttons anywhere on the page, the reply's included.
+- `.un:has(#un-act:not(.is-one)) .un-rp-hint` hides the reply's hints while the store is unknown.
+- A Chrome Rate button on this page is a dead end for anyone who has removed the extension. Never put one back without the add-back wording.
+
+## Session log
 
 # Debrief: agent-b-uninstall-design
 
