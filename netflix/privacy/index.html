@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, what leaves it — four public requests, title ids to our ratings table, a usage report, and for Pro a licence check and playlist sync — and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-11-03
+last_modified_at: 2026-11-07
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -128,8 +128,11 @@ last_modified_at: 2026-11-03
      tidywl_playlist_titles_<guid> (storage.js PLAYLIST_TITLE_FIELDS), in
      chrome.storage.local; sync_short also counts a read Netflix refused in part
      (error-formatter.js syncShortReason, reason partial, a code already sent);
-     no new fetch() or permission between v1.6.1 and the 1.7.0 build. The dated line, privacy_updated and last_modified_at wait
-     for the merge day.
+     no new fetch() or permission between v1.6.1 and the 1.7.0 build. 1.7.0 was live on
+     the store 2026-11-07 and merged that day, so the dated line, privacy_updated and
+     last_modified_at carry that date. Checked against src/ at the v1.7.0 tag before
+     the merge: the fields, that only the Playlists tab reads the key, and that
+     tidywl_debug_look is written only by an unpacked copy, so it is not listed.
 
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
@@ -170,6 +173,10 @@ last_modified_at: 2026-11-03
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
+      Updated 7 November 2026 for version 1.7.0: one new storage key keeps the details of the titles in your playlists on
+      this machine, so a playlist can show them without asking Netflix again. Chrome's sync does not carry it. The usage
+      report's count of Syncs left unfinished now also covers titles left without details because Netflix refused part of
+      the read. The extension makes no new request.
       Updated 3 November 2026 for version 1.6.1: the dashboard links to a new feedback page on tidywl.com, and asks
       once, after a big clean-up, with a card whose button opens it. One new storage key remembers that the card was
       shown, and the usage report adds two counts: how often it was shown and how often its button was pressed. The page
