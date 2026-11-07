@@ -44,6 +44,26 @@
   },
   "announcements": [
     {
+      "id": "2026-11-v1.7.0",
+      "title": "What's new in 1.7.0",
+      "body": [
+        {
+          "list": [
+            "**Filter by release year.** Every Filter menu now has a slider, so you can narrow any list to the years you want.",
+            "**Add to My List from a playlist.** Tick titles and use the new button on the Playlists toolbar.",
+            "**Long lists fixed.** With about 567 titles or more, genres, runtimes and watch state went missing. Press **Sync** once to get them back."
+          ]
+        },
+        {
+          "text": "Questions or ideas? Ask on [Discord](https://discord.gg/4j5u9xd35P).",
+          "tone": "muted"
+        }
+      ],
+      "size": "medium",
+      "created_at": "2026-11-07",
+      "expires_at": "2027-02-07"
+    },
+    {
       "id": "2026-10-v1.6.0-my-list-page",
       "title": "Update to 1.6.0 to fix the My List page",
       "body": [
