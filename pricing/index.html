@@ -47,8 +47,10 @@ faq:
            if that fetch fails, these literals stand and only the switch stops
            responding. Keep them equal to the config's `regular` set.
            [data-billing] on .plans decides which period is shown; it opens on
-           monthly, matching the card (2026-09-06). -->
-      <div class="plans" id="plans" data-billing="monthly">
+           yearly, matching the extension's card, which opens on yearly since
+           2026-10-22 (`license.pricing.defaultPeriod`). Yearly here since
+           2026-11-07, the yearly-first test; was monthly from 2026-09-06. -->
+      <div class="plans" id="plans" data-billing="yearly">
         <div class="plan">
           <div class="plan-head">
             <h2 class="plan-name">Free</h2>
@@ -71,8 +73,8 @@ faq:
           <div class="plan-head">
             <h2 class="plan-name">Pro</h2>
             <div class="billing-switch" role="group" aria-label="Billing period">
-              <button type="button" class="billing-opt" data-billing-set="monthly" aria-pressed="true">Monthly</button>
-              <button type="button" class="billing-opt" data-billing-set="yearly" aria-pressed="false">Yearly <span class="billing-save">· Save 20%</span></button>
+              <button type="button" class="billing-opt" data-billing-set="monthly" aria-pressed="false">Monthly</button>
+              <button type="button" class="billing-opt" data-billing-set="yearly" aria-pressed="true">Yearly <span class="billing-save">· Save 20%</span></button>
             </div>
           </div>
           <p class="plan-sub">Keeps it clean by itself every month, and makes every cleanup reversible.</p>
