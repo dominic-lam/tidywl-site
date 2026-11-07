@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, what leaves it — four public requests, title ids to our ratings table, a usage report, and for Pro a licence check and playlist sync — and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-11-03
+last_modified_at: 2026-11-07
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -124,6 +124,16 @@ last_modified_at: 2026-11-03
      feedback_asks and feedback_clicks, the card's wording, and no new fetch()
      or permission between v1.6.0 and v1.6.1.
 
+     1.7.0, drafted 2026-11-06 on branch draft/netflix-1.7.0: one new key,
+     tidywl_playlist_titles_<guid> (storage.js PLAYLIST_TITLE_FIELDS), in
+     chrome.storage.local; sync_short also counts a read Netflix refused in part
+     (error-formatter.js syncShortReason, reason partial, a code already sent);
+     no new fetch() or permission between v1.6.1 and the 1.7.0 build. 1.7.0 was live on
+     the store 2026-11-07 and merged that day, so the dated line, privacy_updated and
+     last_modified_at carry that date. Checked against src/ at the v1.7.0 tag before
+     the merge: the fields, that only the Playlists tab reads the key, and that
+     tidywl_debug_look is written only by an unpacked copy, so it is not listed.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -163,6 +173,10 @@ last_modified_at: 2026-11-03
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
+      Updated 7 November 2026 for version 1.7.0: one new storage key keeps the details of the titles in your playlists on
+      this machine, so a playlist can show them without asking Netflix again. Chrome's sync does not carry it. The usage
+      report's count of Syncs left unfinished now also covers titles left without details because Netflix refused part of
+      the read. The extension makes no new request.
       Updated 3 November 2026 for version 1.6.1: the dashboard links to a new feedback page on tidywl.com, and asks
       once, after a big clean-up, with a card whose button opens it. One new storage key remembers that the card was
       shown, and the usage report adds two counts: how often it was shown and how often its button was pressed. The page
@@ -343,6 +357,7 @@ last_modified_at: 2026-11-03
           <tr><td><code>tidywl_leaving_seen_&lt;profile&gt;</code></td><td>From version 1.2.0. When this profile last opened the toolbar popup, opened Tonight, and saw the "leaving" notice, so "new" means new since you last looked. Times only. Never sent.</td></tr>
           <tr><td><code>tidywl_last_profile</code></td><td>From version 1.2.0. The id of the Netflix profile last used in this browser, and when, so the toolbar badge and popup show that profile's list. Never sent.</td></tr>
           <tr><td><code>tidywl_installed_at</code></td><td>From version 1.2.1. When the extension was installed in this browser, so the page Chrome opens after a removal can say roughly how long you had it: under an hour, a day, a week, a month, or longer. Only that rough span ever leaves, and only if you press Send there. Installs from before 1.2.1 have none.</td></tr>
+          <tr><td><code>tidywl_playlist_titles_&lt;profile&gt;</code></td><td>From version 1.7.0. The details of the titles in this profile's playlists, so a playlist can show them without asking Netflix again: each title's Netflix id, name, type, year, runtime, where its credits start, whether it is a Netflix original, seasons and episodes, maturity rating, whether it can be played, box-art address and genres. It stays on this machine: Chrome's sync does not carry it.</td></tr>
           <tr><td><code>tidywl_playlist_cap_exempt</code></td><td><code>true</code> in a browser that had the extension before version 1.0.0, so it keeps making up to 50 playlists without Pro. Nothing else.</td></tr>
           <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once a rating ask has been answered or declined, so no rating ask is shown again in this browser: the one on a removal's summary and, from version 1.4.0, the band at the top of the dashboard or the strip in the My List page's heading.</td></tr>
           <tr><td><code>tidywl_rating_band_shown</code></td><td>From version 1.4.0. <code>true</code> once the rating ask at the top of the dashboard or in the My List page's heading has been shown, so it appears at most once in this browser, answered or not. Never sent.</td></tr>
@@ -678,7 +693,7 @@ last_modified_at: 2026-11-03
           <tr><td>badge_mode</td><td>Which setting you chose for the IMDb badges on Netflix's own cards: 0 for on everywhere, 1 for off on My Netflix and My List, 2 for off everywhere. The setting as it stood at the last report, not a total.</td></tr>
           <tr><td>announce_views</td><td>How many times an announcement has opened as a window on the dashboard. Not which one. Opening the bell's list is not counted.</td></tr>
           <tr><td>announce_clicks</td><td>How many times you have pressed the button on such a window that opens its link. Not which one, and not <em>Not now</em> or <em>Got it</em>.</td></tr>
-          <tr><td>sync_short</td><td>How many times a Sync finished but left part of its reading undone, and the dashboard said so: watch state it could not finish reading, shows left unchecked, or a Leaving soon check Netflix did not answer in full. At most one per Sync.</td></tr>
+          <tr><td>sync_short</td><td>How many times a Sync finished but left part of its reading undone, and the dashboard said so: watch state it could not finish reading, shows left unchecked, a Leaving soon check Netflix did not answer in full, or, from version 1.7.0, titles left without details because Netflix refused part of the read. At most one per Sync.</td></tr>
           <tr><td>reads_refused</td><td>How many times Netflix did not answer something the extension asked it to read — My List, a search, a category, the details of their results, watch state, Leaving soon, or the My List page — and the extension told you so. Not what was being read.</td></tr>
           <tr><td>ops_rejected</td><td>How many times Netflix refused one of the extension's requests outright, as it does when a Netflix update changes what it expects, rather than simply not answering — and the extension told you so. Not which request.</td></tr>
           <tr><td>removals_failed</td><td>How many titles a removal, a Retry or a Move asked Netflix to take out of My List and Netflix refused, as the removal's summary then says. Not which titles. A title left alone because you pressed Stop is not counted.</td></tr>
