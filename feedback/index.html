@@ -16,7 +16,10 @@ robots: noindex
   }
   :root[data-theme="dark"] { --fb-off-bg: #38332e; --fb-off-fg: #a89f97; --fb-focus: rgba(255, 122, 112, 0.28); }
 
-  .blog-wrap.fb { max-width: 820px; padding: 40px 24px 72px; display: grid; gap: 24px; }
+  /* Width, padding and place come from styles-site.html's `.site > section` and `.site .blog-wrap > *`, as on every other
+     page of the default layout. Until 2026-11-07 a max-width and padding here outranked them (two classes against one
+     class and an element), so the column sat pinned to the window's left edge, across the canvas line. */
+  .blog-wrap.fb { display: grid; gap: 24px; }
   .fb a { color: var(--accent-text); text-decoration: underline; text-underline-offset: 3px; }
   .fb a:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; border-radius: 2px; }
 
@@ -112,7 +115,7 @@ robots: noindex
   .fb .fq[data-stepped] > :not([hidden]) { animation: fb-in 0.22s ease-out; }
 
   @media (max-width: 600px) {
-    .blog-wrap.fb { padding: 24px 16px 56px; gap: 18px; }
+    .blog-wrap.fb { gap: 18px; }
     .fb-note { padding: 24px 22px; }
     .fb-note p { font-size: 1.125rem; }
     .fb .fq { padding: 24px 22px 26px; }
