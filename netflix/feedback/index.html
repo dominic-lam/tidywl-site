@@ -23,26 +23,26 @@ robots: noindex
   .fb a:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; border-radius: 2px; }
 
   .fb-note { display: grid; gap: 14px; padding: 36px 40px; border: 1px solid var(--highlight-border); border-radius: 20px; background: var(--highlight-bg); }
-  .fb-note h1 { margin: 0; font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
-  .fb-note p { margin: 0; max-width: 56ch; font-size: 1.25rem; line-height: 1.55; color: var(--text-secondary); }
+  .fb-note h1 { margin: 0; font-size: clamp(1.875rem, calc(6vw - 0.125rem), 2.625rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+  .fb-note p { margin: 0; max-width: 56ch; font-size: 1.125rem; line-height: 1.55; color: var(--text-secondary); }
 
   .fb .fq { margin: 0; padding: 36px 40px 40px; border-radius: 20px; }
-  .fb .fq .fq-title { display: block; margin: 0 0 8px; font-size: 1.625rem; font-weight: 700; line-height: 1.3; text-wrap: balance; }
-  .fb .fq-sub { margin: 0 0 20px; font-size: 1.125rem; color: var(--text-muted); }
-  .fb .fq-label { margin: 24px 0 8px; font-size: 1.25rem; }
-  .fb .fq-note { min-height: 11.5rem; padding: 16px 18px; border-radius: 12px; font-size: 1.125rem; line-height: 1.55; }
+  .fb .fq .fq-title { display: block; margin: 0 0 8px; font-size: 1.5rem; font-weight: 700; line-height: 1.3; text-wrap: balance; }
+  .fb .fq-sub { margin: 0 0 20px; font-size: 1rem; color: var(--text-muted); }
+  .fb .fq-label { margin: 24px 0 8px; font-size: 1.125rem; }
+  .fb .fq-note { min-height: 11.5rem; padding: 16px 18px; border-radius: 12px; font-size: 1rem; line-height: 1.55; }
   .fb .fq-note::placeholder { color: var(--text-muted); opacity: 1; }
   .fb .fq-note:focus { outline: none; border-color: var(--text); box-shadow: 0 0 0 4px var(--fb-focus); }
   .fb .fq-note:disabled { opacity: 0.7; }
   .fb .fq-row { gap: 16px; margin-top: 18px; }
-  .fb .fq-status { font-size: 1.0625rem; }
+  .fb .fq-status { font-size: 0.9375rem; }
 
   /* Send: solid from the first moment. Disabled is a filled grey, never a ghost. */
   .fb .fq-send {
     min-height: 58px; padding: 0 44px;
     border: 0; border-radius: 10px;
     background: var(--accent-fill); color: #fff;
-    font-size: 1.1875rem; font-weight: 700; text-align: center;
+    font-size: 1.0625rem; font-weight: 700; text-align: center;
     transition: background 0.15s;
   }
   .fb .fq-send:hover:not(:disabled) { background: var(--accent-fill-hover); }
@@ -51,20 +51,20 @@ robots: noindex
 
   /* The Pro feature question: one tap picks, and a tap already sends */
   .fb .fq-chips { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
-  .fb .fq-chip { min-height: 48px; padding: 10px 16px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--bg); color: inherit; font: inherit; font-size: 1.0625rem; font-weight: 600; line-height: 1.25; text-align: center; cursor: pointer; }
+  .fb .fq-chip { min-height: 48px; padding: 10px 16px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--bg); color: inherit; font: inherit; font-size: 0.9375rem; font-weight: 600; line-height: 1.25; text-align: center; cursor: pointer; }
   .fb .fq-chip:hover { border-color: var(--ghost-hover-border); background: var(--ghost-hover-bg); }
   .fb .fq-chip[aria-pressed="true"] { border-color: var(--accent-fill); background: var(--highlight-bg); box-shadow: inset 0 0 0 1px var(--accent-fill); font-weight: 700; }
   .fb .fq-chip[aria-pressed="true"]::before { content: ""; display: inline-block; width: 6px; height: 11px; margin: -3px 10px 0 2px; border: solid currentColor; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
 
   /* The Pro subscriber's three answers */
   .fb .fq-choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0; }
-  .fb .fq-choice { min-height: 68px; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--bg); font-size: 1.125rem; font-weight: 600; line-height: 1.3; text-align: center; }
+  .fb .fq-choice { min-height: 68px; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--bg); font-size: 1rem; font-weight: 600; line-height: 1.3; text-align: center; }
   .fb .fq-choice[aria-pressed="true"] { border-color: var(--accent-fill); background: var(--highlight-bg); box-shadow: inset 0 0 0 1px var(--accent-fill); font-weight: 700; }
   .fb .fq-choices + .fq-row, .fb .fq-chips + .fq-row { margin-top: 0; }
   .fb .fq-choices + .fq-row .fq-status, .fb .fq-choices + .fq-row .fq-retry,
   .fb .fq-chips + .fq-row .fq-status, .fb .fq-chips + .fq-row .fq-retry { margin-top: 16px; }
   .fb .fq-choice:focus-visible, .fb .fq-retry:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
-  .fb .fq-retry { min-height: 48px; padding: 0 20px; font-size: 1.0625rem; font-weight: 600; text-align: center; }
+  .fb .fq-retry { min-height: 48px; padding: 0 20px; font-size: 0.9375rem; font-weight: 600; text-align: center; }
 
   /* After Send: the form goes, the thank-you takes its place */
   .fb .fq[data-sent] .fb-form { display: none; }
@@ -72,31 +72,31 @@ robots: noindex
   .fb .fq-done:focus { outline: none; }
   .fb-tick { display: grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; background: var(--accent-fill); color: #fff; }
   .fb-tick svg { width: 38px; height: 38px; }
-  .fb-thanks { margin: 6px 0 0; font-size: clamp(1.75rem, 6vw, 2.5rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; text-wrap: balance; }
-  .fb .fq-done p { margin: 0; max-width: 40ch; font-size: 1.25rem; line-height: 1.5; color: var(--text-secondary); text-wrap: balance; }
+  .fb-thanks { margin: 6px 0 0; font-size: clamp(1.625rem, calc(6vw - 0.125rem), 2.375rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; text-wrap: balance; }
+  .fb .fq-done p { margin: 0; max-width: 40ch; font-size: 1.125rem; line-height: 1.5; color: var(--text-secondary); text-wrap: balance; }
 
   /* What is sent, and what never is */
   .fb-trust { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .fb-col { min-width: 0; padding: 24px 26px; border: 1px solid var(--border); border-radius: 14px; }
-  .fb-col h2 { margin: 0 0 16px; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  .fb-col h2 { margin: 0 0 16px; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
   .fb-col ul { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
-  .fb-col li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; font-size: 1.0625rem; line-height: 1.45; color: var(--text-secondary); }
+  .fb-col li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; font-size: 0.9375rem; line-height: 1.45; color: var(--text-secondary); }
   .fb-col li svg { width: 20px; height: 20px; margin-top: 2px; color: var(--text); }
   .fb-never li svg { color: var(--accent-text); }
-  .fb-reply { display: grid; gap: 8px; margin: 0; font-size: 1.0625rem; line-height: 1.6; color: var(--text-secondary); }
+  .fb-reply { display: grid; gap: 8px; margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-secondary); }
   .fb-reply p { margin: 0; }
 
   @media (max-width: 600px) {
     .blog-wrap.fb { padding: 24px 16px 56px; gap: 18px; }
     .fb-note { padding: 24px 22px; }
-    .fb-note p { font-size: 1.125rem; }
+    .fb-note p { font-size: 1rem; }
     .fb .fq { padding: 24px 22px 26px; }
-    .fb .fq .fq-title { font-size: 1.4375rem; }
+    .fb .fq .fq-title { font-size: 1.3125rem; }
     .fb .fq-choices { grid-template-columns: 1fr; }
     .fb .fq-choice { min-height: 60px; }
     .fb .fq-send { width: 100%; }
     .fb .fq-chips { gap: 8px; }
-    .fb .fq-chip { padding: 10px 14px; font-size: 1rem; }
+    .fb .fq-chip { padding: 10px 14px; font-size: 0.875rem; }
     .fb-trust { grid-template-columns: 1fr; }
   }
   @media (prefers-reduced-motion: reduce) { .fb .fq-send { transition: none; } }
