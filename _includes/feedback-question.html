@@ -58,12 +58,14 @@
   //   [data-fq="more"]       the note part, revealed after a tap when there are buttons
   //   [data-fq="note"]       the textarea; [data-fq="send"] sends it with the answer
   //   [data-fq="note-status"], [data-fq="done"]
-  // Opt-in, read only where the markup has them (the checkout thank-you, 2026-10-30);
-  // a page without them behaves exactly as before:
+  // Opt-in, read only where the markup has them (the checkout thank-you, 2026-10-30;
+  // the email on /feedback/'s Pro question, 2026-11-07); a page without them behaves
+  // exactly as before:
   //   data-note-label, data-note-hint on an answer button: on its tap, the text of
   //                          [data-fq="note-label"] and the note's placeholder
   //   [data-fq="email"]      an optional email that rides with the note, never with a
-  //                          tap alone (the contract: question why_buy, with a note);
+  //                          tap alone (the contract: why_buy, pro_survey and miss_most,
+  //                          with a note);
   //                          [data-fq="email-error"] shows on blur when it is not one,
   //                          [data-fq="email-hint"] when it is typed with no note
   //   [data-fq="done-reply"] shown in the thank-you only when an email went
@@ -102,8 +104,14 @@
       return Promise.resolve(false);
     }
   }
+  // The server's own email test, after the same trim and 3-254 length. Used by the wire below and by /feedback/'s tap
+  // questions, so both pages hold an address to the one rule.
+  function tidywlEmailOk(v) {
+    return v.length >= 3 && v.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
   window.tidywlNewAnswerId = tidywlNewAnswerId;
   window.tidywlFeedbackPost = tidywlFeedbackPost;
+  window.tidywlEmailOk = tidywlEmailOk;
 
   window.tidywlFeedbackWire = function (root, base) {
     var MAX_NOTE = 2000;
@@ -122,7 +130,6 @@
     var doneReply = root.querySelector('[data-fq="done-reply"]');
     var recapChoice = root.querySelector('[data-fq="recap-choice"]');
     var recapNote = root.querySelector('[data-fq="recap-note"]');
-    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // the server's own test, after the same trim and 3-254 length
     var answerId = tidywlNewAnswerId();
     var needsChoice = choices.length > 0;
     var choice = null;
@@ -137,7 +144,7 @@
     }
 
     function emailValue() { return email ? email.value.trim() : ''; }
-    function emailOk(v) { return v.length >= 3 && v.length <= 254 && EMAIL_RE.test(v); }
+    function emailOk(v) { return tidywlEmailOk(v); }
     function choiceLabel(value) {
       var text = '';
       choices.forEach(function (b) { if (b.getAttribute('data-choice') === value) text = b.textContent.trim(); });

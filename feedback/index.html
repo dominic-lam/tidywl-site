@@ -1,7 +1,7 @@
 ---
 layout: default
 title: A quick question
-description: "The page the TidyWL dashboard opens to ask one anonymous question: which feature you would miss most if Watch Later Tidy disappeared tomorrow, or what a Pro subscriber would feel without Pro."
+description: "The page the TidyWL dashboard opens to ask one question, anonymous unless you leave an email for a reply: which feature you would miss most if Watch Later Tidy disappeared tomorrow, or what a Pro subscriber would feel without Pro."
 permalink: /feedback/
 sitemap: false
 robots: noindex
@@ -43,6 +43,23 @@ robots: noindex
   .fb .fq-note:disabled { opacity: 0.7; }
   .fb .fq-row { gap: 16px; margin-top: 18px; }
   .fb .fq-status { font-size: 1.0625rem; }
+
+  /* The optional email (2026-11-07): the checkout thank-you's field, at this page's size. It rides with the note only,
+     so it sits under the note and above Send, as there. One label, one line of why, the field, an error after blur. */
+  .fb .fq-email { display: grid; gap: 6px; margin-top: 20px; }
+  .fb .fq-email-label { font-size: 1.0625rem; font-weight: 600; line-height: 1.4; }
+  .fb .fq-email-help { margin: 0 0 4px; font-size: 1rem; line-height: 1.5; color: var(--text-muted); }
+  .fb .fq-email-input {
+    display: block; width: 100%; min-height: 56px; padding: 0 18px; box-sizing: border-box;
+    border: 1px solid var(--border); border-radius: 12px; background: var(--bg); color: inherit;
+    font: inherit; font-size: 1.125rem;
+  }
+  .fb .fq-email-input::placeholder { color: var(--text-muted); opacity: 1; }
+  .fb .fq-email-input:focus { outline: none; border-color: var(--text); box-shadow: 0 0 0 4px var(--fb-focus); }
+  .fb .fq-email-input:disabled { opacity: 0.7; }
+  .fb .fq-email-input[aria-invalid="true"] { border-color: var(--danger, var(--accent-text)); box-shadow: inset 0 0 0 1px var(--danger, var(--accent-text)); }
+  .fb .fq-email-err { margin: 0; font-size: 1rem; font-weight: 600; color: var(--danger, var(--accent-text)); }
+  .fb .fq-email-hint { margin: 0; font-size: 1rem; color: var(--text-muted); }
 
   /* Send: solid from the first moment. Disabled is a filled grey, never a ghost. */
   .fb .fq-send {
@@ -163,8 +180,15 @@ robots: noindex
       <div data-fq="more" hidden>
         <label class="fq-label" for="fb-pro-note">What do you use it for most?</label>
         <textarea class="fq-note" id="fb-pro-note" data-fq="note" rows="4" placeholder="A feature, a job, a habit. One line is plenty."></textarea>
+        <div class="fq-email">
+          <label class="fq-email-label" for="fb-pro-email">If you'd like me to write back, leave an email (optional)</label>
+          <p class="fq-email-help" id="fb-pro-email-help">I'll use it only to reply, then delete it after 28 days. Adding one means your note is no longer anonymous.</p>
+          <input class="fq-email-input" id="fb-pro-email" data-fq="email" type="email" placeholder="you@example.com" autocomplete="email" spellcheck="false" aria-describedby="fb-pro-email-help fb-pro-email-err">
+          <p class="fq-email-err" id="fb-pro-email-err" data-fq="email-error" hidden>That doesn't look like an email address.</p>
+        </div>
         <div class="fq-row">
           <button type="button" class="fq-send" data-fq="send" disabled>Send</button>
+          <p class="fq-email-hint" data-fq="email-hint" hidden>Add a note to send your email with it.</p>
           <p class="fq-status" data-fq="note-status" role="status" hidden></p>
         </div>
       </div>
@@ -173,6 +197,7 @@ robots: noindex
       <span class="fb-tick" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       <h2 class="fb-thanks">Thank you for your time.</h2>
       <p>Your note is in, and I read every answer.</p>
+      <p data-fq="done-reply" hidden>I'll write back to the email you left.</p>
     </div>
   </div>
 
@@ -211,8 +236,15 @@ robots: noindex
         <label class="fq-label fq-more-note" for="fb-miss-note" data-fq="note-label"></label>
         <p class="fq-hint" id="fb-miss-hint" data-fq="note-hint"></p>
         <textarea class="fq-note short" id="fb-miss-note" data-fq="note" rows="3" aria-describedby="fb-miss-hint"></textarea>
+        <div class="fq-email">
+          <label class="fq-email-label" for="fb-miss-email">If you'd like me to write back, leave an email (optional)</label>
+          <p class="fq-email-help" id="fb-miss-email-help">I'll use it only to reply, then delete it after 28 days. Adding one means your note is no longer anonymous.</p>
+          <input class="fq-email-input" id="fb-miss-email" data-fq="email" type="email" placeholder="you@example.com" autocomplete="email" spellcheck="false" aria-describedby="fb-miss-email-help fb-miss-email-err">
+          <p class="fq-email-err" id="fb-miss-email-err" data-fq="email-error" hidden>That doesn't look like an email address.</p>
+        </div>
         <div class="fq-row">
           <button type="button" class="fq-send" data-fq="send" disabled>Send note</button>
+          <p class="fq-email-hint" data-fq="email-hint" hidden>Add a note to send your email with it.</p>
           <p class="fq-status" data-fq="note-status" role="status" hidden></p>
         </div>
       </div>
@@ -268,6 +300,7 @@ robots: noindex
       <h2>What I get</h2>
       <ul>
         <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>What you tap, and what you type</span></li>
+        <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Your email, only if you leave one for a reply, deleted after 28 days</span></li>
         <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Which link you came from, such as the dashboard or a store reply</span></li>
         <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Whether you're on Free or Pro</span></li>
         <li><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>The extension's version</span></li>
@@ -284,7 +317,7 @@ robots: noindex
     </div>
   </div>
   <div class="fb-reply">
-    <p>It's anonymous, so I can't reply from here. If you'd like an answer, ask on <a href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord</a> or email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--/email_off-->.</p>
+    <p>It's anonymous unless you leave your email with a note, and then I'll write back. You can also ask on <a href="https://discord.gg/sTvjfp4sCk" target="_blank" rel="noopener">Discord</a> or email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--/email_off-->.</p>
     <p><a href="/privacy/#what-you-send-yourself">Privacy policy</a></p>
   </div>
 </section>
@@ -407,6 +440,10 @@ robots: noindex
       var noteHint = more && $('[data-fq="note-hint"]', more);
       var noteSend = more && $('[data-fq="send"]', more);
       var noteStatus = more && $('[data-fq="note-status"]', more);
+      // The optional email (2026-11-07): it rides with the note, never with a tap alone, as on the checkout thank-you.
+      var email = more && $('[data-fq="email"]', more);
+      var emailError = more && $('[data-fq="email-error"]', more);
+      var emailHint = more && $('[data-fq="email-hint"]', more);
       var skip = $('[data-fq="skip"]', f);
       var next = $('[data-fq="next"]', f);
       var base = { source: source, plan: 'free', question: QUESTION[key], version: version };
@@ -414,10 +451,13 @@ robots: noindex
       var choice = null;
       var sentChoice = null;
       var sentNote = null;
+      var sentEmail = null; // resent with every later tap, since a send without it clears the stored one
       var choiceSend = 0;
       var noteSending = false;
 
       function send(extra) { return window.tidywlFeedbackPost(base, answerId, extra); }
+      function emailValue() { return email ? email.value.trim() : ''; }
+      function emailBad(e) { return e !== '' && !window.tidywlEmailOk(e); }
 
       nav[key] = function () {
         var tapped = result[key] === 'sent';
@@ -439,6 +479,7 @@ robots: noindex
         setStatus('sending');
         var extra = { choice: picked };
         if (sentNote != null) extra.note = sentNote;
+        if (sentEmail != null) extra.email = sentEmail;
         send(extra).then(function (ok) {
           if (mine !== choiceSend) return;
           if (ok) { sentChoice = picked; result[key] = 'sent'; }
@@ -448,11 +489,17 @@ robots: noindex
       }
 
       function refreshSend() {
-        if (noteSend) noteSend.disabled = noteSending || note.value.trim() === '' || choice == null;
+        if (!noteSend) return;
+        var e = emailValue();
+        noteSend.disabled = noteSending || note.value.trim() === '' || choice == null || emailBad(e);
+        if (emailHint) emailHint.hidden = !(e !== '' && note.value.trim() === '' && !note.disabled);
       }
 
       chips.forEach(function (chip) {
         chip.addEventListener('click', function () {
+          // A tap while the note is on its way waits: its send carries no note yet, and arriving second it would clear
+          // the note and the email.
+          if (noteSending) return;
           var value = chip.getAttribute('data-choice');
           chips.forEach(function (x) { x.setAttribute('aria-pressed', String(x === chip)); });
           if (more) {
@@ -475,15 +522,31 @@ robots: noindex
       if (more) {
         note.setAttribute('maxlength', String(MAX_NOTE));
         note.addEventListener('input', refreshSend);
+        if (email) {
+          email.addEventListener('input', function () {
+            email.removeAttribute('aria-invalid');
+            emailError.hidden = true;
+            refreshSend();
+          });
+          // An address is checked when the visitor leaves the field, never while they type it.
+          email.addEventListener('blur', function () {
+            var bad = emailBad(emailValue());
+            if (bad) email.setAttribute('aria-invalid', 'true'); else email.removeAttribute('aria-invalid');
+            emailError.hidden = !bad;
+          });
+        }
         refreshSend();
         noteSend.addEventListener('click', function () {
           var text = note.value.trim().slice(0, MAX_NOTE);
-          if (text === '' || noteSending || choice == null) return;
+          var e = emailValue();
+          if (text === '' || noteSending || choice == null || emailBad(e)) return;
           noteSending = true;
           refreshSend();
           noteSend.textContent = 'Sending…';
           noteStatus.hidden = true;
-          send({ choice: choice, note: text }).then(function (ok) {
+          var extra = { choice: choice, note: text };
+          if (e !== '') extra.email = e;
+          send(extra).then(function (ok) {
             noteSending = false;
             noteSend.textContent = 'Send note';
             if (!ok) {
@@ -494,6 +557,7 @@ robots: noindex
               return;
             }
             sentNote = text;
+            if (e !== '') sentEmail = e;
             // The note carries the tap too, so a note that arrived means the tap did.
             choiceSend++;
             sentChoice = choice;
@@ -501,8 +565,10 @@ robots: noindex
             setStatus('sent');
             note.disabled = true;
             noteSend.hidden = true;
+            if (email) email.disabled = true;
+            if (emailHint) emailHint.hidden = true;
             noteStatus.setAttribute('data-state', 'sent');
-            noteStatus.textContent = 'Note sent. Thank you.';
+            noteStatus.textContent = e !== '' ? "Note sent. Thank you. I'll write back to the email you left." : 'Note sent. Thank you.';
             noteStatus.hidden = false;
             nav[key]();
           });
