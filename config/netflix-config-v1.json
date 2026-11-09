@@ -44,6 +44,17 @@
   },
   "announcements": [
     {
+      "id": "2026-11-v1.6.1-feedback-question",
+      "title": "A quick question for you",
+      "body": [
+        { "text": "I build Watch Later Tidy for Netflix on my own, and your answer decides what I fix or build next. It takes a minute, and it's anonymous." }
+      ],
+      "button": { "label": "Answer it", "url": "https://tidywl.com/netflix/feedback/?from=whats_new" },
+      "size": "medium",
+      "created_at": "2026-11-09",
+      "expires_at": "2026-12-09"
+    },
+    {
       "id": "2026-11-v1.7.0",
       "title": "What's new in 1.7.0",
       "body": [
