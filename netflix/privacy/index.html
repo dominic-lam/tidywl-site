@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, what leaves it — four public requests, title ids to our ratings table, a usage report, and for Pro a licence check and playlist sync — and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-11-07
+last_modified_at: 2026-11-09
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -134,6 +134,19 @@ last_modified_at: 2026-11-07
      the merge: the fields, that only the Playlists tab reads the key, and that
      tidywl_debug_look is written only by an unpacked copy, so it is not listed.
 
+     1.7.1, drafted 2026-11-08 on branch draft/netflix-1.7.1: one new key,
+     tidywl_mylist_feedback (my-list-page.js MY_LIST_FEEDBACK_KEY), true once the
+     My List page's "Anything to add?" link is clicked, in chrome.storage.local,
+     read and written only by that page; the link's address is feedbackPageUrl()'s,
+     from=dashboard, the About line's. No new fetch() or permission between v1.7.0
+     and the 1.7.1 build (manifest differs only in version). 1.7.1 was live on
+     the store 2026-11-09 and merged that day, so the dated line, privacy_updated and
+     last_modified_at carry that date. Checked against src/ at the v1.7.1 tag before
+     the merge: the key, its one reader and writer, the link's address, and that
+     usage-utils.js and storage.js are unchanged since v1.7.0, so the usage report is
+     too; the My List page's Tonight button reads nothing for a free install (it
+     opens the upgrade card on the existing paywall_tonight counter).
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -173,6 +186,9 @@ last_modified_at: 2026-11-07
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
+      Updated 9 November 2026 for version 1.7.1: the My List page links to the feedback page on tidywl.com too, as
+      <em>Anything to add?</em>, with the same address as the dashboard's link, and one new storage key remembers that
+      you clicked it, so the link stays away. The usage report does not change, and the extension makes no new request.
       Updated 7 November 2026 for version 1.7.0: one new storage key keeps the details of the titles in your playlists on
       this machine, so a playlist can show them without asking Netflix again. Chrome's sync does not carry it. The usage
       report's count of Syncs left unfinished now also covers titles left without details because Netflix refused part of
@@ -365,6 +381,7 @@ last_modified_at: 2026-11-07
           <tr><td><code>tidywl_announcements_read</code></td><td>From version 1.5.0. Which of the dashboard's announcements you have read, so the bell's dot and the window that opens once know what is new: their ids only, the newest 200. One list for the browser, not per profile. Never sent.</td></tr>
           <tr><td><code>tidywl_issues_seen</code></td><td>From version 1.6.0. What the dashboard has already shown you of the known issues, so a closed notice stays closed until the issue changes and an issue opens as a window only once: four short lists of the issues' ids (and, for the closed notices and the bell's dot, which revision of each), the newest 100 in each. Ids from the settings file only, nothing about you. One record for the browser, not per profile. Never sent.</td></tr>
           <tr><td><code>tidywl_feedback_ask</code></td><td>From version 1.6.1. When a clean-up of several titles queued the feedback card, and whether the card has been shown, so it appears at most once in this browser, answered or not. One record for the browser, not per profile. Never sent.</td></tr>
+          <tr><td><code>tidywl_mylist_feedback</code></td><td>From version 1.7.1. Whether you have clicked <em>Anything to add?</em> on the My List page, so the link stays away once clicked: <code>true</code>, or nothing. One record for the browser, not per profile. Never sent.</td></tr>
         </tbody>
       </table>
     </div>
@@ -996,6 +1013,11 @@ last_modified_at: 2026-11-07
       extension did and which Pro feature they'd want most. It opens only if you click the link, and answering is
       optional. Its address carries, after a <code>?</code>, whether you're on Free or Pro, the extension's version and
       where you opened it from, such as the dashboard or What's New. Nothing in it is private.
+    </p>
+    <p>
+      From version 1.7.1 the My List page links to the same page too, as <em>Anything to add?</em>, with the same address
+      as the dashboard's link. Once you click it, it doesn't come back, and remembering that stays in your browser, in
+      <code>tidywl_mylist_feedback</code>.
     </p>
     <p>
       <strong>The dashboard also asks once.</strong> After a clean-up that removed five or more titles (the settings
