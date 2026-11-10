@@ -742,8 +742,8 @@ sitemap: false
     // only the last answer of a visit: changing it does not count twice. The id
     // is drawn here and lives only in this tab. Since 2026-10-24 each send also
     // carries the install's context from the link when the link has its random
-    // id (context() below), and a note may carry an email under a problem
-    // reason. The route and its rules: tidywl-api src/removed.js.
+    // id (context() below), and a note may carry an email: under a problem
+    // reason until 2026-11-10, under any reason since. The route and its rules: tidywl-api src/removed.js.
     // The 2026-11-03 redesign changed none of this: same route, same bodies,
     // same moments (open, a pick, Try again, Send note).
     var ENDPOINT = '/api/removed';
@@ -772,9 +772,6 @@ sitemap: false
     var form = document.getElementById('un-form');
     var thanks = document.getElementById('un-thanks');
     var thanksReply = document.getElementById('un-thanks-reply');
-    // The reasons where a reply can help; the server refuses an email with any
-    // other, so the page never sends one then.
-    var PROBLEM_REASONS = ['load', 'broke', 'unavailable', 'slow', 'other'];
     var EMAIL_SHAPE = /^[^\s@]{1,64}@[^\s@.]+(\.[^\s@.]+)+$/;
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1048,9 +1045,9 @@ sitemap: false
       noteLabel.textContent = btn.getAttribute('data-prompt');
       note.placeholder = btn.getAttribute('data-placeholder');
       note.value = '';
-      // The email field shows under a problem reason only, and starts empty
-      // on every pick, like the note.
-      emailBox.hidden = PROBLEM_REASONS.indexOf(reason) === -1;
+      // The email field shows under every reason since 2026-11-10 (it was
+      // problem reasons only), and starts empty on every pick, like the note.
+      emailBox.hidden = false;
       email.value = '';
       email.removeAttribute('aria-invalid');
       sendBtn.disabled = true;
@@ -1111,9 +1108,9 @@ sitemap: false
     sendBtn.addEventListener('click', function () {
       var text = note.value.trim();
       if (!text || reason == null || noteSending) return;
-      // Only under a problem reason, and only a plausible address: a typo is
-      // pointed out rather than dropped, since its owner expects a reply.
-      var address = PROBLEM_REASONS.indexOf(reason) !== -1 && !emailBox.hidden ? email.value.trim() : '';
+      // Only a plausible address: a typo is pointed out rather than dropped,
+      // since its owner expects a reply.
+      var address = !emailBox.hidden ? email.value.trim() : '';
       if (address !== '' && (address.length > 254 || !EMAIL_SHAPE.test(address))) {
         email.setAttribute('aria-invalid', 'true');
         noteErr.textContent = "That email doesn't look right. Fix it, or clear it to send without one.";
