@@ -90,62 +90,6 @@
       "expires_at": "2026-11-10"
     },
     {
-      "id": "v2.7.0-release",
-      "title": "What's New in v2.7.0",
-      "bullets": [
-        "One Filter menu. Watch progress, Duration, Music and Availability are now sections of a single menu, so the toolbar has two fewer buttons. Saved views open with the same filters.",
-        "A free Music filter: show only music, or hide it. The Playlists menu also has All / Videos / Music tabs.",
-        "Pro: tick several channels or topics in the sidebar and see every video under any of them.",
-        "On music.youtube.com, Open Dashboard in the toolbar popup takes you to the same playlist on youtube.com, where the dashboard works. The store name now says YouTube Music too.",
-        "Deleting part of a list on the free allowance now says that emptying the whole list is always free.",
-        "What is the one thing you wish Watch Later Tidy did that it doesn't? Tell me at https://tidywl.com/feedback/"
-      ],
-      "type": "info",
-      "created_at": "2026-10-24",
-      "expires_at": "2027-01-24"
-    },
-    {
-      "id": "v2.6.0-release",
-      "title": "What's New in v2.6.0",
-      "bullets": [
-        "Removing 4,500 or more videos at once now goes at a steady pace of about 1,000 a minute, so YouTube keeps working normally. The confirmation tells you how long it will take.",
-        "A Move can be stopped, like a delete. The videos it hasn't taken out yet stay selected, so Delete finishes the job.",
-        "Playlists made only of Shorts sync in full. They used to come back with 0 videos.",
-        "Result windows are shorter: a heading, the counts and one line of what to know. A sync says how many videos are new and whether it matches YouTube's count, and offers Sync again when it comes back short.",
-        "Restoring says where your videos land: the top of Watch Later, but by default the end of other playlists."
-      ],
-      "type": "info",
-      "created_at": "2026-10-15",
-      "expires_at": "2027-01-15"
-    },
-    {
-      "id": "v2.5.0-release",
-      "title": "What's New in v2.5.0",
-      "bullets": [
-        "The Move confirmation names the playlist your videos are going to and puts the count on its button.",
-        "Add to Playlist's button says what it will do: “Copy 12 videos” or “Move 12 videos”.",
-        "If you installed before 2.5.0, nothing changes: removing videos stays unlimited. That perk lives in this install, so removing the extension and adding it again would put you on the new limit. Worth a thought before you uninstall.",
-        "Installs made from 2.5.0 on can remove up to 1,000 hand-picked videos for free every 30 days. Emptying a whole list, deleting a single video, removing likes and copying never count, and the dashboard shows how many are left and when they come back. Pro has no limit."
-      ],
-      "type": "info",
-      "created_at": "2026-10-09",
-      "expires_at": "2027-01-09"
-    },
-    {
-      "id": "v2.4.0-release",
-      "title": "What's New in v2.4.0",
-      "bullets": [
-        "Sorting by published date works in every language. Outside the US, YouTube shortens dates to “2 wk ago” and “1 yr ago”, and those videos used to sink to the bottom. The sort now uses each video's exact publish date.",
-        "Sorting by views works when YouTube isn't in English: counts like “1,2 M” are no longer misread.",
-        "Private and deleted videos are grouped as Private / Deleted in every language, instead of landing under Channel Unavailable.",
-        "Press Sync once to pick up the exact dates and view counts. That first Sync takes a little longer; later ones only ask about new videos.",
-        "New: a link to Watch Later Tidy for Netflix, a dashboard for your Netflix My List, under the name at the top of the dashboard and in About. Not on Firefox, where the Netflix extension isn't available."
-      ],
-      "type": "info",
-      "created_at": "2026-10-08",
-      "expires_at": "2027-01-08"
-    },
-    {
       "id": "2026-09-30-pro-trial",
       "display": "modal",
       "size": "small",
@@ -172,66 +116,6 @@
       "expires_at": "2026-10-09T18:00:00Z"
     },
     {
-      "id": "v2.3.0-release",
-      "title": "What's New in v2.3.0",
-      "bullets": [
-        "Sending to Gemini Notebook is faster. Videos now go five at a time, three batches at once, instead of all in one request: 15 videos go in about 8 seconds. If Gemini Notebook refuses one batch, the rest still go in.",
-        "Fixed: Send to Gemini Notebook said 0 videos added after a change on Google's side, even when every video went in. It counts correctly again.",
-        "The Gemini Notebook result stays on screen until you close it, and a big send that finishes late still shows its result and opens the notebook.",
-        "Add to Playlist has a filter box: type a few letters to find the playlist you want."
-      ],
-      "type": "info",
-      "created_at": "2026-09-29",
-      "expires_at": "2026-12-29"
-    },
-    {
-      "id": "v2.2.0-release",
-      "title": "What's New in v2.2.0",
-      "bullets": [
-        "Deleting and copying many videos is several times faster. Each request to YouTube now carries up to 100 deletions or 200 additions, up from 20 and 50, so a clean-up of thousands of videos takes a fraction of the time it did.",
-        "Pro switches on by itself after you buy it. The page you land on after paying hands your key to the extension in the same browser; the dashboard shows the PRO badge and a welcome with your key, your next payment date and how to use it on another computer. No more copying and pasting.",
-        "Remove a saved playlist from your library. Playlists you saved from other channels now have the same trash button as your own. The playlist itself is untouched, and its owner is not told.",
-        "The Shorts filter finds Shorts up to three minutes long, and only Shorts. It used to count any video of a minute or less.",
-        "The dialog after adding or moving videos now matches the one after deleting: where the videos came from and went, how many were added or skipped, and how long it took.",
-        "Fixed: a playlist you delete from the Playlists menu leaves the menu at once; Retry works after a delete or move that finished with errors; deleting one video from its card counts toward your total; a playlist you emptied can be deleted; white text on blue is easier to read in the dark theme.",
-        "The store name is now Watch Later Tidy for YouTube. The dashboard still says Watch Later Tidy."
-      ],
-      "type": "info",
-      "created_at": "2026-09-27",
-      "expires_at": "2026-12-27"
-    },
-    {
-      "id": "v2.1.0-release",
-      "title": "What's New in v2.1.0",
-      "bullets": [
-        "Clearing out a lot of videos is far quicker. Deleting, and adding to a playlist, used to send one request per video; they now go in groups. Measured on a real account: 126 videos deleted in 31 seconds, where that took about nine minutes before.",
-        "Searching the sidebar is free. The box above the By Channel and By Topic lists, which brings a channel or topic straight up as you type, was part of Pro in 2.0. It now works for everyone.",
-        "List view and Full page: show each video as one row instead of a card, and make the dashboard fill the whole browser window. The dashboard remembers both.",
-        "Playlists you saved from other people now appear in the Playlists menu from any YouTube page, marked Saved with the owner's name. Search them, sort them, or copy their videos into a playlist of your own.",
-        "The delete confirmation says exactly what will happen and puts the count on the red button, and the dialog afterwards shows how many videos you cleared and how many hours of video that was.",
-        "Confirmations work from the keyboard: the keyboard lands on the safe button, Tab stays inside, and Escape closes."
-      ],
-      "type": "info",
-      "created_at": "2026-09-20",
-      "expires_at": "2026-12-20"
-    },
-    {
-      "id": "v2.0.0-release",
-      "title": "What's New in v2.0.0",
-      "bullets": [
-        "TidyWL Pro is here: clean-up rules, Pin, a preview before bulk deletes, undo with a Delete history, saved views and the Lineup. Nothing that was free has moved behind it: https://tidywl.com/pro/",
-        "Group by channel: three new sorts put a heading before each channel (most videos, fewest videos, or A to Z), and you can fold a channel shut",
-        "Delete from a merged view: with several playlists ticked, Delete removes a video from all of them at once",
-        "A tidier toolbar, grouped into Find, Pro tools, Select & move and Export & open, plus a help button that opens the tutorials",
-        "Fixed: clicking a channel in the sidebar could also show videos from channels with a similar name",
-        "The usage report now also counts Lineups and the days you open the dashboard, once a day at most, so we can see how many people use it each week. Still never which videos: https://tidywl.com/privacy/",
-        "New name, same extension: Watch Later Tidy"
-      ],
-      "type": "info",
-      "created_at": "2026-09-14",
-      "expires_at": "2026-12-14"
-    },
-    {
       "id": "2026-09-14-founding-offer",
       "title": "Founding offer: TidyWL Pro for $3.99 your first month, or $32 your first year",
       "bullets": [
@@ -244,21 +128,6 @@
       "type": "info",
       "created_at": "2026-09-14",
       "expires_at": "2026-12-14"
-    },
-    {
-      "id": "2026-09-14-v2.0.0-update-pro-founding",
-      "title": "Watch Later Tidy v2.0.0 is out, with Pro. Force-update if you don't have it yet",
-      "bullets": [
-        "Chrome: go to chrome://extensions, turn on Developer mode (top right), then click Update (top left)",
-        "Firefox: go to about:addons, click the gear icon, then Check for Updates",
-        "Reload your YouTube tab. This notice goes away once you're on v2.0.0",
-        "New in v2.0.0: TidyWL Pro, with clean-up rules, Pin, undo for deletions, saved views and the Lineup. Nothing that was free has moved behind it",
-        "Founding offer: the first 50 yearly subscribers pay $32 for their first year, then $47.88/year: tidywl.com/pricing/"
-      ],
-      "type": "warning",
-      "show_below_version": "2.0.0",
-      "created_at": "2026-09-14",
-      "expires_at": "2026-10-05"
     },
     {
       "id": "2026-09-15-discord-community",
