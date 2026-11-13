@@ -147,6 +147,16 @@ last_modified_at: 2026-11-09
      too; the My List page's Tonight button reads nothing for a free install (it
      opens the upgrade card on the existing paywall_tonight counter).
 
+     1.8.0, drafted 2026-11-13 on branch draft/netflix-1.8.0: one new key,
+     tidywl_playlist_picker_<guid> (storage.js sanitizePickerMemory), in
+     chrome.storage.local: a playlist id and "copy" or "move", nothing else. The
+     My List page's "Buy me a coffee?" link (my-list-page.js myListHeadLink) takes
+     the feedback link's place once that was clicked, and a click on it sets the
+     existing tidywl_support_ask clicked flag (markSupportAskClicked), so it adds
+     no key. No new fetch() or permission between v1.7.2 and the v1.8.0 tag
+     (manifest differs only in version). The dated line waits for the day 1.8.0
+     goes live.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -374,10 +384,11 @@ last_modified_at: 2026-11-09
           <tr><td><code>tidywl_last_profile</code></td><td>From version 1.2.0. The id of the Netflix profile last used in this browser, and when, so the toolbar badge and popup show that profile's list. Never sent.</td></tr>
           <tr><td><code>tidywl_installed_at</code></td><td>From version 1.2.1. When the extension was installed in this browser, so the page Chrome opens after a removal can say roughly how long you had it: under an hour, a day, a week, a month, or longer. Only that rough span ever leaves, and only if you press Send there. Installs from before 1.2.1 have none.</td></tr>
           <tr><td><code>tidywl_playlist_titles_&lt;profile&gt;</code></td><td>From version 1.7.0. The details of the titles in this profile's playlists, so a playlist can show them without asking Netflix again: each title's Netflix id, name, type, year, runtime, where its credits start, whether it is a Netflix original, seasons and episodes, maturity rating, whether it can be played, box-art address and genres. It stays on this machine: Chrome's sync does not carry it.</td></tr>
+          <tr><td><code>tidywl_playlist_picker_&lt;profile&gt;</code></td><td>From version 1.8.0. The playlist you last chose in the <em>Add to Playlist</em> window and, when you opened it from My List, whether you chose Copy or Move, so the window opens on that choice next time: a playlist id and one word. Never sent.</td></tr>
           <tr><td><code>tidywl_playlist_cap_exempt</code></td><td><code>true</code> in a browser that had the extension before version 1.0.0, so it keeps making up to 50 playlists without Pro. Nothing else.</td></tr>
           <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once a rating ask has been answered or declined, so no rating ask is shown again in this browser: the one on a removal's summary and, from version 1.4.0, the band at the top of the dashboard or the strip in the My List page's heading.</td></tr>
           <tr><td><code>tidywl_rating_band_shown</code></td><td>From version 1.4.0. <code>true</code> once the rating ask at the top of the dashboard or in the My List page's heading has been shown, so it appears at most once in this browser, answered or not. Never sent.</td></tr>
-          <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed. Never sent.</td></tr>
+          <tr><td><code>tidywl_support_ask</code></td><td>What the Ko-fi ask on a removal's summary needs in order to appear rarely: a count of titles removed, added or copied into a playlist, the count at the last time it was shown, how many times it has been shown, and whether its tile was pressed or, from version 1.8.0, the My List page's <em>Buy me a coffee?</em> link was clicked, which puts both away. Never sent.</td></tr>
           <tr><td><code>tidywl_announcements_read</code></td><td>From version 1.5.0. Which of the dashboard's announcements you have read, so the bell's dot and the window that opens once know what is new: their ids only, the newest 200. One list for the browser, not per profile. Never sent.</td></tr>
           <tr><td><code>tidywl_issues_seen</code></td><td>From version 1.6.0. What the dashboard has already shown you of the known issues, so a closed notice stays closed until the issue changes and an issue opens as a window only once: four short lists of the issues' ids (and, for the closed notices and the bell's dot, which revision of each), the newest 100 in each. Ids from the settings file only, nothing about you. One record for the browser, not per profile. Never sent.</td></tr>
           <tr><td><code>tidywl_feedback_ask</code></td><td>From version 1.6.1. When a clean-up of several titles queued the feedback card, and whether the card has been shown, so it appears at most once in this browser, answered or not. One record for the browser, not per profile. Never sent.</td></tr>
@@ -1017,7 +1028,9 @@ last_modified_at: 2026-11-09
     <p>
       From version 1.7.1 the My List page links to the same page too, as <em>Anything to add?</em>, with the same address
       as the dashboard's link. Once you click it, it doesn't come back, and remembering that stays in your browser, in
-      <code>tidywl_mylist_feedback</code>.
+      <code>tidywl_mylist_feedback</code>. From version 1.8.0, once you have clicked it, a <em>Buy me a coffee?</em> link
+      to Ko-fi takes its place, until you click that once too. It is a link you open, not a request the extension makes,
+      and remembering the click stays in your browser, in <code>tidywl_support_ask</code>.
     </p>
     <p>
       <strong>The dashboard also asks once.</strong> After a clean-up that removed five or more titles (the settings
