@@ -157,6 +157,21 @@ last_modified_at: 2026-11-09
      (manifest differs only in version). The dated line waits for the day 1.8.0
      goes live.
 
+     1.8.0 widened, redrafted 2026-11-14 against the extension's main: the
+     Continue Watching tab reads Netflix's row (dashboard-continue.js:
+     GetBrowsePage, then one MiniModalQuery for shows' episode numbers) on its
+     first open in a page and on Refresh, and removes from it on a press
+     (RemoveFromContinueWatching), so a third write and a second exception to
+     "opening the dashboard never asks Netflix". The playlist count reads Netflix's
+     card links as the badges do (title-marker.js, netflixCardId) and compares them
+     with tidywl_titles_<guid> and the playlists: no request, and the badge setting
+     does not govern it, so "no card's link is read" when badges are off was
+     dropped. One new key outside the extension's storage: tidywl_dashboard_restore
+     in netflix.com's sessionStorage (dashboard-state.js dashboardSnapshot;
+     dashboard-overlay.js saves at pagehide, takes once at load). manifest.json
+     adds two content-script files, no permission; no fetch() outside netflix.com
+     added since v1.7.2; no new usage-report field.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -305,6 +320,7 @@ last_modified_at: 2026-11-09
       <li><strong>For Tonight</strong> — Pro only, from version 1.1.0, and only once you open it. With <em>Surprises from outside My List</em> on, as it is until you switch it off: a few of Netflix's genre catalogues that fit the mood you chose, and details, such as the runtime, of the best-rated few films in them; a mood already read today is not read again. On the poster layout, a larger picture of the main pick, asked for once it has stayed on screen for a moment and kept for the rest of that page's life.</li>
       <li><strong>Your viewing history and your thumbs, for Tonight</strong> — Pro only, from version 1.1.0, and only when you open Tonight: the titles this profile has played on Netflix and when, and the titles it has given a thumbs up, down or "love", so Tonight never offers what you have already seen or disliked. Read from Netflix's own viewing-activity service, the one behind Account → Viewing activity, through the session you are signed in with and only for the profile you are using — at most once every six hours, one page of 50 at a time a second apart, and after the first time usually just the newest page. What is kept is the title ids, the time of the last play and the thumb, in this browser only; never a title's name, never an episode, and <strong>none of it is sent to us or to anyone</strong>.</li>
       <li><strong>Which titles in your My List Netflix is about to remove</strong> — from version 1.2.0, as part of Sync. Netflix marks these on the title's picture, and gives a sentence with the last day, such as "Last day to watch on Netflix: October 5". TidyWL asks for those sentences for up to 100 titles at a time, so one or two requests for most lists, and only when you press Sync.</li>
+      <li><strong>Your Continue Watching row</strong> — from version 1.8.0, for the dashboard's Continue Watching tab: the first time you open that tab on a page, and again each time you press its Refresh. Each title's id, name, type, year, picture, how far into it you are and, for a show, which episode you are on; the episode numbers come in one more request, so at most two requests, never one per title. The tab shows them while the page is open and stores none of them, except the details of a title you add to a playlist from it, kept as described under <code>tidywl_playlist_titles_&lt;profile&gt;</code> below.</li>
     </ul>
     <p>
       <strong>One thing it reads without being asked, from version 1.1.0:</strong> the link on each of Netflix's own
@@ -317,16 +333,23 @@ last_modified_at: 2026-11-09
       loaded to draw that card — it asks Netflix nothing for it — and searches by name, requests 4 and 3. A click on
       a badge opens that title's page on imdb.com in a new tab. From version 1.5.0 you can switch the badges off in
       the toolbar popup's Settings, everywhere or only on the My Netflix page and the My List page; wherever they are
-      off, no card's link is read and no id is sent for the badges.
+      off, no id is sent for the badges.
+    </p>
+    <p>
+      From version 1.8.0 the same link also tells the extension whether the title is in your My List or in any of your
+      playlists, so it can put a small count on the card and in Netflix's preview box. That is checked against the
+      lists already kept in this browser: it asks Netflix nothing, sends nothing anywhere, and is not affected by the
+      badge setting.
     </p>
     <p>
       Your search terms go to Netflix, on your own signed-in session, in the same way that typing them into
       Netflix's own search box would. They do not go anywhere else.
     </p>
     <p>
-      <strong>It writes two things to Netflix, and only on your instruction:</strong> adding a title to My List, and
-      removing one. Both are the same operations the Netflix web app performs; both are confirmed before a batch runs.
-      Custom playlists are <em>not</em> written to Netflix — see below.
+      <strong>It writes three things to Netflix, and only on your instruction:</strong> adding a title to My List,
+      removing one, and, from version 1.8.0, removing a title from your Continue Watching row. All three are the same
+      operations the Netflix web app performs, and a batch runs only after you press a button that says what it will
+      do. Custom playlists are <em>not</em> written to Netflix — see below.
     </p>
 
     <h2>What stays in your browser</h2>
@@ -340,8 +363,13 @@ last_modified_at: 2026-11-09
       requests 6 and 7. The first two carry no title and nothing from your account.
     </p>
     <p>
-      The one exception, from version 1.3.0, is the My List page in Netflix's menu. It shows your list as Netflix has
+      The first exception, from version 1.3.0, is the My List page in Netflix's menu. It shows your list as Netflix has
       it now, so it reads it from Netflix each time it opens, and it stores nothing it reads.
+    </p>
+    <p>
+      The second, from version 1.8.0, is the dashboard's Continue Watching tab. It reads your Continue Watching row from
+      Netflix the first time you open the tab on a page, at most two requests, and again only when you press Refresh; until
+      the page is refreshed or left it shows what it read, and it stores none of it.
     </p>
     <p>Held in <code>chrome.storage.local</code>, which never leaves the machine:</p>
 
@@ -401,6 +429,16 @@ last_modified_at: 2026-11-09
       And in <code>chrome.storage.session</code>, which Chrome clears when it closes: <code>tidywl_popup_intent</code>,
       from version 1.2.0 — a popup button you pressed while not on Netflix (which button, for which tab, and when),
       held for two minutes until the Netflix tab opens.
+    </p>
+    <p>
+      And in the Netflix tab's own session storage, from version 1.8.0: <code>tidywl_dashboard_restore</code>, so the
+      dashboard comes back as you left it when you refresh the page. Saved only as a page with the dashboard open is
+      left: which tab it was on, its sort and filters, the genre or category you had open, the playlist you had open,
+      the text in its search boxes, how far down you had scrolled, and the id of the profile it belongs to. Never a
+      list, and never the titles you had ticked. It is read and deleted when the next page loads, used only if that page
+      is on the same profile, deleted when a page is left with the dashboard closed, and gone when the tab closes. It is
+      never sent. Because it sits in netflix.com's storage, not the extension's, Netflix's own page can read it, as it
+      can read anything typed on netflix.com.
     </p>
     <p>
       From version 1.2.0 the toolbar popup shows each leaving title's picture. It loads from Netflix's image servers,
