@@ -44,6 +44,27 @@
   },
   "announcements": [
     {
+      "id": "2026-11-v1.8.0",
+      "title": "What's new in 1.8.0",
+      "body": [
+        {
+          "list": [
+            "**A Continue Watching tab.** Netflix's row as a page, grouped by how far in you are. Tick titles to clear them out of Continue Watching, or add them to a playlist or to My List.",
+            "**See where a title already is.** A small count on Netflix's thumbnails shows how many of your lists hold it.",
+            "**Refresh without losing your place.** The dashboard comes back on the tab you left.",
+            "**Move in one step.** Add to Playlist remembers your last choice, and a Move no longer asks twice."
+          ]
+        },
+        {
+          "text": "Questions or ideas? Ask on [Discord](https://discord.gg/4j5u9xd35P).",
+          "tone": "muted"
+        }
+      ],
+      "size": "medium",
+      "created_at": "2026-11-15",
+      "expires_at": "2027-02-15"
+    },
+    {
       "id": "2026-11-v1.6.1-feedback-question",
       "title": "A quick question for you",
       "body": [
