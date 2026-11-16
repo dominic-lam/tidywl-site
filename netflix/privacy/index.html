@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, what leaves it — four public requests, title ids to our ratings table, a usage report, and for Pro a licence check and playlist sync — and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-11-09
+last_modified_at: 2026-11-15
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -154,8 +154,9 @@ last_modified_at: 2026-11-09
      the feedback link's place once that was clicked, and a click on it sets the
      existing tidywl_support_ask clicked flag (markSupportAskClicked), so it adds
      no key. No new fetch() or permission between v1.7.2 and the v1.8.0 tag
-     (manifest differs only in version). The dated line waits for the day 1.8.0
-     goes live.
+     (manifest differs only in version). 1.8.0 was live on the
+     store 2026-11-15 and merged that day, so the dated line, privacy_updated and
+     last_modified_at carry that date.
 
      1.8.0 widened, redrafted 2026-11-14 against the extension's main: the
      Continue Watching tab reads Netflix's row (dashboard-continue.js:
@@ -170,7 +171,10 @@ last_modified_at: 2026-11-09
      in netflix.com's sessionStorage (dashboard-state.js dashboardSnapshot;
      dashboard-overlay.js saves at pagehide, takes once at load). manifest.json
      adds two content-script files, no permission; no fetch() outside netflix.com
-     added since v1.7.2; no new usage-report field.
+     added since v1.7.2; no new usage-report field. Checked again at the v1.8.0 tag
+     (ef817db) before the merge: manifest.json adds the version and the two
+     content-script files only; the one fetch() added is page-context.js's
+     netflix.com GraphQL call; usage-utils.js is unchanged since v1.7.2.
 
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
@@ -211,6 +215,12 @@ last_modified_at: 2026-11-09
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
+      Updated 15 November 2026 for version 1.8.0: the new Continue Watching tab reads your Continue Watching row from
+      Netflix when you open it, in at most two requests, keeps none of it except the details of a title you add to a playlist, and removes titles from that row only when you
+      press its button. A small count on Netflix's cards shows whether a title is in your My List or your playlists,
+      checked against what this browser already keeps, without asking Netflix. One new storage key remembers your last
+      choice in the <em>Add to Playlist</em> window, and one in the Netflix tab brings the dashboard back after a refresh.
+      The usage report does not change, and the extension makes no new request outside Netflix.
       Updated 9 November 2026 for version 1.7.1: the My List page links to the feedback page on tidywl.com too, as
       <em>Anything to add?</em>, with the same address as the dashboard's link, and one new storage key remembers that
       you clicked it, so the link stays away. The usage report does not change, and the extension makes no new request.
