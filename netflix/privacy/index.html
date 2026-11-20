@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/privacy/
 title: "Privacy policy — TidyWL for Netflix"
 description: "What TidyWL for Netflix reads, what it keeps in your browser, what leaves it — four public requests, title ids to our ratings table, a usage report, and for Pro a licence check and playlist sync — and why each permission is asked for. Plain language, no hedging."
-last_modified_at: 2026-11-15
+last_modified_at: 2026-11-19
 ---
 
 <!-- ── PRIVACY POLICY ──
@@ -190,8 +190,10 @@ last_modified_at: 2026-11-15
      DetailModal kept for shows those leave unanswered. The dashboard's IMDb
      lookups for All films go to Wikidata (request 3, unchanged), not request 8.
      manifest.json, every fetch() and usage-utils.js are unchanged since v1.8.0.
-     TO DO ON RELEASE DAY: the dated "Updated <date> for version 1.9.0" line in
-     the header, privacy_updated and last_modified_at, once the day is known.
+     The dated line, privacy_updated and last_modified_at were set on release
+     day, 2026-11-19, after the claims above were read against the v1.9.0 tag
+     (53d4269): no new fetch(), no new storage key, manifest.json changed in
+     its version only.
 
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
@@ -232,6 +234,13 @@ last_modified_at: 2026-11-15
     <p class="nf-policy-meta">
       Applies to <strong>TidyWL for Netflix</strong> version 0.1.0 and later, on Google Chrome.
       Published {{ site.data.netflix.privacy_published | date: "%-d %B %Y" }}.
+      Updated 19 November 2026 for version 1.9.0: <em>All films</em> and <em>All shows</em> read Netflix's whole film or
+      show catalogue when you pick one, 200 titles a request, one request at a time, and keep a copy in this browser for
+      the day. A search Netflix reads as a person's name asks for one more request per page, for those results' cast.
+      Sync now gets each show's watch state in the requests it already makes for Leaving soon, and keeps a few more facts
+      per show for the Stats estimate of TV still to watch. With Pro, <em>Archive what I've watched…</em> also reads the
+      watch state of playlist titles that are not in My List, only when you press it, and stores none of it. The usage
+      report does not change, and the extension makes no new request outside Netflix.
       Updated 15 November 2026 for version 1.8.0: the new Continue Watching tab reads your Continue Watching row from
       Netflix when you open it, in at most two requests, keeps none of it except the details of a title you add to a playlist, and removes titles from that row only when you
       press its button. A small count on Netflix's cards shows whether a title is in your My List or your playlists,
