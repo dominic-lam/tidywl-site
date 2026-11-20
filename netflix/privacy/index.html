@@ -195,6 +195,14 @@ last_modified_at: 2026-11-19
      (53d4269): no new fetch(), no new storage key, manifest.json changed in
      its version only.
 
+     1.10.0, drafted 2026-11-20 on branch policy-1.10.0 against the extension's
+     main (a115a5a): one more usage-report count, continue_opens
+     (usage-utils.js USAGE_REPORT_CAPS; recorded in dashboard-continue.js
+     showContinueTab when the tab is shown). No new storage key, no new fetch(),
+     no permission change. Set the dated line, privacy_updated and
+     last_modified_at on release day, after reading these claims against the
+     v1.10.0 tag.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -812,6 +820,7 @@ last_modified_at: 2026-11-19
           <tr><td>mylist_page_failed_reason</td><td>The same, for <code>mylist_page_failed</code>.</td></tr>
           <tr><td>feedback_asks</td><td>How many times the extension has shown the feedback card, the ask that appears once after a big clean-up.</td></tr>
           <tr><td>feedback_clicks</td><td>How many times you have pressed <em>Answer one question</em> on that card, which opens the feedback page. Not whether you went on to answer.</td></tr>
+          <tr><td>continue_opens</td><td>From version 1.10.0. How many times the dashboard's Continue Watching tab has been shown, by switching to it or by the dashboard opening on it. Not its Refresh, and not which titles are in it.</td></tr>
         </tbody>
       </table>
     </div>
