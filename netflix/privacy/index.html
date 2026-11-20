@@ -176,6 +176,23 @@ last_modified_at: 2026-11-15
      content-script files only; the one fetch() added is page-context.js's
      netflix.com GraphQL call; usage-utils.js is unchanged since v1.7.2.
 
+     1.9.0, drafted 2026-11-16 on branch draft/netflix-1.9.0 against the
+     extension's main (35671e2). Two new keys, tidywl_catalogue_film and
+     tidywl_catalogue_tv (dashboard-browse.js catalogueCacheKey,
+     packCatalogueRow), in chrome.storage.local: one browser-wide slot per hub,
+     holding the profile guid, the day and each title's id, name, type, year,
+     Original flag, season count, maturity rating and level, box-art address and
+     playable flag. tidywl_show_states_<guid> keeps its name and gains showLength
+     per show (leaving-utils.js leavingShowStates). New Netflix reads: the whole
+     film and show hubs (loadCatalogue, pages of 200, one at a time); one cast
+     read per page of a person search (page-context.js readSearchCast); show
+     watch state now comes from Leaving soon's MiniModalQuery batches, with
+     DetailModal kept for shows those leave unanswered. The dashboard's IMDb
+     lookups for All films go to Wikidata (request 3, unchanged), not request 8.
+     manifest.json, every fetch() and usage-utils.js are unchanged since v1.8.0.
+     TO DO ON RELEASE DAY: the dated "Updated <date> for version 1.9.0" line in
+     the header, privacy_updated and last_modified_at, once the day is known.
+
      This is the page the Chrome Web Store listing points at, so every sentence
      in it has to be true of the shipped build, not of the plan.
 
@@ -323,9 +340,9 @@ last_modified_at: 2026-11-15
     <ul>
       <li><strong>Your My List</strong> — each title's id, name, type, year, runtime, maturity rating, genres and box-art address. Read when you press <em>Sync</em>.</li>
       <li><strong>Your My List again, for the My List page</strong> — from version 1.3.0, each time you open the My List page the extension puts back in Netflix's menu, and again after you add or remove a title there: each title's id, name, picture and maturity rating, in Netflix's order. The page shows them while it is open and stores none of them.</li>
-      <li><strong>Your watch state</strong> — for each film, how far into it you are; for each show, whether Netflix records it as never watched, started or completed. Read as part of the same Sync.</li>
+      <li><strong>Your watch state</strong> — for each film, how far into it you are; for each show, whether Netflix records it as never watched, started or completed. Read as part of the same Sync. From version 1.9.0 a show's state comes in the same requests as <em>Which titles in your My List Netflix is about to remove</em>, below, with how many seasons it has, which episode you are on, that episode's length and how many episodes its season has; only a show those requests leave unanswered is asked about on its own. From version 1.9.0, with Pro, the same state is also read when you press <em>Archive what I've watched…</em>, for the titles in your playlists that are not in My List: at that moment only, a hundred titles a request, and never stored.</li>
       <li><strong>Which profile is active</strong> — its id, name and language, so everything can be filed under the right profile.</li>
-      <li><strong>Search results and genre catalogues</strong> — only for a search you typed or a genre you opened. For each search result, and each film in a genre, details such as its year, runtime and number of seasons are then asked for once, and kept for the rest of that page's life.</li>
+      <li><strong>Search results and genre catalogues</strong> — only for a search you typed or a genre you opened. For each search result, and each film in a genre, details such as its year, runtime and number of seasons are then asked for once, and kept for the rest of that page's life. From version 1.9.0: a search Netflix reads as a person's name also asks, in one more request per page of results, for those results' cast, directors and creators, to show which of them that person is in. <em>All films</em> and <em>All shows</em>, when you pick one, read Netflix's whole film or show catalogue for your profile, 200 titles a request, one request at a time. The films of those two lists that are on screen get their details asked for, as in a genre.</li>
       <li><strong>A title's details on hover</strong> — its synopsis, cast, director or creators, genres, runtime and a still image, asked for once per title when you rest the pointer on a card, and kept for the rest of that page's life so a second look costs nothing. From version 1.3.0, resting the pointer on a title's picture, in the dashboard or on the My List page, opens Netflix's own preview instead, the one Netflix shows on its own rows: Netflix's page loads it, trailer included, exactly as it does there, and the dashboard adds the synopsis, cast and genres from what Netflix loaded for it. The extension's own request above is made only when Netflix's preview cannot open.</li>
       <li><strong>For Tonight</strong> — Pro only, from version 1.1.0, and only once you open it. With <em>Surprises from outside My List</em> on, as it is until you switch it off: a few of Netflix's genre catalogues that fit the mood you chose, and details, such as the runtime, of the best-rated few films in them; a mood already read today is not read again. On the poster layout, a larger picture of the main pick, asked for once it has stayed on screen for a moment and kept for the rest of that page's life.</li>
       <li><strong>Your viewing history and your thumbs, for Tonight</strong> — Pro only, from version 1.1.0, and only when you open Tonight: the titles this profile has played on Netflix and when, and the titles it has given a thumbs up, down or "love", so Tonight never offers what you have already seen or disliked. Read from Netflix's own viewing-activity service, the one behind Account → Viewing activity, through the session you are signed in with and only for the profile you are using — at most once every six hours, one page of 50 at a time a second apart, and after the first time usually just the newest page. What is kept is the title ids, the time of the last play and the thumb, in this browser only; never a title's name, never an episode, and <strong>none of it is sent to us or to anyone</strong>.</li>
@@ -391,7 +408,7 @@ last_modified_at: 2026-11-15
         <tbody>
           <tr><td><code>tidywl_titles_&lt;profile&gt;</code></td><td>Your My List: id, title, type, year, runtime, maturity, genres, box-art address.</td></tr>
           <tr><td><code>tidywl_last_synced_&lt;profile&gt;</code></td><td>When you last pressed Sync.</td></tr>
-          <tr><td><code>tidywl_show_states_&lt;profile&gt;</code></td><td>Per show: never watched, started, or completed.</td></tr>
+          <tr><td><code>tidywl_show_states_&lt;profile&gt;</code></td><td>Per show: never watched, started, or completed. From version 1.9.0 also how many seasons it has, which episode you are on, that episode's length and how many episodes its season has, for the Stats estimate of TV still to watch.</td></tr>
           <tr><td><code>tidywl_first_seen_&lt;profile&gt;</code></td><td>The first date this extension saw each title in your list. Netflix does not record when you added something, so this is the extension's own note, and it only starts from your first Sync.</td></tr>
           <tr><td><code>tidywl_imdb</code></td><td>The IMDb id and rating found for each Netflix title, so the lookup is not repeated. This one is not filed per profile, because a title's IMDb rating is the same whoever is watching, and the key holds no indication of whose list a title came from.</td></tr>
           <tr><td><code>tidywl_remote_config</code></td><td>A copy of the public settings file described below.</td></tr>
@@ -423,6 +440,7 @@ last_modified_at: 2026-11-15
           <tr><td><code>tidywl_installed_at</code></td><td>From version 1.2.1. When the extension was installed in this browser, so the page Chrome opens after a removal can say roughly how long you had it: under an hour, a day, a week, a month, or longer. Only that rough span ever leaves, and only if you press Send there. Installs from before 1.2.1 have none.</td></tr>
           <tr><td><code>tidywl_playlist_titles_&lt;profile&gt;</code></td><td>From version 1.7.0. The details of the titles in this profile's playlists, so a playlist can show them without asking Netflix again: each title's Netflix id, name, type, year, runtime, where its credits start, whether it is a Netflix original, seasons and episodes, maturity rating, whether it can be played, box-art address and genres. It stays on this machine: Chrome's sync does not carry it.</td></tr>
           <tr><td><code>tidywl_playlist_picker_&lt;profile&gt;</code></td><td>From version 1.8.0. The playlist you last chose in the <em>Add to Playlist</em> window and, when you opened it from My List, whether you chose Copy or Move, so the window opens on that choice next time: a playlist id and one word. Never sent.</td></tr>
+          <tr><td><code>tidywl_catalogue_film</code>, <code>tidywl_catalogue_tv</code></td><td>From version 1.9.0. Netflix's whole film, or show, catalogue as it was read the last time you picked <em>All films</em> or <em>All shows</em>, so a second look the same day asks Netflix nothing: each title's Netflix id, name, type, year, whether it is a Netflix original, number of seasons, maturity rating, box-art address and whether it can be played, with the profile's id and the day. One of each for the browser: another profile or another day replaces it. Never sent.</td></tr>
           <tr><td><code>tidywl_playlist_cap_exempt</code></td><td><code>true</code> in a browser that had the extension before version 1.0.0, so it keeps making up to 50 playlists without Pro. Nothing else.</td></tr>
           <tr><td><code>tidywl_rating_ask_dismissed</code></td><td><code>true</code> once a rating ask has been answered or declined, so no rating ask is shown again in this browser: the one on a removal's summary and, from version 1.4.0, the band at the top of the dashboard or the strip in the My List page's heading.</td></tr>
           <tr><td><code>tidywl_rating_band_shown</code></td><td>From version 1.4.0. <code>true</code> once the rating ask at the top of the dashboard or in the My List page's heading has been shown, so it appears at most once in this browser, answered or not. Never sent.</td></tr>
