@@ -3,7 +3,7 @@ layout: netflix
 permalink: /netflix/tutorials/
 title: "Tutorials — TidyWL for Netflix"
 description: "How to use every part of TidyWL for Netflix: Netflix's original My List page, the My List dashboard, IMDb ratings, hidden categories, playlists, Leaving soon, and Pro's Tonight and Undo."
-last_modified_at: 2026-10-09
+last_modified_at: 2026-11-20
 faq:
   - q: "Where do I open the TidyWL for Netflix dashboard?"
     a: "Open netflix.com in Chrome on a computer, choose your profile, and press Alt+L on any browse page, such as the home page (Option+L on a Mac). Or click the extension's icon in the browser toolbar and press Open dashboard. It does not open on Netflix's Who's watching? screen, so pick a profile first."
@@ -25,7 +25,9 @@ faq:
      Added 2026-10-06, modelled on /tutorials/ (the Watch Later product's).
      Every button, tab, menu item and label quoted below was copied from the
      extension's src/ (tidywl-netflix, version 1.2.x; the my-list-page and
-     hover-preview guides against 1.3.0, 2026-10-09). An icon button's name is
+     hover-preview guides against 1.3.0, 2026-10-09). The labels the guides
+     added or changed on 2026-11-20 add were read off the live dashboard,
+     version 1.9.0, on a Pro profile. An icon button's name is
      the first part of its tooltip. Category names Netflix supplies are not
      quoted, except the two the approved store description names. Claims about
      free vs Pro, prices and privacy follow CWS-DESCRIPTION-v1.2.2.md.
@@ -35,8 +37,11 @@ faq:
        install, layout, sync,
        cards, filter, sort, genres, leaving-soon, hover-preview, select,
        remove, export-import,
+       continue-watching (added 2026-11-20, for 1.8.0),
        my-list-page (added 2026-10-09, for 1.3.0), imdb-ratings,
-       search, hidden-categories, result-details, add-from-search,
+       search, hidden-categories,
+       all-films-shows (added 2026-11-20, for 1.9.0),
+       result-details, add-from-search,
        playlists, move-copy, manage-playlist, playlist-limits,
        toolbar-popup,
        pro, tonight, undo, pin, clean-up-rules (rule-watched,
@@ -50,7 +55,7 @@ faq:
   <section class="tut-hero">
     <p class="section-label">Tutorials</p>
     <h1>How to use <span class="em">every part</span> of TidyWL for Netflix</h1>
-    <p class="tagline">One short guide per feature, in the order you would meet them. Written against version 1.3. Every button name below is the name on the button, or the first words of its tooltip.</p>
+    <p class="tagline">One short guide per feature, in the order you would meet them. Updated for version 1.9. Every button name below is the name on the button, or the first words of its tooltip.</p>
     <!-- The guide filter. Hidden until the script at the foot of the page wires it, so a reader without
          JavaScript never sees a box that does nothing. Everything it does happens in this page. -->
     <div class="tut-search" role="search" hidden>
@@ -97,6 +102,12 @@ faq:
           </ul>
         </div>
         <div class="tut-toc-group">
+          <p class="tut-toc-head">Continue Watching</p>
+          <ul>
+            <li><a href="#continue-watching">The Continue Watching tab</a></li>
+          </ul>
+        </div>
+        <div class="tut-toc-group">
           <p class="tut-toc-head">On Netflix's pages</p>
           <ul>
             <li><a href="#my-list-page">The original My List page</a></li>
@@ -109,6 +120,7 @@ faq:
           <ul>
             <li><a href="#search">Search Netflix</a></li>
             <li><a href="#hidden-categories">Hidden categories</a></li>
+            <li><a href="#all-films-shows">All films and all shows</a></li>
             <li><a href="#result-details">Details and ratings</a></li>
             <li><a href="#add-from-search">Add what you find</a></li>
           </ul>
@@ -170,13 +182,15 @@ faq:
         <h2>Find your way around the dashboard</h2>
         <p class="tut-where">The panel that opens over the Netflix page</p>
         <ul class="tut-list">
-          <li><b class="ui">The header</b> carries three tabs, <b class="ui">My List</b>, <b class="ui">Search</b> and <b class="ui">Playlists</b>. On the right sit <b class="ui">Tonight</b> with its Pro pill, your plan badge (<b class="ui">Free</b> or <b class="ui">Pro</b>), a bell, <b class="ui">About</b>, <b class="ui">Full page</b> and the close ×.</li>
-          <li><b class="ui">The sidebar</b> on My List holds the <b class="ui">Titles</b> card, <b class="ui">Last Synced</b> with the <b class="ui">Sync</b> button, a <b class="ui">Leaving soon</b> card when something is leaving, <b class="ui">Show Watch State</b>, <b class="ui">Stats</b>, and below them the <b class="ui">By Genre</b> breakdown.</li>
-          <li><b class="ui">The toolbar</b> above the grid groups its icons under small titles: <b class="ui">Find</b>, <b class="ui">Pro tools</b>, <b class="ui">Select &amp; move</b> and <b class="ui">Export, import &amp; open</b>, then the red bin on its own. Hover an icon to see its name. That name is what these tutorials use.</li>
+          <li><b class="ui">The header</b> carries four tabs, <b class="ui">My List</b>, <b class="ui">Continue Watching</b>, <b class="ui">Search</b> and <b class="ui">Playlists</b>. On the right sit <b class="ui">Tonight</b> with its Pro pill, your plan badge (<b class="ui">Free</b> or <b class="ui">Pro</b>), a bell (<b class="ui">Announcements</b>), <b class="ui">Tutorials</b>, which opens in a new tab, <b class="ui">About</b> and the close ×.</li>
+          <li><b class="ui">The sidebar</b> on My List opens with a strip: your <b class="ui">Titles</b> count, the split between shows and movies, and <b class="ui">Sync</b> with when you last synced, such as <em>"Synced 1d ago"</em>. Under it sit three small tiles, <b class="ui">Leaving soon</b>, <b class="ui">Watch state</b> and <b class="ui">Film to watch</b> (the last one is Pro), then the <b class="ui">By Genre</b> breakdown.</li>
+          <li><b class="ui">The toolbar</b> above the grid groups its icons under small titles: <b class="ui">Find</b>, <b class="ui">Pro tools</b>, <b class="ui">Select &amp; move</b>, <b class="ui">Export, import &amp; open</b> and <b class="ui">Settings</b>, plus the red bin on its own. Hover an icon to see its name. That name is what these tutorials use.</li>
           <li><b class="ui">The grid</b> below is your list, one card per title.</li>
         </ul>
         <p class="tut-note">Hover the edge between the sidebar and the grid and a small round handle appears (<b class="ui">Hide breakdown</b>). It folds the sidebar down to a narrow strip that still carries <b class="ui">Sync</b>. On a narrow window the sidebar sits above the grid instead.</p>
-        <p class="tut-note"><b class="ui">Full page</b> makes the dashboard fill the browser window, and it remembers that choice next time.</p>
+        <p class="tut-note">Point at a tile in the sidebar, or click it, and its note shows.</p>
+        <p class="tut-note"><b class="ui">Full page</b>, in the toolbar's <b class="ui">Settings</b> group beside the IMDb switch, makes the dashboard fill the browser window, and it remembers that choice next time.</p>
+        <p class="tut-note">The <b class="ui">Continue Watching</b> tab has its own sidebar and toolbar. See <a href="#continue-watching">its guide</a>.</p>
         <a class="nf-video" href="https://youtu.be/x_9iXBpwOnc" target="_blank" rel="noopener">
           <span class="nf-video-thumb"><img src="/assets/netflix-video-overview.webp" alt="Video cover reading Stop scrolling. Start watching, beside the dashboard filtered to movies rated 7 and up on IMDb." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">2:18</span></span>
           <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">How I Stopped Wasting Time Picking a Netflix Movie</span><span class="nf-video-sub">The dashboard from start to finish: a long My List, filtered and sorted into playlists for movie nights.</span></span>
@@ -185,10 +199,11 @@ faq:
 
       <article class="tut" id="sync">
         <h2>Sync your list once</h2>
-        <p class="tut-where">My List sidebar → <b class="ui">Last Synced</b> → <b class="ui">Sync</b></p>
+        <p class="tut-where">My List sidebar → <b class="ui">Sync</b></p>
         <ol class="tut-steps">
           <li>The first time, the grid reads <em>"Nothing loaded yet."</em> Press <b class="ui">Sync</b>.</li>
-          <li>Sync reads your My List and checks which titles Netflix is about to remove. Then it checks the watch state of your shows, one request per show, which is the slow half, and matches each title to its IMDb rating. The <b class="ui">Show Watch State</b> card counts how many shows are done.</li>
+          <li>A window opens. It reads your My List (<em>"Reading My List…"</em>), then counts through every title under <em>"Checking what is leaving Netflix and what you have watched…"</em>, with a count such as 0/624 that climbs as it goes. One pass finds what is leaving and the watch state of your shows, and TidyWL matches each title to its IMDb rating. A note under the count says <em>"Netflix resolves the whole list in one go — this is quick."</em></li>
+          <li>When it ends, the sidebar reads <em>"Synced just now"</em>. Point at the <b class="ui">Watch state</b> tile and its note says how many shows are checked, such as <em>"Show Watch State: 203 of 203 · All shows checked."</em></li>
           <li>From then on the dashboard opens instantly and asks Netflix for nothing. It shows your list as of that Sync.</li>
         </ol>
         <p class="tut-note">When your last Sync is more than a day old, a line above the grid reads <em>"Last synced … Netflix may have changed since."</em> with <b class="ui">Sync now</b> and a × to dismiss it.</p>
@@ -221,9 +236,10 @@ faq:
         <h2>Filter My List</h2>
         <p class="tut-where">Toolbar → <b class="ui">Find</b> → the funnel (<b class="ui">Filter</b>)</p>
         <ol class="tut-steps">
-          <li>Open <b class="ui">Filter</b>. It holds six groups, one choice in each:
+          <li>Open <b class="ui">Filter</b>. It holds seven groups. Six give one choice each, and <b class="ui">Release year</b> is a slider:
             <ul>
               <li><b class="ui">Type</b>: <b class="ui">Shows &amp; movies</b>, <b class="ui">Shows only</b>, <b class="ui">Movies only</b>.</li>
+              <li><b class="ui">Release year</b>: a slider with two handles. Move them to narrow the grid to any span of years.</li>
               <li><b class="ui">Availability</b>: <b class="ui">Any availability</b>, <b class="ui">Playable</b>, <b class="ui">Unavailable</b>, <b class="ui">Leaving soon</b>.</li>
               <li><b class="ui">Watched</b>: <b class="ui">Any watch state</b>, <b class="ui">Not started</b>, <b class="ui">Partway</b>, <b class="ui">Watched</b>.</li>
               <li><b class="ui">IMDb rating</b>: <b class="ui">Any rating</b>, <b class="ui">8.0 and up</b>, <b class="ui">7.0 and up</b>, <b class="ui">6.0 and up</b>, <b class="ui">Unrated</b>.</li>
@@ -245,9 +261,10 @@ faq:
         <h2>Sort My List</h2>
         <p class="tut-where">Toolbar → <b class="ui">Find</b> → <b class="ui">Sort</b></p>
         <ol class="tut-steps">
-          <li>Pick an order: <b class="ui">Netflix's order</b>, <b class="ui">Title A–Z</b>, <b class="ui">Title Z–A</b>, <b class="ui">Newest first</b>, <b class="ui">Oldest first</b>, <b class="ui">Longest first (movies)</b>, <b class="ui">Shortest first (movies)</b> or <b class="ui">IMDb rating</b>.</li>
+          <li>Pick an order: <b class="ui">Netflix's order</b>, <b class="ui">Title A–Z</b>, <b class="ui">Title Z–A</b>, <b class="ui">Newest first</b>, <b class="ui">Oldest first</b>, <b class="ui">Longest first (movies)</b>, <b class="ui">Shortest first (movies)</b>, <b class="ui">Most seasons first (shows)</b>, <b class="ui">IMDb rating</b> or <b class="ui">Leaving soonest first</b>.</li>
           <li>Or, under <b class="ui">Grouped</b>, pick <b class="ui">By type</b>, <b class="ui">By watch state</b> or <b class="ui">By decade</b>. Each group gets a heading with its count, an arrow that folds it shut, and <b class="ui">Select all</b>, which then reads <b class="ui">Clear</b>.</li>
         </ol>
+        <p class="tut-note"><b class="ui">Most seasons first (shows)</b> puts the shows with the most seasons at the top, then orders them by episodes. <b class="ui">Leaving soonest first</b> is there on profiles in English, and choosing the <a href="#leaving-soon">Leaving soon</a> filter switches the sort to it.</p>
         <p class="tut-note">There is no sort by date added. Netflix keeps no date on My List that TidyWL can read, and Netflix's own order is its choice, not the order you added titles.</p>
         <p class="tut-note">Sorting never clears your selection. Folding a group drops its titles from the selection, so nothing out of sight stays selected.</p>
       </article>
@@ -336,8 +353,45 @@ faq:
     </div>
   </section>
 
-  <!-- ══ ON NETFLIX'S PAGES ══ -->
+  <!-- ══ CONTINUE WATCHING ══ -->
   <section class="tut-band">
+    <div class="section-inner">
+      <p class="section-label">Continue Watching</p>
+
+      <article class="tut" id="continue-watching">
+        <h2>Sort out Netflix's Continue Watching row</h2>
+        <p class="tut-where">Header → <b class="ui">Continue Watching</b> tab</p>
+        <ol class="tut-steps">
+          <li>Open the <b class="ui">Continue Watching</b> tab. It reads Netflix's Continue Watching row for the profile you are in. The sidebar shows the number of titles, <em>"Netflix's row for"</em> and your profile's name, <b class="ui">Refresh</b>, and when the row was read, such as <em>"Read just now"</em>.</li>
+          <li>The titles fall into three groups. The sidebar's <b class="ui">How it's split</b> notes say how:
+            <ul>
+              <li><b class="ui">Partway through</b>: titles with a saved place, furthest in first. For a show, that is how far into its current episode.</li>
+              <li><b class="ui">Up next</b>: shows where you finished an episode and have not started the next one.</li>
+              <li><b class="ui">Barely started</b>: under 3 minutes into a movie, or into a show's first episode. A start that short is often a mis-click, so this group sits folded at the bottom.</li>
+            </ul>
+          </li>
+          <li>The sidebar's <b class="ui">In the row</b> lists every title in the row. Click one to show only it. Click it again to show all.</li>
+          <li>To order and narrow the groups, open the toolbar's <b class="ui">Find</b> group. The sort menu, <b class="ui">Sort each group by</b>, offers <b class="ui">How far in</b>, <b class="ui">Least time left</b> and <b class="ui">Netflix's order</b>. <b class="ui">Movies or shows</b> offers <b class="ui">Movies and shows</b>, <b class="ui">Movies</b> and <b class="ui">Shows</b>. <b class="ui">Find in this row…</b> searches the row by title.</li>
+          <li>To act on titles, tick the box on each card, or press <b class="ui">Select all shown</b> in the toolbar's <b class="ui">Select &amp; move</b> group. A bar such as <em>"2 titles selected"</em> floats over the grid, with <b class="ui">Clear</b>. Then pick one of three buttons:
+            <ul>
+              <li><b class="ui">Add to playlist</b> opens the picker (see the next step).</li>
+              <li><b class="ui">Add to My List</b> puts the ticked titles on your My List on Netflix.</li>
+              <li><b class="ui">Remove from Continue Watching</b> takes them out of Netflix's row. The Delete key is its shortcut.</li>
+            </ul>
+          </li>
+          <li>The picker asks where and how. Under <b class="ui">Save to…</b>, choose a playlist. Under <b class="ui">Action</b>, choose <b class="ui">Copy</b>, which keeps the titles in Continue Watching, or <b class="ui">Move</b>, which removes them from Continue Watching after adding them. A line under each says which, with your count in it. <b class="ui">Move</b> never touches My List.</li>
+          <li>With <b class="ui">Copy</b> chosen, press <b class="ui">Add to Playlist</b>. With <b class="ui">Move</b> chosen, the buttons are <b class="ui">Review first</b>, <b class="ui">Cancel</b> and a Move button with your count on it, such as <b class="ui">Move 2</b>. That button runs the move at once, with no second question. <b class="ui">Review first</b> lets you check the titles, and untick any, before the move runs.</li>
+        </ol>
+        <p class="tut-note">Each card has a round button on its art that plays the title, and its tooltip says what it will play, such as <em>"Play S6:E15"</em> for a show, or <em>"Resume"</em>. It opens Netflix in a new tab, so the dashboard stays where you left it.</p>
+        <p class="tut-note">A small tab with a count, such as <b class="ui">In 2 lists</b>, shows how many of your lists hold the title, My List and your playlists together. On a My List card the same tab reads <b class="ui">+1</b>, because the list you are looking at is left out of the count. Rest the pointer on it and it names the playlist.</p>
+        <p class="tut-note">The tab reads Netflix's row the first time you open it, and again only when you press <b class="ui">Refresh</b>. It never asks Netflix about one title at a time. Free.</p>
+        <p class="tut-note tut-note--warn">Removing from Continue Watching changes Netflix's own row, not only the dashboard. Copying a title into a playlist changes nothing on Netflix.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ══ ON NETFLIX'S PAGES ══ -->
+  <section class="tut-band tut-band--alt">
     <div class="section-inner">
       <p class="section-label">On Netflix's own pages</p>
 
@@ -393,7 +447,7 @@ faq:
   </section>
 
   <!-- ══ SEARCH AND BROWSE ══ -->
-  <section class="tut-band tut-band--alt">
+  <section class="tut-band">
     <div class="section-inner">
       <p class="section-label">Search and browse</p>
 
@@ -404,8 +458,9 @@ faq:
           <li>Open the <b class="ui">Search</b> tab. It opens on <b class="ui">Search Netflix</b>.</li>
           <li>Type a title, a person or a genre into the box and press <b class="ui">Search</b>, or <kbd>Enter</kbd>.</li>
           <li>Results arrive as cards. <b class="ui">Load more</b> at the foot fetches the next set.</li>
-          <li>Use <b class="ui">Sort</b> for <b class="ui">Netflix's order</b>, <b class="ui">Title A–Z</b>, <b class="ui">Title Z–A</b> or <b class="ui">IMDb rating</b>, and <b class="ui">Filter</b> for type, availability, IMDb rating and runtime.</li>
+          <li>Use <b class="ui">Sort</b> for <b class="ui">Netflix's order</b>, <b class="ui">Title A–Z</b>, <b class="ui">Title Z–A</b> or <b class="ui">IMDb rating</b>, and <b class="ui">Filter</b> for type, release year, availability, IMDb rating and runtime.</li>
         </ol>
+        <p class="tut-note">When Netflix reads your search as one person, such as <em>Adam Sandler</em>, the results come in two parts. The first is headed <b class="ui">With Adam Sandler</b>, with a count and <em>"in the cast or crew Netflix lists"</em>. The rest sit under <b class="ui">Netflix's other suggestions</b>. Each part has its own <b class="ui">Select all</b>. When Netflix's reading is unclear, nothing is split.</p>
         <p class="tut-note">Sorting and filtering here work on the results already loaded. Press <b class="ui">Load more</b> first to include the rest.</p>
         <p class="tut-note">A card that is already in your list says <b class="ui">In My List</b>, as of your last Sync.</p>
       </article>
@@ -414,10 +469,10 @@ faq:
         <h2>Browse by genre, including the hidden categories</h2>
         <p class="tut-where">Header → <b class="ui">Search</b> tab → <b class="ui">Browse by genre</b></p>
         <ol class="tut-steps">
-          <li>Press <b class="ui">Browse by genre</b>, then choose <b class="ui">Films</b> or <b class="ui">TV</b>.</li>
+          <li>Press <b class="ui">Browse by genre</b>, then choose <b class="ui">Films</b> or <b class="ui">TV</b>. The first chip, <b class="ui">All films</b> or <b class="ui">All shows</b>, reads everything at once. See <a href="#all-films-shows">how</a>.</li>
           <li>Pick a category from the row of chips, which puts the genres you have most of first, or from the <b class="ui">All</b> menu beside them, which lists Netflix's own genres and how many of yours are in each.</li>
           <li>For the rest, open the dashed <b class="ui">Hidden</b> menu. It holds more than a hundred categories Netflix keeps out of its own genre menu, such as Mockumentaries and Satanic Stories, grouped under Netflix's name for each parent genre. Type in its filter box to find one.</li>
-          <li>Use <b class="ui">Sort</b> to choose <b class="ui">A–Z</b>, <b class="ui">Z–A</b>, <b class="ui">Year</b>, <b class="ui">Suggested</b> or <b class="ui">IMDb rating</b>. <b class="ui">Filter</b> offers type, IMDb rating and runtime.</li>
+          <li>Use <b class="ui">Sort</b> to choose <b class="ui">A–Z</b>, <b class="ui">Z–A</b>, <b class="ui">Year</b>, <b class="ui">Suggested</b> or <b class="ui">IMDb rating</b>. <b class="ui">Filter</b> offers type, release year, IMDb rating and runtime.</li>
           <li><b class="ui">Load more</b> fetches the next set. <b class="ui">On Netflix</b> opens the same category on Netflix's own site.</li>
         </ol>
         <p class="tut-note"><b class="ui">A–Z</b>, <b class="ui">Z–A</b>, <b class="ui">Year</b> and <b class="ui">Suggested</b> are Netflix's own orders, read again from Netflix. <b class="ui">IMDb rating</b> reorders what has been read so far, and the status line says so.</p>
@@ -426,6 +481,22 @@ faq:
           <span class="nf-video-thumb"><img src="/assets/netflix-video-hidden-categories.webp" alt="Video cover comparing Netflix's short genre menu with the dashboard's much longer Hidden menu of categories." width="960" height="540" loading="lazy" decoding="async"><span class="nf-video-time">1:07</span></span>
           <span class="nf-video-text"><span class="nf-video-label">Video</span><span class="nf-video-title">Netflix Hidden Categories, Sorted A-Z</span><span class="nf-video-sub">The Hidden menu, its filter box, and a category sorted A to Z.</span></span>
         </a>
+      </article>
+
+      <article class="tut" id="all-films-shows">
+        <h2>Rank all of Netflix's films or shows by IMDb rating</h2>
+        <p class="tut-where">Header → <b class="ui">Search</b> tab → <b class="ui">Browse by genre</b> → <b class="ui">Films</b> or <b class="ui">TV</b> → the first chip</p>
+        <ol class="tut-steps">
+          <li>Press <b class="ui">Browse by genre</b> and choose <b class="ui">Films</b> or <b class="ui">TV</b>. The first chip in the row, before the genres, is <b class="ui">All films</b> on Films and <b class="ui">All shows</b> on TV.</li>
+          <li>Press it. A window reads Netflix's whole catalogue for your country, one page at a time, with a count that climbs. For <b class="ui">All shows</b> it reads <em>"Reading All shows from Netflix — 1,400 so far…"</em>, with the note <em>"Netflix gives 200 titles a request, so this takes a moment. It is kept for today."</em></li>
+          <li>Press <b class="ui">Stop</b> to end the read early. The list is rated as far as it got, the status line says it is partial, and <b class="ui">Load more</b> reads the rest.</li>
+          <li>When the read ends, the same window says <em>"Rating 3711 titles…"</em> while it matches IMDb ratings. Then the grid opens with the first titles, and <b class="ui">Load more</b> shows the next set. The status line counts them, such as <em>"100 of 3711 titles shown"</em>, and says how many are <em>"already in My List"</em>.</li>
+          <li>Open <b class="ui">Sort</b> and pick <b class="ui">IMDb rating</b>. Every title in the catalogue is ranked, not only the ones on screen, and the status line says so, such as <em>"all 3711 titles ranked by IMDb rating"</em>. While ratings are still arriving, it says <em>"finding more IMDb ratings…"</em>.</li>
+          <li>Open <b class="ui">Filter</b> to narrow the whole catalogue by <b class="ui">Type</b>, <b class="ui">Release year</b>, <b class="ui">IMDb rating</b> or <b class="ui">Runtime</b>, such as only titles rated 7 and up.</li>
+        </ol>
+        <p class="tut-note">The whole read is kept for the day, so opening <b class="ui">All films</b> or <b class="ui">All shows</b> again asks Netflix for no list. A read you stopped is not kept.</p>
+        <p class="tut-note">In an ordinary category, <b class="ui">IMDb rating</b> only reorders what has been read so far. That is why <b class="ui">All films</b> and <b class="ui">All shows</b> read everything first.</p>
+        <p class="tut-note">Cards ranked by IMDb rating show their running time. To add what you find, tick the cards and see <a href="#add-from-search">Add what you find</a>.</p>
       </article>
 
       <article class="tut" id="result-details">
@@ -442,11 +513,12 @@ faq:
 
       <article class="tut" id="add-from-search">
         <h2>Add what you find to My List or a playlist</h2>
-        <p class="tut-where">The two buttons on every search and category card · Toolbar → <b class="ui">Add to My List</b> and <b class="ui">Add to playlist</b></p>
+        <p class="tut-where">The buttons and tick box on every search and category card · Toolbar → <b class="ui">Select &amp; add</b> → <b class="ui">Add to My List</b> and <b class="ui">Add to playlist</b></p>
         <ol class="tut-steps">
           <li>The bookmark on a card (<b class="ui">Add to My List</b>) adds that title to your My List on Netflix. It stays lit while the title is in your list. Pressing a lit one removes it, after asking.</li>
           <li>The other button (<b class="ui">Add to a playlist</b>) opens <b class="ui">Add to Playlist</b> for that title. Adding to a playlist from here never touches My List.</li>
-          <li>In a category you can select several titles, as on My List, and use <b class="ui">Add to My List</b> or <b class="ui">Add to playlist</b> in the toolbar.</li>
+          <li>To add several at once, tick the box on each card, on search results and in a category alike. <b class="ui">Select all shown</b>, in the toolbar's <b class="ui">Select &amp; add</b> group, ticks every title shown. When a search is split into two parts, each part has its own <b class="ui">Select all</b>.</li>
+          <li>A bar such as <em>"2 titles selected"</em> floats over the grid, with <b class="ui">Clear</b>. Then press <b class="ui">Add to My List</b> or <b class="ui">Add to playlist</b> in the toolbar.</li>
         </ol>
         <p class="tut-note">Adding several titles to My List goes at a steady pace, with a count, and pauses now and then so Netflix keeps answering.</p>
       </article>
@@ -454,7 +526,7 @@ faq:
   </section>
 
   <!-- ══ PLAYLISTS ══ -->
-  <section class="tut-band">
+  <section class="tut-band tut-band--alt">
     <div class="section-inner">
       <p class="section-label">Playlists</p>
 
@@ -476,9 +548,11 @@ faq:
         <ol class="tut-steps">
           <li>Select titles on the <b class="ui">My List</b> tab, then press <b class="ui">Add to playlist</b>.</li>
           <li>Under <b class="ui">Save to…</b>, choose a playlist, or press <b class="ui">New playlist</b> to make one.</li>
-          <li>Under <b class="ui">Action</b>, choose <b class="ui">Copy</b> (<em>"Keep titles in My List"</em>) or <b class="ui">Move</b> (<em>"Remove from My List after adding"</em>).</li>
-          <li>Press <b class="ui">Add to Playlist</b>. Copy adds them and says so. Move asks once more, adds them, then removes from My List on Netflix exactly the titles that landed in the playlist, and ends with a summary.</li>
+          <li>Under <b class="ui">Action</b>, choose <b class="ui">Copy</b> or <b class="ui">Move</b>. A line under each says what it does: Copy keeps the titles in My List, and Move removes them from My List after adding them.</li>
+          <li>With <b class="ui">Copy</b> chosen, press <b class="ui">Add to Playlist</b>. It adds them and says so.</li>
+          <li>With <b class="ui">Move</b> chosen, the buttons are <b class="ui">Review first</b>, <b class="ui">Cancel</b> and a Move button with your count on it, such as <b class="ui">Move 2</b>. That button runs the move at once, with no second question. The move adds them, then removes from My List on Netflix exactly the titles that landed in the playlist, and ends with a summary. <b class="ui">Review first</b> lets you check the titles, and untick any, before anything leaves My List.</li>
         </ol>
+        <p class="tut-note">The picker opens on the playlist you used last, and on Copy or Move as you left it.</p>
         <p class="tut-note tut-note--warn">Copy never changes Netflix. Move does: it is a real removal from My List, on every device.</p>
         <p class="tut-note">A title the playlist had no room for is never removed. A <a href="#pin">pinned</a> title is copied and stays in My List.</p>
         <p class="tut-note">Inside a playlist, <b class="ui">Add to another playlist</b> does the same between playlists. There, Move means out of the playlist you are in.</p>
@@ -513,7 +587,7 @@ faq:
   </section>
 
   <!-- ══ PRO ══ -->
-  <section class="tut-band tut-band--alt">
+  <section class="tut-band">
     <div class="section-inner">
       <p class="section-label">TidyWL Pro for Netflix</p>
       <p class="tut-band-note">This section covers TidyWL Pro for Netflix: how to start it, then what it adds, each marked <span class="tut-pill">Pro</span>. Pro starts with 7 days free, card required: cancel before day 8 and you pay nothing. Then it is $3.99 a month or $29.99 a year, in US dollars before tax. Every charge has a 14-day full refund. Everything free stays free. See <a href="/netflix/pricing/">pricing</a> and <a href="/netflix/pro/">what Pro does</a>.</p>
@@ -592,9 +666,11 @@ faq:
         <h3 id="rule-watched">Archive what I've watched</h3>
         <ol class="tut-steps">
           <li>Open <b class="ui">Clean-up rules</b> and pick <b class="ui">Archive what I've watched…</b>.</li>
-          <li>The list shows every title you have watched. Untick anything you want to keep.</li>
-          <li>Press <b class="ui">Archive</b>. The ticked titles move to a playlist called <b class="ui">Watched</b> and leave My List.</li>
+          <li>The list shows every title you have watched, in My List and in your playlists. Untick anything you want to keep.</li>
+          <li>Press <b class="ui">Archive</b>. The ticked titles move to a playlist called <b class="ui">Watched</b>, once each. A title in My List leaves My List, and a title in other playlists leaves every other playlist it was in.</li>
         </ol>
+        <p class="tut-note">When nothing reads as watched, it says <em>"Nothing in My List or your playlists reads as watched yet."</em> and offers <b class="ui">OK</b>.</p>
+        <p class="tut-note">For titles in your playlists that are not in My List, TidyWL asks Netflix whether you watched them, but only when you pick this rule. A title Netflix does not answer for is never archived.</p>
 
         <h3 id="rule-six-months">Archive what has waited six months</h3>
         <ol class="tut-steps">
@@ -608,12 +684,14 @@ faq:
 
       <article class="tut" id="stats">
         <h2>Stats <span class="tut-pill">Pro</span></h2>
-        <p class="tut-where">My List sidebar → <b class="ui">Stats</b></p>
+        <p class="tut-where">My List sidebar → the <b class="ui">Film to watch</b> tile</p>
         <ol class="tut-steps">
-          <li>The <b class="ui">Stats</b> card shows the hours of film still waiting in your list. Click it.</li>
-          <li>Stats opens with <b class="ui">Film still to watch</b>, <b class="ui">Shows</b>, <b class="ui">Watched</b> and <b class="ui">Never started</b>.</li>
+          <li>The <b class="ui">Film to watch</b> tile in the sidebar shows the hours of film still waiting in your list. Click it.</li>
+          <li>Stats opens with <b class="ui">Film still to watch</b>, <b class="ui">TV still to watch</b>, <b class="ui">Watched</b> and <b class="ui">Never started</b>.</li>
           <li>Below them, <b class="ui">Added, watched and removed</b> shows what you added against what you watched, month by month.</li>
         </ol>
+        <p class="tut-note"><b class="ui">TV still to watch</b> is an estimate, and its line says what it covers, such as <em>"about 1252 hours across 144 of 203 shows, those with one season"</em>. Next to it, <em>"59 shows with more seasons not counted"</em> says how many shows are left out. Only shows with one season are counted.</p>
+        <p class="tut-note">The tile says <b class="ui">Film to watch</b> because its hours count films only.</p>
         <p class="tut-note">Netflix keeps no date on My List, so the monthly counts start from your first Sync with Stats in the extension, and grow with each Sync after.</p>
       </article>
 
@@ -640,7 +718,7 @@ faq:
   </section>
 
   <!-- ══ REFERENCE ══ -->
-  <section class="tut-band">
+  <section class="tut-band tut-band--alt">
     <div class="section-inner">
       <p class="section-label">Reference</p>
 
@@ -745,7 +823,7 @@ faq:
       "description": "Step-by-step guides for every part of TidyWL for Netflix.",
       "url": "{{ site.url }}/netflix/tutorials/",
       "itemListOrder": "https://schema.org/ItemListOrderAscending",
-      "numberOfItems": 33,
+      "numberOfItems": 35,
       "itemListElement": [
         { "@type": "ListItem", "position": 1,  "name": "Install TidyWL for Netflix and open the dashboard", "url": "{{ site.url }}/netflix/tutorials/#install" },
         { "@type": "ListItem", "position": 2,  "name": "Find your way around the dashboard", "url": "{{ site.url }}/netflix/tutorials/#layout" },
@@ -759,27 +837,29 @@ faq:
         { "@type": "ListItem", "position": 10, "name": "Select titles", "url": "{{ site.url }}/netflix/tutorials/#select" },
         { "@type": "ListItem", "position": 11, "name": "Remove titles from My List in one go", "url": "{{ site.url }}/netflix/tutorials/#remove" },
         { "@type": "ListItem", "position": 12, "name": "Export and import My List", "url": "{{ site.url }}/netflix/tutorials/#export-import" },
-        { "@type": "ListItem", "position": 13, "name": "Open Netflix's original My List page", "url": "{{ site.url }}/netflix/tutorials/#my-list-page" },
-        { "@type": "ListItem", "position": 14, "name": "IMDb ratings on Netflix's own pages", "url": "{{ site.url }}/netflix/tutorials/#imdb-ratings" },
-        { "@type": "ListItem", "position": 15, "name": "The toolbar button: what is leaving, at a glance", "url": "{{ site.url }}/netflix/tutorials/#toolbar-popup" },
-        { "@type": "ListItem", "position": 16, "name": "Search Netflix by title, actor or director", "url": "{{ site.url }}/netflix/tutorials/#search" },
-        { "@type": "ListItem", "position": 17, "name": "Browse by genre, including the hidden categories", "url": "{{ site.url }}/netflix/tutorials/#hidden-categories" },
-        { "@type": "ListItem", "position": 18, "name": "Details and ratings on every result", "url": "{{ site.url }}/netflix/tutorials/#result-details" },
-        { "@type": "ListItem", "position": 19, "name": "Add what you find to My List or a playlist", "url": "{{ site.url }}/netflix/tutorials/#add-from-search" },
-        { "@type": "ListItem", "position": 20, "name": "Make a playlist", "url": "{{ site.url }}/netflix/tutorials/#playlists" },
-        { "@type": "ListItem", "position": 21, "name": "Move or copy titles from My List into a playlist", "url": "{{ site.url }}/netflix/tutorials/#move-copy" },
-        { "@type": "ListItem", "position": 22, "name": "Sort, filter and reorder a playlist", "url": "{{ site.url }}/netflix/tutorials/#manage-playlist" },
-        { "@type": "ListItem", "position": 23, "name": "Playlists, profiles and other browsers", "url": "{{ site.url }}/netflix/tutorials/#playlist-limits" },
-        { "@type": "ListItem", "position": 24, "name": "Start Pro, and use it in more than one browser", "url": "{{ site.url }}/netflix/tutorials/#pro" },
-        { "@type": "ListItem", "position": 25, "name": "Tonight: one pick and two backups from your list (Pro)", "url": "{{ site.url }}/netflix/tutorials/#tonight" },
-        { "@type": "ListItem", "position": 26, "name": "Undo a removal, for 90 days (Pro)", "url": "{{ site.url }}/netflix/tutorials/#undo" },
-        { "@type": "ListItem", "position": 27, "name": "Pin a title so nothing removes it (Pro)", "url": "{{ site.url }}/netflix/tutorials/#pin" },
-        { "@type": "ListItem", "position": 28, "name": "Clean-up rules (Pro)", "url": "{{ site.url }}/netflix/tutorials/#clean-up-rules" },
-        { "@type": "ListItem", "position": 29, "name": "Stats (Pro)", "url": "{{ site.url }}/netflix/tutorials/#stats" },
-        { "@type": "ListItem", "position": 30, "name": "Your playlists on your phone and in your other browsers (Pro)", "url": "{{ site.url }}/netflix/tutorials/#mobile-sync" },
-        { "@type": "ListItem", "position": 31, "name": "Support answered first (Pro)", "url": "{{ site.url }}/netflix/tutorials/#support" },
-        { "@type": "ListItem", "position": 32, "name": "Keyboard shortcuts", "url": "{{ site.url }}/netflix/tutorials/#shortcuts" },
-        { "@type": "ListItem", "position": 33, "name": "If something looks wrong", "url": "{{ site.url }}/netflix/tutorials/#troubleshooting" }
+        { "@type": "ListItem", "position": 13, "name": "Sort out Netflix's Continue Watching row", "url": "{{ site.url }}/netflix/tutorials/#continue-watching" },
+        { "@type": "ListItem", "position": 14, "name": "Open Netflix's original My List page", "url": "{{ site.url }}/netflix/tutorials/#my-list-page" },
+        { "@type": "ListItem", "position": 15, "name": "IMDb ratings on Netflix's own pages", "url": "{{ site.url }}/netflix/tutorials/#imdb-ratings" },
+        { "@type": "ListItem", "position": 16, "name": "The toolbar button: what is leaving, at a glance", "url": "{{ site.url }}/netflix/tutorials/#toolbar-popup" },
+        { "@type": "ListItem", "position": 17, "name": "Search Netflix by title, actor or director", "url": "{{ site.url }}/netflix/tutorials/#search" },
+        { "@type": "ListItem", "position": 18, "name": "Browse by genre, including the hidden categories", "url": "{{ site.url }}/netflix/tutorials/#hidden-categories" },
+        { "@type": "ListItem", "position": 19, "name": "Rank all of Netflix's films or shows by IMDb rating", "url": "{{ site.url }}/netflix/tutorials/#all-films-shows" },
+        { "@type": "ListItem", "position": 20, "name": "Details and ratings on every result", "url": "{{ site.url }}/netflix/tutorials/#result-details" },
+        { "@type": "ListItem", "position": 21, "name": "Add what you find to My List or a playlist", "url": "{{ site.url }}/netflix/tutorials/#add-from-search" },
+        { "@type": "ListItem", "position": 22, "name": "Make a playlist", "url": "{{ site.url }}/netflix/tutorials/#playlists" },
+        { "@type": "ListItem", "position": 23, "name": "Move or copy titles from My List into a playlist", "url": "{{ site.url }}/netflix/tutorials/#move-copy" },
+        { "@type": "ListItem", "position": 24, "name": "Sort, filter and reorder a playlist", "url": "{{ site.url }}/netflix/tutorials/#manage-playlist" },
+        { "@type": "ListItem", "position": 25, "name": "Playlists, profiles and other browsers", "url": "{{ site.url }}/netflix/tutorials/#playlist-limits" },
+        { "@type": "ListItem", "position": 26, "name": "Start Pro, and use it in more than one browser", "url": "{{ site.url }}/netflix/tutorials/#pro" },
+        { "@type": "ListItem", "position": 27, "name": "Tonight: one pick and two backups from your list (Pro)", "url": "{{ site.url }}/netflix/tutorials/#tonight" },
+        { "@type": "ListItem", "position": 28, "name": "Undo a removal, for 90 days (Pro)", "url": "{{ site.url }}/netflix/tutorials/#undo" },
+        { "@type": "ListItem", "position": 29, "name": "Pin a title so nothing removes it (Pro)", "url": "{{ site.url }}/netflix/tutorials/#pin" },
+        { "@type": "ListItem", "position": 30, "name": "Clean-up rules (Pro)", "url": "{{ site.url }}/netflix/tutorials/#clean-up-rules" },
+        { "@type": "ListItem", "position": 31, "name": "Stats (Pro)", "url": "{{ site.url }}/netflix/tutorials/#stats" },
+        { "@type": "ListItem", "position": 32, "name": "Your playlists on your phone and in your other browsers (Pro)", "url": "{{ site.url }}/netflix/tutorials/#mobile-sync" },
+        { "@type": "ListItem", "position": 33, "name": "Support answered first (Pro)", "url": "{{ site.url }}/netflix/tutorials/#support" },
+        { "@type": "ListItem", "position": 34, "name": "Keyboard shortcuts", "url": "{{ site.url }}/netflix/tutorials/#shortcuts" },
+        { "@type": "ListItem", "position": 35, "name": "If something looks wrong", "url": "{{ site.url }}/netflix/tutorials/#troubleshooting" }
       ]
     },
     {
