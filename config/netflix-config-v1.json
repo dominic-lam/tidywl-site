@@ -44,6 +44,27 @@
   },
   "announcements": [
     {
+      "id": "2026-11-v1.9.0",
+      "title": "What's new in 1.9.0",
+      "body": [
+        {
+          "list": [
+            "**All films and All shows.** Netflix's whole catalogue in one list in Browse by genre, so you can sort everything by IMDb rating.",
+            "**Faster search.** Tick several results to add them at once, and an actor's own titles come first.",
+            "**TV still to watch.** Stats estimates the hours of TV you have left, and every Sync keeps your shows' watched state up to date.",
+            "**Fixes from your emails.** Full category names on hover, genres on playlist cards, and titles that left Netflix now say Unavailable."
+          ]
+        },
+        {
+          "text": "Questions or ideas? Ask on [Discord](https://discord.gg/4j5u9xd35P).",
+          "tone": "muted"
+        }
+      ],
+      "size": "medium",
+      "created_at": "2026-11-19",
+      "expires_at": "2027-02-19"
+    },
+    {
       "id": "2026-11-v1.8.0",
       "title": "What's new in 1.8.0",
       "body": [
