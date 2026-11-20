@@ -51,7 +51,24 @@ faq:
     <p class="section-label">Tutorials</p>
     <h1>How to use <span class="em">every part</span> of TidyWL for Netflix</h1>
     <p class="tagline">One short guide per feature, in the order you would meet them. Written against version 1.3. Every button name below is the name on the button, or the first words of its tooltip.</p>
-    <p class="tut-legend"><span class="tut-pill">Pro</span> marks a feature that needs TidyWL Pro for Netflix. Everything else is free.</p>
+    <!-- The guide filter. Hidden until the script at the foot of the page wires it, so a reader without
+         JavaScript never sees a box that does nothing. Everything it does happens in this page. -->
+    <div class="tut-search" role="search" hidden>
+      <label class="sr-only" for="tut-search-input">Search the tutorials</label>
+      <div class="tut-search-field">
+        <svg class="tut-search-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.75" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="m13 13 4.25 4.25" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+        <input class="tut-search-input" id="tut-search-input" type="search" placeholder="Search the guides" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" aria-describedby="tut-search-status">
+        <kbd class="tut-search-key" aria-hidden="true" title="Press / to search">/</kbd>
+        <button class="tut-search-clear" type="button" aria-label="Clear search" hidden><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="m6 6 8 8m0-8-8 8" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg></button>
+      </div>
+      <p class="tut-search-status" id="tut-search-status" aria-live="polite"></p>
+      <button class="tut-search-more" type="button" hidden></button>
+      <div class="tut-search-empty" hidden>
+        <p>Check the spelling, or try one word, such as <i>playlist</i>, <i>remove</i> or <i>Tonight</i>.</p>
+        <button class="tut-search-reset" type="button">Show all guides</button>
+        <p class="tut-search-help">Still stuck? Email <!--email_off--><a href="mailto:support@tidywl.com">support@tidywl.com</a><!--/email_off-->.</p>
+      </div>
+    </div>
   </section>
 
   <section class="tut-contents">
@@ -126,6 +143,7 @@ faq:
           </ul>
         </div>
       </nav>
+      <p class="tut-legend"><span class="tut-pill">Pro</span> marks a feature that needs TidyWL Pro for Netflix. Everything else is free.</p>
     </div>
   </section>
 
@@ -860,6 +878,81 @@ faq:
     border: 1px solid var(--border); background: var(--bg-card);
     border-radius: 10px; padding: 10px 16px; text-wrap: pretty;
   }
+  /* Under the contents since the search box took its place in the hero: it explains a mark the guides use,
+     and in the hero it pushed the box and the first guides below a phone's first screen. */
+  .tut-contents .tut-legend { margin-top: 16px; justify-content: flex-start; }
+  /* The box and the contents it filters read as one block, so the hero hands over to them at the page's first
+     spacing (24px and 8px, as above), not at the site's full section gap, which the Schoger pass sets on every
+     section and which left 112px between them. On a phone the contents card also pads 24px, not 32px: with both,
+     the box and the first guide titles fit on a 393x660 first screen. */
+  .nf.site .tut-page .tut-hero { padding-bottom: 24px; }
+  .nf.site .tut-page .tut-contents { padding-top: 8px; }
+  @media (max-width: 640px) { .nf.site .tut-page .tut-toc { padding: 24px; } }
+
+  /* ── SEARCH ── one field above everything it filters. 48px tall, so the clear button gets a 44px target;
+     16px text, because iOS Safari zooms the page into any field set smaller. The ring and the ink focus outline
+     are the site's own (the legend's ring, the key page's input focus). */
+  .tut-page [hidden] { display: none !important; }
+  /* It follows the hero: left-aligned under the Schoger pass, centred without it. */
+  .tut-search { width: 100%; max-width: 560px; margin: 0; }
+  .tut-search-field {
+    position: relative; display: flex; align-items: center; height: 48px;
+    border-radius: 12px; background: var(--bg-card);
+    box-shadow: 0 0 0 1px var(--ring-c, var(--border)), var(--lift, none);
+  }
+  .tut-search-field:focus-within { outline: 2px solid var(--ink, var(--accent)); outline-offset: 2px; }
+  .tut-search-icon {
+    position: absolute; left: 15px; top: 50%; width: 18px; height: 18px; margin-top: -9px;
+    color: var(--text-subtle); pointer-events: none;
+  }
+  .tut-search-input {
+    flex: 1; min-width: 0; height: 100%; margin: 0; padding: 0 48px 0 44px;
+    border: 0; border-radius: 12px; background: transparent; outline: none;
+    font-family: inherit; font-size: 16px; letter-spacing: normal; color: var(--text);
+    -webkit-appearance: none; appearance: none;
+  }
+  .tut-search-input::placeholder { color: var(--text-subtle); opacity: 1; }
+  .tut-search-input::-webkit-search-cancel-button,
+  .tut-search-input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
+  /* The shortcut hint shows only where there is a keyboard and a mouse, and only while the field is idle. */
+  /* Two classes, to outrank .tut-page kbd, which shows every kbd on the page. */
+  .tut-search .tut-search-key { display: none; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .tut-search-field:not(:focus-within) .tut-search-input:placeholder-shown ~ .tut-search-key { display: inline-block; }
+  }
+  .tut-search-clear {
+    position: absolute; right: 2px; top: 2px; width: 44px; height: 44px;
+    display: grid; place-items: center; padding: 0;
+    border: 0; border-radius: 10px; background: transparent; color: var(--text-subtle); cursor: pointer;
+  }
+  .tut-search-clear svg { width: 18px; height: 18px; }
+  .tut-search-clear:hover { color: var(--text); background: var(--well, var(--bg-alt)); }
+  .tut-search-clear:focus-visible { outline: 2px solid var(--ink, var(--accent)); outline-offset: -4px; }
+  /* Empty while idle, and then it takes no room: the count only appears as the contents below it hide. */
+  .tut-search-status {
+    margin-top: 10px;
+    font-size: 14px; line-height: 20px; color: var(--text-secondary);
+  }
+  .tut-search-status:empty { margin-top: 0; }
+  .tut-search-status[data-empty] { color: var(--text); font-weight: 600; }
+  .tut-search-empty { margin-top: 6px; font-size: 14px; line-height: 22px; color: var(--text-secondary); }
+  .tut-search-empty i { font-style: normal; font-weight: 600; color: var(--text); }
+  .tut-search-reset, .tut-search-more {
+    margin-top: 14px; min-height: 44px; padding: 0 20px;
+    border: 0; border-radius: 999px; background: var(--btn2-bg, var(--bg-card)); color: var(--text);
+    box-shadow: 0 0 0 1px var(--ring-c, var(--border)), var(--lift, none);
+    font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .tut-search-more { margin-top: 10px; }
+  .tut-search-reset:hover, .tut-search-more:hover { background: var(--btn2-hover, var(--bg-alt)); }
+  .tut-search-reset:focus-visible, .tut-search-more:focus-visible { outline: 2px solid var(--ink, var(--accent)); outline-offset: 2px; }
+  .tut-search-help { margin-top: 14px; color: var(--text-muted); }
+  .tut-search-help a { color: inherit; text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; }
+  /* While filtering: the first guide still showing in a band loses the divider above it, as the first one
+     always does; the words that matched are marked, neutral in both themes. */
+  .tut[data-first] { border-top: 0; padding-top: 0; }
+  ::highlight(tut-match) { background-color: var(--border-strong); color: var(--text); }
+  .tut h2:focus-visible { outline: 2px solid var(--ink, var(--accent)); outline-offset: 4px; border-radius: 4px; }
 
   /* The Pro marker: small, uppercase, white on --accent-fill. Never a link. */
   .tut-pill {
@@ -1001,3 +1094,158 @@ faq:
     text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px;
   }
 </style>
+
+<script>
+  /* ── The guide filter ── narrows the guides as you type, in this page only: nothing is sent anywhere.
+     A word matches when it starts a word in the guide; accents and case are ignored. Guides whose title (or short
+     name in the contents) holds every word typed show first. Guides that only mention the words in their steps
+     or notes wait behind "Show N more", because a common word such as "remove" is in half the page. When no
+     title matches, the mentions show straight away. While a search is on, the contents, the questions and every
+     band left with no guide are hidden, so the matches sit right under the box. */
+  (() => {
+    const box = document.querySelector('.tut-search');
+    if (box == null) return;
+    const input = box.querySelector('.tut-search-input');
+    const clear = box.querySelector('.tut-search-clear');
+    const status = box.querySelector('.tut-search-status');
+    const empty = box.querySelector('.tut-search-empty');
+    const more = box.querySelector('.tut-search-more');
+    const guides = [...document.querySelectorAll('.tut-page article.tut')];
+    const bands = [...document.querySelectorAll('.tut-page .tut-band')];
+    const quiet = [...document.querySelectorAll('.tut-page .tut-contents, .tut-page .tut-faq')];
+
+    // Lower case, accents off, apostrophes dropped (so "ive" finds "I've"), anything else that is not a letter or
+    // a digit becomes a space. Padded with spaces, so " sync" means a word that starts with "sync".
+    const fold = s => ' ' + s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase()
+      .replace(/['‘’]/g, '').replace(/[^\p{L}\p{N}]+/gu, ' ').trim() + ' ';
+    const shortName = {};
+    document.querySelectorAll('.tut-toc a[href^="#"]').forEach(a => { shortName[a.getAttribute('href').slice(1)] = a.textContent; });
+    const titles = guides.map(g => fold((shortName[g.id] || '') + ' ' + g.querySelector('h2').textContent));
+    const index = guides.map(g => fold((shortName[g.id] || '') + ' ' + g.textContent));
+    let expanded = false;   // "Show N more" pressed for the words now in the box; typing folds it again
+
+    // Marks the matched words with the CSS Custom Highlight API, which leaves the page's markup alone. Where a
+    // browser lacks it, the filter works the same without the marks.
+    const canMark = window.CSS != null && CSS.highlights != null && typeof Highlight === 'function';
+    // Same length as the text it folds, so a match's position is the text node's position.
+    const foldSameLength = s => s.replace(/[^\x00-\x7f]/g, c => ((c.normalize('NFD')[0] || c).toLowerCase()[0] || c)).toLowerCase();
+    function mark(terms) {
+      if (!canMark) return;
+      CSS.highlights.delete('tut-match');
+      if (terms.length === 0) return;
+      const patterns = terms.map(t => new RegExp('(^|[^\\p{L}\\p{N}])(' + t + ')', 'gu'));
+      const ranges = [];
+      for (const g of guides) {
+        if (g.hidden) continue;
+        const walker = document.createTreeWalker(g, NodeFilter.SHOW_TEXT);
+        for (let node = walker.nextNode(); node != null; node = walker.nextNode()) {
+          const text = foldSameLength(node.nodeValue);
+          for (const re of patterns) {
+            re.lastIndex = 0;
+            for (let m = re.exec(text); m != null; m = re.exec(text)) {
+              const start = m.index + m[1].length;
+              const range = new Range();
+              range.setStart(node, start);
+              range.setEnd(node, start + m[2].length);
+              ranges.push(range);
+            }
+          }
+        }
+      }
+      CSS.highlights.set('tut-match', new Highlight(...ranges));
+    }
+
+    function apply() {
+      const raw = input.value.trim();
+      const terms = fold(raw).trim().split(' ').filter(t => t !== '');
+      const on = raw !== '';
+      if (!on) expanded = false;
+      const has = (text, i) => terms.length > 0 && terms.every(t => text[i].includes(' ' + t));
+      const byTitle = guides.map((g, i) => on && has(titles, i));
+      const byText = guides.map((g, i) => on && has(index, i));
+      const titleCount = byTitle.filter(Boolean).length;
+      const mentionCount = byText.filter(Boolean).length - titleCount;
+      const showMentions = expanded || titleCount === 0;
+      let shown = 0;
+      guides.forEach((g, i) => {
+        const hit = !on || byTitle[i] || (showMentions && byText[i]);
+        g.hidden = !hit;
+        g.removeAttribute('data-first');
+        if (on && hit) shown++;
+      });
+      more.hidden = !on || showMentions || mentionCount === 0;
+      if (!more.hidden) more.textContent = 'Show ' + mentionCount + ' more that mention “' + raw + '”';
+      bands.forEach(b => {
+        const first = b.querySelector('article.tut:not([hidden])');
+        b.hidden = on && first == null;
+        if (on && first != null) first.setAttribute('data-first', '');
+      });
+      quiet.forEach(el => { el.hidden = on; });
+      clear.hidden = !on;
+      empty.hidden = !on || shown > 0;
+      if (!on) {
+        status.textContent = '';
+        status.removeAttribute('data-empty');
+      } else if (shown > 0) {
+        status.textContent = shown === 1 ? '1 guide matches' : shown + ' guides match';
+        status.removeAttribute('data-empty');
+      } else {
+        status.textContent = 'No guides match “' + raw + '”';
+        status.setAttribute('data-empty', '');
+      }
+      mark(on ? terms : []);
+    }
+
+    function reset() {
+      input.value = '';
+      expanded = false;
+      apply();
+      input.focus();
+    }
+
+    input.placeholder = 'Search the ' + guides.length + ' guides';
+    input.addEventListener('input', () => { expanded = false; apply(); });
+    more.addEventListener('click', () => { expanded = true; apply(); input.focus(); });
+    clear.addEventListener('click', reset);
+    box.querySelector('.tut-search-reset').addEventListener('click', reset);
+
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        // First Escape empties the box, the second leaves it.
+        if (input.value !== '') { e.preventDefault(); input.value = ''; apply(); } else input.blur();
+      } else if (e.key === 'Enter') {
+        // Enter goes to the first match: the keyboard user lands on it, and a phone's keyboard closes.
+        const first = guides.find(g => !g.hidden);
+        if (input.value.trim() === '' || first == null) return;
+        e.preventDefault();
+        const heading = first.querySelector('h2');
+        heading.tabIndex = -1;
+        heading.focus();
+      }
+    });
+
+    // "/" jumps to the box from anywhere on the page, as on GitHub and YouTube, unless you are typing in a field.
+    document.addEventListener('keydown', e => {
+      if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey || e.defaultPrevented) return;
+      const t = e.target;
+      if (t instanceof Element && t.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])') != null) return;
+      e.preventDefault();
+      input.focus();
+      input.select();
+    });
+
+    // A link to a guide the search is hiding (a "see Pin" inside a match, or a link from another page while the
+    // browser restored a search) ends the search first, so the link lands. The browser scrolls after this runs.
+    document.addEventListener('click', e => {
+      const a = e.target instanceof Element ? e.target.closest('a[href^="#"]') : null;
+      if (a == null || input.value === '') return;
+      const target = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+      if (target != null && target.closest('[hidden]') != null) { input.value = ''; apply(); }
+    });
+
+    box.hidden = false;
+    // A browser that restores the box's text (Back, a restored tab) gets the matching filter with it.
+    window.addEventListener('pageshow', apply);
+    apply();
+  })();
+</script>
