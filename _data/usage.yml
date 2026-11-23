@@ -5,10 +5,10 @@
 # Each *Raw is the unrounded value that counter's monotonic guard
 # compares against on the next run. One lastUpdated covers all three:
 # the run is all-or-nothing, so they always come from one response.
-deletedTotal: "3,285,000"
-deletedRaw: 3285092
-unlikedTotal: "1,358,000"
-unlikedRaw: 1358753
-movedTotal: "411,000"
-movedRaw: 411536
-lastUpdated: "2026-11-22"
+deletedTotal: "3,317,000"
+deletedRaw: 3317476
+unlikedTotal: "1,377,000"
+unlikedRaw: 1377602
+movedTotal: "414,000"
+movedRaw: 414145
+lastUpdated: "2026-11-23"
