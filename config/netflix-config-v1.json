@@ -1,9 +1,9 @@
 {
   "_comment": "Served at https://tidywl.com/config/netflix-config-v1.json. This checked-in copy is the source of truth for what gets uploaded — edit here, then upload, so the repo always shows what is live. Its shape and fallbacks are documented in src/content-scripts/remote-config.js.",
   "_store_note": "The store address is NOT here. It moved into src/utils/install-store.js on 2026-09-19, because it is fixed for the life of the listing and does not belong behind a file that has to be uploaded first.",
-  "version": 3,
-  "_netflix_note": "2026-10-22: Netflix added loceEnabled and playbackRedirectEnabled to MiniModalQuery, both Boolean! = false. 2026-10-28: and includeUnlockButton, Boolean! = false. The extension guard ignores the default and skipped the leaving-soon check on every Sync. Delete this spot when a release ships the guard fix. 2026-11-25: SearchPageQueryResults gained includeEntryPointSectionBackground (Boolean, sent as false; every search showed \"Search is not working right now\"). 1.10.0 sends it in code; delete the spot once 1.10.0 is the store version and most installs run it.",
-  "netflix": { "operations": { "MiniModalQuery": { "variables": { "loceEnabled": false, "playbackRedirectEnabled": false, "includeUnlockButton": false } }, "SearchPageQueryResults": { "variables": { "includeEntryPointSectionBackground": false } } } },
+  "version": 4,
+  "_netflix_note": "2026-10-22: Netflix added loceEnabled and playbackRedirectEnabled to MiniModalQuery, both Boolean! = false. 2026-10-28: and includeUnlockButton, Boolean! = false. The extension guard ignores the default and skipped the leaving-soon check on every Sync. Delete this spot when a release ships the guard fix. 2026-11-25: SearchPageQueryResults gained includeEntryPointSectionBackground (Boolean, sent as false; every search showed \"Search is not working right now\"). 1.10.0 sends it in code; delete the spot once 1.10.0 is the store version and most installs run it. The same day GetBrowsePage (the Continue Watching tab) needed the same Boolean; same treatment.",
+  "netflix": { "operations": { "MiniModalQuery": { "variables": { "loceEnabled": false, "playbackRedirectEnabled": false, "includeUnlockButton": false } }, "SearchPageQueryResults": { "variables": { "includeEntryPointSectionBackground": false } }, "GetBrowsePage": { "variables": { "includeEntryPointSectionBackground": false } } } },
   "links": {
     "discord": "https://discord.gg/4j5u9xd35P",
     "kofi": "https://ko-fi.com/dominiclam",
