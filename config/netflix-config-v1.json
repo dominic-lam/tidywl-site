@@ -44,6 +44,29 @@
   },
   "announcements": [
     {
+      "id": "2026-11-v1.10.0",
+      "title": "What's new in 1.10.0",
+      "body": [
+        {
+          "list": [
+            "**Pro: your own My List order.** Pick Your order in Sort, then drag titles where you want them.",
+            "**Pro: your own category groups.** Put several categories under one name in By Genre, or hide the ones you never use.",
+            "**Pro: critics' scores.** Rotten Tomatoes, Metacritic and Letterboxd under every title.",
+            "**Pro: Watched fills itself.** Switch it on in Clean-up rules, and every Sync moves what you've finished out of My List into Watched, with Undo.",
+            "**Yours first in Search.** Titles already in My List or a playlist come first.",
+            "**All together.** Continue Watching in one grid instead of three groups."
+          ]
+        },
+        {
+          "text": "Questions or ideas? Ask on [Discord](https://discord.gg/4j5u9xd35P).",
+          "tone": "muted"
+        }
+      ],
+      "size": "medium",
+      "created_at": "2026-11-25",
+      "expires_at": "2027-02-25"
+    },
+    {
       "id": "2026-11-v1.9.0",
       "title": "What's new in 1.9.0",
       "body": [
